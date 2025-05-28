@@ -1,0 +1,181 @@
+/* Estilos generales */
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Estilo para el panel-glass (efecto esmerilado) */
+.panel-glass {
+    background-color: rgba(45, 55, 72, 0.7); /* slate-800/70 */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(71, 85, 105, 0.5); /* slate-700/50 */
+}
+
+/* --- ESTILOS DEL MODAL (CARRITO) --- */
+.modal {
+    display: none; /* CORRECCIÓN: El modal no se muestra por defecto */
+    position: fixed;
+    z-index: 1000; /* Asegura que esté por encima de otros elementos */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.8); /* Fondo oscuro semitransparente */
+    backdrop-filter: blur(5px); /* Efecto de desenfoque en el fondo */
+    -webkit-backdrop-filter: blur(5px);
+    
+    /* Centrar el contenido del modal */
+    display: flex; /* Se activará por JS cuando se muestre */
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: #1a202c; /* slate-900 */
+    margin: auto;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+    position: relative;
+    max-width: 90%;
+    width: 500px;
+}
+
+.close-button {
+    color: #cbd5e1; /* gray-300 */
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close-button:hover, .close-button:focus {
+    color: #fcd34d; /* yellow-300 */
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Estilos de las tarjetas de producto */
+.product-card {
+    background-color: #1a202c; /* slate-900 */
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(71, 85, 105, 0.5); /* slate-700/50 */
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.4);
+}
+
+.product-card img {
+    height: 192px; /* h-48 */
+    object-fit: contain; /* Para que la imagen se ajuste sin recortarse */
+    background-color: transparent; /* Si tienes PNGs con transparencia */
+}
+
+/* Estilos específicos del carrusel */
+#carousel-track {
+    display: flex;
+    gap: 2rem; /* gap-8 (32px) de Tailwind */
+    padding-bottom: 1rem; /* Espacio para las sombras o si el carrusel tiene scrollbar */
+    scroll-snap-type: x mandatory; /* Para un scroll suave entre items */
+    -webkit-overflow-scrolling: touch;
+    overflow-x: hidden; /* Oculta el scroll horizontal */
+    width: 100%; /* Asegura que ocupe todo el ancho disponible */
+}
+
+.carousel-item {
+    flex: 0 0 auto; /* No crecer, no encoger, base auto */
+    width: calc((100% / 3) - (2 * 2rem / 3)); /* Para mostrar 3 items en un LG */
+    scroll-snap-align: start; /* Alinea el inicio del item con el punto de snap */
+    box-sizing: border-box; /* Incluye padding y borde en el ancho/alto */
+    max-width: 320px; /* Ancho máximo para cada item del carrusel */
+}
+
+/* Responsive para el carrusel */
+@media (max-width: 1024px) { /* Para pantallas medianas (md) */
+    .carousel-item {
+        width: calc((100% / 2) - (2 * 2rem / 2)); /* Muestra 2 items */
+    }
+}
+
+@media (max-width: 768px) { /* Para pantallas pequeñas (sm) */
+    .carousel-item {
+        width: 100%; /* Muestra 1 item */
+    }
+}
+
+.carousel-nav-hidden {
+    display: none !important; /* Oculta los botones de navegación si no hay suficientes destacados */
+}
+
+/* Estilos de las imágenes de producto */
+.product-card img, .carousel-item img {
+    object-fit: contain; /* Para que la imagen se ajuste sin recortarse */
+    background-color: transparent; /* Si tienes PNGs con transparencia */
+}
+
+/* Animaciones */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.animate-fade-in-down {
+    animation: fadeInDown 1s ease-out forwards;
+}
+
+.animate-fade-in-up {
+    animation: fadeInUp 1s ease-out forwards 0.5s; /* Delay para la segunda animación */
+}
+
+.animate-pulse {
+    animation: pulse 2s infinite;
+}
+
+/* Media Queries para Responsividad */
+@media (max-width: 768px) {
+    .modal-content {
+        max-width: 95%;
+        width: auto;
+    }
+    nav ul {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+    }
+}
