@@ -352,7 +352,7 @@ function sendOrderViaWhatsApp() {
     message += `\nTotal a pagar: $${total.toLocaleString('es-CO')}\n\n`;
     message += "¡Gracias!";
 
-    const phoneNumber = "573101234567"; // Reemplaza con el número de teléfono de WhatsApp (incluyendo código de país)
+    const phoneNumber = "573174144815"; // Reemplaza con el número de teléfono de WhatsApp (incluyendo código de país)
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
     window.open(whatsappUrl, '_blank');
