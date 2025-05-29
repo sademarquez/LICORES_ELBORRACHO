@@ -25,7 +25,8 @@ const finalizePurchaseBtn = document.getElementById('finalize-purchase-btn');
 // ==============================================
 let productsData = []; // Almacenará todos los productos cargados
 let cart = JSON.parse(localStorage.getItem('cart')) || []; // Carga el carrito desde localStorage
-let carouselIndex = 0; // Índice actual del carrusel
+let carouselIndex = 0; // Índice actual del carrusel activo
+let itemWidth = 0; // Ancho de un ítem del carrusel, calculado dinámicamente
 
 // ==============================================
 // 3. FUNCIONES DE CARGA Y RENDERIZADO
@@ -42,8 +43,8 @@ async function loadProducts() {
         }
         productsData = await response.json();
         console.log("Productos cargados:", productsData);
-        renderProducts(productsData);
-        renderFeaturedProducts(productsData); // Renderizar productos destacados después de cargarlos
+        renderFeaturedProducts(productsData); // Renderizar productos destacados primero
+        renderProducts(productsData); // Luego renderizar el catálogo completo
     } catch (error) {
         console.error("Error al cargar los productos:", error);
         if (productosContainer) {
@@ -51,9 +52,8 @@ async function loadProducts() {
         } else {
             console.warn("Elemento 'productos-container' no encontrado al intentar mostrar mensaje de error.");
         }
-        const featuredProductsContainer = document.getElementById('carousel-track');
-        if (featuredProductsContainer) {
-             featuredProductsContainer.innerHTML = '<p class="text-red-500 text-center w-full">Error al cargar productos destacados.</p>';
+        if (carouselTrack) {
+             carouselTrack.innerHTML = '<p class="text-red-500 text-center w-full">Error al cargar productos destacados.</p>';
         }
     }
 }
@@ -70,15 +70,15 @@ function renderProducts(products) {
     productosContainer.innerHTML = ''; // Limpiar productos existentes
     products.forEach(product => {
         const productCard = document.createElement('div');
-        productCard.className = 'bg-slate-800/80 panel-glass rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-105 flex flex-col';
+        productCard.className = 'bg-slate-800/80 panel-glass rounded-lg shadow-xl overflow-hidden transform transition-transform duration-300 hover:scale-105 flex flex-col cursor-pointer';
         productCard.innerHTML = `
-            <img src="${product.imagen}" alt="${product.nombre}" class="w-full h-48 object-cover">
+            <img src="${product.imagen}" alt="${product.nombre}" class="w-full h-48 object-cover rounded-t-lg">
             <div class="p-4 flex-grow flex flex-col">
                 <h3 class="text-xl font-bold text-yellow-400 mb-2">${product.nombre}</h3>
-                <p class="text-gray-300 text-sm mb-2 flex-grow">${product.descripcion}</p>
+                <p class="text-gray-300 text-sm mb-2 flex-grow">${product.descripcion.substring(0, 100)}${product.descripcion.length > 100 ? '...' : ''}</p> 
                 <div class="flex justify-between items-center mt-auto pt-2 border-t border-slate-700/50">
                     <span class="text-2xl font-bold text-white">$${product.precio.toLocaleString('es-CO')}</span>
-                    <button class="add-to-cart-btn bg-yellow-500 hover:bg-yellow-600 text-slate-900 font-bold py-2 px-4 rounded-full transition duration-300"
+                    <button class="add-to-cart-btn bg-yellow-500 hover:bg-yellow-600 text-slate-900 font-bold py-2 px-6 rounded-full transition duration-300 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-75"
                             data-id="${product.id}"
                             data-nombre="${product.nombre}"
                             data-precio="${product.precio}"
@@ -90,7 +90,7 @@ function renderProducts(products) {
         `;
         productosContainer.appendChild(productCard);
     });
-    addAddToCartListeners(); // Asegurarse de que los botones tengan listeners
+    addAddToCartListeners();
 }
 
 /**
@@ -112,9 +112,11 @@ function renderFeaturedProducts(allProducts) {
 
     featuredProducts.forEach(product => {
         const productCard = document.createElement('div');
-        productCard.className = 'flex-none w-64 mr-4 bg-slate-800/80 panel-glass rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-105 flex flex-col'; // flex-none para el carrusel
+        // Usamos la misma clase que en el catálogo pero sin el hover de escala,
+        // ya que el escalado será manejado por la lógica del carrusel.
+        productCard.className = 'flex-none w-64 mr-4 bg-slate-800/80 panel-glass rounded-lg shadow-lg overflow-hidden flex flex-col';
         productCard.innerHTML = `
-            <img src="${product.imagen}" alt="${product.nombre}" class="w-full h-40 object-cover">
+            <img src="${product.imagen}" alt="${product.nombre}" class="w-full h-40 object-cover rounded-t-lg">
             <div class="p-3 flex-grow flex flex-col">
                 <h3 class="text-lg font-bold text-yellow-400 mb-1">${product.nombre}</h3>
                 <p class="text-gray-300 text-xs mb-2 flex-grow">${product.descripcion.substring(0, 70)}...</p>
@@ -132,7 +134,9 @@ function renderFeaturedProducts(allProducts) {
         `;
         carouselTrack.appendChild(productCard);
     });
-    updateCarousel(); // Ajustar el carrusel después de renderizar productos
+    // Inicializar o actualizar el carrusel después de renderizar productos
+    updateCarousel();
+    addAddToCartListeners(); // Asegurarse de que los botones tengan listeners
 }
 
 
@@ -312,12 +316,10 @@ function sendOrderViaWhatsApp() {
     window.open(whatsappUrl, '_blank');
     console.log("Intento de abrir WhatsApp.");
 
-    // --- ACTIVAR ESTAS LÍNEAS PARA LIMPIAR EL CARRITO Y CERRAR EL MODAL ---
     cart = []; // Vacía el array del carrito
     saveCart(); // Guarda el carrito vacío en localStorage
     updateCartDisplay(); // Actualiza la interfaz del carrito para mostrarlo vacío
     cartModal.style.display = 'none'; // Cierra el modal del carrito
-    // --- FIN DE LAS LÍNEAS A ACTIVAR ---
 
     alert('Tu pedido ha sido enviado a WhatsApp. ¡Gracias por tu compra!');
 }
@@ -326,34 +328,56 @@ function sendOrderViaWhatsApp() {
 // 6. FUNCIONALIDAD DEL CARRUSEL (DESTACADOS)
 // ==============================================
 
-let itemWidth = 0; // Ancho de un ítem del carrusel, calculado dinámicamente
-
+/**
+ * Actualiza la visualización del carrusel aplicando escalado y opacidad para el efecto 3D-like.
+ */
 function updateCarousel() {
     if (!carouselTrack || carouselTrack.children.length === 0) {
         console.warn("Carrusel no encontrado o sin ítems para actualizar.");
         return;
     }
-    // Calcular el ancho de un ítem (asumiendo que todos tienen el mismo ancho y margen derecho)
-    // El 'mr-4' de Tailwind es 1rem = 16px. El w-64 es 16rem = 256px
-    // Asegurarse de que el cálculo coincide con el CSS del card.
-    itemWidth = carouselTrack.children[0].offsetWidth + 16; // width + margin-right (mr-4 = 16px)
 
-    // Ajustar la posición del carrusel
+    const items = Array.from(carouselTrack.children);
+    const numItems = items.length;
+
+    // Calcular el ancho real de un ítem (w-64 = 256px + mr-4 = 16px)
+    if (items.length > 0 && itemWidth === 0) { // Calcular solo una vez o si no está definido
+        const firstItem = items[0];
+        const computedStyle = getComputedStyle(firstItem);
+        const itemClientWidth = firstItem.offsetWidth; // Ancho incluyendo padding y borde
+        const itemMarginRight = parseFloat(computedStyle.marginRight);
+        itemWidth = itemClientWidth + itemMarginRight;
+        // Fallback si el cálculo falla
+        if (itemWidth === 0) itemWidth = 256 + 16; 
+    }
+
+    // Asegurar que carouselIndex esté dentro de los límites
+    carouselIndex = Math.max(0, Math.min(carouselIndex, numItems - 1));
+
+    // Aplicar la traducción principal para el desplazamiento horizontal del carrusel
     carouselTrack.style.transform = `translateX(${-carouselIndex * itemWidth}px)`;
-    console.log(`Carrusel actualizado. Índice: ${carouselIndex}, Ancho de ítem: ${itemWidth}`);
 
-    // Deshabilitar botones si no hay más ítems
+    // Aplicar el efecto 3D-like (escalado y opacidad) a cada ítem
+    items.forEach((item, i) => {
+        if (i === carouselIndex) {
+            item.classList.add('carousel-active-item'); // Clase CSS para el ítem activo
+        } else {
+            item.classList.remove('carousel-active-item'); // Remover para los no activos
+        }
+    });
+
+    // Actualizar el estado de los botones de navegación
     if (carouselPrevBtn) {
         carouselPrevBtn.disabled = carouselIndex === 0;
         carouselPrevBtn.classList.toggle('opacity-50', carouselIndex === 0);
     }
     if (carouselNextBtn) {
-        // Calcular si hay más ítems para mostrar
-        const maxIndex = Math.floor(carouselTrack.scrollWidth / itemWidth) - (carouselTrack.offsetWidth / itemWidth);
-        carouselNextBtn.disabled = carouselIndex >= maxIndex;
-        carouselNextBtn.classList.toggle('opacity-50', carouselIndex >= maxIndex);
+        carouselNextBtn.disabled = carouselIndex === numItems - 1;
+        carouselNextBtn.classList.toggle('opacity-50', carouselIndex === numItems - 1);
     }
+    console.log(`Carrusel actualizado. Índice: ${carouselIndex}`);
 }
+
 
 function prevCarousel() {
     if (carouselIndex > 0) {
@@ -364,19 +388,11 @@ function prevCarousel() {
 }
 
 function nextCarousel() {
-    if (carouselTrack && itemWidth > 0) {
-        const maxIndex = Math.floor(carouselTrack.scrollWidth / itemWidth) - (carouselTrack.offsetWidth / itemWidth) +1;
-        // La condición debe ser que el índice actual sea menor que el número total de items - el número de items visibles
-        if (carouselIndex < maxIndex - 1 ) { // Asegura que no se desplace más allá del final
-            carouselIndex++;
-            updateCarousel();
-            console.log("Carrusel: Siguiente");
-        } else if (carouselIndex < (carouselTrack.children.length - 1)) {
-            // Último ajuste para asegurar que el último ítem sea visible
-            carouselIndex++;
-            updateCarousel();
-            console.log("Carrusel: Último ajuste");
-        }
+    const numItems = carouselTrack.children.length;
+    if (carouselIndex < numItems - 1) {
+        carouselIndex++;
+        updateCarousel();
+        console.log("Carrusel: Siguiente");
     }
 }
 
@@ -386,7 +402,7 @@ function nextCarousel() {
 // ==============================================
 
 document.addEventListener('DOMContentLoaded', () => {
-    loadProducts(); // Cargar productos al iniciar
+    loadProducts(); // Cargar productos al iniciar (esto llama a renderFeaturedProducts y updateCarousel)
     updateCartDisplay(); // Actualizar la visualización del carrito al cargar
 
     // --- Abrir/Cerrar Modal del Carrito ---
@@ -445,7 +461,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // --- Event listeners para la navegación con scroll suave (tanto escritorio como móvil) ---
-    // Selector modificado para incluir los enlaces del menú móvil
     document.querySelectorAll('nav a[href^="#"], .mobile-nav-link[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault(); // Previene el comportamiento por defecto del enlace
