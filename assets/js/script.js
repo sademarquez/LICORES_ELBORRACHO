@@ -20,6 +20,9 @@ const carouselPrevBtn = document.getElementById('carousel-prev');
 const carouselNextBtn = document.getElementById('carousel-next');
 const finalizePurchaseBtn = document.getElementById('finalize-purchase-btn');
 
+// Selector del contenedor principal del carrusel para el hover
+const destacadosSection = document.getElementById('destacados'); 
+
 // ==============================================
 // 2. VARIABLES GLOBALES Y ESTADO
 // ==============================================
@@ -27,6 +30,8 @@ let productsData = []; // Almacenará todos los productos cargados
 let cart = JSON.parse(localStorage.getItem('cart')) || []; // Carga el carrito desde localStorage
 let carouselIndex = 0; // Índice actual del carrusel activo
 let itemWidth = 0; // Ancho de un ítem del carrusel, calculado dinámicamente
+let carouselInterval; // Variable para almacenar el ID del intervalo del carrusel automático
+const AUTO_SCROLL_INTERVAL = 4000; // 4 segundos para el auto-scroll
 
 // ==============================================
 // 3. FUNCIONES DE CARGA Y RENDERIZADO
@@ -221,11 +226,15 @@ function addToCart(id, nombre, precio, imagen) {
  */
 function addAddToCartListeners() {
     document.querySelectorAll('.add-to-cart-btn').forEach(button => {
-        button.onclick = (e) => { // Usar onclick para evitar duplicados si se llama varias veces renderProducts
-            const { id, nombre, precio, imagen } = e.currentTarget.dataset;
-            addToCart(id, nombre, parseFloat(precio), imagen);
-        };
+        // Remover el listener anterior para evitar duplicados si se llama varias veces renderProducts
+        button.removeEventListener('click', handleAddToCartClick);
+        button.addEventListener('click', handleAddToCartClick);
     });
+}
+
+function handleAddToCartClick(e) {
+    const { id, nombre, precio, imagen } = e.currentTarget.dataset;
+    addToCart(id, nombre, parseFloat(precio), imagen);
 }
 
 /**
@@ -233,43 +242,53 @@ function addAddToCartListeners() {
  */
 function addCartItemListeners() {
     document.querySelectorAll('.add-one-btn').forEach(button => {
-        button.onclick = (e) => {
-            const id = e.currentTarget.dataset.id;
-            const item = cart.find(i => i.id === id);
-            if (item) {
-                item.quantity++;
-                saveCart();
-                updateCartDisplay();
-            }
-        };
+        button.removeEventListener('click', handleAddOneClick);
+        button.addEventListener('click', handleAddOneClick);
     });
 
     document.querySelectorAll('.remove-one-btn').forEach(button => {
-        button.onclick = (e) => {
-            const id = e.currentTarget.dataset.id;
-            const itemIndex = cart.findIndex(i => i.id === id);
-            if (itemIndex > -1) {
-                if (cart[itemIndex].quantity > 1) {
-                    cart[itemIndex].quantity--;
-                } else {
-                    cart.splice(itemIndex, 1); // Eliminar si la cantidad es 1
-                }
-                saveCart();
-                updateCartDisplay();
-            }
-        };
+        button.removeEventListener('click', handleRemoveOneClick);
+        button.addEventListener('click', handleRemoveOneClick);
     });
 
     document.querySelectorAll('.remove-all-btn').forEach(button => {
-        button.onclick = (e) => {
-            const id = e.currentTarget.dataset.id;
-            cart = cart.filter(item => item.id !== id);
-            saveCart();
-            updateCartDisplay();
-            alert('Producto eliminado del carrito.');
-        };
+        button.removeEventListener('click', handleRemoveAllClick);
+        button.addEventListener('click', handleRemoveAllClick);
     });
 }
+
+function handleAddOneClick(e) {
+    const id = e.currentTarget.dataset.id;
+    const item = cart.find(i => i.id === id);
+    if (item) {
+        item.quantity++;
+        saveCart();
+        updateCartDisplay();
+    }
+}
+
+function handleRemoveOneClick(e) {
+    const id = e.currentTarget.dataset.id;
+    const itemIndex = cart.findIndex(i => i.id === id);
+    if (itemIndex > -1) {
+        if (cart[itemIndex].quantity > 1) {
+            cart[itemIndex].quantity--;
+        } else {
+            cart.splice(itemIndex, 1); // Eliminar si la cantidad es 1
+        }
+        saveCart();
+        updateCartDisplay();
+    }
+}
+
+function handleRemoveAllClick(e) {
+    const id = e.currentTarget.dataset.id;
+    cart = cart.filter(item => item.id !== id);
+    saveCart();
+    updateCartDisplay();
+    alert('Producto eliminado del carrito.');
+}
+
 
 /**
  * Guarda el carrito en localStorage.
@@ -306,7 +325,7 @@ function sendOrderViaWhatsApp() {
     message += `\nTotal a pagar: $${total.toLocaleString('es-CO')}\n\n`;
     message += "¡Gracias!";
 
-    const phoneNumber = "573174144815"; // ¡CAMBIA ESTE NÚMERO A TU NÚMERO REAL DE WHATSAPP!
+    const phoneNumber = "573101234567"; // ¡CAMBIA ESTE NÚMERO A TU NÚMERO REAL DE WHATSAPP!
     console.log("Número de teléfono de WhatsApp configurado:", phoneNumber);
     console.log("Mensaje a enviar (antes de encodeURIComponent):\n", message);
 
@@ -325,7 +344,7 @@ function sendOrderViaWhatsApp() {
 }
 
 // ==============================================
-// 6. FUNCIONALIDAD DEL CARRUSEL (DESTACADOS) - ¡ACTUALIZADO PARA EFECTO 3D!
+// 6. FUNCIONALIDAD DEL CARRUSEL (DESTACADOS) - ¡ACTUALIZADO PARA EFECTO 3D Y AUTOMÁTICO!
 // ==============================================
 
 /**
@@ -340,15 +359,23 @@ function updateCarousel() {
     const items = Array.from(carouselTrack.children);
     const numItems = items.length;
 
+    if (numItems === 0) {
+        console.log("No hay ítems en el carrusel para actualizar.");
+        return;
+    }
+
     // Calcular el ancho real de un ítem (w-64 = 256px + mr-4 = 16px)
     // Se calcula solo una vez o si no está definido para optimizar.
-    if (items.length > 0 && itemWidth === 0) {
+    if (itemWidth === 0) {
         const firstItem = items[0];
         const computedStyle = getComputedStyle(firstItem);
         const itemClientWidth = firstItem.offsetWidth; // Ancho incluyendo padding y borde
         const itemMarginRight = parseFloat(computedStyle.marginRight);
         itemWidth = itemClientWidth + itemMarginRight;
-        if (itemWidth === 0) itemWidth = 256 + 16; // Fallback si el cálculo falla
+        if (isNaN(itemWidth) || itemWidth === 0) { // Fallback si el cálculo falla
+            itemWidth = 256 + 16;
+            console.warn("Ancho de ítem del carrusel calculado con fallback.");
+        }
     }
 
     // Asegurar que carouselIndex esté dentro de los límites
@@ -359,7 +386,11 @@ function updateCarousel() {
     // cerca del centro de la vista del carrusel, pero los transform individuales lo harán "flotar".
     // Esto es especialmente importante para móvil donde solo se ve un item a la vez.
     const carouselContainerWidth = carouselTrack.parentElement.offsetWidth;
-    const scrollOffset = (carouselContainerWidth / 2) - (itemWidth / 2) - (carouselIndex * itemWidth);
+    // Calcula el desplazamiento necesario para que el ítem activo esté en el centro de la vista.
+    // Restamos la mitad del ancho del contenedor del carrusel para centrarlo.
+    const centerOffset = (carouselContainerWidth / 2) - (itemWidth / 2);
+    const scrollOffset = centerOffset - (carouselIndex * itemWidth);
+    
     carouselTrack.style.transform = `translateX(${scrollOffset}px)`;
 
 
@@ -456,22 +487,57 @@ function updateCarousel() {
 
 
 function prevCarousel() {
+    stopAutoCarousel(); // Detener el auto-scroll al interactuar
     if (carouselIndex > 0) {
         carouselIndex--;
         updateCarousel();
         console.log("Carrusel: Anterior");
+    } else {
+        // Opcional: Ir al último ítem si está en el primero (carrusel infinito)
+        // carouselIndex = carouselTrack.children.length - 1;
+        // updateCarousel();
     }
+    startAutoCarousel(); // Reiniciar el auto-scroll después de la interacción
 }
 
 function nextCarousel() {
+    stopAutoCarousel(); // Detener el auto-scroll al interactuar
     const numItems = carouselTrack.children.length;
     if (carouselIndex < numItems - 1) {
         carouselIndex++;
         updateCarousel();
         console.log("Carrusel: Siguiente");
+    } else {
+        // Opcional: Ir al primer ítem si está en el último (carrusel infinito)
+        carouselIndex = 0;
+        updateCarousel();
+    }
+    startAutoCarousel(); // Reiniciar el auto-scroll después de la interacción
+}
+
+/**
+ * Inicia el auto-scroll del carrusel.
+ */
+function startAutoCarousel() {
+    stopAutoCarousel(); // Asegurarse de que no haya otro intervalo corriendo
+    if (carouselTrack && carouselTrack.children.length > 1) { // Solo iniciar si hay más de un ítem
+        carouselInterval = setInterval(() => {
+            nextCarousel(); // Llama a nextCarousel que ya maneja el reinicio del intervalo
+        }, AUTO_SCROLL_INTERVAL);
+        console.log(`Auto-scroll del carrusel iniciado cada ${AUTO_SCROLL_INTERVAL / 1000} segundos.`);
     }
 }
 
+/**
+ * Detiene el auto-scroll del carrusel.
+ */
+function stopAutoCarousel() {
+    if (carouselInterval) {
+        clearInterval(carouselInterval);
+        carouselInterval = null;
+        console.log("Auto-scroll del carrusel detenido.");
+    }
+}
 
 // ==============================================
 // 7. INICIALIZACIÓN DE EVENTOS
@@ -591,9 +657,17 @@ document.addEventListener('DOMContentLoaded', () => {
         carouselNextBtn.addEventListener('click', nextCarousel);
     }
 
+    // Pausar/Reanudar auto-scroll en hover del contenedor principal de destacados
+    if (destacadosSection) {
+        destacadosSection.addEventListener('mouseenter', stopAutoCarousel);
+        destacadosSection.addEventListener('mouseleave', startAutoCarousel);
+    }
+
     // Ajustar carrusel al redimensionar la ventana para asegurar el cálculo correcto del ancho
     window.addEventListener('resize', () => {
         updateCarousel();
+        // Reiniciar el auto-scroll al redimensionar para asegurar que el intervalo es válido
+        startAutoCarousel(); 
         console.log("Ventana redimensionada, carrusel ajustado.");
     });
 
@@ -604,4 +678,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         console.error("Botón 'Finalizar Compra' no encontrado en el DOM.");
     }
+
+    // Iniciar el carrusel automático al cargar la página
+    startAutoCarousel();
 });
