@@ -306,7 +306,7 @@ function sendOrderViaWhatsApp() {
     message += `\nTotal a pagar: $${total.toLocaleString('es-CO')}\n\n`;
     message += "¡Gracias!";
 
-    const phoneNumber = "573101234567"; // ¡CAMBIA ESTE NÚMERO A TU NÚMERO REAL DE WHATSAPP!
+    const phoneNumber = "573174144815"; // ¡CAMBIA ESTE NÚMERO A TU NÚMERO REAL DE WHATSAPP!
     console.log("Número de teléfono de WhatsApp configurado:", phoneNumber);
     console.log("Mensaje a enviar (antes de encodeURIComponent):\n", message);
 
