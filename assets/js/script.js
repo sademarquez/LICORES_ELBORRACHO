@@ -358,7 +358,7 @@ function sendOrderViaWhatsApp() {
 
     // REVISA AQUÍ: Asegúrate de que el número incluye el código de país.
     // Ejemplo: '57' para Colombia, seguido del número.
-    const phoneNumber = "57317414815"; // ¡CAMBIA ESTE NÚMERO A TU NÚMERO REAL DE WHATSAPP!
+    const phoneNumber = "573174144815"; // ¡CAMBIA ESTE NÚMERO A TU NÚMERO REAL DE WHATSAPP!
     console.log("Número de teléfono de WhatsApp configurado:", phoneNumber); // Verifica el número
     console.log("Mensaje a enviar (antes de encodeURIComponent):\n", message); // Verifica el mensaje generado
 
