@@ -333,15 +333,14 @@ function removeOneFromCart(productId) {
 // ==============================================
 
 /**
- * Genera el mensaje de WhatsApp con el resumen del pedido.
+ * Genera el mensaje de WhatsApp con el resumen del pedido y limpia el carrito.
  */
 function sendOrderViaWhatsApp() {
-    // --- ESTAS LÍNEAS DE CONSOLE.LOG SON IMPORTANTES PARA LA DEPURACIÓN ---
-    console.log("sendOrderViaWhatsApp function called."); // Verifica que la función se ejecuta
+    console.log("sendOrderViaWhatsApp function called.");
 
     if (cart.length === 0) {
         alert('Tu carrito está vacío. Agrega productos antes de finalizar la compra.');
-        console.log("Carrito vacío. No se puede enviar el pedido."); // Si el carrito está vacío
+        console.log("Carrito vacío. No se puede enviar el pedido.");
         return;
     }
 
@@ -356,25 +355,24 @@ function sendOrderViaWhatsApp() {
     message += `\nTotal a pagar: $${total.toLocaleString('es-CO')}\n\n`;
     message += "¡Gracias!";
 
-    // REVISA AQUÍ: Asegúrate de que el número incluye el código de país.
-    // Ejemplo: '57' para Colombia, seguido del número.
-    const phoneNumber = "573174144815"; // ¡CAMBIA ESTE NÚMERO A TU NÚMERO REAL DE WHATSAPP!
-    console.log("Número de teléfono de WhatsApp configurado:", phoneNumber); // Verifica el número
-    console.log("Mensaje a enviar (antes de encodeURIComponent):\n", message); // Verifica el mensaje generado
+    const phoneNumber = "573101234567"; // ¡CAMBIA ESTE NÚMERO A TU NÚMERO REAL DE WHATSAPP!
+    console.log("Número de teléfono de WhatsApp configurado:", phoneNumber);
+    console.log("Mensaje a enviar (antes de encodeURIComponent):\n", message);
 
-    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-    console.log("URL de WhatsApp generada:", whatsappUrl); // ¡ESTA ES LA MÁS CRÍTICA! Cópiala y pégala aquí.
+    const whatsappUrl = `https://wa.me/<span class="math-inline">\{phoneNumber\}?text\=</span>{encodeURIComponent(message)}`;
+    console.log("URL de WhatsApp generada:", whatsappUrl);
 
     window.open(whatsappUrl, '_blank');
-    console.log("Intento de abrir WhatsApp."); // Confirma que se intentó abrir
+    console.log("Intento de abrir WhatsApp.");
 
-    // Opcional: Limpiar el carrito después de enviar el pedido
-    // cart = [];
-    // saveCart();
-    // updateCartDisplay();
-    // closeCartModal(); // Cierra el modal del carrito
+    
+    cart = []; // Vacía el array del carrito
+    saveCart(); // Guarda el carrito vacío en localStorage
+    updateCartDisplay(); // Actualiza la interfaz del carrito para mostrarlo vacío
+    cartModal.style.display = 'none'; // Cierra el modal del carrito
+    
+    alert('Tu pedido ha sido enviado a WhatsApp. ¡Gracias por tu compra!');
 }
-
 // ==============================================
 // 6. INICIALIZACIÓN DE LA APLICACIÓN
 // ==============================================
