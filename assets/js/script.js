@@ -75,15 +75,16 @@ function renderProducts(products) {
     productosContainer.innerHTML = ''; // Limpiar productos existentes
     products.forEach(product => {
         const productCard = document.createElement('div');
-        productCard.className = 'bg-slate-800/80 panel-glass rounded-lg shadow-xl overflow-hidden transform transition-transform duration-300 hover:scale-105 flex flex-col cursor-pointer';
+        // AHORA USAREMOS LA CLASE product-card-small EN LUGAR DE CLASES TAILWIND DIRECTAS
+        productCard.className = 'product-card-small cursor-pointer'; 
         productCard.innerHTML = `
-            <img src="${product.imagen}" alt="${product.nombre}" class="w-full h-48 object-cover rounded-t-lg">
-            <div class="p-4 flex-grow flex flex-col">
-                <h3 class="text-xl font-bold text-yellow-400 mb-2">${product.nombre}</h3>
-                <p class="text-gray-300 text-sm mb-2 flex-grow">${product.descripcion.substring(0, 100)}${product.descripcion.length > 100 ? '...' : ''}</p> 
-                <div class="flex justify-between items-center mt-auto pt-2 border-t border-slate-700/50">
-                    <span class="text-2xl font-bold text-white">$${product.precio.toLocaleString('es-CO')}</span>
-                    <button class="add-to-cart-btn bg-yellow-500 hover:bg-yellow-600 text-slate-900 font-bold py-2 px-6 rounded-full transition duration-300 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-75"
+            <img src="${product.imagen}" alt="${product.nombre}" class="product-image">
+            <div class="product-info">
+                <h3 class="product-name">${product.nombre}</h3>
+                <p class="product-description">${product.descripcion.substring(0, 70)}${product.descripcion.length > 70 ? '...' : ''}</p> 
+                <div class="product-footer">
+                    <span class="product-price">$${product.precio.toLocaleString('es-CO')}</span>
+                    <button class="add-to-cart-btn"
                             data-id="${product.id}"
                             data-nombre="${product.nombre}"
                             data-precio="${product.precio}"
@@ -117,8 +118,7 @@ function renderFeaturedProducts(allProducts) {
 
     featuredProducts.forEach(product => {
         const productCard = document.createElement('div');
-        // Mantener las clases Tailwind de tamaño para el cálculo inicial del ancho,
-        // pero la transformación visual será manejada por JS.
+        // Mantener las clases Tailwind de tamaño para el cálculo inicial del ancho en el carrusel
         productCard.className = 'flex-none w-64 mr-4 bg-slate-800/80 panel-glass rounded-lg shadow-lg overflow-hidden flex flex-col';
         productCard.innerHTML = `
             <img src="${product.imagen}" alt="${product.nombre}" class="w-full h-40 object-cover rounded-t-lg">
@@ -233,6 +233,7 @@ function addAddToCartListeners() {
 }
 
 function handleAddToCartClick(e) {
+    e.stopPropagation(); // Evita que el click se propague a la tarjeta si la tarjeta tiene un listener
     const { id, nombre, precio, imagen } = e.currentTarget.dataset;
     addToCart(id, nombre, parseFloat(precio), imagen);
 }
@@ -383,7 +384,7 @@ function updateCarousel() {
 
     // Desplazar el contenedor del carrusel para centrar el elemento activo
     // Aquí usamos un ajuste para que el elemento activo (carouselIndex) se posicione
-    // cerca del centro de la vista del carrusel, pero los transform individuales lo harán "flotar".
+    // cerca del centro de la vista del carrusel, pero los transform individuales lo harán "flotar'.
     // Esto es especialmente importante para móvil donde solo se ve un item a la vez.
     const carouselContainerWidth = carouselTrack.parentElement.offsetWidth;
     // Calcula el desplazamiento necesario para que el ítem activo esté en el centro de la vista.
