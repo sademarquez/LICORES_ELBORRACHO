@@ -21,108 +21,114 @@
                     <li><a href="#home" class="hover:text-yellow-400 transition duration-300">Inicio</a></li>
                     <li><a href="#destacados" class="hover:text-yellow-400 transition duration-300">Destacados</a></li>
                     <li><a href="#catalogo" class="hover:text-yellow-400 transition duration-300">Catálogo</a></li>
-                    <li><a href="#contacto" class="hover:text-yellow-400 transition duration-300">Contacto</a></li>
-                    <li><a href="#" id="nav-cart-button-desktop" class="hover:text-yellow-400 transition duration-300">Carrito</a></li>
+                    <li><a href="#contact" class="hover:text-yellow-400 transition duration-300">Contacto</a></li>
+                    <li>
+                        <button id="nav-cart-button-desktop" class="relative text-yellow-400 hover:text-yellow-500 text-2xl">
+                            🛒 <span id="cart-count-desktop" class="absolute top-0 right-0 -mt-1 -mr-1 bg-red-600 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">0</span>
+                        </button>
+                    </li>
                 </ul>
             </nav>
 
             <button id="hamburger-menu-btn" class="md:hidden text-yellow-400 text-3xl focus:outline-none">
-                &#9776; </button>
+                ☰
+            </button>
+
+            <button id="nav-cart-button-mobile" class="md:hidden relative text-yellow-400 hover:text-yellow-500 text-2xl ml-4">
+                🛒 <span id="cart-count-mobile" class="absolute top-0 right-0 -mt-1 -mr-1 bg-red-600 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">0</span>
+            </button>
         </div>
     </header>
 
-    <div id="mobile-menu" class="fixed top-0 left-0 w-full h-full bg-slate-900/95 z-[1000] transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col items-center justify-center">
-        <button id="close-mobile-menu-btn" class="absolute top-4 right-4 text-white text-4xl focus:outline-none">&times;</button>
-        
-        <ul class="flex flex-col space-y-6 text-2xl font-bold text-center">
-            <li><a href="#home" class="text-white hover:text-yellow-400 transition duration-300 mobile-nav-link">Inicio</a></li>
-            <li><a href="#destacados" class="text-white hover:text-yellow-400 transition duration-300 mobile-nav-link">Destacados</a></li>
-            <li><a href="#catalogo" class="text-white hover:text-yellow-400 transition duration-300 mobile-nav-link">Catálogo</a></li>
-            <li><a href="#contacto" class="text-white hover:text-yellow-400 transition duration-300 mobile-nav-link">Contacto</a></li>
-            <li><a href="#" id="nav-cart-button-mobile" class="text-white hover:text-yellow-400 transition duration-300 mobile-nav-link">Carrito</a></li>
-        </ul>
+    <div id="mobile-menu" class="hidden fixed inset-0 bg-slate-900/95 z-50 flex flex-col items-center justify-center space-y-8 md:hidden transition-transform duration-300 ease-in-out transform translate-x-full">
+        <button id="close-mobile-menu-btn" class="absolute top-4 right-4 text-white text-5xl focus:outline-none">&times;</button>
+        <a href="#home" class="text-white text-3xl hover:text-yellow-400" onclick="document.getElementById('mobile-menu').classList.add('hidden'); document.body.style.overflow = '';">Inicio</a>
+        <a href="#destacados" class="text-white text-3xl hover:text-yellow-400" onclick="document.getElementById('mobile-menu').classList.add('hidden'); document.body.style.overflow = '';">Destacados</a>
+        <a href="#catalogo" class="text-white text-3xl hover:text-yellow-400" onclick="document.getElementById('mobile-menu').classList.add('hidden'); document.body.style.overflow = '';">Catálogo</a>
+        <a href="#contact" class="text-white text-3xl hover:text-yellow-400" onclick="document.getElementById('mobile-menu').classList.add('hidden'); document.body.style.overflow = '';">Contacto</a>
     </div>
 
-    <section id="home" class="relative h-screen flex flex-col items-center justify-center text-center px-4">
-        <div class="absolute inset-0 w-full h-full bg-cover bg-center" style="background-image: url('assets/img/static_background.jpg');">
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent opacity-80"></div>
-            <div class="absolute inset-0 bg-black/60"></div>
-        </div>
-
-        <div class="relative z-10 max-w-4xl mx-auto p-4 sm:p-6 md:p-8 flex flex-col items-center">
-            <h2 class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-gray-200 mb-4 animate-fade-in-down leading-tight">
-                Descubre la Esencia de la Noche
-            </h2>
-            <p class="text-lg sm:text-xl md:text-2xl text-gray-200 mb-8 animate-fade-in-up max-w-2xl">
-                Licores El Borracho te trae la mejor selección de bebidas premium y ofertas irresistibles.
+    <section id="home" class="relative bg-cover bg-center h-screen flex items-center justify-center text-center text-white hero-bg">
+        <div class="absolute inset-0 bg-black opacity-60"></div>
+        <div class="relative z-10 p-6 bg-slate-800/60 panel-glass rounded-lg shadow-xl max-w-2xl mx-auto">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-yellow-400 leading-tight mb-4 animate-fade-in-down">
+                Licores El Borracho
+            </h1>
+            <p class="text-lg md:text-xl mb-8 animate-fade-in-up">
+                Tu mejor destino para licores de calidad. ¡Variedad y los mejores precios a tu alcance!
             </p>
-            <a href="#catalogo" class="bg-yellow-500 hover:bg-yellow-600 text-slate-900 font-bold py-3 px-8 rounded-full text-lg transition duration-300 transform hover:scale-105 animate-pulse">
-                Explora Nuestro Catálogo
+            <a href="#catalogo" class="bg-yellow-500 hover:bg-yellow-600 text-slate-900 font-bold py-3 px-8 rounded-full text-lg md:text-xl transition duration-300 transform hover:scale-105 animate-bounce-in">
+                Ver Catálogo
             </a>
         </div>
     </section>
 
-    <section id="destacados" class="bg-slate-800/80 panel-glass py-16 px-4">
-        <div class="container mx-auto">
-            <h2 class="text-5xl font-extrabold text-center text-yellow-300 mb-12 animate-fade-in-down">Destacados</h2>
-            <div class="relative">
-                <div class="overflow-hidden">
-                    <div id="carousel-track" class="flex">
-                        <p class="flex-none w-full text-center text-gray-400 p-8">Cargando productos destacados...</p>
+    <section id="destacados" class="py-16 bg-gradient-to-b from-slate-900 to-slate-800">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center text-yellow-400 mb-10">Productos Destacados</h2>
+            <div id="destacados-container" class="relative overflow-hidden">
+                <div id="carousel-track" class="flex transition-transform duration-500 ease-in-out gap-4 pb-4">
                     </div>
-                </div>
-                <button id="carousel-prev" class="absolute top-1/2 left-0 -translate-y-1/2 bg-slate-700/70 hover:bg-slate-600 p-3 rounded-full text-white text-2xl shadow-lg transition duration-300 -ml-4 md:-ml-8 z-20 focus:outline-none">
+                <button id="carousel-prev" class="absolute left-0 top-1/2 -translate-y-1/2 bg-slate-700/70 hover:bg-slate-600/90 text-white p-3 rounded-full shadow-lg z-20 transition duration-300">
                     &#10094;
                 </button>
-                <button id="carousel-next" class="absolute top-1/2 right-0 -translate-y-1/2 bg-slate-700/70 hover:bg-slate-600 p-3 rounded-full text-white text-2xl shadow-lg transition duration-300 -mr-4 md:-mr-8 z-20 focus:outline-none">
+                <button id="carousel-next" class="absolute right-0 top-1/2 -translate-y-1/2 bg-slate-700/70 hover:bg-slate-600/90 text-white p-3 rounded-full shadow-lg z-20 transition duration-300">
                     &#10095;
                 </button>
             </div>
         </div>
     </section>
 
-    <section id="catalogo" class="container mx-auto px-4 py-16">
-        <h2 class="text-5xl font-extrabold text-center text-yellow-300 mb-12 animate-fade-in-down">Nuestro Catálogo</h2>
-        <div id="productos-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            <p class="col-span-full text-center text-gray-400">Cargando productos...</p>
+    <section id="catalogo" class="py-16 bg-slate-900">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center text-yellow-400 mb-10">Nuestro Catálogo</h2>
+            
+            <div class="mb-8 flex flex-wrap justify-center gap-3">
+                <button class="filter-btn bg-yellow-500 hover:bg-yellow-600 text-slate-900 font-bold py-2 px-4 rounded-full transition duration-300" data-category="all">Todos</button>
+                <button class="filter-btn bg-slate-700 hover:bg-yellow-600 text-white hover:text-slate-900 font-bold py-2 px-4 rounded-full transition duration-300" data-category="Aguardiente">Aguardiente</button>
+                <button class="filter-btn bg-slate-700 hover:bg-yellow-600 text-white hover:text-slate-900 font-bold py-2 px-4 rounded-full transition duration-300" data-category="Ron">Ron</button>
+                <button class="filter-btn bg-slate-700 hover:bg-yellow-600 text-white hover:text-slate-900 font-bold py-2 px-4 rounded-full transition duration-300" data-category="Cerveza">Cerveza</button>
+                <button class="filter-btn bg-slate-700 hover:bg-yellow-600 text-white hover:text-slate-900 font-bold py-2 px-4 rounded-full transition duration-300" data-category="Vino">Vino</button>
+                <button class="filter-btn bg-slate-700 hover:bg-yellow-600 text-white hover:text-slate-900 font-bold py-2 px-4 rounded-full transition duration-300" data-category="Whisky">Whisky</button>
+                <button class="filter-btn bg-slate-700 hover:bg-yellow-600 text-white hover:text-slate-900 font-bold py-2 px-4 rounded-full transition duration-300" data-category="Vodka">Vodka</button>
+                <button class="filter-btn bg-slate-700 hover:bg-yellow-600 text-white hover:text-slate-900 font-bold py-2 px-4 rounded-full transition duration-300" data-category="Tequila">Tequila</button>
+                <button class="filter-btn bg-slate-700 hover:bg-yellow-600 text-white hover:text-slate-900 font-bold py-2 px-4 rounded-full transition duration-300" data-category="Cigarrillo">Cigarrillo</button>
+            </div>
+            
+            <div id="productos-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                </div>
         </div>
     </section>
 
-    <section id="contacto" class="container mx-auto px-4 py-16">
-        <h2 class="text-5xl font-extrabold text-center text-yellow-300 mb-12 animate-fade-in-down">Contáctanos</h2>
-        <div class="bg-slate-800/80 panel-glass p-8 rounded-lg shadow-lg max-w-2xl mx-auto">
-            <p class="text-lg text-gray-300 text-center mb-6">
-                ¿Tienes preguntas o necesitas ayuda? Estamos aquí para atenderte.
+    <section id="contact" class="py-16 bg-slate-800/80 panel-glass">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-4xl font-bold text-yellow-400 mb-8">Contáctanos</h2>
+            <p class="text-lg text-gray-300 mb-8">
+                Estamos aquí para ayudarte. Si tienes preguntas o necesitas asistencia, no dudes en contactarnos.
             </p>
-            <form class="space-y-6">
-                <div>
-                    <label for="nombre" class="block text-gray-300 text-lg font-bold mb-2">Nombre</label>
-                    <input type="text" id="nombre" name="nombre" class="w-full p-3 rounded-md bg-slate-700/50 border border-slate-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 text-white" placeholder="Tu Nombre" required>
+            <div class="space-y-4 md:space-y-0 md:flex md:justify-center md:space-x-8">
+                <div class="flex items-center justify-center text-xl text-white">
+                    <img src="assets/img/icon-whatsapp.png" alt="WhatsApp Icon" class="w-8 h-8 mr-3">
+                    <span>+57 317 761 0332</span>
                 </div>
-                <div>
-                    <label for="email" class="block text-gray-300 text-lg font-bold mb-2">Email</label>
-                    <input type="email" id="email" name="email" class="w-full p-3 rounded-md bg-slate-700/50 border border-slate-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 text-white" placeholder="tu.email@example.com" required>
+                <div class="flex items-center justify-center text-xl text-white">
+                    <img src="assets/img/icon-email.png" alt="Email Icon" class="w-8 h-8 mr-3">
+                    <span>contacto@licoreselborracho.com</span>
                 </div>
-                <div>
-                    <label for="mensaje" class="block text-gray-300 text-lg font-bold mb-2">Mensaje</label>
-                    <textarea id="mensaje" name="mensaje" rows="5" class="w-full p-3 rounded-md bg-slate-700/50 border border-slate-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 text-white" placeholder="Tu Mensaje" required></textarea>
-                </div>
-                <div class="text-center">
-                    <button type="submit" class="bg-yellow-500 hover:bg-yellow-600 text-slate-900 font-bold py-3 px-8 rounded-full text-lg transition duration-300 transform hover:scale-105">
-                        Enviar Mensaje
-                    </button>
-                </div>
-            </form>
+            </div>
         </div>
     </section>
 
-    <footer class="bg-slate-800/80 panel-glass py-8 px-4 text-center text-gray-400 text-sm">
-        <div class="container mx-auto">
-            <p>&copy; 2025 Licores El Borracho. Todos los derechos reservados.</p>
-            <div class="mt-4 space-x-4">
-                <a href="#" class="hover:text-yellow-400">Facebook</a>
-                <a href="#" class="hover:text-yellow-400">Instagram</a>
-                <a href="#" class="hover:text-yellow-400">Twitter</a>
+    <footer class="bg-slate-900 text-gray-400 py-8">
+        <div class="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center text-sm">
+            <div class="mb-4 md:mb-0">
+                <img src="assets/img/logo.png" alt="Licores El Borracho Logo" class="h-10 mx-auto md:mx-0 mb-2">
+                <p>&copy; 2024 Licores El Borracho. Todos los derechos reservados.</p>
+            </div>
+            <div class="flex space-x-6">
+                <a href="https://www.facebook.com/your-profile" target="_blank" class="hover:text-yellow-400">Facebook</a>
+                <a href="https://www.instagram.com/your-profile" target="_blank" class="hover:text-yellow-400">Instagram</a>
+                <a href="https://twitter.com/your-profile" target="_blank" class="hover:text-yellow-400">Twitter</a>
             </div>
         </div>
     </footer>
@@ -140,9 +146,9 @@
             </div>
             <div class="flex justify-between items-center text-xl font-bold mb-6 border-t border-slate-700/50 pt-4">
                 <span>Total:</span>
-                <span id="cart-total">$0</span>
+                <span id="cart-total">$0.00</span>
             </div>
-            <button id="finalize-purchase-btn" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-full text-lg transition duration-300 transform hover:scale-105">
+            <button id="finalize-purchase-btn" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-full text-lg transition duration-300">
                 Finalizar Compra (WhatsApp)
             </button>
         </div>
