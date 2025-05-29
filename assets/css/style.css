@@ -65,12 +65,14 @@ body {
 }
 
 /* Estilos de botones y texto específicos para mantener coherencia */
-.add-to-cart-btn, .bg-yellow-500, .hover\:bg-yellow-600 {
+.bg-yellow-500 {
     background-color: #FFD700; /* Amarillo estándar */
-    color: #000000; /* Texto negro en botones amarillos */
 }
-.add-to-cart-btn:hover, .bg-yellow-500:hover {
+.hover\:bg-yellow-600:hover {
     background-color: #FFA500; /* Naranja en hover */
+}
+.text-slate-900 {
+    color: #000000; /* Texto negro en botones amarillos */
 }
 
 .text-yellow-300 {
@@ -86,23 +88,23 @@ body {
 }
 
 .text-gray-400 {
-    color: #9E9E9E; /* Gris un poco más oscuro para texto secundario */
+    color: #9E9E9E; /* Gris un poco más oscuro para texto secundario y vacío */
 }
 
 /* Reemplazar colores de slate en elementos específicos */
-.bg-slate-700\/50 {
+.bg-slate-700\/50 { /* Usado en productos, cart item, form inputs */
     background-color: rgba(26, 26, 26, 0.7); /* Negro oscuro con opacidad */
 }
 
-.border-slate-700\/50 {
+.border-slate-700\/50 { /* Usado en productos, cart item, form inputs */
     border-color: rgba(50, 50, 50, 0.7); /* Borde más oscuro */
 }
 
-.bg-slate-700\/70 {
+.bg-slate-700\/70 { /* Usado en botones de navegación del carrusel */
     background-color: rgba(26, 26, 26, 0.9); /* Negro oscuro más opaco */
 }
 
-.hover\:bg-slate-600:hover {
+.hover\:bg-slate-600:hover { /* Usado en hover de botones de navegación del carrusel */
     background-color: rgba(50, 50, 50, 0.9); /* Gris oscuro en hover */
 }
 
@@ -188,39 +190,36 @@ header img {
 }
 
 
-/* Estilos para el efecto 3D-like en el carrusel de destacados */
+/* --- ESTILOS MEJORADOS PARA EL CARRUSEL (EFECTO 3D AVANZADO) --- */
+
+/* Contenedor del carrusel para establecer la perspectiva */
+#destacados .relative {
+    perspective: 1200px; /* Perspectiva más profunda para un mejor efecto 3D */
+    perspective-origin: center center; /* Origen de la perspectiva */
+}
+
 #carousel-track {
-    /* Asegura que los elementos hijos puedan usar transforms sin que el padre los corte inesperadamente */
-    overflow: visible; /* Permite que los elementos escalados sobresalgan del contenedor */
-    /* Ajustes para centrar el carrusel en vistas más grandes si se muestran pocos items */
-    justify-content: center;
-    align-items: center;
+    transform-style: preserve-3d; /* Permite que los elementos hijos se posicionen en 3D */
+    transition: transform 0.4s ease-in-out; /* Transición para el movimiento global del track */
+    /* Remueve flex-none y mr-4 de los items si ya las tenemos en JS */
+    justify-content: center; /* Centra los elementos */
+    align-items: center; /* Alinea verticalmente */
+    height: 100%; /* Asegura que ocupa la altura disponible para alinear items */
 }
 
 #carousel-track > div { /* Cada tarjeta de producto en el carrusel */
-    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out, z-index 0.3s ease-in-out;
-    opacity: 0.7; /* Por defecto, los no activos son un poco transparentes */
-    transform: scale(0.9); /* Por defecto, los no activos son un poco más pequeños */
-    z-index: 10; /* Z-index base */
-    cursor: pointer; /* Para indicar que son interactivos */
-    /* Añadir perspectiva a los items para un efecto más pronunciado si se usa rotateY */
-    /* transform-origin: center center; */ /* Ya es el default, pero explícito si se quiere cambiar */
-}
-
-#carousel-track > div.carousel-active-item {
-    transform: scale(1.1); /* El ítem activo se agranda */
-    opacity: 1; /* Completamente opaco */
-    z-index: 20; /* El ítem activo se muestra por encima */
+    will-change: transform, opacity, z-index; /* Optimización de rendimiento para animaciones */
+    transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out, z-index 0.4s ease-in-out; /* Transiciones suaves */
+    transform-origin: center bottom; /* El punto de origen de la rotación y escalado */
+    backface-visibility: hidden; /* Oculta la parte trasera de los elementos cuando rotan */
+    opacity: 0; /* Por defecto, oculto hasta que JS les da propiedades */
+    pointer-events: none; /* Inactivos por defecto, activados por JS */
+    position: relative; /* Asegura z-index funciona */
+    min-width: 16rem; /* Tailwind w-64 */
+    margin-right: 1rem; /* Tailwind mr-4 */
 }
 
 /* Asegura que los botones de navegación estén por encima de los ítems del carrusel */
 #carousel-prev, #carousel-next {
     z-index: 30; /* Más alto que los ítems del carrusel */
-}
-
-/* Ajustes para que el carrusel se vea bien en diferentes tamaños */
-@media (min-width: 768px) {
-    #carousel-track {
-        justify-content: flex-start; /* Permite que el carrusel fluya si hay muchos items */
-    }
 }
