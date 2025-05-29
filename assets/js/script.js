@@ -112,8 +112,8 @@ function renderFeaturedProducts(allProducts) {
 
     featuredProducts.forEach(product => {
         const productCard = document.createElement('div');
-        // Usamos la misma clase que en el catálogo pero sin el hover de escala,
-        // ya que el escalado será manejado por la lógica del carrusel.
+        // Mantener las clases Tailwind de tamaño para el cálculo inicial del ancho,
+        // pero la transformación visual será manejada por JS.
         productCard.className = 'flex-none w-64 mr-4 bg-slate-800/80 panel-glass rounded-lg shadow-lg overflow-hidden flex flex-col';
         productCard.innerHTML = `
             <img src="${product.imagen}" alt="${product.nombre}" class="w-full h-40 object-cover rounded-t-lg">
@@ -325,11 +325,11 @@ function sendOrderViaWhatsApp() {
 }
 
 // ==============================================
-// 6. FUNCIONALIDAD DEL CARRUSEL (DESTACADOS)
+// 6. FUNCIONALIDAD DEL CARRUSEL (DESTACADOS) - ¡ACTUALIZADO PARA EFECTO 3D!
 // ==============================================
 
 /**
- * Actualiza la visualización del carrusel aplicando escalado y opacidad para el efecto 3D-like.
+ * Actualiza la visualización del carrusel aplicando transformaciones 3D.
  */
 function updateCarousel() {
     if (!carouselTrack || carouselTrack.children.length === 0) {
@@ -341,28 +341,104 @@ function updateCarousel() {
     const numItems = items.length;
 
     // Calcular el ancho real de un ítem (w-64 = 256px + mr-4 = 16px)
-    if (items.length > 0 && itemWidth === 0) { // Calcular solo una vez o si no está definido
+    // Se calcula solo una vez o si no está definido para optimizar.
+    if (items.length > 0 && itemWidth === 0) {
         const firstItem = items[0];
         const computedStyle = getComputedStyle(firstItem);
         const itemClientWidth = firstItem.offsetWidth; // Ancho incluyendo padding y borde
         const itemMarginRight = parseFloat(computedStyle.marginRight);
         itemWidth = itemClientWidth + itemMarginRight;
-        // Fallback si el cálculo falla
-        if (itemWidth === 0) itemWidth = 256 + 16; 
+        if (itemWidth === 0) itemWidth = 256 + 16; // Fallback si el cálculo falla
     }
 
     // Asegurar que carouselIndex esté dentro de los límites
     carouselIndex = Math.max(0, Math.min(carouselIndex, numItems - 1));
 
-    // Aplicar la traducción principal para el desplazamiento horizontal del carrusel
-    carouselTrack.style.transform = `translateX(${-carouselIndex * itemWidth}px)`;
+    // Desplazar el contenedor del carrusel para centrar el elemento activo
+    // Aquí usamos un ajuste para que el elemento activo (carouselIndex) se posicione
+    // cerca del centro de la vista del carrusel, pero los transform individuales lo harán "flotar".
+    // Esto es especialmente importante para móvil donde solo se ve un item a la vez.
+    const carouselContainerWidth = carouselTrack.parentElement.offsetWidth;
+    const scrollOffset = (carouselContainerWidth / 2) - (itemWidth / 2) - (carouselIndex * itemWidth);
+    carouselTrack.style.transform = `translateX(${scrollOffset}px)`;
 
-    // Aplicar el efecto 3D-like (escalado y opacidad) a cada ítem
+
+    // Aplicar transformaciones 3D a cada ítem individual
     items.forEach((item, i) => {
-        if (i === carouselIndex) {
-            item.classList.add('carousel-active-item'); // Clase CSS para el ítem activo
+        const offset = i - carouselIndex; // Distancia del ítem al índice central
+
+        let transform = '';
+        let opacity = 0; // Por defecto, todos ocultos
+        let zIndex = 1; // Z-index base bajo
+        let pointerEvents = 'none'; // No interactivo por defecto
+
+        // Definir transformaciones para los ítems cercanos al activo
+        if (offset === 0) { // Ítem activo (centro)
+            transform = `
+                scale(1.1)        /* Ligeramente más grande */
+                rotateY(0deg)     /* Sin rotación */
+                translateZ(100px) /* Se mueve hacia adelante */
+            `;
+            opacity = 1;
+            zIndex = 30; // El más alto
+            pointerEvents = 'auto'; // Habilitar interacción
+        } else if (offset === -1) { // Ítem directamente a la izquierda
+            transform = `
+                scale(0.85)         /* Más pequeño */
+                rotateY(25deg)      /* Rotado hacia atrás a la izquierda */
+                translateZ(-80px)   /* Se mueve hacia atrás en profundidad */
+                translateX(-50px)   /* Se mueve hacia la izquierda para simular apilamiento */
+            `;
+            opacity = 0.7;
+            zIndex = 20; // Detrás del activo
+        } else if (offset === 1) { // Ítem directamente a la derecha
+            transform = `
+                scale(0.85)         /* Más pequeño */
+                rotateY(-25deg)     /* Rotado hacia atrás a la derecha */
+                translateZ(-80px)   /* Se mueve hacia atrás en profundidad */
+                translateX(50px)    /* Se mueve hacia la derecha para simular apilamiento */
+            `;
+            opacity = 0.7;
+            zIndex = 20; // Detrás del activo
+        } else if (offset === -2) { // Ítem dos a la izquierda
+            transform = `
+                scale(0.7)          /* Aún más pequeño */
+                rotateY(45deg)      /* Más rotado */
+                translateZ(-150px)  /* Más atrás */
+                translateX(-80px)   /* Más a la izquierda */
+            `;
+            opacity = 0.4;
+            zIndex = 10; // Más atrás
+        } else if (offset === 2) { // Ítem dos a la derecha
+            transform = `
+                scale(0.7)          /* Aún más pequeño */
+                rotateY(-45deg)     /* Más rotado */
+                translateZ(-150px)  /* Más atrás */
+                translateX(80px)    /* Más a la derecha */
+            `;
+            opacity = 0.4;
+            zIndex = 10; // Más atrás
+        } else { // Otros ítems (fuera de vista o muy lejos)
+            transform = `
+                scale(0.6)          /* Muy pequeño */
+                rotateY(${offset > 0 ? -60 : 60}deg) /* Rotación fuerte */
+                translateZ(-200px)  /* Muy atrás */
+                translateX(${offset > 0 ? 100 : -100}px) /* Fuera de vista */
+            `;
+            opacity = 0; // Completamente transparente
+            zIndex = 5; // El más bajo
+        }
+
+        item.style.transform = transform;
+        item.style.opacity = opacity;
+        item.style.zIndex = zIndex;
+        item.style.pointerEvents = pointerEvents;
+
+        // Añadir/quitar clase 'carousel-active-item' para estilos CSS adicionales
+        if (offset === 0) {
+            item.classList.add('carousel-active-item');
         } else {
-            item.classList.remove('carousel-active-item'); // Remover para los no activos
+            item.classList.remove('carousel-active-item');
         }
     });
 
