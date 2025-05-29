@@ -2,14 +2,15 @@
 body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background-color: #000000; /* Negro puro para el fondo del body */
 }
 
 /* Estilo para el panel-glass (efecto esmerilado) */
 .panel-glass {
-    background-color: rgba(45, 55, 72, 0.7); /* slate-800/70 */
+    background-color: rgba(0, 0, 0, 0.8); /* Negro con 80% de opacidad para efecto cristal */
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(71, 85, 105, 0.5); /* slate-700/50 */
+    border: 1px solid rgba(26, 26, 26, 0.7); /* Gris muy oscuro con opacidad para el borde */
 }
 
 /* --- ESTILOS DEL MODAL (CARRITO) --- */
@@ -22,103 +23,97 @@ body {
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0,0,0,0.8); /* Fondo oscuro semitransparente */
+    background-color: rgba(0,0,0,0.9); /* Fondo oscuro más opaco */
     backdrop-filter: blur(5px); /* Efecto de desenfoque en el fondo */
     -webkit-backdrop-filter: blur(5px);
     
     /* Centrar el contenido del modal */
-    display: flex; /* Se activará por JS cuando se muestre */
+    display: flex; /* Se activará por JS */
     align-items: center;
     justify-content: center;
 }
 
 .modal-content {
-    background-color: #1a202c; /* slate-900 */
+    background-color: rgba(0, 0, 0, 0.9); /* Negro con 90% de opacidad */
     margin: auto;
     padding: 30px;
     border-radius: 12px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
     position: relative;
-    max-width: 90%;
-    width: 500px;
+    max-width: 500px;
+    width: 90%; /* Ajuste para pantallas pequeñas */
+    color: #FFFFFF; /* Texto blanco en el modal */
+    border: 1px solid rgba(50, 50, 50, 0.7); /* Borde un poco más visible */
 }
 
 .close-button {
-    color: #cbd5e1; /* gray-300 */
+    color: #FFD700; /* Amarillo para el botón de cerrar */
+    font-size: 32px;
+    font-weight: bold;
     position: absolute;
     top: 15px;
-    right: 25px;
-    font-size: 30px;
-    font-weight: bold;
+    right: 20px;
     cursor: pointer;
     transition: color 0.3s ease;
 }
 
-.close-button:hover, .close-button:focus {
-    color: #fcd34d; /* yellow-300 */
+.close-button:hover,
+.close-button:focus {
+    color: #FFA500; /* Naranja en hover */
     text-decoration: none;
     cursor: pointer;
 }
 
-/* Estilos de las tarjetas de producto */
-.product-card {
-    background-color: #1a202c; /* slate-900 */
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 1px solid rgba(71, 85, 105, 0.5); /* slate-700/50 */
+/* Estilos de botones y texto específicos para mantener coherencia */
+.add-to-cart-btn, .bg-yellow-500, .hover\:bg-yellow-600 {
+    background-color: #FFD700; /* Amarillo estándar */
+    color: #000000; /* Texto negro en botones amarillos */
+}
+.add-to-cart-btn:hover, .bg-yellow-500:hover {
+    background-color: #FFA500; /* Naranja en hover */
 }
 
-.product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 24px rgba(0,0,0,0.4);
+.text-yellow-300 {
+    color: #FFD700; /* Amarillo para títulos */
 }
 
-.product-card img {
-    height: 192px; /* h-48 */
-    object-fit: contain; /* Para que la imagen se ajuste sin recortarse */
-    background-color: transparent; /* Si tienes PNGs con transparencia */
+.text-gray-200 {
+    color: #D1D5DB; /* Gris claro para subtítulos y texto */
 }
 
-/* Estilos específicos del carrusel */
-#carousel-track {
-    display: flex;
-    gap: 2rem; /* gap-8 (32px) de Tailwind */
-    padding-bottom: 1rem; /* Espacio para las sombras o si el carrusel tiene scrollbar */
-    scroll-snap-type: x mandatory; /* Para un scroll suave entre items */
-    -webkit-overflow-scrolling: touch;
-    overflow-x: hidden; /* Oculta el scroll horizontal */
-    width: 100%; /* Asegura que ocupe todo el ancho disponible */
+.text-gray-300 {
+    color: #B0B0B0; /* Gris medio para descripciones */
 }
 
-.carousel-item {
-    flex: 0 0 auto; /* No crecer, no encoger, base auto */
-    width: calc((100% / 3) - (2 * 2rem / 3)); /* Para mostrar 3 items en un LG */
-    scroll-snap-align: start; /* Alinea el inicio del item con el punto de snap */
-    box-sizing: border-box; /* Incluye padding y borde en el ancho/alto */
-    max-width: 320px; /* Ancho máximo para cada item del carrusel */
+.text-gray-400 {
+    color: #9E9E9E; /* Gris un poco más oscuro para texto secundario */
 }
 
-/* Responsive para el carrusel */
-@media (max-width: 1024px) { /* Para pantallas medianas (md) */
-    .carousel-item {
-        width: calc((100% / 2) - (2 * 2rem / 2)); /* Muestra 2 items */
-    }
+/* Reemplazar colores de slate en elementos específicos */
+.bg-slate-700\/50 {
+    background-color: rgba(26, 26, 26, 0.7); /* Negro oscuro con opacidad */
 }
 
-@media (max-width: 768px) { /* Para pantallas pequeñas (sm) */
-    .carousel-item {
-        width: 100%; /* Muestra 1 item */
-    }
+.border-slate-700\/50 {
+    border-color: rgba(50, 50, 50, 0.7); /* Borde más oscuro */
 }
 
-.carousel-nav-hidden {
-    display: none !important; /* Oculta los botones de navegación si no hay suficientes destacados */
+.bg-slate-700\/70 {
+    background-color: rgba(26, 26, 26, 0.9); /* Negro oscuro más opaco */
 }
 
-/* Estilos de las imágenes de producto */
-.product-card img, .carousel-item img {
+.hover\:bg-slate-600:hover {
+    background-color: rgba(50, 50, 50, 0.9); /* Gris oscuro en hover */
+}
+
+/* Ajuste para el texto dentro del carrito */
+#cart-items p.text-gray-400 {
+    color: #B0B0B0; /* Gris medio */
+}
+
+/* Asegurar que el logo se vea bien en fondo oscuro */
+header img {
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3)); /* Sutil sombra blanca */
     object-fit: contain; /* Para que la imagen se ajuste sin recortarse */
     background-color: transparent; /* Si tienes PNGs con transparencia */
 }
@@ -171,11 +166,61 @@ body {
 @media (max-width: 768px) {
     .modal-content {
         max-width: 95%;
-        width: auto;
+        width: 95%; /* Asegura que no se desborde en pantallas pequeñas */
+        padding: 20px;
     }
-    nav ul {
-        flex-direction: column;
-        align-items: center;
-        gap: 0.5rem;
+
+    /* Ajustes para el botón flotante en móvil */
+    #cart-button {
+        bottom: 20px;
+        right: 20px;
+        padding: 12px;
+        font-size: 1.5rem;
+    }
+
+    #cart-count {
+        top: -5px;
+        right: -5px;
+        font-size: 0.6rem;
+        width: 18px;
+        height: 18px;
+    }
+}
+
+
+/* Estilos para el efecto 3D-like en el carrusel de destacados */
+#carousel-track {
+    /* Asegura que los elementos hijos puedan usar transforms sin que el padre los corte inesperadamente */
+    overflow: visible; /* Permite que los elementos escalados sobresalgan del contenedor */
+    /* Ajustes para centrar el carrusel en vistas más grandes si se muestran pocos items */
+    justify-content: center;
+    align-items: center;
+}
+
+#carousel-track > div { /* Cada tarjeta de producto en el carrusel */
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out, z-index 0.3s ease-in-out;
+    opacity: 0.7; /* Por defecto, los no activos son un poco transparentes */
+    transform: scale(0.9); /* Por defecto, los no activos son un poco más pequeños */
+    z-index: 10; /* Z-index base */
+    cursor: pointer; /* Para indicar que son interactivos */
+    /* Añadir perspectiva a los items para un efecto más pronunciado si se usa rotateY */
+    /* transform-origin: center center; */ /* Ya es el default, pero explícito si se quiere cambiar */
+}
+
+#carousel-track > div.carousel-active-item {
+    transform: scale(1.1); /* El ítem activo se agranda */
+    opacity: 1; /* Completamente opaco */
+    z-index: 20; /* El ítem activo se muestra por encima */
+}
+
+/* Asegura que los botones de navegación estén por encima de los ítems del carrusel */
+#carousel-prev, #carousel-next {
+    z-index: 30; /* Más alto que los ítems del carrusel */
+}
+
+/* Ajustes para que el carrusel se vea bien en diferentes tamaños */
+@media (min-width: 768px) {
+    #carousel-track {
+        justify-content: flex-start; /* Permite que el carrusel fluya si hay muchos items */
     }
 }
