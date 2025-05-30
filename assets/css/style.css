@@ -15,7 +15,7 @@ body {
 
 /* --- ESTILOS DEL MODAL (CARRITO) --- */
 .modal {
-    display: none; /* CORRECCIÓN: El modal no se muestra por defecto */
+    display: none; /* El modal no se muestra por defecto */
     position: fixed;
     z-index: 1000; /* Asegura que esté por encima de otros elementos */
     left: 0;
@@ -26,313 +26,226 @@ body {
     background-color: rgba(0,0,0,0.9); /* Fondo oscuro más opaco */
     backdrop-filter: blur(5px); /* Efecto de desenfoque en el fondo */
     -webkit-backdrop-filter: blur(5px);
-    
-    /* Centrar el contenido del modal */
-    display: flex; /* Se activará por JS */
-    align-items: center;
-    justify-content: center;
+    justify-content: center; /* Centra horizontalmente el contenido del modal */
+    align-items: center; /* Centra verticalmente el contenido del modal */
+    opacity: 0; /* Inicialmente transparente */
+    transform: scale(0.9); /* Inicialmente un poco más pequeño */
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out; /* Transición suave */
+}
+
+.modal.active { /* Clase que se añade con JS para mostrar el modal */
+    display: flex; /* Muestra el modal como flexbox */
+    opacity: 1; /* Opaco */
+    transform: scale(1); /* Vuelve a su tamaño normal */
 }
 
 .modal-content {
-    background-color: rgba(0, 0, 0, 0.9); /* Negro con 90% de opacidad */
-    margin: auto;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+    background-color: #fefefe;
+    margin: 15% auto; /* Ajustado para centrar con display flex */
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%; /* Ancho en móviles */
+    max-width: 500px; /* Ancho máximo en escritorio */
     position: relative;
-    max-width: 500px;
-    width: 90%; /* Ajuste para pantallas pequeñas */
-    color: #FFFFFF; /* Texto blanco en el modal */
-    border: 1px solid rgba(50, 50, 50, 0.7); /* Borde un poco más visible */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    color: #FFFFFF; /* Texto blanco */
 }
 
 .close-button {
-    color: #FFD700; /* Amarillo para el botón de cerrar */
-    font-size: 32px;
-    font-weight: bold;
+    color: #aaa;
     position: absolute;
-    top: 15px;
-    right: 20px;
+    top: 10px;
+    right: 15px;
+    font-size: 28px;
+    font-weight: bold;
     cursor: pointer;
-    transition: color 0.3s ease;
+    transition: color 0.2s;
 }
 
 .close-button:hover,
 .close-button:focus {
-    color: #FFA500; /* Naranja en hover */
+    color: #FFD700; /* Amarillo */
     text-decoration: none;
     cursor: pointer;
 }
 
-/* Estilos de botones y texto específicos para mantener coherencia */
-.bg-yellow-500 {
-    background-color: #FFD700; /* Amarillo estándar */
-}
-.hover\:bg-yellow-600:hover {
-    background-color: #FFA500; /* Naranja en hover */
-}
-.text-slate-900 {
-    color: #000000; /* Texto negro en botones amarillos */
-}
-
-.text-yellow-300 {
-    color: #FFD700; /* Amarillo para títulos */
-}
-
-.text-gray-200 {
-    color: #D1D5DB; /* Gris claro para subtítulos y texto */
-}
-
-.text-gray-300 {
-    color: #B0B0B0; /* Gris medio para descripciones */
-}
-
-.text-gray-400 {
-    color: #9E9E9E; /* Gris un poco más oscuro para texto secundario y vacío */
-}
-
-/* Reemplazar colores de slate en elementos específicos */
-.bg-slate-700\/50 { /* Usado en productos, cart item, form inputs */
-    background-color: rgba(26, 26, 26, 0.7); /* Negro oscuro con opacidad */
-}
-
-.border-slate-700\/50 { /* Usado en productos, cart item, form inputs */
-    border-color: rgba(50, 50, 50, 0.7); /* Borde más oscuro */
-}
-
-.bg-slate-700\/70 { /* Usado en botones de navegación del carrusel */
-    background-color: rgba(26, 26, 26, 0.9); /* Negro oscuro más opaco */
-}
-
-.hover\:bg-slate-600:hover { /* Usado en hover de botones de navegación del carrusel */
-    background-color: rgba(50, 50, 50, 0.9); /* Gris oscuro en hover */
-}
-
-/* Ajuste para el texto dentro del carrito */
-#cart-items p.text-gray-400 {
-    color: #B0B0B0; /* Gris medio */
-}
-
-/* Asegurar que el logo se vea bien en fondo oscuro */
-header img {
-    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3)); /* Sutil sombra blanca */
-    object-fit: contain; /* Para que la imagen se ajuste sin recortarse */
-    background-color: transparent; /* Si tienes PNGs con transparencia */
-}
-
-/* Animaciones */
-@keyframes fadeInDown {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes pulse {
-    0%, 100% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.05);
-    }
-}
-
-.animate-fade-in-down {
-    animation: fadeInDown 1s ease-out forwards;
-}
-
-.animate-fade-in-up {
-    animation: fadeInUp 1s ease-out forwards 0.5s; /* Delay para la segunda animación */
-}
-
-.animate-pulse {
-    animation: pulse 2s infinite;
-}
-
-/* Media Queries para Responsividad */
-@media (max-width: 768px) {
-    .modal-content {
-        max-width: 95%;
-        width: 95%; /* Asegura que no se desborde en pantallas pequeñas */
-        padding: 20px;
-    }
-
-    /* Ajustes para el botón flotante en móvil */
-    #cart-button {
-        bottom: 20px;
-        right: 20px;
-        padding: 12px;
-        font-size: 1.5rem;
-    }
-
-    #cart-count {
-        top: -5px;
-        right: -5px;
-        font-size: 0.6rem;
-        width: 18px;
-        height: 18px;
-    }
-}
-
-
-/* --- ESTILOS MEJORADOS PARA EL CARRUSEL (EFECTO 3D AVANZADO) --- */
-
-/* Contenedor del carrusel para establecer la perspectiva */
-#destacados .relative {
-    perspective: 1200px; /* Perspectiva más profunda para un mejor efecto 3D */
-    perspective-origin: center center; /* Origen de la perspectiva */
-}
-
-#carousel-track {
-    transform-style: preserve-3d; /* Permite que los elementos hijos se posicionen en 3D */
-    transition: transform 0.4s ease-in-out; /* Transición para el movimiento global del track */
-    justify-content: center; /* Centra los elementos */
-    align-items: center; /* Alinea verticalmente */
-    height: 100%; /* Asegura que ocupa la altura disponible para alinear items */
-}
-
-#carousel-track > div { /* Cada tarjeta de producto en el carrusel */
-    will-change: transform, opacity, z-index; /* Optimización de rendimiento para animaciones */
-    transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out, z-index 0.4s ease-in-out; /* Transiciones suaves */
-    transform-origin: center bottom; /* El punto de origen de la rotación y escalado */
-    backface-visibility: hidden; /* Oculta la parte trasera de los elementos cuando rotan */
-    opacity: 0; /* Por defecto, oculto hasta que JS les da propiedades */
-    pointer-events: none; /* Inactivos por defecto, activados por JS */
-    position: relative; /* Asegura z-index funciona */
-    min-width: 16rem; /* Tailwind w-64 */
-    margin-right: 1rem; /* Tailwind mr-4 */
-}
-
-/* Asegura que los botones de navegación estén por encima de los ítems del carrusel */
-#carousel-prev, #carousel-next {
-    z-index: 30; /* Más alto que los ítems del carrusel */
-}
-
-/* --- NUEVOS ESTILOS PARA LAS TARJETAS DE PRODUCTO EN EL CATÁLOGO PRINCIPAL --- */
-/* (Se aplica a los elementos generados en #productos-container) */
+/* Estilos para las tarjetas de producto pequeñas (catálogo) */
 .product-card-small {
-    /* Ajustes de tamaño base para la tarjeta */
-    width: 100%; /* Ocupa todo el ancho disponible en columnas */
-    max-width: 200px; /* Ancho máximo para mantenerla compacta */
-    height: auto; /* Altura automática */
-    margin: 0.5rem; /* Margen para espacio entre tarjetas */
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    border-radius: 0.5rem; /* rounded-lg */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* shadow-xl */
-    transition: transform 0.2s ease-in-out;
-
-    /* Estilos de fondo y borde */
-    background-color: rgba(0, 0, 0, 0.7); /* Negro ligeramente transparente */
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    border: 1px solid rgba(50, 50, 50, 0.5); /* Borde sutil */
+    background-color: rgba(0, 0, 0, 0.6); /* Fondo semi-transparente */
+    border-radius: 10px;
+    padding: 1rem; /* p-4 de Tailwind */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex; /* Para organizar el contenido internamente */
+    flex-direction: column; /* Contenido en columna */
+    justify-content: space-between; /* Empuja el botón al final */
+    height: 100%; /* Asegura que las tarjetas tengan la misma altura en el grid */
+    width: 100%; /* Ocupa el 100% del ancho de su columna en el grid */
+    max-width: 300px; /* Límite de ancho para que no se estiren demasiado */
+    margin: 0 auto; /* Centra la tarjeta si el max-width es menor que la columna */
 }
 
 .product-card-small:hover {
-    transform: translateY(-5px); /* Pequeño levantamiento en hover */
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px) scale(1.02); /* Pequeño levantamiento y agrandamiento */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
 }
 
-.product-card-small .product-image {
+.product-card-small img {
     width: 100%;
-    height: 120px; /* Altura fija para la imagen */
+    height: 180px; /* Altura fija para las imágenes del catálogo */
     object-fit: cover;
-    border-top-left-radius: 0.5rem;
-    border-top-right-radius: 0.5rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
 }
 
-.product-card-small .product-info {
-    padding: 0.75rem; /* p-3 */
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
+.product-card-small h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #FFD700; /* Amarillo */
+    margin-bottom: 0.5rem;
 }
 
-.product-card-small .product-name {
-    font-size: 0.95rem; /* text-lg */
-    font-weight: 700; /* font-bold */
-    color: #FFD700; /* text-yellow-400 */
-    margin-bottom: 0.25rem; /* mb-1 */
-    line-height: 1.2; /* Ajuste de línea para nombres largos */
-    height: 2.4em; /* Altura fija para 2 líneas */
-    overflow: hidden; /* Oculta si se desborda */
-    text-overflow: ellipsis; /* Añade puntos suspensivos */
-}
-
-.product-card-small .product-description {
-    font-size: 0.75rem; /* text-xs */
-    color: #B0B0B0; /* text-gray-300 */
-    margin-bottom: 0.5rem; /* mb-2 */
-    flex-grow: 1;
-    height: 3em; /* Altura fija para 3 líneas de descripción */
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.product-card-small .product-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: auto;
-    padding-top: 0.5rem; /* pt-2 */
-    border-top: 1px solid rgba(50, 50, 50, 0.5); /* border-t border-slate-700/50 */
+.product-card-small p {
+    font-size: 0.9rem;
+    color: #A0A0A0; /* Gris medio */
+    margin-bottom: 0.75rem;
+    flex-grow: 1; /* Permite que la descripción ocupe el espacio disponible */
 }
 
 .product-card-small .product-price {
-    font-size: 1.1rem; /* text-xl */
-    font-weight: 700; /* font-bold */
-    color: #FFFFFF; /* text-white */
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #FFFFFF; /* Blanco */
+    margin-bottom: 1rem;
 }
 
-.product-card-small .add-to-cart-btn {
-    background-color: #FFD700; /* bg-yellow-500 */
-    color: #000000; /* text-slate-900 */
-    font-weight: 700; /* font-bold */
-    padding: 0.5rem 1rem; /* py-2 px-4 */
-    border-radius: 9999px; /* rounded-full */
-    font-size: 0.85rem; /* Ajuste de tamaño de fuente */
-    transition: background-color 0.3s ease;
+/* Botón "Añadir al Carrito" en las tarjetas de producto */
+.product-card-small button {
+    background-color: #3B82F6; /* Azul de Tailwind */
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px; /* rounded-full de Tailwind */
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+    width: 100%; /* Asegura que el botón ocupe el ancho completo */
 }
 
-.product-card-small .add-to-cart-btn:hover {
-    background-color: #FFA500; /* hover:bg-yellow-600 */
+.product-card-small button:hover {
+    background-color: #2563EB; /* Azul más oscuro de Tailwind */
 }
 
-/* Media query para columnas en pantallas más grandes para el catálogo */
-@media (min-width: 640px) { /* sm breakpoint */
+/* Estilos para el contenedor de productos en el catálogo */
+#productos-container {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr)); /* Por defecto 1 columna para móviles pequeños (xs) */
+    gap: 1.5rem; /* Espacio entre productos (equivalente a Tailwind gap-6) */
+    justify-items: center; /* Centra los items horizontalmente dentro de sus celdas de grid */
+    padding: 1rem 0; /* Pequeño padding vertical para la sección */
+}
+
+/* Media Query para 2 columnas en pantallas pequeñas (sm) y superiores */
+@media (min-width: 640px) { /* Tailwind 'sm' breakpoint */
     #productos-container {
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* 180px para más compactas */
-        gap: 1rem; /* Espacio entre las tarjetas */
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
 
-@media (min-width: 768px) { /* md breakpoint */
+/* Media Query para 3 columnas en pantallas medianas (md) y superiores */
+@media (min-width: 768px) { /* Tailwind 'md' breakpoint */
     #productos-container {
-        grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-        gap: 1.25rem;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 }
 
-@media (min-width: 1024px) { /* lg breakpoint */
+/* Media Query para 4 columnas en pantallas grandes (lg) y superiores */
+@media (min-width: 1024px) { /* Tailwind 'lg' breakpoint */
     #productos-container {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Mantener el ancho original para el catálogo */
-        gap: 1.5rem;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
     }
+}
+
+/* Estilos para el carrusel de productos destacados */
+#carousel-track .product-card-small {
+    flex: 0 0 auto; /* No crecer, no encoger, base en 'auto' */
+    width: 256px; /* Ancho fijo para ítems del carrusel (w-64 de Tailwind) */
+    margin-right: 16px; /* Espacio entre ítems (mr-4 de Tailwind) */
+    scroll-snap-align: start; /* Para un scroll snap suave */
+}
+
+/* Último item del carrusel sin margen derecho */
+#carousel-track .product-card-small:last-child {
+    margin-right: 0;
+}
+
+
+/* --- ESTILOS PARA LOS ITEMS DEL CARRITO --- */
+.cart-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(26, 26, 26, 0.7); /* Borde separador */
+}
+
+.cart-item:last-child {
+    border-bottom: none; /* Eliminar borde del último ítem */
+}
+
+.cart-item-image {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.cart-item-details {
+    flex-grow: 1;
+    color: #E0E0E0; /* Gris claro */
+}
+
+.cart-item-details h4 {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #FFFFFF; /* Blanco */
+}
+
+.cart-item-details p {
+    font-size: 0.9rem;
+    color: #A0A0A0; /* Gris medio */
+}
+
+.cart-item-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.cart-item-controls button {
+    background-color: #FFD700; /* Amarillo */
+    color: #000000;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+
+.cart-item-controls button:hover {
+    background-color: #FFA500; /* Naranja */
+}
+
+.cart-item-quantity {
+    font-weight: bold;
+    color: #FFFFFF;
+}
+
+.cart-item-price {
+    font-weight: bold;
+    color: #FFFFFF;
+    margin-left: 1rem;
 }
