@@ -38,7 +38,7 @@ let itemWidth = 0; // Ancho de cada ítem del carrusel, se calculará dinámicam
 let autoScrollInterval;
 const AUTO_SCROLL_INTERVAL_TIME = 5000; // 5 segundos
 const CLONE_COUNT = 3; // Número de ítems a clonar en cada extremo para un bucle más suave
-const WHATSAPP_PHONE_NUMBER = '573218765432'; // ¡IMPORTANTE! Reemplaza con tu número de WhatsApp real (código de país + número)
+const WHATSAPP_PHONE_NUMBER = '573174144815'; // ¡IMPORTANTE! Reemplaza con tu número de WhatsApp real (código de país + número)
 
 // ===============================================
 // 3. EVENTOS DE DOMContentLoaded
@@ -251,7 +251,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function loadProducts() {
     try {
-        const response = await fetch('products.json');
+        const response = await fetch('assets/data/products.json');
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
