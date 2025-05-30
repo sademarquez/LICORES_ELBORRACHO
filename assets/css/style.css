@@ -6,11 +6,12 @@ body {
 }
 
 /* Estilo para el panel-glass (efecto esmerilado) */
-.panel-glass {
-    background-color: rgba(0, 0, 0, 0.8); /* Negro con 80% de opacidad para efecto cristal */
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(26, 26, 26, 0.7); /* Gris muy oscuro con opacidad para el borde */
+    /* Ajusta estos valores para mayor transparencia y desenfoque */
+    background-color: rgba(0, 0, 0, 0.4); /* Negro con 40% de opacidad para mayor transparencia (antes 0.8) */
+    backdrop-filter: blur(15px); /* Mayor desenfoque (antes 8px) */
+    -webkit-backdrop-filter: blur(15px); /* Compatibilidad con navegadores Webkit */
+    border: 1px solid rgba(26, 26, 26, 0.3); /* Borde más sutil (antes 0.7) */
+    /* Asegúrate de que no haya un 'opacity' global que lo esté sobrescribiendo */
 }
 
 /* --- ESTILOS DEL MODAL (CARRITO) --- */
@@ -40,14 +41,12 @@ body {
 }
 
 .modal-content {
-    background-color: #fefefe;
-    margin: 15% auto; /* Ajustado para centrar con display flex */
-    padding: 20px;
-    border-radius: 8px;
-    width: 90%; /* Ancho en móviles */
-    max-width: 500px; /* Ancho máximo en escritorio */
-    position: relative;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    /* Mantener el mismo efecto glassmorphism para la ventana del carrito */
+    background-color: rgba(0, 0, 0, 0.6); /* Un poco menos transparente que el header si lo deseas */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(26, 26, 26, 0.5);
+    /* Otros estilos de modal-content... */
     color: #FFFFFF; /* Texto blanco */
 }
 
