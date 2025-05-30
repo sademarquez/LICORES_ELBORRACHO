@@ -7,50 +7,45 @@ body {
 
 /* Estilo para el panel-glass (efecto esmerilado) */
 .panel-glass {
-    /* EDICIÓN: Reducción de la opacidad y el desenfoque para que sea menos intrusivo. */
-    /* Anterior: background-color: rgba(0, 0, 0, 0.4); */
-    background-color: rgba(0, 0, 0, 0.2); /* Más transparente (20% de opacidad) */
-    /* Anterior: backdrop-filter: blur(15px); */
-    backdrop-filter: blur(8px); /* Desenfoque reducido de 15px a 8px */
-    -webkit-backdrop-filter: blur(8px); /* Compatibilidad con navegadores Webkit */
+    background-color: rgba(0, 0, 0, 0.4); /* Negro con 40% de opacidad para mayor transparencia */
+    backdrop-filter: blur(15px); /* Mayor desenfoque */
+    -webkit-backdrop-filter: blur(15px); /* Compatibilidad con navegadores Webkit */
     border: 1px solid rgba(26, 26, 26, 0.3); /* Borde más sutil */
 }
 
 /* --- ESTILOS DEL MODAL (CARRITO) --- */
 .modal {
-    display: none; /* El modal no se muestra por defecto */
+    display: none;
     position: fixed;
-    z-index: 1000; /* Asegura que esté por encima de otros elementos */
+    z-index: 1000;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
     overflow: auto;
-    /* EDICIÓN: Reducción de la opacidad del fondo del modal para que el contenido de fondo sea más visible */
-    /* Anterior: background-color: rgba(0,0,0,0.9); */
-    background-color: rgba(0,0,0,0.7); /* Fondo oscuro menos opaco (70%) */
-    backdrop-filter: blur(5px); /* Se mantiene el desenfoque para el fondo del modal, es un efecto deseado */
+    /* MODIFICACIÓN: Menor opacidad de fondo para el modal */
+    background-color: rgba(0,0,0,0.2); /* Negro con 20% de opacidad */
+    backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
-    display: flex; /* Centrar el contenido con flexbox */
+    display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .modal-content {
-    background-color: #1a202c; /* Color de fondo del modal */
+    background-color: #1a202c;
     margin: auto;
     padding: 30px;
     border-radius: 10px;
-    width: 90%; /* Ancho en móvil */
-    max-width: 500px; /* Ancho máximo en escritorio */
+    width: 90%;
+    max-width: 500px;
     position: relative;
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    transform: translateY(-50px); /* Efecto de entrada */
+    transform: translateY(-50px);
     opacity: 0;
     transition: transform 0.3s ease-out, opacity 0.3s ease-out;
 }
 
-/* Estado activo del modal */
 .modal.active .modal-content {
     transform: translateY(0);
     opacity: 1;
@@ -70,7 +65,7 @@ body {
 
 .close-button:hover,
 .close-button:focus {
-    color: #FFD700; /* Amarillo */
+    color: #FFD700;
     text-decoration: none;
     cursor: pointer;
 }
@@ -80,11 +75,11 @@ body {
     align-items: center;
     margin-bottom: 1rem;
     padding-bottom: 1rem;
-    border-bottom: 1px solid rgba(55, 65, 81, 0.5); /* border-slate-700/50 */
+    border-bottom: 1px solid rgba(55, 65, 81, 0.5);
 }
 
 .cart-item:last-child {
-    border-bottom: none; /* No border for the last item */
+    border-bottom: none;
 }
 
 .cart-item img {
@@ -102,12 +97,12 @@ body {
 .cart-item-details h4 {
     font-size: 1.1rem;
     font-weight: bold;
-    color: #FFFFFF; /* Blanco */
+    color: #FFFFFF;
 }
 
 .cart-item-details p {
     font-size: 0.9rem;
-    color: #A0A0A0; /* Gris medio */
+    color: #A0A0A0;
 }
 
 .cart-item-controls {
@@ -117,7 +112,7 @@ body {
 }
 
 .cart-item-controls button {
-    background-color: #FFD700; /* Amarillo */
+    background-color: #FFD700;
     color: #000000;
     width: 28px;
     height: 28px;
@@ -131,7 +126,7 @@ body {
 }
 
 .cart-item-controls button:hover {
-    background-color: #FFA500; /* Naranja */
+    background-color: #FFA500;
 }
 
 .cart-item-quantity {
@@ -144,6 +139,48 @@ body {
     color: #FFFFFF;
     margin-left: 1rem;
 }
+
+/* Estilos para el campo de búsqueda */
+#product-search-input {
+    color: #FFD700;
+}
+
+/* --- ESTILOS PARA LA IMAGEN HERO (EJEMPLO) --- */
+/*
+Si tu imagen hero está dentro de una sección o div, puedes aplicar estilos a ese contenedor
+y a la imagen dentro para asegurar que se adapte.
+
+Ejemplo de HTML:
+<section class="hero-section">
+    <img src="assets/img/hero-image.jpg" alt="Imagen de fondo de licores" class="hero-image">
+    <div class="hero-content">
+        // Contenido de tu hero
+    </div>
+</section>
+*/
+
+.hero-section {
+    position: relative;
+    width: 100%;
+    height: 60vh; /* Altura adaptable, ajusta según necesidad */
+    overflow: hidden; /* Asegura que la imagen no se desborde */
+}
+
+.hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Recorta la imagen para cubrir el contenedor manteniendo la proporción */
+    object-position: center; /* Centra la imagen en el contenedor */
+    display: block; /* Elimina espacio extra debajo de la imagen */
+}
+
+/* Media Query para ajustar la altura en móviles si es necesario */
+@media (max-width: 768px) {
+    .hero-section {
+        height: 40vh; /* Menor altura en dispositivos móviles */
+    }
+}
+
 
 /* Animaciones personalizadas */
 @keyframes fadeIn {
@@ -164,11 +201,11 @@ body {
 
 .animate-fade-in {
     animation: fadeIn 1s ease-out forwards;
-    opacity: 0; /* Asegura que esté oculto antes de la animación */
+    opacity: 0;
 }
 
 .animate-fade-in-up {
-    opacity: 0; /* Oculto por defecto */
+    opacity: 0;
     transition: opacity 0.8s ease-out, transform 0.8s ease-out;
     transform: translateY(20px);
 }
@@ -182,12 +219,10 @@ body {
 .animation-delay-300 { animation-delay: 0.3s; }
 .animation-delay-600 { animation-delay: 0.6s; }
 .animation-delay-900 { animation-delay: 0.9s; }
-/* Puedes añadir más si es necesario */
 
-/* Media Queries para Responsive Design (opcional, Tailwind ya hace mucho) */
 @media (max-width: 768px) {
     .modal-content {
-        width: 95%; /* Un poco más de ancho en móviles pequeños */
+        width: 95%;
         padding: 20px;
     }
 }
