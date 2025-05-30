@@ -3,7 +3,7 @@ body {
    -webkit-font-smoothing: antialiased;
 
     -moz-osx-font-smoothing: grayscale;
-background-color: #00000080;
+background-color: black;
 }
 
 /* Estilo para el panel-glass (efecto esmerilado) */
