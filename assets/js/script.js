@@ -23,7 +23,8 @@ let destacadosSection;
 let mobileNavLinks;
 
 // SELECTORES PARA EL BUSCADOR
-let productSearchInput;
+let productSearchInputDesktop; // Cambiado para ser más específico
+let productSearchInputMobile; // NUEVO selector para el buscador móvil
 let searchButtonDesktop;
 let searchButtonMobile;
 
@@ -297,7 +298,13 @@ const addAddToCartEventListeners = () => {
 // ==============================================
 
 const filterProducts = () => {
-    const searchTerm = productSearchInput.value.toLowerCase();
+    // Determina qué input de búsqueda usar (desktop o mobile)
+    const currentSearchInput = document.activeElement === productSearchInputMobile ? productSearchInputMobile : productSearchInputDesktop;
+    
+    // Si no hay input activo, no hagas nada o usa un valor predeterminado si es necesario
+    if (!currentSearchInput) return;
+
+    const searchTerm = currentSearchInput.value.toLowerCase();
     const filteredProducts = products.filter(product =>
         product.nombre.toLowerCase().includes(searchTerm) ||
         product.descripcion.toLowerCase().includes(searchTerm) ||
@@ -334,7 +341,9 @@ document.addEventListener('DOMContentLoaded', () => {
     destacadosSection = document.getElementById('destacados');
     mobileNavLinks = document.getElementById('mobile-nav-links');
 
-    productSearchInput = document.getElementById('product-search-input');
+    // Selectores del buscador
+    productSearchInputDesktop = document.getElementById('product-search-input'); // Usar ID original
+    productSearchInputMobile = document.getElementById('product-search-input-mobile'); // Usar el nuevo ID
     searchButtonDesktop = document.getElementById('search-button-desktop');
     searchButtonMobile = document.getElementById('search-button-mobile');
 
@@ -412,26 +421,31 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Event listener para el input de búsqueda
-    if (productSearchInput) {
-        productSearchInput.addEventListener('input', filterProducts);
+    // Event listeners para el input de búsqueda (desktop)
+    if (productSearchInputDesktop) {
+        productSearchInputDesktop.addEventListener('input', filterProducts);
+    }
+    // Event listeners para el input de búsqueda (mobile)
+    if (productSearchInputMobile) {
+        productSearchInputMobile.addEventListener('input', filterProducts);
     }
 
     // Event listeners para los botones de búsqueda (desktop y mobile)
     if (searchButtonDesktop) {
         searchButtonDesktop.addEventListener('click', () => {
-            if (productSearchInput) {
-                productSearchInput.focus();
-                window.location.href = '#catalogo';
+            if (productSearchInputDesktop) {
+                productSearchInputDesktop.focus();
+                // Opcional: scroll al catálogo, pero puede ser molesto si el usuario solo quiere buscar
+                // window.location.href = '#catalogo';
                 filterProducts();
             }
         });
     }
     if (searchButtonMobile) {
         searchButtonMobile.addEventListener('click', () => {
-            if (productSearchInput) {
-                productSearchInput.focus();
-                window.location.href = '#catalogo';
+            if (productSearchInputMobile) {
+                productSearchInputMobile.focus();
+                // window.location.href = '#catalogo';
                 filterProducts();
             }
             if (mobileMenu && !mobileMenu.classList.contains('-translate-x-full')) {
@@ -442,5 +456,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     window.addEventListener('scroll', animateElements);
-    animateElements();
+    animateElements(); // Ejecutar una vez al cargar para animar elementos visibles desde el principio
 });
+
+// Función para el efecto de fade-in-up al hacer scroll
+const animateElements = () => {
+    const elements = document.querySelectorAll('.animate-fade-in-up');
+    elements.forEach(element => {
+        const rect = element.getBoundingClientRect();
+        // Cuando el elemento entra en el 80% de la ventana
+        if (rect.top < window.innerHeight * 0.8) {
+            element.classList.add('fade-in-up-active');
+        }
+    });
+};
