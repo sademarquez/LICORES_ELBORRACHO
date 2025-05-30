@@ -25,233 +25,74 @@ body {
     height: 100%;
     overflow: auto;
     background-color: rgba(0,0,0,0.9); /* Fondo oscuro más opaco */
-    backdrop-filter: blur(5px); /* Efecto de desenfoque en el fondo */
+    backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
-    display: flex; /* Usar flexbox para centrar contenido */
-    align-items: center; /* Centrado vertical */
-    justify-content: center; /* Centrado horizontal */
-    /* MODIFICACIÓN: Animación para el modal al activarse por JS */
-    opacity: 0; /* Inicialmente transparente */
-    transform: scale(0.9); /* Inicialmente un poco más pequeño */
-    transition: opacity 0.3s ease-out, transform 0.3s ease-out; /* Transición suave */
-}
-
-/* MODIFICACIÓN: Clase activa para mostrar el modal con animación */
-.modal.active {
-    display: flex; /* Muestra el modal */
-    opacity: 1; /* Opaco */
-    transform: scale(1); /* Vuelve a su tamaño normal */
+    display: flex; /* Centrar el contenido con flexbox */
+    align-items: center;
+    justify-content: center;
 }
 
 .modal-content {
-    /* MODIFICACIÓN: Efecto glassmorphism similar al header, pero puedes ajustar la opacidad */
-    background-color: rgba(0, 0, 0, 0.6); /* Un poco menos transparente que el header si lo deseas */
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(26, 26, 26, 0.5);
-    
+    background-color: #1a202c; /* Color de fondo del modal */
+    margin: auto;
     padding: 30px;
     border-radius: 10px;
+    width: 90%; /* Ancho en móvil */
+    max-width: 500px; /* Ancho máximo en escritorio */
     position: relative;
-    max-width: 500px;
-    width: 90%; /* Ajuste para que ocupe menos en pantallas grandes */
-    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-    /* Se elimina la animación directa aquí, ahora controlada por .modal.active */
-    color: #FFFFFF; /* Texto blanco */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    transform: translateY(-50px); /* Efecto de entrada */
+    opacity: 0;
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
 }
 
-/* Estilos para el botón de cerrar del modal */
+/* Estado activo del modal */
+.modal.active .modal-content {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+
 .close-button {
-    color: #aaa;
+    color: #aaaaaa;
+    font-size: 36px;
+    font-weight: bold;
     position: absolute;
     top: 10px;
-    right: 20px;
-    font-size: 28px;
-    font-weight: bold;
+    right: 15px;
     cursor: pointer;
-    transition: color 0.3s ease;
+    transition: color 0.2s;
 }
 
 .close-button:hover,
 .close-button:focus {
-    color: #FFD700; /* MODIFICACIÓN: Cambio de color de rojo a amarillo para consistencia */
+    color: #FFD700; /* Amarillo */
     text-decoration: none;
     cursor: pointer;
 }
 
-/* Animación para el modal (ahora parte de la transición de .modal.active) */
-/* Se mantiene por si se usa en otros elementos, pero ya no es crucial para el modal */
-@keyframes fadeInScale {
-    from {
-        opacity: 0;
-        transform: scale(0.9);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-/* --- ESTILOS DE LA TARJETA DE PRODUCTO PEQUEÑA (PARA CARRUSEL Y CATÁLOGO) --- */
-.product-card-small {
-    background-color: rgba(26, 26, 26, 0.7); /* bg-slate-700/50 */
-    border: 1px solid rgba(50, 50, 50, 0.7); /* border-slate-700/50 */
-    border-radius: 0.5rem; /* rounded-lg */
-    overflow: hidden;
-    display: flex;
-    flex-direction: column; /* Para organizar el contenido internamente en columna */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    transition: transform 0.2s ease-in-out;
-    cursor: pointer;
-    /* Asegurarse de que ocupe todo el ancho disponible en móviles */
-    width: 100%; /* Por defecto, ancho completo en móviles */
-    max-width: 300px; /* Limitar el ancho máximo de una tarjeta en pantallas muy grandes */
-    margin: 0 auto; /* Centrar la tarjeta si el contenedor es más grande */
-    height: 100%; /* MODIFICACIÓN: Crucial para que las tarjetas tengan la misma altura en el grid */
-    justify-content: space-between; /* MODIFICACIÓN: Empuja el botón al final de la tarjeta */
-}
-
-
-.product-card-small:hover {
-    transform: translateY(-5px); /* hover:translate-y-[-5px] */
-}
-
-.product-card-small img {
-    width: 100%;
-    height: 200px; /* h-48 */
-    object-fit: cover;
-    margin-bottom: 0.5rem; /* mb-2 */
-}
-
-.product-card-small .product-info {
-    padding: 1rem; /* p-4 */
-    flex-grow: 1; /* Para que el contenido crezca y empuje el footer al final */
-    display: flex;
-    flex-direction: column;
-}
-
-.product-card-small .product-name {
-    font-size: 1.25rem; /* text-xl */
-    font-weight: 700; /* font-bold */
-    color: #FFFFFF; /* text-white */
-    margin-bottom: 0.5rem; /* mb-2 */
-}
-
-.product-card-small .product-description {
-    font-size: 0.875rem; /* text-sm */
-    color: #A0A0A0; /* text-gray-400 */
-    margin-bottom: 0.75rem; /* mb-3 */
-    flex-grow: 1; /* Para que la descripción ocupe el espacio restante */
-}
-
-.product-card-small .product-category-volume {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.875rem; /* text-sm */
-    color: #A0A0A0; /* text-gray-400 */
-    margin-bottom: 0.75rem; /* mb-3 */
-}
-
-.product-card-small .product-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: auto; /* Empuja el footer al final de la tarjeta */
-    padding-top: 0.5rem; /* pt-2 */
-    border-top: 1px solid rgba(50, 50, 50, 0.5); /* border-t border-slate-700/50 */
-}
-
-.product-card-small .product-price {
-    font-size: 1.1rem; /* text-xl */
-    font-weight: 700; /* font-bold */
-    color: #FFFFFF; /* text-white */
-}
-
-.product-card-small .add-to-cart-btn {
-    background-color: #FFD700; /* bg-yellow-500 */
-    color: #000000; /* text-slate-900 */
-    font-weight: 700; /* font-bold */
-    padding: 0.5rem 1rem; /* py-2 px-4 */
-    border-radius: 9999px; /* rounded-full */
-    font-size: 0.85rem; /* Ajuste de tamaño de fuente */
-    transition: background-color 0.3s ease;
-}
-
-.product-card-small .add-to-cart-btn:hover {
-    background-color: #FFA500; /* hover:bg-yellow-600 */
-}
-
-/* MODIFICACIÓN CLAVE: Ajuste de la media query para 2 columnas en smartphones */
-/* Este es el contenedor que en HTML tiene el ID #productos-container.
-   Lo estamos referenciando como .catalog-grid para ser más general,
-   pero asegúrate de que el #productos-container en tu HTML tenga esta clase. */
-#productos-container { /* Asegúrate que tu HTML tiene <div id="productos-container" class="catalog-grid"> */
-    display: grid;
-    /* MODIFICACIÓN: Por defecto, 2 columnas para móviles pequeños (a partir de 360px) */
-    grid-template-columns: repeat(2, minmax(0, 1fr)); /* 2 columnas en la mayoría de los smartphones */
-    gap: 1.5rem; /* Espacio entre productos */
-    justify-items: center; /* Centra los items horizontalmente dentro de sus celdas de grid */
-    padding: 1rem 0; /* Pequeño padding vertical para la sección */
-}
-
-/* Esto asegura que si la pantalla es EXTREMADAMENTE pequeña (ej. iPhone SE en vertical),
-   vuelva a 1 columna para evitar desbordamientos. Puedes ajustar 320px si es necesario. */
-@media (max-width: 359px) { /* MODIFICACIÓN: Menos de 360px (muy pequeños) */
-    #productos-container {
-        grid-template-columns: 1fr; /* Una sola columna en pantallas muy pequeñas */
-    }
-    .product-card-small {
-        width: 90%; /* Ajusta el ancho para que no toque los bordes en móviles muy pequeños */
-        margin-bottom: 1rem; /* Espacio entre tarjetas */
-    }
-}
-
-
-@media (min-width: 768px) { /* md breakpoint */
-    #productos-container { /* Aplicar a #productos-container */
-        grid-template-columns: repeat(3, minmax(0, 1fr)); /* Tres columnas en md */
-    }
-    .modal-content {
-        max-width: 600px; /* Más ancho en md */
-        width: 80%;
-    }
-}
-@media (min-width: 1024px) { /* lg breakpoint */
-    #productos-container { /* Aplicar a #productos-container */
-        grid-template-columns: repeat(4, minmax(0, 1fr)); /* Cuatro columnas en lg */
-    }
-}
-
-/* NUEVO: Ajuste para el carrusel en pantallas muy pequeñas (smartphones) */
-/* Esto afectaría a las tarjetas dentro del carrusel, asegurando que se vean bien */
-@media (max-width: 768px) {
-    #carousel-track .product-card-small.flex-none { /* Asegura que solo aplique a los del carrusel */
-        width: 90%; /* Ocupa casi todo el ancho de la pantalla */
-        margin-right: 1rem; /* Pequeño margen entre tarjetas */
-    }
-}
-
-
-/* --- Estilos para el carrito dentro del modal --- */
 .cart-item {
     display: flex;
     align-items: center;
     margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid rgba(50, 50, 50, 0.5); /* Separador */
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(55, 65, 81, 0.5); /* border-slate-700/50 */
+}
+
+.cart-item:last-child {
+    border-bottom: none; /* No border for the last item */
 }
 
 .cart-item img {
-    width: 60px; /* Tamaño de la imagen del producto en el carrito */
-    height: 60px;
+    width: 80px;
+    height: 80px;
     object-fit: cover;
-    border-radius: 5px;
+    border-radius: 8px;
     margin-right: 1rem;
 }
 
 .cart-item-details {
     flex-grow: 1;
-    color: #E0E0E0; /* Gris claro */
 }
 
 .cart-item-details h4 {
@@ -282,6 +123,7 @@ body {
     align-items: center;
     justify-content: center;
     transition: background-color 0.2s;
+    cursor: pointer;
 }
 
 .cart-item-controls button:hover {
@@ -296,26 +138,52 @@ body {
 .cart-item-price {
     font-weight: bold;
     color: #FFFFFF;
-    margin-left: 1rem; /* Espacio entre cantidad y precio */
-    min-width: 70px; /* Asegura espacio para el precio */
-    text-align: right;
+    margin-left: 1rem;
 }
 
-/* Animaciones para la página */
-.animate-fade-in-up {
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fade-in-up 0.6s ease-out forwards;
+/* Animaciones personalizadas */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
-/* Delay para animaciones secuenciales */
-.animate-fade-in-up.delay-200 { animation-delay: 0.2s; }
-.animate-fade-in-up.delay-300 { animation-delay: 0.3s; }
-.animate-fade-in-up.delay-400 { animation-delay: 0.4s; }
-
-@keyframes fade-in-up {
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 1s ease-out forwards;
+    opacity: 0; /* Asegura que esté oculto antes de la animación */
+}
+
+.animate-fade-in-up {
+    opacity: 0; /* Oculto por defecto */
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    transform: translateY(20px);
+}
+
+.animate-fade-in-up.fade-in-up-active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Retrasos de animación */
+.animation-delay-300 { animation-delay: 0.3s; }
+.animation-delay-600 { animation-delay: 0.6s; }
+.animation-delay-900 { animation-delay: 0.9s; }
+/* Puedes añadir más si es necesario */
+
+/* Media Queries para Responsive Design (opcional, Tailwind ya hace mucho) */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%; /* Un poco más de ancho en móviles pequeños */
+        padding: 20px;
     }
 }
