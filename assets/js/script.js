@@ -1,7 +1,8 @@
 // ===============================================
 // 1. SELECTORES DE ELEMENTOS HTML (Inicialmente declarados, se asignarán dentro de DOMContentLoaded)
 // ===============================================
-let productosContainer; // Puede ser usado para un catálogo general, si lo tienes
+let productosContainer; // Contenedor para el catálogo general
+let noProductsFoundMessage; // Mensaje para cuando no hay resultados de búsqueda
 let cartButton;
 let hamburgerMenuBtn;
 let mobileMenu;
@@ -15,11 +16,11 @@ let cartTotalElement;
 let cartCountElement; // Para el botón flotante del carrito
 let cartCountDesktopElement; // Para el contador en la navegación de escritorio
 let cartCountMobileElement; // Para el contador en la navegación móvil
-let carouselTrack; // El contenedor de los ítems del carrusel, que es el #destacados-productos
+let carouselTrack; // El contenedor de los ítems del carrusel de destacados
 let carouselPrevBtn;
 let carouselNextBtn;
 let finalizePurchaseBtn;
-let destacadosSection; // El contenedor de productos destacados (será el mismo que carouselTrack)
+let destacadosSection; // La sección completa de destacados
 let mobileNavLinks;
 
 // SELECTORES PARA EL BUSCADOR
@@ -37,15 +38,16 @@ let carouselIndex = 0;
 let itemWidth = 0; // Ancho de cada ítem del carrusel, se calculará dinámicamente
 let autoScrollInterval;
 const AUTO_SCROLL_INTERVAL_TIME = 5000; // 5 segundos
-const CLONE_COUNT = 3; // Número de ítems a clonar en cada extremo para un bucle más suave
-const WHATSAPP_PHONE_NUMBER = '573174144815'; // ¡IMPORTANTE! Reemplaza con tu número de WhatsApp real (código de país + número)
+const WHATSAPP_PHONE_NUMBER = '573174144815'; // ¡IMPORTANTE! Reemplaza con tu número de WhatsApp real (código de país + número, ej: 573218765432)
+
 
 // ===============================================
 // 3. EVENTOS DE DOMContentLoaded
 // ===============================================
 document.addEventListener('DOMContentLoaded', () => {
     // Asignación de selectores
-    productosContainer = document.getElementById('productos-container'); // Si tienes un contenedor para todos los productos
+    productosContainer = document.getElementById('productos-container');
+    noProductsFoundMessage = document.getElementById('no-products-found');
     cartButton = document.getElementById('cart-button');
     hamburgerMenuBtn = document.getElementById('hamburger-menu-btn');
     mobileMenu = document.getElementById('mobile-menu');
@@ -60,9 +62,9 @@ document.addEventListener('DOMContentLoaded', () => {
     cartCountDesktopElement = document.getElementById('cart-count-desktop');
     cartCountMobileElement = document.getElementById('cart-count-mobile');
     
-    // El contenedor de productos destacados es también el track del carrusel
-    destacadosSection = document.getElementById('destacados-productos');
-    carouselTrack = destacadosSection; // ¡Importante! Ambos se refieren al mismo elemento
+    // El contenedor de productos destacados es el track del carrusel
+    carouselTrack = document.getElementById('destacados-productos-track');
+    destacadosSection = document.getElementById('destacados'); // La sección completa
 
     carouselPrevBtn = document.getElementById('carousel-prev');
     carouselNextBtn = document.getElementById('carousel-next');
@@ -190,6 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Funcionalidad de búsqueda
+    // Usar 'input' para filtrar mientras se escribe, y 'change' para asegurar al salir del input (aunque 'input' es más reactivo)
     if (productSearchInputDesktop) {
         productSearchInputDesktop.addEventListener('input', filterProducts);
     }
@@ -201,7 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
         searchButtonDesktop.addEventListener('click', () => {
             if (productSearchInputDesktop) {
                 productSearchInputDesktop.focus();
-                filterProducts();
+                filterProducts(); // Ejecutar filtro al hacer clic en el botón de búsqueda
             }
         });
     }
@@ -209,7 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
         searchButtonMobile.addEventListener('click', () => {
             if (productSearchInputMobile) {
                 productSearchInputMobile.focus();
-                filterProducts();
+                filterProducts(); // Ejecutar filtro al hacer clic en el botón de búsqueda
             }
             if (mobileMenu && !mobileMenu.classList.contains('-translate-x-full')) {
                 mobileMenu.classList.add('-translate-x-full');
@@ -226,21 +229,17 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', () => {
         // Detener auto-scroll para evitar saltos durante el redimensionamiento
         stopAutoScroll();
-        // Recalcular el ancho del ítem
-        if (carouselTrack && carouselTrack.children.length > 0) {
-            itemWidth = carouselTrack.children[0].offsetWidth;
-        }
-        // Ajustar la posición sin transición para evitar glitches
-        carouselTrack.style.transition = 'none';
-        updateCarousel();
+        // Re-inicializar el carrusel para recalcular anchos y clones
+        initCarousel(); 
         // Forzar un reflow para que la transición se aplique en el siguiente movimiento
         void carouselTrack.offsetWidth;
         // Reiniciar auto-scroll
         startAutoScroll();
     });
 
-    // Cargar productos y mostrar destacados
-    loadProducts(); // Esta función ahora inicializará el carrusel también
+    // Cargar productos, mostrar destacados e inicializar carrusel.
+    // También mostrar el catálogo completo inicialmente.
+    loadProducts(); 
     displayCart();
     updateCartCount();
 });
@@ -251,7 +250,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function loadProducts() {
     try {
-        const response = await fetch('assets/data/products.json');
+        const response = await fetch('assets/data/products.json'); // Ruta corregida
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -259,35 +258,62 @@ async function loadProducts() {
         console.log("Productos cargados:", products);
         displayFeaturedProducts(products); // Muestra solo los destacados en el carrusel
         initCarousel(); // Inicializar el carrusel después de cargar los productos y renderizar
+        displayAllProducts(); // Muestra el catálogo completo por defecto
     } catch (error) {
         console.error("Error al cargar los productos:", error);
-        if (destacadosSection) { // Usa destacadosSection ya que es el carouselTrack
-            destacadosSection.innerHTML = '<p class="text-red-500 text-center col-span-full">Error al cargar los productos. Por favor, intente de nuevo más tarde.</p>';
+        if (destacadosSection) { 
+            destacadosSection.innerHTML = '<p class="text-red-500 text-center col-span-full">Error al cargar los productos destacados. Por favor, intente de nuevo más tarde.</p>';
+        }
+        if (productosContainer) {
+            productosContainer.innerHTML = '<p class="text-red-500 text-center col-span-full">Error al cargar el catálogo de productos. Por favor, intente de nuevo más tarde.</p>';
         }
     }
 }
 
 function displayFeaturedProducts(productsToDisplay) {
-    if (!destacadosSection) {
+    if (!carouselTrack) {
         console.error("El contenedor de productos destacados (carousel-track) no se encontró en el DOM.");
         return;
     }
-    destacadosSection.innerHTML = ''; // Limpiar antes de añadir
+    // No limpiar aquí, ya que initCarousel maneja los clones.
+    // Simplemente asegúrate de que initCarousel se llame después de añadir los originales
     const featured = productsToDisplay.filter(product => product.destacado);
     
-    // Crear las tarjetas de producto y añadirlas
+    // Limpiar solo los productos no-clonados antes de re-añadir
+    Array.from(carouselTrack.children).filter(child => !child.classList.contains('cloned')).forEach(child => child.remove());
+
     featured.forEach(product => {
         const productCard = createProductCard(product);
-        destacadosSection.appendChild(productCard);
+        // Para que initCarousel pueda clonar, debemos añadir los originales primero
+        carouselTrack.appendChild(productCard);
     });
 }
 
+function displayAllProducts() {
+    if (!productosContainer) {
+        console.error("El contenedor del catálogo (#productos-container) no se encontró en el DOM.");
+        return;
+    }
+    productosContainer.innerHTML = ''; // Limpiar antes de añadir
+    noProductsFoundMessage.classList.add('hidden'); // Ocultar mensaje de no encontrados
+
+    if (products.length === 0) {
+        productosContainer.innerHTML = '<p class="text-slate-400 text-center col-span-full py-8">No hay productos disponibles en el catálogo.</p>';
+        return;
+    }
+
+    products.forEach(product => {
+        const productCard = createProductCard(product);
+        productosContainer.appendChild(productCard);
+    });
+}
+
+
 function createProductCard(product) {
     const productCard = document.createElement('div');
-    // CLASES MODIFICADAS PARA 2 PRODUCTOS POR FILA EN 'sm' y 3 en 'md'
+    // Clases para responsividad: 1 columna, 2 en sm, 3 en md, 4 en lg
     productCard.className = 'flex-shrink-0 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4 box-border animate-fade-in-up'; 
     
-    // Asegúrate de que las imágenes tengan `loading="lazy"` para mejor rendimiento
     productCard.innerHTML = `
         <div class="bg-slate-800 rounded-lg shadow-lg flex flex-col items-center text-center panel-glass h-full transform transition-transform duration-200 hover:scale-[1.03] hover:shadow-xl">
             <img src="${product.imagen}" alt="${product.nombre}" class="w-full h-48 object-cover rounded-t-lg mb-4 lazyload" loading="lazy">
@@ -297,7 +323,7 @@ function createProductCard(product) {
                     <p class="text-sm text-slate-300 mb-2">${product.descripcion}</p>
                     <p class="text-lg font-semibold text-white mb-4">$${product.precio.toLocaleString('es-CO')}</p>
                 </div>
-                <button class="add-to-cart-btn bg-yellow-500 text-slate-900 px-6 py-2 rounded-full font-semibold hover:bg-yellow-600 transition-colors duration-200 transform hover:scale-105 shadow-md">
+                <button class="add-to-cart-btn bg-yellow-500 text-slate-900 px-6 py-2 rounded-full font-semibold hover:bg-yellow-600 transition-colors duration-200 transform hover:scale-105 shadow-md" data-product-id="${product.id}">
                     Agregar al carrito
                 </button>
             </div>
@@ -307,8 +333,9 @@ function createProductCard(product) {
     // Añadir listener para el botón "Agregar al carrito"
     const addToCartBtn = productCard.querySelector('.add-to-cart-btn');
     if (addToCartBtn) {
-        addToCartBtn.addEventListener('click', () => {
-            addToCart(product.id);
+        addToCartBtn.addEventListener('click', (e) => {
+            const productId = e.currentTarget.dataset.productId;
+            addToCart(productId);
         });
     }
     return productCard;
@@ -380,10 +407,10 @@ function displayCart() {
                     </div>
                 </div>
                 <div class="flex items-center">
-                    <button class="quantity-btn bg-slate-600 text-white px-2 py-1 rounded-l transition-colors hover:bg-slate-500" data-id="${item.id}" data-action="decrease">-</button>
+                    <button class="quantity-btn bg-slate-600 text-white px-2 py-1 rounded-l transition-colors hover:bg-slate-500" data-id="${item.id}" data-action="decrease" aria-label="Disminuir cantidad de ${item.nombre}">-</button>
                     <span class="bg-slate-500 text-white px-3 py-1 font-medium">${item.quantity}</span>
-                    <button class="quantity-btn bg-slate-600 text-white px-2 py-1 rounded-r transition-colors hover:bg-slate-500" data-id="${item.id}" data-action="increase">+</button>
-                    <button class="remove-from-cart-btn bg-red-600 hover:bg-red-700 text-white p-2 rounded-full ml-3 transition-colors duration-200 transform hover:scale-110" data-id="${item.id}">
+                    <button class="quantity-btn bg-slate-600 text-white px-2 py-1 rounded-r transition-colors hover:bg-slate-500" data-id="${item.id}" data-action="increase" aria-label="Aumentar cantidad de ${item.nombre}">+</button>
+                    <button class="remove-from-cart-btn bg-red-600 hover:bg-red-700 text-white p-2 rounded-full ml-3 transition-colors duration-200 transform hover:scale-110" data-id="${item.id}" aria-label="Eliminar ${item.nombre} del carrito">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 011-1h4a1 1 0 110 2H8a1 1 0 01-1-1zm2 3a1 1 0 011-1h4a1 1 0 110 2H8a1 1 0 01-1-1zm2 3a1 1 0 011-1h4a1 1 0 110 2H8a1 1 0 01-1-1z" clip-rule="evenodd" />
                         </svg>
@@ -397,8 +424,8 @@ function displayCart() {
         // Añadir listeners para botones de cantidad y remover
         cartItemsContainer.querySelectorAll('.quantity-btn').forEach(button => {
             button.addEventListener('click', (e) => {
-                const id = e.target.dataset.id;
-                const action = e.target.dataset.action;
+                const id = e.currentTarget.dataset.id;
+                const action = e.currentTarget.dataset.action;
                 const item = cart.find(i => i.id === id);
                 if (item) {
                     let newQuantity = item.quantity;
@@ -443,76 +470,22 @@ function updateCartCount() {
 
 function initCarousel() {
     if (!carouselTrack) {
-        console.error("El carrusel-track no se encontró en el DOM.");
+        console.error("El carrusel-track (#destacados-productos-track) no se encontró en el DOM.");
         return;
     }
 
-    // Limpiar cualquier clon anterior antes de re-inicializar
-    const originalItems = Array.from(carouselTrack.children).filter(child => !child.classList.contains('cloned'));
-    carouselTrack.innerHTML = ''; // Limpiar el contenido del track
-    originalItems.forEach(item => carouselTrack.appendChild(item)); // Volver a añadir los originales
+    // Remover todos los clones existentes para re-inicializar el carrusel limpio
+    Array.from(carouselTrack.children).filter(child => child.classList.contains('cloned')).forEach(child => child.remove());
 
-    // Asegurarse de que haya items en el carrusel antes de calcular el ancho
-    if (carouselTrack.children.length > 0) {
-        // Calcular itemWidth basado en el ancho actual de la pantalla y las clases Tailwind
-        const firstItem = carouselTrack.children[0];
-        // Quitar las clases responsivas temporalmente para medir el ancho base del flex-item
-        // O más sencillo: Obtener el ancho del contenedor padre y dividir por el número de items visibles
-        const containerWidth = carouselTrack.parentElement.offsetWidth;
-        let itemsVisible;
-        if (window.innerWidth >= 1024) { // lg breakpoint
-            itemsVisible = 4;
-        } else if (window.innerWidth >= 768) { // md breakpoint
-            itemsVisible = 3;
-        } else if (window.innerWidth >= 640) { // sm breakpoint
-            itemsVisible = 2; // Dos productos por fila en móviles y tablets pequeñas
-        } else {
-            itemsVisible = 1; // Un producto por fila en pantallas muy pequeñas
-        }
-        itemWidth = containerWidth / itemsVisible;
-        
-        // Aplicar el ancho calculado a cada ítem del carrusel para que el translateX funcione correctamente
-        Array.from(carouselTrack.children).forEach(child => {
-            child.style.width = `${itemWidth}px`;
-        });
+    const originalItems = Array.from(carouselTrack.children);
+    const totalOriginalItems = originalItems.length;
 
-        // Clonar elementos para el scroll infinito
-        const totalItems = originalItems.length;
-        if (totalItems === 0) return; // No hay productos destacados, no inicializar carrusel
-
-        // Clonar los últimos CLONE_COUNT elementos y añadirlos al principio (prepend)
-        for (let i = 0; i < CLONE_COUNT; i++) {
-            const clonedItem = originalItems[totalItems - 1 - i].cloneNode(true);
-            clonedItem.classList.add('cloned'); // Marcar como clonado
-            carouselTrack.prepend(clonedItem);
-        }
-
-        // Clonar los primeros CLONE_COUNT elementos y añadirlos al final (append)
-        for (let i = 0; i < CLONE_COUNT; i++) {
-            const clonedItem = originalItems[i].cloneNode(true);
-            clonedItem.classList.add('cloned'); // Marcar como clonado
-            carouselTrack.appendChild(clonedItem);
-        }
-
-        // Ajustar la posición inicial para mostrar los elementos originales
-        carouselIndex = CLONE_COUNT; // Empezar en el primer elemento "real" después de los clones
-        carouselTrack.style.transition = 'none'; // Desactivar transición para el salto inicial
-        carouselTrack.style.transform = `translateX(${-carouselIndex * itemWidth}px)`;
-        void carouselTrack.offsetWidth; // Forzar reflow para aplicar el estilo inmediatamente
-        carouselTrack.style.transition = 'transform 0.5s ease-in-out'; // Reactivar transición
-
-        startAutoScroll(); // Iniciar el auto-scroll
-    } else {
-        console.warn("No hay elementos destacados para inicializar el carrusel.");
+    if (totalOriginalItems === 0) {
+        console.warn("No hay productos destacados para inicializar el carrusel.");
+        return;
     }
-}
 
-
-function updateCarousel() {
-    if (!carouselTrack) return;
-
-    // Recalcular itemWidth por si el tamaño de pantalla ha cambiado
-    const containerWidth = carouselTrack.parentElement.offsetWidth;
+    // Determinar cuántos ítems son visibles a la vez para calcular el número de clones y el ancho del ítem
     let itemsVisible;
     if (window.innerWidth >= 1024) { // lg breakpoint
         itemsVisible = 4;
@@ -523,39 +496,111 @@ function updateCarousel() {
     } else {
         itemsVisible = 1; // Un producto por fila en pantallas muy pequeñas
     }
-    itemWidth = containerWidth / itemsVisible;
+    
+    // Asegurarse de tener al menos 1 ítem visible para evitar división por cero
+    if (itemsVisible === 0) itemsVisible = 1; 
 
-    // Aplicar el ancho calculado a cada ítem del carrusel
+    // Calcular el número de clones necesarios para un bucle continuo
+    // Necesitamos clonar suficientes elementos para que el salto no sea visible
+    // Esto es CLONE_COUNT = itemsVisible
+    const CLONE_COUNT = itemsVisible; 
+
+    // Recalcular el ancho del ítem dinámicamente
+    const containerWidth = carouselTrack.parentElement.offsetWidth;
+    itemWidth = containerWidth / itemsVisible;
+    
+    // Aplicar el ancho calculado a cada ítem del carrusel (originales y futuros clones)
     Array.from(carouselTrack.children).forEach(child => {
         child.style.width = `${itemWidth}px`;
     });
 
+    // Clonar los últimos CLONE_COUNT elementos y añadirlos al principio (prepend)
+    for (let i = 0; i < CLONE_COUNT; i++) {
+        const clonedItem = originalItems[totalOriginalItems - 1 - i].cloneNode(true);
+        clonedItem.classList.add('cloned'); // Marcar como clonado
+        carouselTrack.prepend(clonedItem);
+    }
+
+    // Clonar los primeros CLONE_COUNT elementos y añadirlos al final (append)
+    for (let i = 0; i < CLONE_COUNT; i++) {
+        const clonedItem = originalItems[i].cloneNode(true);
+        clonedItem.classList.add('cloned'); // Marcar como clonado
+        carouselTrack.appendChild(clonedItem);
+    }
+
+    // Re-añadir listeners a los botones de "Agregar al carrito" en los clones
+    carouselTrack.querySelectorAll('.add-to-cart-btn').forEach(button => {
+        // Remover listeners previos para evitar duplicados si se re-inicializa
+        const oldClickHandler = button._clickHandler; // Usar una propiedad para guardar la referencia
+        if (oldClickHandler) {
+            button.removeEventListener('click', oldClickHandler);
+        }
+        const newClickHandler = (e) => {
+            const productId = e.currentTarget.dataset.productId;
+            addToCart(productId);
+        };
+        button.addEventListener('click', newClickHandler);
+        button._clickHandler = newClickHandler; // Guardar la referencia
+    });
+
+
+    // Ajustar la posición inicial para mostrar los elementos originales
+    carouselIndex = CLONE_COUNT; // Empezar en el primer elemento "real" después de los clones
+    carouselTrack.style.transition = 'none'; // Desactivar transición para el salto inicial
+    carouselTrack.style.transform = `translateX(${-carouselIndex * itemWidth}px)`;
+    void carouselTrack.offsetWidth; // Forzar reflow para aplicar el estilo inmediatamente
+    carouselTrack.style.transition = 'transform 0.5s ease-in-out'; // Reactivar transición
+
+    startAutoScroll(); // Iniciar el auto-scroll
+}
+
+
+function updateCarousel() {
+    if (!carouselTrack || itemWidth === 0) return;
+
+    // Recalcular itemWidth por si el tamaño de pantalla ha cambiado (aunque resize event lo debería manejar)
+    const containerWidth = carouselTrack.parentElement.offsetWidth;
+    let itemsVisible;
+    if (window.innerWidth >= 1024) { itemsVisible = 4; } 
+    else if (window.innerWidth >= 768) { itemsVisible = 3; } 
+    else if (window.innerWidth >= 640) { itemsVisible = 2; } 
+    else { itemsVisible = 1; }
+
+    const newCalculatedItemWidth = containerWidth / itemsVisible;
+    // Si el ancho calculado ha cambiado significativamente, forzar un re-init para recalcular clones si es necesario
+    if (Math.abs(newCalculatedItemWidth - itemWidth) > 1) { // Pequeña tolerancia
+        initCarousel();
+        return; // Detener esta ejecución para que initCarousel se encargue
+    }
+
     const offset = -carouselIndex * itemWidth;
     carouselTrack.style.transform = `translateX(${offset}px)`;
 
+    const totalLogicalItems = products.filter(p => p.destacado).length;
+    const totalCarouselItems = carouselTrack.children.length;
+    const CLONE_COUNT = itemsVisible; // Usar el número de items visibles como CLONE_COUNT
+
     // Lógica para el bucle infinito (sin transiciones en el salto)
     // Usar setTimeout para permitir que la transición actual termine
-    if (carouselIndex >= carouselTrack.children.length - CLONE_COUNT) {
-        // Hemos llegado al final de los elementos originales + clones finales
+    if (carouselIndex >= totalLogicalItems + CLONE_COUNT) { // Si llegamos al final de los originales + clones al final
         setTimeout(() => {
             carouselTrack.style.transition = 'none';
-            carouselIndex = CLONE_COUNT;
+            carouselIndex = CLONE_COUNT; // Volver al inicio de los originales
             carouselTrack.style.transform = `translateX(${-carouselIndex * itemWidth}px)`;
             void carouselTrack.offsetWidth; // Forzar reflow
             carouselTrack.style.transition = 'transform 0.5s ease-in-out';
         }, 500); // Duración de la transición
-    } else if (carouselIndex < CLONE_COUNT) {
-        // Hemos llegado al principio de los elementos originales - clones iniciales
+    } else if (carouselIndex < CLONE_COUNT) { // Si llegamos al principio de los originales - clones al inicio
         setTimeout(() => {
             carouselTrack.style.transition = 'none';
-            // El cálculo de esta posición es crucial: es el último elemento original
-            carouselIndex = carouselTrack.children.length - (CLONE_COUNT * 2); 
+            carouselIndex = totalLogicalItems + CLONE_COUNT - 1; // Volver al final de los originales (el último clon antes del bucle)
             carouselTrack.style.transform = `translateX(${-carouselIndex * itemWidth}px)`;
             void carouselTrack.offsetWidth; // Forzar reflow
             carouselTrack.style.transition = 'transform 0.5s ease-in-out';
         }, 500); // Duración de la transición
     }
 }
+
 
 function nextCarouselItem() {
     stopAutoScroll(); // Detener para navegación manual
@@ -593,40 +638,42 @@ function filterProducts() {
     const searchTermMobile = productSearchInputMobile ? productSearchInputMobile.value.toLowerCase() : '';
     const searchTerm = searchTermDesktop || searchTermMobile; // Usar el término de búsqueda activo
 
-    const filtered = products.filter(product =>
-        product.nombre.toLowerCase().includes(searchTerm) ||
-        product.descripcion.toLowerCase().includes(searchTerm) ||
-        product.categoria.toLowerCase().includes(searchTerm)
-    );
-    
-    // Si la búsqueda es activa, muestra resultados en el contenedor general de productos
-    if (productosContainer) {
-        productosContainer.innerHTML = ''; // Limpiar el contenedor general
-        if (searchTerm.length > 0) { // Solo mostrar resultados de búsqueda si hay un término
-            if (filtered.length > 0) {
-                 filtered.forEach(product => {
-                    const productCard = createProductCard(product); // Reutiliza la función para crear tarjetas
-                    productosContainer.appendChild(productCard);
-                });
-            } else {
-                productosContainer.innerHTML = '<p class="text-white text-center col-span-full py-8">No se encontraron productos que coincidan con la búsqueda.</p>';
-            }
-            // Ocultar la sección de destacados si hay búsqueda activa
-            if (document.getElementById('destacados')) {
-                document.getElementById('destacados').style.display = 'none'; 
-                stopAutoScroll(); 
-            }
+    if (!productosContainer || !destacadosSection || !noProductsFoundMessage) {
+        console.error("Elementos de contenedor de productos o destacados no encontrados.");
+        return;
+    }
+
+    if (searchTerm.length > 0) {
+        const filtered = products.filter(product =>
+            product.nombre.toLowerCase().includes(searchTerm) ||
+            product.descripcion.toLowerCase().includes(searchTerm) ||
+            product.categoria.toLowerCase().includes(searchTerm)
+        );
+        
+        productosContainer.innerHTML = ''; // Limpiar el contenedor del catálogo
+        if (filtered.length > 0) {
+             filtered.forEach(product => {
+                const productCard = createProductCard(product); // Reutiliza la función para crear tarjetas
+                productosContainer.appendChild(productCard);
+            });
+            noProductsFoundMessage.classList.add('hidden'); // Ocultar mensaje si hay resultados
         } else {
-            // Si el término de búsqueda está vacío, volver a mostrar los productos destacados en su sección
-            if (document.getElementById('destacados')) {
-                document.getElementById('destacados').style.display = 'block'; 
-                displayFeaturedProducts(products); 
-                initCarousel(); 
-            }
-            productosContainer.innerHTML = ''; // Vaciar el contenedor del catálogo si no hay búsqueda
+            productosContainer.innerHTML = ''; // Asegurar que esté vacío si no hay resultados
+            noProductsFoundMessage.classList.remove('hidden'); // Mostrar mensaje de no encontrados
         }
+        
+        destacadosSection.style.display = 'none'; // Ocultar la sección de destacados
+        stopAutoScroll(); // Detener el carrusel
+        // Opcional: Desplazar al catálogo si la búsqueda se inicia desde la navegación
+        // window.location.href = '#catalogo';
+
     } else {
-        console.warn("No se encontró el contenedor de catálogo general (#productos-container). La búsqueda se realizará solo de forma lógica.");
+        // Si el término de búsqueda está vacío, volver a mostrar el catálogo completo y destacados
+        destacadosSection.style.display = 'block'; // Mostrar la sección de destacados
+        displayFeaturedProducts(products); // Recargar destacados
+        initCarousel(); // Re-inicializar el carrusel
+        displayAllProducts(); // Mostrar todos los productos en el catálogo general
+        noProductsFoundMessage.classList.add('hidden'); // Ocultar mensaje de no encontrados
     }
 }
 
@@ -671,7 +718,7 @@ function showNotification(message, type = 'info') {
 
     notification.innerHTML = `
         <span>${message}</span>
-        <button class="ml-4 text-white hover:text-gray-200" onclick="this.parentNode.remove()">
+        <button class="ml-4 text-white hover:text-gray-200" onclick="this.parentNode.remove()" aria-label="Cerrar notificación">
             &times;
         </button>
     `;
