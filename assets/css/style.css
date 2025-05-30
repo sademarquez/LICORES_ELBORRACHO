@@ -34,7 +34,7 @@ body {
 }
 
 .modal-content {
-    background-color: #fefefe;
+    background-color: #fefefe; /* Será sobreescrito por panel-glass */
     margin: auto; /* Ajustado para auto-centrado con flexbox */
     padding: 30px;
     border-radius: 12px;
