@@ -7,10 +7,12 @@ body {
 
 /* Estilo para el panel-glass (efecto esmerilado) */
 .panel-glass {
-    /* MODIFICACIÓN: Mayor transparencia y desenfoque para el header y otros elementos */
-    background-color: rgba(0, 0, 0, 0.4); /* Negro con 40% de opacidad para mayor transparencia */
-    backdrop-filter: blur(15px); /* Mayor desenfoque */
-    -webkit-backdrop-filter: blur(15px); /* Compatibilidad con navegadores Webkit */
+    /* EDICIÓN: Reducción de la opacidad y el desenfoque para que sea menos intrusivo. */
+    /* Anterior: background-color: rgba(0, 0, 0, 0.4); */
+    background-color: rgba(0, 0, 0, 0.2); /* Más transparente (20% de opacidad) */
+    /* Anterior: backdrop-filter: blur(15px); */
+    backdrop-filter: blur(8px); /* Desenfoque reducido de 15px a 8px */
+    -webkit-backdrop-filter: blur(8px); /* Compatibilidad con navegadores Webkit */
     border: 1px solid rgba(26, 26, 26, 0.3); /* Borde más sutil */
 }
 
@@ -24,8 +26,10 @@ body {
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0,0,0,0.9); /* Fondo oscuro más opaco */
-    backdrop-filter: blur(5px);
+    /* EDICIÓN: Reducción de la opacidad del fondo del modal para que el contenido de fondo sea más visible */
+    /* Anterior: background-color: rgba(0,0,0,0.9); */
+    background-color: rgba(0,0,0,0.7); /* Fondo oscuro menos opaco (70%) */
+    backdrop-filter: blur(5px); /* Se mantiene el desenfoque para el fondo del modal, es un efecto deseado */
     -webkit-backdrop-filter: blur(5px);
     display: flex; /* Centrar el contenido con flexbox */
     align-items: center;
