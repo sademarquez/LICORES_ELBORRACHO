@@ -1,12 +1,10 @@
 /* Estilos generales */
 body {
-     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    background-image: url('assets/img/static_background.jpg'); /* Asegúrate de que tu logo esté aquí */
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-color: rgba(0, 0, 0, 0.5); 
+   -webkit-font-smoothing: antialiased;
+
+    -moz-osx-font-smoothing: grayscale;
+
+    background-color: #0000000 /* Negro puro para el fondo del body */
 }
 
 /* Estilo para el panel-glass (efecto esmerilado) */
