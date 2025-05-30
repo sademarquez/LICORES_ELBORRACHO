@@ -7,6 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico">
+    <script src="https://kit.fontawesome.com/your-font-awesome-kit.js" crossorigin="anonymous"></script> 
 </head>
 <body class="bg-slate-900 text-white font-sans">
 
@@ -26,8 +27,14 @@
             </nav>
 
             <div class="flex items-center space-x-4">
+                <button id="search-button-desktop" class="hidden md:block text-yellow-400 hover:text-yellow-500 text-3xl transition duration-300">
+                    <i class="fas fa-search"></i>
+                </button>
                 <button id="nav-cart-button-desktop" class="hidden md:block text-yellow-400 hover:text-yellow-500 text-3xl transition duration-300 relative">
                     🛒 <span id="cart-count-desktop" class="absolute top-0 right-0 -mt-1 -mr-1 bg-red-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                </button>
+                <button id="search-button-mobile" class="md:hidden text-yellow-400 hover:text-yellow-500 text-3xl transition duration-300 mr-2">
+                    <i class="fas fa-search"></i>
                 </button>
                 <button id="hamburger-menu-btn" class="md:hidden text-yellow-400 hover:text-yellow-500 text-3xl transition duration-300">
                     ☰
@@ -51,7 +58,7 @@
         </ul>
     </div>
 
-    <section id="home" class="relative h-screen bg-cover bg-center flex items-center justify-center text-center px-4" style="background-image: url('assets/img/static_background.jpg');">
+    <section id="home" class="relative h-screen bg-cover bg-center flex items-center justify-center text-center px-4" style="background-image: url('assets/img/hero-bg.jpg');">
         <div class="absolute inset-0 bg-black opacity-60"></div>
         <div class="relative z-10 p-8 rounded-lg panel-glass border border-slate-700/50">
             <h1 class="text-5xl md:text-7xl font-extrabold text-yellow-400 mb-4 animate-fade-in-up">Licores El Borracho</h1>
@@ -87,6 +94,17 @@
             <h2 class="text-5xl font-extrabold text-yellow-400 text-center mb-12 animate-fade-in-up">
                 Nuestro Catálogo
             </h2>
+
+            <div class="mb-8 flex justify-center">
+                <div class="relative w-full max-w-md">
+                    <input type="text" id="product-search-input" placeholder="Buscar productos..."
+                           class="w-full py-3 pl-12 pr-4 rounded-full bg-slate-700/70 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition duration-300 panel-glass">
+                    <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+                        <i class="fas fa-search text-gray-400"></i>
+                    </div>
+                </div>
+            </div>
+
             <div id="productos-container" class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                 </div>
         </div>
@@ -160,6 +178,6 @@
         </div>
     </div>
 
-    <script src="https://kit.fontawesome.com/your-font-awesome-kit.js" crossorigin="anonymous"></script> <script src="assets/js/script.js"></script>
+    <script src="assets/js/script.js"></script>
 </body>
 </html>
