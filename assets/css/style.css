@@ -15,7 +15,7 @@ body {
 
 /* --- ESTILOS DEL MODAL (CARRITO) --- */
 .modal {
-    display: none;
+    display: none; /* CORRECCIÓN CLAVE: El modal NO se muestra por defecto */
     position: fixed;
     z-index: 1000;
     left: 0;
@@ -27,9 +27,13 @@ body {
     background-color: rgba(0,0,0,0.2); /* Negro con 20% de opacidad */
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
-    display: flex;
+    /* Estas propiedades se aplicarán solo cuando la clase 'active' se añada */
     align-items: center;
     justify-content: center;
+}
+
+.modal.active {
+    display: flex; /* Muestra el modal cuando tiene la clase 'active' */
 }
 
 .modal-content {
@@ -141,29 +145,22 @@ body {
 }
 
 /* Estilos para el campo de búsqueda */
-#product-search-input {
+/* Asegúrate de que este ID corresponda al input de búsqueda de escritorio */
+#product-search-input, #product-search-input-mobile {
     color: #FFD700;
 }
 
-/* --- ESTILOS PARA LA IMAGEN HERO (EJEMPLO) --- */
-/*
-Si tu imagen hero está dentro de una sección o div, puedes aplicar estilos a ese contenedor
-y a la imagen dentro para asegurar que se adapte.
 
-Ejemplo de HTML:
-<section class="hero-section">
-    <img src="assets/img/hero-image.jpg" alt="Imagen de fondo de licores" class="hero-image">
-    <div class="hero-content">
-        // Contenido de tu hero
-    </div>
-</section>
-*/
-
+/* --- ESTILOS PARA LA IMAGEN HERO --- */
 .hero-section {
     position: relative;
     width: 100%;
-    height: 60vh; /* Altura adaptable, ajusta según necesidad */
+    height: 100vh; /* Ocupa la altura completa de la ventana */
     overflow: hidden; /* Asegura que la imagen no se desborde */
+    display: flex; /* Asegura que el contenido se centre */
+    align-items: center; /* Centra verticalmente el contenido */
+    justify-content: center; /* Centra horizontalmente el contenido */
+    text-align: center;
 }
 
 .hero-image {
@@ -172,12 +169,13 @@ Ejemplo de HTML:
     object-fit: cover; /* Recorta la imagen para cubrir el contenedor manteniendo la proporción */
     object-position: center; /* Centra la imagen en el contenedor */
     display: block; /* Elimina espacio extra debajo de la imagen */
+    z-index: 0; /* Asegura que la imagen esté detrás del contenido */
 }
 
 /* Media Query para ajustar la altura en móviles si es necesario */
 @media (max-width: 768px) {
     .hero-section {
-        height: 40vh; /* Menor altura en dispositivos móviles */
+        height: 60vh; /* Menor altura en dispositivos móviles para dejar espacio a otros elementos */
     }
 }
 
@@ -220,6 +218,7 @@ Ejemplo de HTML:
 .animation-delay-600 { animation-delay: 0.6s; }
 .animation-delay-900 { animation-delay: 0.9s; }
 
+/* Media query para el modal en móvil */
 @media (max-width: 768px) {
     .modal-content {
         width: 95%;
