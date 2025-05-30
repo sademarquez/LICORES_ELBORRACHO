@@ -11,6 +11,8 @@ body {
     backdrop-filter: blur(15px); /* Mayor desenfoque */
     -webkit-backdrop-filter: blur(15px); /* Compatibilidad con navegadores Webkit */
     border: 1px solid rgba(26, 26, 26, 0.3); /* Borde más sutil */
+    /* Agregado para un mejor efecto visual */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2), 0 10px 20px rgba(0, 0, 0, 0.15);
 }
 
 /* --- ESTILOS DEL MODAL (CARRITO) --- */
@@ -24,146 +26,91 @@ body {
     height: 100%;
     overflow: auto;
     /* MODIFICACIÓN: Menor opacidad de fondo para el modal */
-    background-color: rgba(0,0,0,0.2); /* Negro con 20% de opacidad */
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    /* Estas propiedades se aplicarán solo cuando la clase 'active' se añada */
-    align-items: center;
-    justify-content: center;
-}
-
-.modal.active {
-    display: flex; /* Muestra el modal cuando tiene la clase 'active' */
+    background-color: rgba(0,0,0,0.4); /* Negro con 40% de opacidad, ajustado para mejor contraste */
+    backdrop-filter: blur(8px); /* Reducido un poco para que el fondo del modal sea más claro */
+    -webkit-backdrop-filter: blur(8px);
+    justify-content: center; /* Centrar horizontalmente */
+    align-items: center; /* Centrar verticalmente */
 }
 
 .modal-content {
-    background-color: #1a202c;
-    margin: auto;
+    background-color: #fefefe;
+    margin: auto; /* Ajustado para auto-centrado con flexbox */
     padding: 30px;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 500px;
+    border-radius: 12px;
+    /* Sombras más pronunciadas para el modal */
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), 0 5px 15px rgba(0, 0, 0, 0.2);
     position: relative;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    transform: translateY(-50px);
+    width: 90%; /* Ajuste para móviles */
+    max-width: 500px; /* Ancho máximo para pantallas grandes */
+    box-sizing: border-box; /* Incluir padding y border en el ancho */
+    transform: translateY(-50px); /* Ligeramente hacia arriba para efecto de aparición */
     opacity: 0;
-    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+    animation: fadeInModal 0.3s ease-out forwards;
 }
 
-.modal.active .modal-content {
-    transform: translateY(0);
-    opacity: 1;
+@keyframes fadeInModal {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 
 .close-button {
-    color: #aaaaaa;
+    color: #aaa;
+    position: absolute;
+    top: 15px;
+    right: 25px;
     font-size: 36px;
     font-weight: bold;
-    position: absolute;
-    top: 10px;
-    right: 15px;
     cursor: pointer;
-    transition: color 0.2s;
+    transition: color 0.3s ease;
 }
 
 .close-button:hover,
 .close-button:focus {
-    color: #FFD700;
+    color: #f00;
     text-decoration: none;
-    cursor: pointer;
 }
 
-.cart-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 1rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid rgba(55, 65, 81, 0.5);
-}
-
-.cart-item:last-child {
-    border-bottom: none;
-}
-
-.cart-item img {
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
-    border-radius: 8px;
-    margin-right: 1rem;
-}
-
-.cart-item-details {
-    flex-grow: 1;
-}
-
-.cart-item-details h4 {
-    font-size: 1.1rem;
-    font-weight: bold;
-    color: #FFFFFF;
-}
-
-.cart-item-details p {
-    font-size: 0.9rem;
-    color: #A0A0A0;
-}
-
-.cart-item-controls {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.cart-item-controls button {
-    background-color: #FFD700;
-    color: #000000;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    font-weight: bold;
+/* Estilos para la sección hero */
+.hero-section {
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Esto da un efecto parallax */
+    position: relative;
+    height: 100vh; /* Ocupa toda la altura de la ventana */
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background-color 0.2s;
-    cursor: pointer;
+    color: white;
 }
 
-.cart-item-controls button:hover {
-    background-color: #FFA500;
-}
-
-.cart-item-quantity {
-    font-weight: bold;
-    color: #FFFFFF;
-}
-
-.cart-item-price {
-    font-weight: bold;
-    color: #FFFFFF;
-    margin-left: 1rem;
-}
-
-/* Estilos para el campo de búsqueda */
-/* Asegúrate de que este ID corresponda al input de búsqueda de escritorio */
-#product-search-input, #product-search-input-mobile {
-    color: #FFD700;
-}
-
-
-/* --- ESTILOS PARA LA IMAGEN HERO --- */
-.hero-section {
-    position: relative;
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: 100vh; /* Ocupa la altura completa de la ventana */
-    overflow: hidden; /* Asegura que la imagen no se desborde */
-    display: flex; /* Asegura que el contenido se centre */
-    align-items: center; /* Centra verticalmente el contenido */
-    justify-content: center; /* Centra horizontalmente el contenido */
-    text-align: center;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Oscurece la imagen de fondo */
+    z-index: 1;
 }
 
-.hero-image {
+.hero-section .container {
+    position: relative; /* Asegura que el contenido esté sobre el overlay */
+    z-index: 2;
+}
+
+.hero-section img {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover; /* Recorta la imagen para cubrir el contenedor manteniendo la proporción */
@@ -213,15 +160,41 @@ body {
     transform: translateY(0);
 }
 
-/* Retrasos de animación */
-.animation-delay-300 { animation-delay: 0.3s; }
-.animation-delay-600 { animation-delay: 0.6s; }
-.animation-delay-900 { animation-delay: 0.9s; }
+/* Estilos para el carrusel (se complementan con Tailwind CSS) */
+.carousel-track {
+    display: flex;
+    /* La transición se maneja en JS para controlar la velocidad */
+    /* overflow-x: hidden; */ /* Esto lo manejamos con el div padre "overflow-hidden" */
+}
 
-/* Media query para el modal en móvil */
-@media (max-width: 768px) {
-    .modal-content {
-        width: 95%;
-        padding: 20px;
-    }
+/* Estilos de notificación */
+#notification-container {
+    pointer-events: none; /* Permite clics a través del contenedor */
+    z-index: 1000;
+}
+
+.notification-info {
+    background-color: #2196F3; /* Azul */
+}
+
+.notification-success {
+    background-color: #4CAF50; /* Verde */
+}
+
+.notification-warning {
+    background-color: #ff9800; /* Naranja */
+}
+
+.notification-error {
+    background-color: #f44336; /* Rojo */
+}
+
+.notification-info, .notification-success, .notification-warning, .notification-error {
+    animation: fadeInUp 0.5s ease-out forwards;
+}
+
+/* Mejoras para los controles del carrusel, si se desean */
+.carousel-prev, .carousel-next {
+    /* Mayor contraste y un ligero efecto de sombra */
+    text-shadow: 0 0 5px rgba(0,0,0,0.5);
 }
