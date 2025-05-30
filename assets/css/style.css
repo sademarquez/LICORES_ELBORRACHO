@@ -2,7 +2,7 @@
 body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: #000000.3; /* Negro puro para el fondo del body */
+   background-color: rgba(0, 0, 0, 0.7); /* Negro puro para el fondo del body */
 }
 
 /* Estilo para el panel-glass (efecto esmerilado) */
