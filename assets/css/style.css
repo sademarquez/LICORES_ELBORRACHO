@@ -9,8 +9,8 @@ background-color: black;
 /* Estilo para el panel-glass (efecto esmerilado) */
 .panel-glass {
     background-color: rgba(0, 0, 0, 0.2); /* Negro con 40% de opacidad para mayor transparencia */
-    backdrop-filter: blur(5px); /* Mayor desenfoque */
-    -webkit-backdrop-filter: blur(5px); /* Compatibilidad con navegadores Webkit */
+ 
+    -webkit-backdrop-filter: blur(15px); /* Compatibilidad con navegadores Webkit */
     border: 1px solid rgba(26, 26, 26, 0.3); /* Borde más sutil */
     /* Agregado para un mejor efecto visual */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2), 0 10px 20px rgba(0, 0, 0, 0.15);
