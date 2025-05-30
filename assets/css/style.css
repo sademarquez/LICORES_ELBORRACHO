@@ -4,7 +4,7 @@ body {
 
     -moz-osx-font-smoothing: grayscale;
 
-    background-color: #0000000 /* Negro puro para el fondo del body */
+    background-color: #0000000; /* Negro puro para el fondo del body */
 }
 
 /* Estilo para el panel-glass (efecto esmerilado) */
