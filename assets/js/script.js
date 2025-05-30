@@ -45,7 +45,8 @@ const AUTO_SCROLL_DELAY = 3000; // Retraso en milisegundos para el auto-scroll (
 // Carga los productos desde products.json
 const loadProducts = async () => {
     try {
-        const response = await fetch('assets/json/products.json');
+        // CAMBIO SOLICITADO: Ajustar la ruta del archivo products.json a 'assets/data/products.json'
+        const response = await fetch('assets/data/products.json');
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -53,6 +54,8 @@ const loadProducts = async () => {
         renderProducts(products); // Renderiza todos los productos inicialmente
         renderFeaturedProducts(products); // Renderiza los productos destacados en el carrusel
         updateCartCount(); // Actualiza el contador del carrito al cargar la página
+        calculateItemWidth(); // Calcular el ancho del ítem después de renderizar el carrusel
+        startAutoScroll(); // Iniciar el auto-scroll del carrusel
     } catch (error) {
         console.error('Error al cargar los productos:', error);
         if (productosContainer) {
@@ -78,93 +81,73 @@ const renderProducts = (productsToRender) => {
         productCard.innerHTML = `
             <img src="${product.imagen}" alt="${product.nombre}" class="w-full h-48 object-cover">
             <div class="p-4 flex-grow flex flex-col">
-                <h3 class="text-xl font-bold mb-2 text-yellow-400">${product.nombre}</h3>
-                <p class="text-gray-300 text-sm mb-2 flex-grow">${product.descripcion}</p>
-                <p class="text-yellow-300 font-bold text-lg mb-2">$${product.precio.toLocaleString('es-CO')}</p>
-                <button class="add-to-cart-btn bg-yellow-500 text-slate-900 px-4 py-2 rounded-full font-bold hover:bg-yellow-600 transition-colors self-start" data-product-id="${product.id}">
-                    Añadir al carrito
-                </button>
-            </div>
-        `;
-        productosContainer.appendChild(productCard);
-    });
-
-    // Añade event listeners a los botones "Añadir al carrito" después de renderizar
-    document.querySelectorAll('.add-to-cart-btn').forEach(button => {
-        button.addEventListener('click', (event) => {
-            const productId = event.target.dataset.productId;
-            const productToAdd = products.find(p => p.id === productId);
-            if (productToAdd) {
-                addToCart(productToAdd);
-            }
-        });
-    });
-};
-
-// Renderiza los productos destacados en el carrusel
-const renderFeaturedProducts = (allProducts) => {
-    if (!carouselTrack) {
-        console.error('El track del carrusel (carouselTrack) no ha sido encontrado.');
-        return;
-    }
-    const featured = allProducts.filter(product => product.destacado);
-    carouselTrack.innerHTML = ''; // Limpiar antes de renderizar
-
-    if (featured.length === 0) {
-        carouselTrack.innerHTML = '<p class="text-gray-400 text-center col-span-full">No hay productos destacados.</p>';
-        return;
-    }
-
-    featured.forEach(product => {
-        const carouselItem = document.createElement('div');
-        carouselItem.className = 'carousel-item flex-shrink-0 w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 p-4'; // Clases para responsive
-        carouselItem.innerHTML = `
-            <div class="bg-slate-800/80 panel-glass rounded-lg shadow-lg overflow-hidden flex flex-col h-full transform transition-transform duration-300 hover:scale-105">
-                <img src="${product.imagen}" alt="${product.nombre}" class="w-full h-48 object-cover">
-                <div class="p-4 flex-grow flex flex-col">
-                    <h3 class="text-xl font-bold mb-2 text-yellow-400">${product.nombre}</h3>
-                    <p class="text-gray-300 text-sm mb-2 flex-grow">${product.descripcion}</p>
-                    <p class="text-yellow-300 font-bold text-lg mb-2">$${product.precio.toLocaleString('es-CO')}</p>
-                    <button class="add-to-cart-btn bg-yellow-500 text-slate-900 px-4 py-2 rounded-full font-bold hover:bg-yellow-600 transition-colors self-start" data-product-id="${product.id}">
+                <h3 class="text-xl font-bold mb-2 text-white">${product.nombre}</h3>
+                <p class="text-gray-400 text-sm mb-2 flex-grow">${product.descripcion}</p>
+                <div class="flex justify-between items-center mt-auto">
+                    <p class="text-yellow-300 font-bold text-lg">$${product.precio.toLocaleString('es-CO')}</p>
+                    <button class="add-to-cart-btn bg-yellow-500 text-slate-900 px-4 py-2 rounded-full font-bold hover:bg-yellow-600 transition-colors" data-product-id="${product.id}">
                         Añadir al carrito
                     </button>
                 </div>
             </div>
         `;
-        carouselTrack.appendChild(carouselItem);
+        productosContainer.appendChild(productCard);
     });
-
-    // Calcular el ancho del ítem después de que se han renderizado
-    // Esto debe hacerse después de que los elementos están en el DOM
-    setTimeout(() => {
-        if (carouselTrack.children.length > 0) {
-            itemWidth = carouselTrack.children[0].offsetWidth;
-            // Ajustar el transform para que el carrusel empiece correctamente
-            carouselTrack.style.transform = `translateX(-${carouselIndex * itemWidth}px)`;
-            startAutoScroll(); // Iniciar el auto-scroll una vez que los ítems están cargados
-        }
-    }, 100); // Pequeño retraso para asegurar que los elementos se han renderizado
+    addAddToCartEventListeners(); // Añadir event listeners después de renderizar
 };
 
+// Renderiza productos destacados en el carrusel
+const renderFeaturedProducts = (productsToRender) => {
+    if (!carouselTrack) {
+        console.error('El contenedor del carrusel (carouselTrack) no ha sido encontrado.');
+        return;
+    }
+    carouselTrack.innerHTML = '';
+    const featured = productsToRender.filter(product => product.destacado);
+    if (featured.length === 0) {
+        carouselTrack.innerHTML = '<p class="text-gray-400 text-center col-span-full">No se encontraron productos destacados.</p>';
+        return;
+    }
+    featured.forEach(product => {
+        const productCard = document.createElement('div');
+        // Asegúrate de que los ítems del carrusel tengan una clase para identificarlos (ej. carousel-item)
+        productCard.className = 'carousel-item bg-slate-800/80 panel-glass rounded-lg shadow-lg overflow-hidden flex flex-col items-center p-4 m-2 flex-none w-64 transform transition-transform duration-300 hover:scale-105 animate-fade-in-up';
+        productCard.innerHTML = `
+            <img src="${product.imagen}" alt="${product.nombre}" class="w-full h-40 object-cover mb-4 rounded">
+            <h3 class="text-xl font-bold mb-1 text-white">${product.nombre}</h3>
+            <p class="text-gray-400 text-center mb-2 flex-grow">${product.descripcion.substring(0, 70)}...</p>
+            <p class="text-yellow-300 font-bold text-lg mb-4">$${product.precio.toLocaleString('es-CO')}</p>
+            <button class="add-to-cart-btn bg-yellow-500 text-slate-900 px-4 py-2 rounded-full font-bold hover:bg-yellow-600 transition-colors" data-product-id="${product.id}">
+                Añadir al carrito
+            </button>
+        `;
+        carouselTrack.appendChild(productCard);
+    });
+    // Call calculateItemWidth here after rendering to ensure it's correct
+    calculateItemWidth();
+};
 
 // ==============================================
 // 4. FUNCIONES DEL CARRUSEL
 // ==============================================
 
 const moveCarousel = (direction) => {
-    const totalItems = carouselTrack.children.length;
-    const itemsInView = Math.floor(carouselTrack.offsetWidth / itemWidth); // Número de ítems visibles
-    
+    if (!carouselTrack || itemWidth === 0) return;
+
     if (direction === 'next') {
         carouselIndex++;
-        if (carouselIndex > totalItems - itemsInView) {
-            carouselIndex = 0; // Vuelve al principio
+        // Para ciclo infinito: si llega al final, vuelve al inicio
+        if (carouselIndex >= carouselTrack.children.length) {
+            carouselIndex = 0;
         }
-    } else { // 'prev'
+    } else if (direction === 'prev') {
         carouselIndex--;
+        // Para ciclo infinito: si llega al inicio, va al final
         if (carouselIndex < 0) {
-            carouselIndex = totalItems - itemsInView; // Va al final
+            carouselIndex = carouselTrack.children.length - 1;
         }
+    } else if (typeof direction === 'number') { // Allow direct index setting for resize
+        carouselIndex = direction;
     }
     carouselTrack.style.transform = `translateX(-${carouselIndex * itemWidth}px)`;
 };
@@ -181,6 +164,26 @@ const resetAutoScroll = () => {
     startAutoScroll();
 };
 
+// FUNCIÓN para calcular el ancho del ítem del carrusel
+const calculateItemWidth = () => {
+    if (carouselTrack && carouselTrack.children.length > 0) {
+        // Asegúrate de que el carrusel se recalcule correctamente en cambios de tamaño
+        // Calcula el ancho de un ítem incluyendo sus márgenes si los tiene (asumiendo m-2 = margin 0.5rem = 8px)
+        const firstItem = carouselTrack.children[0];
+        const itemComputedStyle = getComputedStyle(firstItem);
+        const marginX = parseFloat(itemComputedStyle.marginLeft) + parseFloat(itemComputedStyle.marginRight);
+        itemWidth = firstItem.offsetWidth + marginX;
+        // Ajusta la posición del carrusel si es necesario después de un redimensionamiento
+        moveCarousel(carouselIndex); // Mueve a la posición actual para recalcular el transform
+    } else {
+        itemWidth = 0;
+    }
+};
+
+// Event listener para el redimensionamiento de la ventana
+window.addEventListener('resize', calculateItemWidth);
+
+
 // ==============================================
 // 5. FUNCIONES DEL CARRITO
 // ==============================================
@@ -196,10 +199,9 @@ const addToCart = (product) => {
     saveCart();
     renderCartItems();
     updateCartCount();
-    showToast(`${product.nombre} añadido al carrito!`); // Mostrar toast
 };
 
-// Remover producto del carrito
+// Eliminar producto del carrito
 const removeFromCart = (productId) => {
     cart = cart.filter(item => item.id !== productId);
     saveCart();
@@ -207,7 +209,7 @@ const removeFromCart = (productId) => {
     updateCartCount();
 };
 
-// Actualizar cantidad de producto en el carrito
+// Actualizar cantidad de un producto en el carrito
 const updateQuantity = (productId, change) => {
     const item = cart.find(item => item.id === productId);
     if (item) {
@@ -227,43 +229,48 @@ const saveCart = () => {
     localStorage.setItem('cart', JSON.stringify(cart));
 };
 
-// Renderizar elementos del carrito en el modal
+// Renderizar ítems del carrito en el modal
 const renderCartItems = () => {
-    if (!cartItemsContainer || !cartTotalElement) {
-        console.error('Elementos del carrito no encontrados en el DOM.');
+    if (!cartItemsContainer) {
+        console.error('El contenedor de ítems del carrito (cartItemsContainer) no ha sido encontrado.');
         return;
     }
-
-    cartItemsContainer.innerHTML = ''; // Limpiar el contenedor
+    cartItemsContainer.innerHTML = '';
     let total = 0;
-
     if (cart.length === 0) {
         cartItemsContainer.innerHTML = '<p class="text-gray-400 text-center">Tu carrito está vacío.</p>';
+        if (finalizePurchaseBtn) {
+            finalizePurchaseBtn.disabled = true;
+            finalizePurchaseBtn.classList.add('opacity-50', 'cursor-not-allowed');
+        }
     } else {
+        if (finalizePurchaseBtn) {
+            finalizePurchaseBtn.disabled = false;
+            finalizePurchaseBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+        }
         cart.forEach(item => {
-            const itemElement = document.createElement('div');
-            itemElement.className = 'cart-item flex items-center mb-4 pb-4 border-b border-slate-700/50';
-            itemElement.innerHTML = `
-                <img src="${item.imagen}" alt="${item.nombre}" class="w-20 h-20 object-cover rounded-lg mr-4">
-                <div class="cart-item-details flex-grow">
-                    <h4 class="font-bold text-yellow-400">${item.nombre}</h4>
-                    <p class="text-gray-300 text-sm">$${item.precio.toLocaleString('es-CO')}</p>
+            const cartItemElement = document.createElement('div');
+            cartItemElement.className = 'cart-item';
+            cartItemElement.innerHTML = `
+                <img src="${item.imagen}" alt="${item.nombre}">
+                <div class="cart-item-details">
+                    <h4>${item.nombre}</h4>
+                    <p>Precio: $${item.precio.toLocaleString('es-CO')}</p>
                 </div>
-                <div class="cart-item-controls flex items-center">
-                    <button class="bg-yellow-500 text-slate-900 w-7 h-7 rounded-full flex items-center justify-center font-bold hover:bg-yellow-600 transition-colors" data-id="${item.id}" data-action="decrease">-</button>
-                    <span class="cart-item-quantity text-lg mx-2">${item.quantity}</span>
-                    <button class="bg-yellow-500 text-slate-900 w-7 h-7 rounded-full flex items-center justify-center font-bold hover:bg-yellow-600 transition-colors" data-id="${item.id}" data-action="increase">+</button>
-                    <button class="ml-4 text-red-500 hover:text-red-600 transition-colors" data-id="${item.id}" data-action="remove">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                    </button>
+                <div class="cart-item-controls">
+                    <button data-id="${item.id}" data-action="decrease">-</button>
+                    <span class="cart-item-quantity">${item.quantity}</span>
+                    <button data-id="${item.id}" data-action="increase">+</button>
+                    <button data-id="${item.id}" data-action="remove" class="ml-2 bg-red-600 hover:bg-red-700 text-white w-8 h-8 rounded-full flex items-center justify-center">🗑️</button>
                 </div>
+                <span class="cart-item-price">$${(item.precio * item.quantity).toLocaleString('es-CO')}</span>
             `;
-            cartItemsContainer.appendChild(itemElement);
+            cartItemsContainer.appendChild(cartItemElement);
             total += item.precio * item.quantity;
         });
-
-        // Añadir event listeners a los nuevos botones
-        cartItemsContainer.querySelectorAll('button').forEach(button => {
+        // Add event listeners for quantity controls and remove buttons
+        const controlButtons = cartItemsContainer.querySelectorAll('.cart-item-controls button');
+        controlButtons.forEach(button => {
             button.addEventListener('click', (event) => {
                 const id = event.currentTarget.dataset.id;
                 const action = event.currentTarget.dataset.action;
@@ -283,71 +290,52 @@ const renderCartItems = () => {
 // Actualizar el contador de ítems en el carrito (en los botones)
 const updateCartCount = () => {
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-    if (cartCountElement) cartCountElement.textContent = totalItems;
-    if (cartCountDesktopElement) cartCountDesktopElement.textContent = totalItems;
-    if (cartCountMobileElement) cartCountMobileElement.textContent = totalItems;
+    if (cartCountElement) cartCountElement.textContent = totalItems.toString();
+    if (cartCountDesktopElement) cartCountDesktopElement.textContent = totalItems.toString();
+    if (cartCountMobileElement) cartCountMobileElement.textContent = totalItems.toString();
 };
 
-// ==============================================
-// 6. FUNCIONES DE BÚSQUEDA
-// ==============================================
-
-const filterProducts = () => {
-    const searchTerm = productSearchInput.value.toLowerCase();
-    const filtered = products.filter(product =>
-        product.nombre.toLowerCase().includes(searchTerm) ||
-        product.descripcion.toLowerCase().includes(searchTerm) ||
-        (product.categoria && product.categoria.toLowerCase().includes(searchTerm)) || // Asegúrate de que categoría exista
-        (product.notas && product.notas.toLowerCase().includes(searchTerm)) // Incluye notas en la búsqueda
-    );
-    renderProducts(filtered); // Renderiza los productos filtrados
-};
-
-
-// ==============================================
-// 7. FUNCIONES DE UI Y ACCESORIOS
-// ==============================================
-
-// Mostrar un toast (mensaje temporal)
-const showToast = (message) => {
-    const toast = document.createElement('div');
-    toast.className = 'fixed bottom-24 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-5 py-3 rounded-full shadow-lg z-50 transition-opacity duration-300 opacity-0';
-    toast.textContent = message;
-    document.body.appendChild(toast);
-
-    // Forzar reflow para que la transición CSS funcione
-    void toast.offsetWidth; 
-    toast.style.opacity = '1';
-
-    setTimeout(() => {
-        toast.style.opacity = '0';
-        toast.addEventListener('transitionend', () => toast.remove());
-    }, 3000); // Duración del toast
-};
-
-
-// Función para el efecto de fade-in-up al hacer scroll
-const animateElements = () => {
-    const elements = document.querySelectorAll('.animate-fade-in-up');
-    elements.forEach(element => {
-        const rect = element.getBoundingClientRect();
-        // Cuando el elemento entra en el 80% de la ventana
-        if (rect.top < window.innerHeight * 0.8) {
-            element.classList.add('fade-in-up-active');
-        }
+// Añadir event listeners para los botones "Añadir al carrito"
+const addAddToCartEventListeners = () => {
+    const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+    addToCartButtons.forEach(button => {
+        button.onclick = null; // Evitar duplicar listeners
+        button.addEventListener('click', (event) => {
+            const productId = event.currentTarget.dataset.productId;
+            const productToAdd = products.find(p => p.id === productId);
+            if (productToAdd) {
+                addToCart(productToAdd);
+            }
+        });
     });
 };
 
 // ==============================================
-// 8. EVENT LISTENERS PRINCIPALES (Ejecutar cuando el DOM esté completamente cargado)
+// 6. FUNCIONES DEL BUSCADOR
 // ==============================================
+
+const filterProducts = () => {
+    const searchTerm = productSearchInput.value.toLowerCase();
+    const filteredProducts = products.filter(product =>
+        product.nombre.toLowerCase().includes(searchTerm) ||
+        product.descripcion.toLowerCase().includes(searchTerm) ||
+        product.categoria.toLowerCase().includes(searchTerm)
+    );
+    renderProducts(filteredProducts);
+};
+
+
+// ==============================================
+// 7. INICIALIZACIÓN (Una vez que el DOM esté completamente cargado)
+// ==============================================
+
 document.addEventListener('DOMContentLoaded', () => {
-    // Asignación de elementos HTML a las variables
+    // Asignar elementos a las variables selectoras
     productosContainer = document.getElementById('productos-container');
     cartButton = document.getElementById('cart-button');
     hamburgerMenuBtn = document.getElementById('hamburger-menu-btn');
     mobileMenu = document.getElementById('mobile-menu');
-    closeMobileMenuBtn = document.getElementById('close-mobile-menu-btn');
+    closeMobileMenuBtn = document.getElementById('close-mobile-menu');
     navCartButtonDesktop = document.getElementById('nav-cart-button-desktop');
     navCartButtonMobile = document.getElementById('nav-cart-button-mobile');
     cartModal = document.getElementById('cart-modal');
@@ -361,131 +349,91 @@ document.addEventListener('DOMContentLoaded', () => {
     carouselPrevBtn = document.getElementById('carousel-prev');
     carouselNextBtn = document.getElementById('carousel-next');
     finalizePurchaseBtn = document.getElementById('finalize-purchase-btn');
-    destacadosSection = document.getElementById('destacados'); // Usado para Intersection Observer si se implementa
+    destacadosSection = document.getElementById('destacados');
     mobileNavLinks = document.getElementById('mobile-nav-links');
 
     productSearchInput = document.getElementById('product-search-input');
     searchButtonDesktop = document.getElementById('search-button-desktop');
     searchButtonMobile = document.getElementById('search-button-mobile');
 
-
     // Cargar productos al inicio
-    loadProducts();
-    // Renderizar ítems del carrito al cargar la página
-    renderCartItems();
-    updateCartCount();
+    loadProducts(); // Esto ya inicia el carrusel y renderiza productos
 
-
-    // Event Listeners para el menú móvil (hamburguesa)
+    // Event listeners para el menú móvil
     if (hamburgerMenuBtn) {
         hamburgerMenuBtn.addEventListener('click', () => {
-            if (mobileMenu) {
-                mobileMenu.classList.remove('-translate-x-full');
-                mobileMenu.classList.add('translate-x-0');
-                document.body.style.overflow = 'hidden'; // Evita scroll del body
-            }
+            mobileMenu.classList.remove('-translate-x-full');
+            document.body.style.overflow = 'hidden'; // Evita el scroll del fondo
         });
     }
 
     if (closeMobileMenuBtn) {
         closeMobileMenuBtn.addEventListener('click', () => {
-            if (mobileMenu) {
-                mobileMenu.classList.remove('translate-x-0');
-                mobileMenu.classList.add('-translate-x-full');
-                document.body.style.overflow = ''; // Restaura scroll del body
-            }
+            mobileMenu.classList.add('-translate-x-full');
+            document.body.style.overflow = ''; // Habilita el scroll
         });
     }
 
-    // Cierra el menú móvil al hacer clic en un enlace de navegación
+    // Cerrar menú móvil al hacer clic en un enlace de navegación
     if (mobileNavLinks) {
         mobileNavLinks.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
-                if (mobileMenu) {
-                    mobileMenu.classList.remove('translate-x-0');
-                    mobileMenu.classList.add('-translate-x-full');
-                    document.body.style.overflow = '';
-                }
+                mobileMenu.classList.add('-translate-x-full');
+                document.body.style.overflow = '';
             });
         });
     }
 
 
-    // Event Listeners para el carrito (botones de abrir/cerrar modal)
+    // Event listeners para el modal del carrito
     const openCartModal = () => {
-        if (cartModal) {
-            cartModal.style.display = 'flex'; // Cambia a flex para centrar
-            setTimeout(() => cartModal.classList.add('active'), 10); // Pequeño delay para la animación
-            document.body.style.overflow = 'hidden'; // Evita scroll del body
-        }
+        cartModal.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Evita el scroll del fondo
+        renderCartItems(); // Asegura que el carrito se renderice cada vez que se abre
     };
 
-    const closeCartModal = () => {
-        if (cartModal) {
+    if (cartButton) {
+        cartButton.addEventListener('click', openCartModal);
+    }
+    if (navCartButtonDesktop) {
+        navCartButtonDesktop.addEventListener('click', openCartModal);
+    }
+    if (navCartButtonMobile) {
+        navCartButtonMobile.addEventListener('click', openCartModal);
+    }
+
+    if (closeCartModalBtn) {
+        closeCartModalBtn.addEventListener('click', () => {
             cartModal.classList.remove('active');
-            cartModal.addEventListener('transitionend', function handler() {
-                cartModal.style.display = 'none';
-                cartModal.removeEventListener('transitionend', handler);
-            }, { once: true });
-            document.body.style.overflow = ''; // Restaura scroll del body
-        }
-    };
+            document.body.style.overflow = ''; // Habilita el scroll
+        });
+    }
 
-    if (cartButton) cartButton.addEventListener('click', openCartModal);
-    if (navCartButtonDesktop) navCartButtonDesktop.addEventListener('click', openCartModal);
-    if (navCartButtonMobile) navCartButtonMobile.addEventListener('click', openCartModal);
-    if (closeCartModalBtn) closeCartModalBtn.addEventListener('click', closeCartModal);
-
-    // Cerrar modal si se hace clic fuera del contenido
+    // Cerrar modal haciendo clic fuera del contenido
     if (cartModal) {
         cartModal.addEventListener('click', (event) => {
             if (event.target === cartModal) {
-                closeCartModal();
+                cartModal.classList.remove('active');
+                document.body.style.overflow = '';
             }
         });
     }
 
-    // Event Listener para finalizar compra
-    if (finalizePurchaseBtn) {
-        finalizePurchaseBtn.addEventListener('click', () => {
-            if (cart.length > 0) {
-                alert('¡Compra finalizada con éxito! Gracias por tu pedido.');
-                cart = []; // Vaciar el carrito
-                saveCart();
-                renderCartItems();
-                updateCartCount();
-                closeCartModal();
-            } else {
-                alert('Tu carrito está vacío. Añade productos para finalizar la compra.');
-            }
-        });
-    }
-
-    // Event Listeners para el carrusel
+    // Event listeners para el carrusel
     if (carouselPrevBtn) {
         carouselPrevBtn.addEventListener('click', () => {
             moveCarousel('prev');
-            resetAutoScroll(); // Reinicia el auto-scroll al interactuar manualmente
+            resetAutoScroll(); // Reiniciar el auto-scroll al interactuar manualmente
         });
     }
     if (carouselNextBtn) {
         carouselNextBtn.addEventListener('click', () => {
             moveCarousel('next');
-            resetAutoScroll(); // Reinicia el auto-scroll al interactuar manualmente
+            resetAutoScroll(); // Reiniciar el auto-scroll al interactuar manualmente
         });
     }
 
-    // Event listener para el redimensionamiento de la ventana
-    window.addEventListener('resize', () => {
-        if (carouselTrack && carouselTrack.children.length > 0) {
-            itemWidth = carouselTrack.children[0].offsetWidth;
-            // Asegúrate de que el carrusel se reajuste a la posición actual
-            carouselTrack.style.transform = `translateX(-${carouselIndex * itemWidth}px)`;
-        }
-    });
-
-
-    // Event listener para el input de búsqueda (busca mientras se escribe)
+    // Event listener para el input de búsqueda
     if (productSearchInput) {
         productSearchInput.addEventListener('input', filterProducts);
     }
@@ -520,3 +468,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Ejecutar una vez al cargar para animar elementos visibles desde el principio
     animateElements();
 });
+
+// Función para el efecto de fade-in-up al hacer scroll
+const animateElements = () => {
+    const elements = document.querySelectorAll('.animate-fade-in-up');
+    elements.forEach(element => {
+        const rect = element.getBoundingClientRect();
+        // Cuando el elemento entra en el 80% de la ventana
+        if (rect.top < window.innerHeight * 0.8) {
+            element.classList.add('fade-in-up-active');
+        }
+    });
+};
