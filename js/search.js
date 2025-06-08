@@ -2,21 +2,22 @@
 
 import { appState } from './main.js';
 import { renderProducts } from './products.js';
+// import { showToastNotification } from './toast.js'; // Si quisieras toast en búsqueda, importas de toast.js
 
 export function setupSearch() {
     const searchInput = document.getElementById('searchInput');
     const searchButton = document.getElementById('searchButton');
-    // MODIFICADO: Usar el ID de la nueva sección principal de licores para mostrar resultados
-    const mainProductGrid = document.getElementById('licoresGrid');
+    // allProductsGrid es donde se mostrarán los resultados de búsqueda
+    const allProductsGrid = document.getElementById('allProductsGrid');
 
-    if (!searchInput || !searchButton || !mainProductGrid) {
+    if (!searchInput || !searchButton || !allProductsGrid) {
         console.warn('Elementos de búsqueda no encontrados. La búsqueda no funcionará.');
         return;
     }
 
     const performSearch = () => {
         const searchTerm = searchInput.value.toLowerCase().trim();
-        let filteredProducts = appState.products; // Busca en todos los productos
+        let filteredProducts = appState.products;
 
         if (searchTerm) {
             filteredProducts = appState.products.filter(product =>
@@ -27,9 +28,11 @@ export function setupSearch() {
             );
         }
 
-        renderProducts(filteredProducts, '#licoresGrid'); // Renderiza en la sección principal
-        // MODIFICADO: Desplazarse a la sección principal de licores después de la búsqueda
+        // Renderiza los productos filtrados en la cuadrícula principal de productos (Licores)
+        renderProducts(filteredProducts, '#allProductsGrid');
+        // Desplaza a la sección principal de licores para ver los resultados
         document.getElementById('licores').scrollIntoView({ behavior: 'smooth' });
+        // showToastNotification(`Resultados para "${searchTerm}"`, 'info'); // Ejemplo de uso
     };
 
     searchButton.addEventListener('click', performSearch);
