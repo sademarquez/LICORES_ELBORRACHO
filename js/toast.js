@@ -3,7 +3,7 @@
 export function showToastNotification(message, type = 'info', duration = 3000) {
     const toastContainer = document.getElementById('toast-container');
     if (!toastContainer) {
-        console.warn('Elemento #toast-container no encontrado. No se pueden mostrar las notificaciones.');
+        console.warn('toast.js: Elemento #toast-container no encontrado. No se pueden mostrar las notificaciones.');
         return;
     }
 
@@ -16,7 +16,7 @@ export function showToastNotification(message, type = 'info', duration = 3000) {
     // Animación de entrada
     setTimeout(() => {
         toast.classList.add('show');
-    }, 100);
+    }, 100); // Pequeño retraso para asegurar la animación
 
     // Animación de salida y eliminación
     setTimeout(() => {
@@ -24,6 +24,6 @@ export function showToastNotification(message, type = 'info', duration = 3000) {
         toast.classList.add('hide'); // Para la animación de salida
         toast.addEventListener('transitionend', () => {
             toast.remove();
-        });
+        }, { once: true }); // Usar { once: true } para que el listener se elimine solo
     }, duration);
 }
