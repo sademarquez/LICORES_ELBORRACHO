@@ -4,6 +4,8 @@ import { appState } from './main.js';
 import { showToastNotification } from './toast.js';
 import { addToCart } from './cart.js'; // Asegúrate de importar addToCart
 
+console.log('products.js cargado y listo para exportar funciones.'); // Nuevo console.log para depuración
+
 export function renderProducts(productsToRender, containerSelector, options = {}) {
     const container = document.querySelector(containerSelector);
     if (!container) {
@@ -118,7 +120,8 @@ export function setupProductFilters(productsData) {
             filtered.sort((a, b) => (b.offerPrice || b.price) - (a.offerPrice || a.price));
         }
 
-        renderProducts(filtered, '#allProductsGrid', { category: 'Licor' }); // Asegura que se filtre por categoría aquí también
+        // Asegúrate de que este selector '#allProductsGrid' es donde se renderizan los productos filtrados
+        renderProducts(filtered, '#allProductsGrid', { category: 'Licor' });
     };
 
     brandFilter.addEventListener('change', applyFilters);
@@ -126,7 +129,6 @@ export function setupProductFilters(productsData) {
     productSearchInput.addEventListener('input', applyFilters);
 }
 
-// NUEVA FUNCIÓN: renderBrands (Asegúrate de que esta función exista en products.js y esté exportada)
 export function renderBrands(brandsData) {
     const brandsContainer = document.getElementById('brandsGrid');
     if (!brandsContainer) {
@@ -139,7 +141,7 @@ export function renderBrands(brandsData) {
     if (brandsData && brandsData.length > 0) {
         brandsData.forEach(brand => {
             const brandItem = document.createElement('div');
-            brandItem.classList.add('brand-item');
+            brandItem.classList.add('brand-item'); // Asegúrate de que existe un estilo para .brand-item
             brandItem.innerHTML = `
                 <img src="${brand.logoUrl}" alt="${brand.name} Logo" class="brand-logo">
                 <p class="brand-name">${brand.name}</p>
