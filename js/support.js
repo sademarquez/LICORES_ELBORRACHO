@@ -8,29 +8,31 @@ let whatsappNumber = '';
 export function setupSupport(phone) {
     whatsappNumber = phone;
 
-    const reportIssueBtn = document.getElementById('reportIssueBtn');
-    const requestDeliveryBtn = document.getElementById('requestDeliveryBtn');
+    const reportIssueBtn = document.getElementById('reportIssueBtn'); // Renombrado
+    const requestDeliveryBtn = document.getElementById('requestDeliveryBtn'); // Botón para el nuevo modal de entrega
+    const bookAppointmentBtn = document.getElementById('bookAppointmentBtn'); // Mantenido
 
-    const issueReportModal = document.getElementById('issueReportModal');
-    const deliveryRequestModal = document.getElementById('deliveryRequestModal');
-
-    const closeIssueModalBtn = issueReportModal ? issueReportModal.querySelector('.close-btn') : null;
-    const closeDeliveryModalBtn = deliveryRequestModal ? deliveryRequestModal.querySelector('.close-btn') : null;
-
-    const issueReportForm = document.getElementById('issueReportForm');
-    const deliveryRequestForm = document.getElementById('deliveryRequestForm');
+    const issueReportModal = document.getElementById('issueReportModal'); // Renombrado
+    const deliveryRequestFormModal = document.getElementById('deliveryRequestFormModal'); // NUEVO ID para el modal de entrega
+    const appointmentModal = document.getElementById('appointmentModal'); // Mantenido
 
     // Referencia al campo de visualización de fecha/hora automática
     const deliveryDateTimeDisplay = document.getElementById('deliveryDateTimeDisplay');
-    const deliveryDateTimeHidden = document.getElementById('deliveryDateTime'); // Campo oculto para el valor
+    const deliveryDateTimeHidden = document.getElementById('deliveryDateTime');
 
-    // **1. Abrir modales**
+    const issueReportForm = document.getElementById('issueReportForm'); // Renombrado
+    const deliveryRequestForm = document.getElementById('deliveryRequestForm'); // Mantenido
+    const appointmentForm = document.getElementById('appointmentForm'); // Mantenido
+
+
+    // 1. Abrir modales
     if (reportIssueBtn && issueReportModal) {
         reportIssueBtn.addEventListener('click', () => {
-            issueReportModal.style.display = 'block';
+            issueReportModal.style.display = 'flex'; // Usar 'flex' para centrar
         });
     }
-    if (requestDeliveryBtn && deliveryRequestModal) {
+    // Lógica para abrir el NUEVO modal de entrega
+    if (requestDeliveryBtn && deliveryRequestFormModal) {
         requestDeliveryBtn.addEventListener('click', () => {
             // Generar y mostrar la fecha y hora actual al abrir el modal de entrega
             const now = new Date();
@@ -43,38 +45,43 @@ export function setupSupport(phone) {
             if (deliveryDateTimeDisplay) {
                 deliveryDateTimeDisplay.value = fullDateTime;
             }
-            if (deliveryDateTimeHidden) { // Guardar el valor en el campo oculto también si es necesario
-                deliveryDateTimeHidden.value = now.toISOString(); // Formato ISO para consistencia
+            if (deliveryDateTimeHidden) {
+                deliveryDateTimeHidden.value = now.toISOString();
             }
 
-            deliveryRequestModal.style.display = 'block';
+            deliveryRequestFormModal.style.display = 'flex'; // Usar 'flex' para centrar
+        });
+    }
+    // Lógica para abrir el modal de cita técnica
+    if (bookAppointmentBtn && appointmentModal) {
+        bookAppointmentBtn.addEventListener('click', () => {
+            appointmentModal.style.display = 'flex'; // Usar 'flex' para centrar
         });
     }
 
-    // ... (resto del código de cierre de modales, etc., es el mismo) ...
-    // **2. Cerrar modales al hacer clic en el botón 'x'**
-    if (closeIssueModalBtn) {
-        closeIssueModalBtn.addEventListener('click', () => {
-            issueReportModal.style.display = 'none';
+    // 2. Cerrar modales al hacer clic en el botón 'x'
+    document.querySelectorAll('.modal .close-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.target.closest('.modal').style.display = 'none';
         });
-    }
-    if (closeDeliveryModalBtn) {
-        closeDeliveryModalBtn.addEventListener('click', () => {
-            deliveryRequestModal.style.display = 'none';
-        });
-    }
+    });
 
-    // **3. Cerrar modal al hacer clic fuera del contenido del modal (en el overlay)**
+    // 3. Cerrar modales al hacer clic fuera del contenido (en el overlay), excepto el de verificación de edad
     window.addEventListener('click', (event) => {
         if (event.target === issueReportModal) {
             issueReportModal.style.display = 'none';
         }
-        if (event.target === deliveryRequestModal) {
-            deliveryRequestModal.style.display = 'none';
+        if (event.target === deliveryRequestFormModal) { // NUEVO ID
+            deliveryRequestFormModal.style.display = 'none';
         }
+        if (event.target === appointmentModal) { // Mantenido
+            appointmentModal.style.display = 'none';
+        }
+        // El modal ageVerificationModal NO se cierra al hacer clic fuera, su lógica está en age-verification.js
     });
 
-    // **4. Enviar formulario de reporte de problema**
+
+    // 4. Enviar formulario de reporte de problema
     if (issueReportForm) {
         issueReportForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -82,7 +89,7 @@ export function setupSupport(phone) {
         });
     }
 
-    // **5. Enviar formulario de solicitud de entrega**
+    // 5. Enviar formulario de solicitud de entrega
     if (deliveryRequestForm) {
         deliveryRequestForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -90,10 +97,21 @@ export function setupSupport(phone) {
         });
     }
 
+    // 6. Enviar formulario de agendar cita técnica
+    if (appointmentForm) {
+        appointmentForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            sendAppointmentRequestToWhatsApp();
+        });
+    }
+
     console.log('Módulo de soporte configurado para EL BORRACHO.');
 }
 
-// ... (sendIssueReportToWhatsApp es el mismo) ...
+// Funciones sendIssueReportToWhatsApp, sendDeliveryRequestToWhatsApp y sendAppointmentRequestToWhatsApp
+// deben ser actualizadas para usar los IDs y nombres de variables correctos (issueReportModal, deliveryRequestFormModal).
+// Las copio aquí para mayor claridad, pero su contenido es similar al anterior.
+
 function sendIssueReportToWhatsApp() {
     const name = document.getElementById('issueName').value;
     const phone = document.getElementById('issuePhone').value;
@@ -127,14 +145,10 @@ function sendDeliveryRequestToWhatsApp() {
     const name = document.getElementById('deliveryName').value;
     const phone = document.getElementById('deliveryPhone').value;
     const address = document.getElementById('deliveryAddress').value;
-    // MODIFICADO: Tomar el valor del campo de visualización o el oculto
-    const dateTimeToUse = document.getElementById('deliveryDateTimeDisplay') ?
-                         document.getElementById('deliveryDateTimeDisplay').value :
-                         new Date().toLocaleString('es-ES', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-
+    const dateTimeToUse = document.getElementById('deliveryDateTimeDisplay').value; // Usar el valor generado automáticamente
     const details = document.getElementById('deliveryDetails').value;
 
-    if (!name || !phone || !address) { // La fecha/hora ya no es un campo manual requerido
+    if (!name || !phone || !address) {
         showToastNotification('Por favor, completa tu nombre, teléfono y dirección para solicitar tu entrega.', 'error');
         return;
     }
@@ -143,7 +157,7 @@ function sendDeliveryRequestToWhatsApp() {
     message += `*Nombre:* ${name}%0A`;
     message += `*Teléfono:* ${phone}%0A`;
     message += `*Dirección:* ${address}%0A`;
-    message += `*Fecha y Hora de Solicitud:* ${dateTimeToUse}%0A`; // Usar el valor generado automáticamente
+    message += `*Fecha y Hora de Solicitud:* ${dateTimeToUse}%0A`;
     if (details) {
         message += `*Detalles Adicionales:* ${details}%0A%0A`;
     }
@@ -154,5 +168,33 @@ function sendDeliveryRequestToWhatsApp() {
 
     showToastNotification('Solicitud de entrega enviada a WhatsApp. Espera nuestra confirmación.', 'success');
     document.getElementById('deliveryRequestForm').reset();
-    document.getElementById('deliveryRequestModal').style.display = 'none';
+    document.getElementById('deliveryRequestFormModal').style.display = 'none'; // NUEVO ID
+}
+
+function sendAppointmentRequestToWhatsApp() {
+    const name = document.getElementById('appointmentName').value;
+    const phone = document.getElementById('appointmentPhone').value;
+    const date = document.getElementById('appointmentDate').value;
+    const time = document.getElementById('appointmentTime').value;
+    const reason = document.getElementById('appointmentReason').value;
+
+    if (!name || !phone || !date || !time || !reason) {
+        showToastNotification('Por favor, completa todos los campos para agendar tu cita.', 'error');
+        return;
+    }
+
+    let message = `¡Hola EL BORRACHO!%0ASolicitud de Cita Técnica:%0A%0A`;
+    message += `*Nombre:* ${name}%0A`;
+    message += `*Teléfono:* ${phone}%0A`;
+    message += `*Fecha Preferida:* ${date}%0A`;
+    message += `*Hora Preferida:* ${time}%0A`;
+    message += `*Motivo:* ${reason}%0A%0A`;
+    message += `Por favor, confírmame la cita. ¡Gracias!`;
+
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+
+    showToastNotification('Solicitud de cita enviada a WhatsApp. Espera nuestra confirmación.', 'success');
+    document.getElementById('appointmentForm').reset();
+    document.getElementById('appointmentModal').style.display = 'none';
 }
