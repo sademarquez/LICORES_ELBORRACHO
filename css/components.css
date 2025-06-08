@@ -228,6 +228,34 @@
     margin-bottom: var(--spacing-sm);
     flex-grow: 1; /* Permite que la descripción ocupe el espacio restante */
 }
+.product-card .product-description {
+    display: none; /* Ocultar descripción por defecto */
+    font-size: 0.9em;
+    color: var(--text-color-light);
+    margin-bottom: var(--spacing-sm);
+    text-align: left;
+}
+
+.product-card .show-details-btn {
+    background-color: var(--secondary-color);
+    color: var(--white);
+    border: none;
+    padding: 5px 10px;
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    font-size: 0.8em;
+    margin-top: var(--spacing-sm);
+    transition: background-color 0.3s ease;
+}
+
+.product-card .show-details-btn:hover {
+    background-color: var(--secondary-color-dark);
+}
+
+/* Estilo para cuando la descripción está visible (se añade con JS) */
+.product-card .product-description.visible {
+    display: block;
+}
 
 /* ESTILOS PARA DESCRIPCIONES COLAPSABLES */
 .product-description-collapsed {
