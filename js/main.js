@@ -78,6 +78,31 @@ document.addEventListener('DOMContentLoaded', async () => {
     // <script src="js/age-verification.js" type="module"></script>
 });
 
+function setupBottomNavListeners() {
+    const bottomNavSearch = document.getElementById('bottomNavSearch');
+    const bottomNavCart = document.getElementById('bottomNavCart');
+    const searchInput = document.getElementById('searchInput'); // Get the main search input
+
+    if (bottomNavSearch) {
+        bottomNavSearch.addEventListener('click', (e) => {
+            e.preventDefault();
+            // Scroll to the search input in the header and focus it
+            if (searchInput) {
+                searchInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                searchInput.focus();
+            }
+        });
+    }
+
+    if (bottomNavCart) {
+        bottomNavCart.addEventListener('click', (e) => {
+            e.preventDefault();
+            toggleCartSidebar(true); // Always open the cart sidebar
+        });
+    }
+}
+
+
 function setupScrollSpy() {
     const sections = document.querySelectorAll('section[id]');
     const bottomNavItems = document.querySelectorAll('.bottom-nav .nav-item');
@@ -110,3 +135,26 @@ function setupScrollSpy() {
         });
     });
 }
+
+
+// Función setupMobileMenu() comentada/removida, ya que la barra inferior la reemplaza
+// function setupMobileMenu() {
+//     const menuToggle = document.getElementById('menuToggle');
+//     const mainNav = document.querySelector('.main-nav');
+
+//     if (menuToggle && mainNav) {
+//         menuToggle.addEventListener('click', () => {
+//             mainNav.classList.toggle('active');
+//             menuToggle.querySelector('i').classList.toggle('fa-bars');
+//             menuToggle.querySelector('i').classList.toggle('fa-times');
+//         });
+
+//         mainNav.addEventListener('click', (e) => {
+//             if (e.target.tagName === 'A' || e.target.tagName === 'LI') {
+//                 mainNav.classList.remove('active');
+//                 menuToggle.querySelector('i').classList.remove('fa-times');
+//                 menuToggle.querySelector('i').classList.add('fa-bars');
+//             }\
+//         });
+//     }
+// }
