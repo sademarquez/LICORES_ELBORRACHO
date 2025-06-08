@@ -17,7 +17,7 @@
             "title": "Ofertas de Cervezas",
             "description": "Las mejores marcas de cerveza con descuentos increíbles.",
             "imageUrl": "images/banners/banner-cervezas.jpg",
-            "link": "#otras-bebidas",
+            "link": "#cervezas",
             "buttonText": "Comprar Cervezas"
         },
         {
@@ -49,6 +49,10 @@
         {
             "name": "Corona",
             "logoUrl": "images/icons/corona-logo.svg"
+        },
+        {
+            "name": "Smirnoff",
+            "logoUrl": "images/icons/smirnoff-logo.svg"
         }
     ]
 }
