@@ -804,6 +804,111 @@ footer {
 }
 
 /* Modales */
+/* Modal de Verificación de Edad */
+#ageVerificationModal {
+    display: flex; /* Asegura que esté visible por defecto al cargar la página */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9); /* Fondo oscuro semitransparente */
+    backdrop-filter: blur(5px); /* Efecto de desenfoque, si el navegador lo soporta */
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    opacity: 1; /* Asegurar que la opacidad inicial sea 1 */
+    transition: opacity 0.3s ease; /* Transición para ocultarse */
+}
+
+#ageVerificationModal.hidden {
+    opacity: 0;
+    pointer-events: none; /* Deshabilita interacciones cuando está oculto */
+}
+
+.age-verification-content {
+    background-color: var(--dark-bg); /* Fondo oscuro elegante */
+    padding: var(--spacing-xl);
+    border-radius: var(--border-radius-lg); /* Bordes más redondeados */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8);
+    text-align: center;
+    max-width: 450px;
+    width: 90%;
+    border: 1px solid var(--border-color); /* Borde sutil */
+    transform: translateY(0);
+    transition: transform 0.4s ease-out, opacity 0.4s ease-out;
+}
+
+#ageVerificationModal.hidden .age-verification-content {
+    transform: translateY(-50px);
+    opacity: 0;
+}
+
+
+.age-verification-content h2 {
+    color: var(--primary-color); /* Título dorado */
+    font-size: 2em;
+    margin-bottom: var(--spacing-md);
+    text-shadow: 0 0 5px rgba(255, 191, 0, 0.4); /* Pequeña sombra dorada */
+}
+
+.age-verification-content p {
+    color: var(--text-color-light); /* Texto claro */
+    margin-bottom: var(--spacing-lg);
+    line-height: 1.6;
+    font-size: 1.1em;
+}
+
+.age-verification-buttons {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-md);
+    flex-wrap: wrap; /* Para que los botones se adapten en móviles */
+}
+
+.age-verification-buttons .btn-primary,
+.age-verification-buttons .btn-secondary {
+    flex: 1; /* Para que ocupen el espacio disponible */
+    min-width: 150px; /* Ancho mínimo para los botones */
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: 1em;
+    text-transform: uppercase;
+    font-weight: bold;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.age-verification-buttons .btn-primary {
+    background-color: var(--primary-color);
+    color: var(--dark-bg);
+}
+
+.age-verification-buttons .btn-primary:hover {
+    background-color: var(--primary-color-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(255, 191, 0, 0.4);
+}
+
+.age-verification-buttons .btn-secondary {
+    background-color: var(--secondary-color);
+    color: var(--text-color-dark);
+    border: 1px solid var(--border-color);
+}
+
+.age-verification-buttons .btn-secondary:hover {
+    background-color: var(--secondary-color-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+/* Para pantallas muy pequeñas, hacer los botones de edad en columna */
+@media (max-width: 480px) {
+    .age-verification-buttons {
+        flex-direction: column;
+    }
+}
 .modal {
     display: none; /* Oculto por defecto */
     position: fixed;
