@@ -13,7 +13,6 @@ let closeCartBtn;
 let checkoutWhatsappBtn;
 
 export function initCart() {
-    console.log('Inicializando carrito...');
     cartSidebar = document.getElementById('cartSidebar');
     cartItemsContainer = document.getElementById('cartItems');
     cartTotalPriceElement = document.getElementById('cartTotalPrice');
@@ -22,237 +21,190 @@ export function initCart() {
     closeCartBtn = document.getElementById('closeCartBtn');
     checkoutWhatsappBtn = document.getElementById('checkoutWhatsappBtn');
 
-    // Cargar carrito desde localStorage
     const storedCart = localStorage.getItem(CART_STORAGE_KEY);
     if (storedCart) {
-        try {
-            appState.cart = JSON.parse(storedCart);
-            console.log('Carrito cargado desde localStorage:', appState.cart);
-        } catch (e) {
-            console.error('Error al parsear el carrito desde localStorage:', e);
-            appState.cart = []; // Si hay error, inicializa el carrito vacío
-            localStorage.removeItem(CART_STORAGE_KEY); // Limpia el almacenamiento para evitar futuros errores
-        }
+        appState.cart = JSON.parse(storedCart);
     } else {
         appState.cart = [];
     }
 
-    // Configurar listeners para abrir/cerrar carrito
     const cartIcon = document.getElementById('cartIcon'); // Icono del header
     if (cartIcon) {
         cartIcon.addEventListener('click', (e) => {
             e.preventDefault();
             toggleCartSidebar();
         });
-    } else {
-        console.warn('Icono de carrito del header (cartIcon) no encontrado.');
     }
 
     if (closeCartBtn) {
         closeCartBtn.addEventListener('click', () => {
             toggleCartSidebar(false);
         });
-    } else {
-        console.warn('Botón de cierre del carrito (closeCartBtn) no encontrado.');
     }
 
     if (checkoutWhatsappBtn) {
         checkoutWhatsappBtn.addEventListener('click', sendOrderToWhatsApp);
-    } else {
-        console.warn('Botón de WhatsApp del carrito (checkoutWhatsappBtn) no encontrado.');
     }
 
-    renderCartItems(); // Renderiza los items del carrito al iniciar
-    updateCartCount(); // Asegura que el contador se actualice al iniciar
+    // NUEVO: Cerrar el carrito al hacer clic fuera de él (en el overlay)
+    // El modal de búsqueda ya maneja su propio overlay, pero el sidebar del carrito no es un "modal"
+    // en el sentido de superponerse a toda la pantalla, sino un panel lateral.
+    // Para cerrarlo al hacer clic fuera, podemos añadir un listener al window o a un overlay si lo tuviéramos.
+    // Una forma común es que el "cart-sidebar" tenga un fondo semitransparente que ocupe toda la pantalla
+    // y al hacer click en ese fondo, se cierre. Si no hay un overlay, se puede hacer click en el body,
+    // pero hay que asegurarse de que no se cierre al hacer click dentro del sidebar.
+    
+    // Si el carrito se abre y superpone un pseudo-overlay (ej. por CSS con ::before o con un div real),
+    // o simplemente el sidebar se posiciona y tiene un Z-index alto,
+    // podemos escuchar clics en el 'window' y verificar si el clic no fue dentro del sidebar.
+    window.addEventListener('click', (event) => {
+        // Si el carrito está abierto Y el clic no fue dentro del carrito (o en el ícono para abrirlo)
+        if (cartSidebar.classList.contains('open') &&
+            !cartSidebar.contains(event.target) &&
+            !cartIcon.contains(event.target) &&
+            !bottomCartCountElement.closest('.nav-item').contains(event.target) // Evitar que cierre al clickear el icono del nav inferior
+            ) {
+            toggleCartSidebar(false); // Cierra el carrito
+        }
+    });
+
+
+    renderCart();
 }
 
-export function addToCart(productId) {
-    console.log(`Intentando añadir producto con ID: ${productId}`);
-    const productToAdd = appState.products.find(p => p.id === productId);
-
-    if (!productToAdd) {
-        showToastNotification('Producto no encontrado.', 'error');
-        console.error('Producto no encontrado en appState.products para ID:', productId);
-        return;
-    }
-
-    const existingItem = appState.cart.find(item => item.id === productId);
+export function addToCart(product) {
+    const existingItem = appState.cart.find(item => item.id === product.id);
 
     if (existingItem) {
-        existingItem.quantity++;
+        if (existingItem.quantity < product.stock) {
+            existingItem.quantity++;
+            showToastNotification(`${product.name} añadido al carrito (+1)`, 'info');
+        } else {
+            showToastNotification(`No hay más stock de ${product.name}.`, 'warning');
+            return; // No añadir si no hay stock
+        }
     } else {
-        appState.cart.push({ ...productToAdd, quantity: 1 });
+        if (product.stock > 0) {
+            appState.cart.push({ ...product, quantity: 1 });
+            showToastNotification(`${product.name} añadido al carrito.`, 'success');
+        } else {
+            showToastNotification(`${product.name} está agotado.`, 'error');
+            return; // No añadir si no hay stock
+        }
     }
 
     saveCart();
-    renderCartItems();
+    renderCart();
     updateCartCount();
-    showToastNotification(`${productToAdd.name} añadido al carrito.`, 'success');
 }
 
 export function removeFromCart(productId) {
-    const initialLength = appState.cart.length;
     appState.cart = appState.cart.filter(item => item.id !== productId);
-
-    if (appState.cart.length < initialLength) {
-        saveCart();
-        renderCartItems();
-        updateCartCount();
-        showToastNotification('Producto eliminado del carrito.', 'info');
-    }
+    saveCart();
+    renderCart();
+    updateCartCount();
+    showToastNotification('Producto eliminado del carrito.', 'error');
 }
 
-export function updateCartItemQuantity(productId, newQuantity) {
-    const item = appState.cart.find(i => i.id === productId);
+export function updateCartItemQuantity(productId, change) {
+    const item = appState.cart.find(item => item.id === productId);
     if (item) {
-        item.quantity = parseInt(newQuantity);
-        if (item.quantity <= 0) {
-            removeFromCart(productId);
-        } else {
-            saveCart();
-            renderCartItems();
-            updateCartCount();
+        const productInAppState = appState.products.find(p => p.id === productId);
+        const maxStock = productInAppState ? productInAppState.stock : Infinity; // Obtener stock del producto original
+
+        if (change > 0) { // Incrementar
+            if (item.quantity < maxStock) {
+                item.quantity += change;
+            } else {
+                showToastNotification(`No hay más stock de ${item.name}.`, 'warning');
+            }
+        } else { // Decrementar
+            item.quantity += change;
+            if (item.quantity <= 0) {
+                removeFromCart(productId);
+                return;
+            }
         }
+        saveCart();
+        renderCart();
+        updateCartCount();
     }
 }
 
 function saveCart() {
     localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(appState.cart));
-    console.log('Carrito guardado:', appState.cart);
 }
 
-export function renderCartItems() {
-    if (!cartItemsContainer || !cartTotalPriceElement) {
-        console.warn('Contenedores del carrito no encontrados. No se pueden renderizar items.');
-        return;
-    }
-
-    cartItemsContainer.innerHTML = '';
+function renderCart() {
+    cartItemsContainer.innerHTML = ''; // Limpiar carrito antes de renderizar
     let totalPrice = 0;
 
     if (appState.cart.length === 0) {
         cartItemsContainer.innerHTML = '<p class="cart-empty-message">Tu carrito está vacío.</p>';
-        cartTotalPriceElement.textContent = '$0';
-        return;
+        checkoutWhatsappBtn.disabled = true; // Deshabilitar botón si el carrito está vacío
+    } else {
+        checkoutWhatsappBtn.disabled = false; // Habilitar botón si hay ítems
+        appState.cart.forEach(item => {
+            const itemElement = document.createElement('div');
+            itemElement.classList.add('cart-item');
+
+            const itemPrice = item.isOnOffer ? item.offerPrice : item.price;
+            totalPrice += itemPrice * item.quantity;
+
+            itemElement.innerHTML = `
+                <img src="${item.imageUrl}" alt="${item.name}">
+                <div class="cart-item-details">
+                    <h4>${item.name}</h4>
+                    <p class="price">$${itemPrice.toLocaleString('es-CO')}</p>
+                </div>
+                <div class="cart-item-quantity">
+                    <button data-product-id="${item.id}" data-change="-1">-</button>
+                    <span>${item.quantity}</span>
+                    <button data-product-id="${item.id}" data-change="1">+</button>
+                </div>
+                <button class="remove-from-cart-btn" data-product-id="${item.id}">&times;</button>
+            `;
+            cartItemsContainer.appendChild(itemElement);
+        });
     }
-
-    appState.cart.forEach(item => {
-        const itemPrice = item.isOnOffer && item.offerPrice !== null ? item.offerPrice : item.price;
-        const itemTotalPrice = itemPrice * item.quantity;
-        totalPrice += itemTotalPrice;
-
-        const cartItemElement = document.createElement('div');
-        cartItemElement.classList.add('cart-item');
-        cartItemElement.innerHTML = `
-            <img src="${item.imageUrl}" alt="${item.name}">
-            <div class="item-details">
-                <span class="item-name">${item.name}</span>
-                <span class="item-price">$${itemPrice.toLocaleString('es-CO')}</span>
-            </div>
-            <div class="item-actions">
-                <input type="number" min="1" value="${item.quantity}" data-product-id="${item.id}">
-                <button class="remove-item-btn" data-product-id="${item.id}">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </div>
-        `;
-        cartItemsContainer.appendChild(cartItemElement);
-    });
 
     cartTotalPriceElement.textContent = `$${totalPrice.toLocaleString('es-CO')}`;
 
-    // Añadir listeners para los botones de eliminar y los inputs de cantidad
-    cartItemsContainer.querySelectorAll('.remove-item-btn').forEach(button => {
+    // Añadir event listeners para los botones de cantidad y eliminar
+    cartItemsContainer.querySelectorAll('.cart-item-quantity button').forEach(button => {
         button.addEventListener('click', (e) => {
-            const productId = e.currentTarget.dataset.productId;
+            const productId = e.target.dataset.productId;
+            const change = parseInt(e.target.dataset.change);
+            updateCartItemQuantity(productId, change);
+        });
+    });
+
+    cartItemsContainer.querySelectorAll('.remove-from-cart-btn').forEach(button => {
+        button.addEventListener('click', (e) => {
+            const productId = e.target.dataset.productId;
             removeFromCart(productId);
         });
     });
-
-    cartItemsContainer.querySelectorAll('input[type="number"]').forEach(input => {
-        input.addEventListener('change', (e) => {
-            const productId = e.currentTarget.dataset.productId;
-            const newQuantity = parseInt(e.currentTarget.value);
-            if (!isNaN(newQuantity)) {
-                updateCartItemQuantity(productId, newQuantity);
-            }
-        });
-    });
 }
-
 
 export function updateCartCount() {
     const totalItems = appState.cart.reduce((sum, item) => sum + item.quantity, 0);
     if (cartCountElement) {
-        cartCountElement.textContent = totalItems.toString();
-        // Ocultar si no hay elementos
-        if (totalItems === 0) {
-            cartCountElement.classList.remove('has-items');
-        } else {
-            cartCountElement.classList.add('has-items');
-        }
-    } else {
-        console.warn('Elemento cartCount (header) no encontrado.');
+        cartCountElement.textContent = totalItems;
+        cartCountElement.style.display = totalItems > 0 ? 'inline-block' : 'none';
     }
-
-    if (bottomCartCountElement) {
-        bottomCartCountElement.textContent = totalItems.toString();
-        // Ocultar si no hay elementos
-        if (totalItems === 0) {
-            bottomCartCountElement.classList.remove('has-items');
-        } else {
-            bottomCartCountElement.classList.add('has-items');
-        }
-    } else {
-        console.warn('Elemento bottomCartCount (bottom nav) no encontrado.');
+    if (bottomCartCountElement) { // Actualiza también el contador de la barra inferior
+        bottomCartCountElement.textContent = totalItems;
+        bottomCartCountElement.style.display = totalItems > 0 ? 'inline-block' : 'none';
     }
 }
 
-export function toggleCartSidebar(forceOpen = undefined) {
+export function toggleCartSidebar(open) {
     if (cartSidebar) {
-        if (typeof forceOpen === 'boolean') {
-            cartSidebar.classList.toggle('open', forceOpen);
+        if (typeof open === 'boolean') {
+            cartSidebar.classList.toggle('open', open);
         } else {
             cartSidebar.classList.toggle('open');
         }
-    } else {
-        console.warn('El sidebar del carrito no se encontró.');
     }
-}
-
-function sendOrderToWhatsApp() {
-    if (appState.cart.length === 0) {
-        showToastNotification('Tu carrito está vacío. Agrega productos antes de finalizar la compra.', 'warning');
-        return;
-    }
-
-    // Asegurarse de que contactInfo y contactPhone existan
-    const whatsappNumber = appState.contactInfo && appState.contactInfo.contactPhone ? appState.contactInfo.contactPhone : null;
-
-    if (!whatsappNumber) {
-        showToastNotification('Número de WhatsApp no configurado. Contacta al soporte.', 'error');
-        console.error('Número de WhatsApp no disponible en appState.contactInfo');
-        return;
-    }
-
-    let message = `¡Hola EL BORRACHO!%0AQuisiera realizar el siguiente pedido:%0A%0A`; // Mensaje actualizado
-    let totalPrice = 0;
-
-    appState.cart.forEach((item, index) => {
-        const priceToUse = item.isOnOffer && item.offerPrice !== null ? item.offerPrice : item.price;
-        message += `${index + 1}. ${item.name} (x${item.quantity}) - $${(priceToUse * item.quantity).toLocaleString('es-CO')}%0A`;
-        totalPrice += priceToUse * item.quantity;
-    });
-
-    message += `%0ATotal a pagar: *$${totalPrice.toLocaleString('es-CO')}*%0A%0A`;
-    message += `Por favor, confírmame la disponibilidad y el proceso de pago. ¡Gracias!`;
-
-    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
-
-    showToastNotification('Pedido enviado a WhatsApp. Te contactaremos pronto.', 'success');
-    appState.cart = []; // Vaciar el carrito después de enviar el pedido
-    localStorage.removeItem(CART_STORAGE_KEY); // Eliminar del almacenamiento local
-    renderCartItems(); // Actualizar la vista del carrito
-    updateCartCount(); // Actualizar el contador del carrito
 }
