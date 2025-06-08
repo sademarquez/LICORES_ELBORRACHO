@@ -37,67 +37,90 @@ export function renderProducts(productsToRender, containerSelector, options = {}
 
         const displayPrice = product.isOnOffer ? product.offerPrice : product.price;
         const oldPriceHtml = product.isOnOffer ? `<span class="old-price">$${product.price.toLocaleString('es-CO')}</span>` : '';
+        const offerBadge = product.isOnOffer ? `<span class="offer-badge">Oferta</span>` : '';
+        const newBadge = product.isNew && !product.isOnOffer ? `<span class="new-badge">Nuevo</span>` : ''; // Si no está en oferta, muestra "Nuevo"
 
         productCard.innerHTML = `
-            <img src="${product.imageUrl}" alt="${product.name}">
+            <div class="product-image-container">
+                <img src="${product.imageUrl}" alt="${product.name}" class="product-image">
+                ${offerBadge}
+                ${newBadge}
+            </div>
             <div class="product-info">
-                <h3>${product.name}</h3>
+                <h3 class="product-name">${product.name}</h3>
                 <p class="product-brand">${product.brand}</p>
-                <p class="product-price">${oldPriceHtml} $${displayPrice.toLocaleString('es-CO')}</p>
+                <p class="product-description">${product.description}</p>
+                <div class="product-price">
+                    ${oldPriceHtml}
+                    <span class="current-price">$${displayPrice.toLocaleString('es-CO')}</span>
+                </div>
                 <div class="product-rating">
-                    ${'★'.repeat(Math.floor(product.rating))}${'☆'.repeat(5 - Math.floor(product.rating))}
+                    ${generateStarRating(product.rating)}
                     <span>(${product.rating})</span>
                 </div>
-                <p class="product-description">${product.description}</p>
-                <button class="show-details-btn">Ver Detalles</button>
-                <button class="add-to-cart-btn" data-product-id="${product.id}">
-                    <i class="fas fa-cart-plus"></i> Añadir al Carrito
+                <button class="add-to-cart-btn btn-primary" data-product-id="${product.id}">
+                    <i class="fas fa-shopping-cart"></i> Añadir al Carrito
                 </button>
             </div>
         `;
 
-        // Event listener para mostrar/ocultar descripción
-        const showDetailsBtn = productCard.querySelector('.show-details-btn');
-        const description = productCard.querySelector('.product-description');
-
-        if (showDetailsBtn && description) {
-            showDetailsBtn.addEventListener('click', () => {
-                description.classList.toggle('visible');
-                showDetailsBtn.textContent = description.classList.contains('visible') ? 'Ocultar Detalles' : 'Ver Detalles';
-            });
-        }
-
-
-        const addToCartButton = productCard.querySelector('.add-to-cart-btn');
-        if (addToCartButton) {
-            addToCartButton.addEventListener('click', (e) => {
-                const productId = e.currentTarget.dataset.productId;
+        // Añadir evento al botón "Añadir al Carrito"
+        const addToCartBtn = productCard.querySelector('.add-to-cart-btn');
+        if (addToCartBtn) {
+            addToCartBtn.addEventListener('click', (event) => {
+                const productId = event.currentTarget.dataset.productId;
                 const productToAdd = appState.products.find(p => p.id === productId);
                 if (productToAdd) {
                     addToCart(productToAdd);
+                    showToastNotification(`${productToAdd.name} añadido al carrito.`, 'success');
                 }
             });
         }
+
         container.appendChild(productCard);
     });
+}
+
+function generateStarRating(rating) {
+    const fullStars = Math.floor(rating);
+    const halfStar = rating % 1 >= 0.5;
+    const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+
+    let starsHtml = '';
+    for (let i = 0; i < fullStars; i++) {
+        starsHtml += '<i class="fas fa-star"></i>';
+    }
+    if (halfStar) {
+        starsHtml += '<i class="fas fa-star-half-alt"></i>';
+    }
+    for (let i = 0; i < emptyStars; i++) {
+        starsHtml += '<i class="far fa-star"></i>'; // far para estrella vacía
+    }
+    return starsHtml;
 }
 
 
 export function setupProductFilters(productsData) {
     const brandFilter = document.getElementById('brandFilter');
     const priceFilter = document.getElementById('priceFilter');
-    const productSearchInput = document.getElementById('productSearch'); // Este es el input de búsqueda en la sección de filtros
+    const productSearchInput = document.getElementById('productSearchInput');
 
-    // Verificar si los elementos del filtro existen en la página
+    // *** VERIFICACIÓN CRÍTICA: Asegurarse de que los elementos existan ***
     if (!brandFilter || !priceFilter || !productSearchInput) {
-        console.warn('Elementos de filtro de productos no encontrados. Los filtros no se configurarán.');
-        return;
+        console.warn('Elementos de filtro de productos NO ENCONTRADOS en el DOM. Revisa sus IDs en index.html.');
+        return; // Detiene la función si no se encuentran los elementos
+    } else {
+        console.log('Elementos de filtro de productos ENCONTRADOS.');
     }
 
-    // Llenar el filtro de marcas
-    const brands = [...new Set(productsData.map(product => product.brand))].sort();
+    // Limpia opciones previas para evitar duplicados si se llama varias veces
     brandFilter.innerHTML = '<option value="">Todas las Marcas</option>';
-    brands.forEach(brand => {
+
+    // Recopila marcas únicas de los productos (solo licores para este filtro principal)
+    const uniqueBrands = [...new Set(productsData.filter(p => p.category === 'Licor').map(product => product.brand))];
+    uniqueBrands.sort(); // Ordenar alfabéticamente
+
+    uniqueBrands.forEach(brand => {
         const option = document.createElement('option');
         option.value = brand;
         option.textContent = brand;
@@ -121,9 +144,9 @@ export function setupProductFilters(productsData) {
         });
 
         if (selectedPriceOrder === 'asc') {
-            filtered.sort((a, b) => (a.isOnOffer ? a.offerPrice : a.price) - (b.isOnOffer ? b.offerPrice : b.price));
+            filtered.sort((a, b) => (a.offerPrice || a.price) - (b.offerPrice || b.price));
         } else if (selectedPriceOrder === 'desc') {
-            filtered.sort((a, b) => (b.isOnOffer ? b.offerPrice : b.price) - (a.isOnOffer ? a.offerPrice : a.price));
+            filtered.sort((a, b) => (b.offerPrice || b.price) - (a.offerPrice || a.price));
         }
 
         renderProducts(filtered, '#allProductsGrid', { category: 'Licor' }); // Asegura que se filtre por categoría aquí también
@@ -132,23 +155,28 @@ export function setupProductFilters(productsData) {
     brandFilter.addEventListener('change', applyFilters);
     priceFilter.addEventListener('change', applyFilters);
     productSearchInput.addEventListener('input', applyFilters);
-
-    console.log('Filtros de productos configurados.');
 }
 
 export function renderBrands(brandsData) {
-    const brandsContainer = document.getElementById('brandLogosContainer');
+    const brandsContainer = document.getElementById('brandsContainer');
+    // *** VERIFICACIÓN CRÍTICA: Asegurarse de que el elemento exista ***
     if (!brandsContainer) {
-        console.warn('Contenedor de logos de marcas no encontrado.');
-        return;
+        console.warn('Contenedor de logos de marcas NO ENCONTRADO en el DOM. Revisa su ID en index.html.');
+        return; // Detiene la función si no se encuentra el elemento
+    } else {
+        console.log('Contenedor de logos de marcas ENCONTRADO.');
     }
-    brandsContainer.innerHTML = ''; // Limpiar el contenedor
 
-    brandsData.forEach(brand => {
-        const img = document.createElement('img');
-        img.src = brand.logoUrl;
-        img.alt = `${brand.name} Logo`;
-        brandsContainer.appendChild(img);
-    });
-    console.log('Logos de marcas renderizados.');
+    brandsContainer.innerHTML = ''; // Limpiar el contenedor antes de renderizar
+
+    if (brandsData && brandsData.length > 0) {
+        brandsData.forEach(brand => {
+            const brandElement = document.createElement('div');
+            brandElement.classList.add('brand-item');
+            brandElement.innerHTML = `<img src="${brand.logoUrl}" alt="${brand.name} Logo">`;
+            brandsContainer.appendChild(brandElement);
+        });
+    } else {
+        brandsContainer.innerHTML = `<p style="text-align: center; grid-column: 1 / -1; color: var(--text-color-light);">No hay marcas disponibles.</p>`;
+    }
 }
