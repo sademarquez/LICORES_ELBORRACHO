@@ -1,136 +1,66 @@
 {
-    "siteName": "COMuNICACIONES LUNA",
-    "contactEmail": "info@comunicacionesluna.com",
-    "contactPhone": "573201234567",
+    "siteName": "EL BORRACHO",
+    "contactEmail": "pedidos@elborracho.com",
+    "contactPhone": "573109876543",  // Nuevo número de WhatsApp sin '+' ni espacios
     "address": "Popayán, Cauca, Colombia",
-    "openingHours": "Lunes a Viernes: 9:00 AM - 6:00 PM, Sábados: 9:00 AM - 1:00 PM",
-    "socialLinks": [
-        {"platform": "facebook", "url": "https://www.facebook.com/ComunicacionesLunaOficial", "icon": "fab fa-facebook"},
-        {"platform": "instagram", "url": "https://www.instagram.com/comunicacionesluna_py", "icon": "fab fa-instagram"},
-        {"platform": "whatsapp", "url": "https://wa.me/573201234567", "icon": "fab fa-whatsapp"}
-    ],
     "banners": [
         {
             "id": "banner1",
-            "title": "¡Novedad! iPhone 15 Pro Max",
-            "description": "Experimenta la potencia y la innovación. ¡Disponible ahora!",
-            "imageUrl": "images/banners/banner-iphone15.jpg",
-            "link": "#celulares?product=ip15promax",
-            "buttonText": "Ver Detalles"
+            "title": "¡Ofertas Semanales en Licores!",
+            "description": "Descubre descuentos increíbles en tus bebidas favoritas. ¡Salud!",
+            "imageUrl": "images/banners/banner-licores.jpg",
+            "link": "#licores",
+            "buttonText": "Ver Ofertas"
         },
         {
             "id": "banner2",
-            "title": "Ofertas Exclusivas de Samsung",
-            "description": "Descubre los mejores Galaxy con descuentos increíbles.",
-            "imageUrl": "images/banners/banner-samsung.jpg",
-            "link": "#celulares?brand=Samsung",
-            "buttonText": "Comprar Ahora"
+            "title": "Nueva Selección de Cervezas Artesanales",
+            "description": "Explora sabores únicos de cervecerías locales e internacionales.",
+            "imageUrl": "images/banners/banner-cervezas.jpg",
+            "link": "#otras-bebidas",
+            "buttonText": "Comprar Cervezas"
         },
         {
             "id": "banner3",
-            "title": "Accesorios Indispensables",
-            "description": "Todo lo que necesitas para tu móvil, desde audífonos hasta smartwatches.",
-            "imageUrl": "images/banners/banner-accessories.jpg",
-            "link": "#accesorios",
-            "buttonText": "Explorar Accesorios"
+            "title": "Snacks Perfectos para Tu Noche",
+            "description": "Combina tu bebida con nuestra variedad de snacks y dulces.",
+            "imageUrl": "images/banners/banner-snacks.jpg",
+            "link": "#snacks",
+            "buttonText": "Explorar Snacks"
         }
     ],
     "brands": [
         {
-            "name": "Apple",
-            "logoUrl": "images/icons/apple-logo.svg"
+            "name": "Buchanan's",
+            "logoUrl": "images/icons/buchanans-logo.svg"
         },
         {
-            "name": "Samsung",
-            "logoUrl": "images/icons/samsung-logo.svg"
+            "name": "Old Parr",
+            "logoUrl": "images/icons/oldparr-logo.svg"
         },
         {
-            "name": "Xiaomi",
-            "logoUrl": "images/icons/xiaomi-logo.svg"
+            "name": "Smirnoff",
+            "logoUrl": "images/icons/smirnoff-logo.svg"
         },
         {
-            "name": "Google",
-            "logoUrl": "images/icons/google-logo.svg"
+            "name": "Poker",
+            "logoUrl": "images/icons/poker-logo.svg"
         },
         {
-            "name": "Oppo",
-            "logoUrl": "images/icons/oppo-logo.svg"
+            "name": "Coca-Cola",
+            "logoUrl": "images/icons/cocacola-logo.svg"
         },
         {
-            "name": "Huawei",
-            "logoUrl": "images/icons/huawei-logo.svg"
-        }
-    ],
-    "services": [
-        {
-            "id": "screen-repair",
-            "name": "Cambio de Pantalla",
-            "description": "Reparación y reemplazo de pantallas rotas o dañadas, utilizando repuestos de alta calidad y con garantía.",
-            "icon": "fas fa-mobile-alt",
-            "estimatedTime": "1-2 horas",
-            "priceRange": "Desde $80.000"
+            "name": "Papas Margarita",
+            "logoUrl": "images/icons/margarita-logo.svg"
         },
         {
-            "id": "battery-replacement",
-            "name": "Reemplazo de Batería",
-            "description": "Si tu batería dura poco o el celular se apaga inesperadamente, la reemplazamos por una nueva original o de alta calidad.",
-            "icon": "fas fa-battery-full",
-            "estimatedTime": "30-60 minutos",
-            "priceRange": "Desde $50.000"
+            "name": "Lucky Strike",
+            "logoUrl": "images/icons/lucky-strike-logo.svg"
         },
         {
-            "id": "charging-port",
-            "name": "Reparación Puerto de Carga",
-            "description": "Solucionamos problemas de carga, asegurando que tu dispositivo se conecte y cargue correctamente.",
-            "icon": "fas fa-plug",
-            "estimatedTime": "1-2 horas",
-            "priceRange": "Desde $40.000"
-        },
-        {
-            "id": "software-repair",
-            "name": "Reparación de Software",
-            "description": "Eliminación de virus, recuperación de sistema operativo, desbloqueos y actualizaciones de software.",
-            "icon": "fas fa-code",
-            "estimatedTime": "2-4 horas",
-            "priceRange": "Desde $60.000"
-        },
-        {
-            "id": "water-damage",
-            "name": "Daños por Agua",
-            "description": "Servicio especializado para recuperación de dispositivos con daños por líquidos. ¡Actúa rápido!",
-            "icon": "fas fa-tint",
-            "estimatedTime": "Varía según el daño",
-            "priceRange": "Evaluación necesaria"
-        },
-        {
-            "id": "diagnostic",
-            "name": "Diagnóstico y Presupuesto",
-            "description": "Ofrecemos un diagnóstico completo de tu dispositivo para identificar el problema y proporcionar un presupuesto sin compromiso.",
-            "icon": "fas fa-search-plus",
-            "estimatedTime": "30 minutos",
-            "priceRange": "Sin costo (al realizar el servicio)"
-        }
-    ],
-    "serviceFaqs": [
-        {
-            "question": "¿Cuánto tiempo tarda una reparación?",
-            "answer": "El tiempo de reparación varía según la complejidad del problema. Las reparaciones comunes como pantallas o baterías pueden tardar entre 30 minutos y 2 horas. Para problemas más complejos, te daremos un estimado al momento del diagnóstico."
-        },
-        {
-            "question": "¿Ofrecen garantía en las reparaciones?",
-            "answer": "Sí, todas nuestras reparaciones tienen una garantía de 3 meses que cubre el servicio realizado y los repuestos utilizados, siempre que el daño no sea causado por mal uso."
-        },
-        {
-            "question": "¿Es necesario agendar cita?",
-            "answer": "Recomendamos agendar una cita para garantizar una atención más rápida y personalizada, especialmente para reparaciones que requieren más tiempo. Sin embargo, también atendemos por orden de llegada."
-        },
-        {
-            "question": "¿Puedo saber el costo de la reparación antes de ir?",
-            "answer": "Para darte un presupuesto exacto, es necesario que nuestros técnicos revisen el dispositivo. Sin embargo, en nuestra sección de servicios, puedes encontrar un rango de precios estimados para las reparaciones más comunes."
-        },
-        {
-            "question": "¿Utilizan repuestos originales?",
-            "answer": "Priorizamos el uso de repuestos originales o de la más alta calidad disponible en el mercado, para asegurar el mejor rendimiento y durabilidad de tu dispositivo."
+            "name": "Oreo",
+            "logoUrl": "images/icons/oreo-logo.svg"
         }
     ]
 }
