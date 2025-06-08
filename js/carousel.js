@@ -8,15 +8,20 @@ let carouselTrack;
 let carouselDotsContainer;
 let slides = [];
 let dots = [];
+let totalSlides = 0; // Para mantener el conteo de slides
 
+/**
+ * Inicializa el carrusel con los datos de banners proporcionados.
+ * @param {Array<Object>} bannersData - Un array de objetos con información de los banners.
+ */
 export function initCarousel(bannersData) {
     carouselTrack = document.getElementById('carouselTrack');
     const carouselPrevBtn = document.getElementById('carouselPrev');
     const carouselNextBtn = document.getElementById('carouselNext');
     carouselDotsContainer = document.getElementById('carouselDots');
 
-    if (!carouselTrack || !carouselDotsContainer) {
-        console.warn('Elementos del carrusel no encontrados. Inicialización abortada.');
+    if (!carouselTrack || !carouselDotsContainer || !carouselPrevBtn || !carouselNextBtn) {
+        console.warn('carousel.js: Elementos del carrusel no encontrados. Inicialización abortada.');
         return;
     }
 
@@ -25,85 +30,83 @@ export function initCarousel(bannersData) {
     carouselDotsContainer.innerHTML = '';
     slides = []; // Resetear array de slides
     dots = [];   // Resetear array de dots
+    currentSlide = 0; // Resetear slide actual
 
     if (bannersData && bannersData.length > 0) {
+        totalSlides = bannersData.length;
         bannersData.forEach((banner, index) => {
             const slideElement = createSlideElement(banner);
             carouselTrack.appendChild(slideElement);
+            slides.push(slideElement); // Almacenar referencia al slide
 
             const dotElement = createDotElement(index);
-            // Accesibilidad: Añadir role="tab" y aria-controls
             dotElement.setAttribute('role', 'tab');
             dotElement.setAttribute('aria-controls', banner.id);
             dotElement.addEventListener('click', () => showSlide(index));
             carouselDotsContainer.appendChild(dotElement);
+            dots.push(dotElement); // Almacenar referencia al dot
         });
 
-        // Asegurarse de que slides y dots sean arrays vivos del DOM o actualizarlos
-        slides = Array.from(carouselTrack.children);
-        dots = Array.from(carouselDotsContainer.children);
+        // Configurar botones de navegación
+        carouselPrevBtn.addEventListener('click', () => showSlide(currentSlide - 1));
+        carouselNextBtn.addEventListener('click', () => showSlide(currentSlide + 1));
 
-        // Añadir listeners para los botones de navegación
-        if (carouselPrevBtn) carouselPrevBtn.addEventListener('click', () => showSlide(currentSlide - 1));
-        if (carouselNextBtn) carouselNextBtn.addEventListener('click', () => showSlide(currentSlide + 1));
-
-        // Mostrar el primer slide y comenzar el auto-slide
-        showSlide(0); // Muestra el primer slide al inicio
-        startAutoSlide();
-
-        // Pausar auto-slide al pasar el ratón por el carrusel
-        const heroSection = document.getElementById('novedades');
-        if (heroSection) {
-            heroSection.addEventListener('mouseenter', stopAutoSlide);
-            heroSection.addEventListener('mouseleave', startAutoSlide);
-        }
-
-        console.log('Carrusel inicializado con éxito.');
+        showSlide(currentSlide); // Mostrar el primer slide
+        startAutoSlide(); // Iniciar el auto-carrusel
+        console.log('carousel.js: Carrusel inicializado con', totalSlides, 'banners.');
     } else {
-        console.log('No hay datos de banners para inicializar el carrusel.');
-        // Puedes agregar un mensaje alternativo si no hay banners
-        carouselTrack.innerHTML = '<p style="text-align: center; color: var(--text-color-light);">No hay novedades en este momento.</p>';
+        console.warn('carousel.js: No hay datos de banners para inicializar el carrusel.');
+        // Ocultar controles si no hay banners
+        carouselPrevBtn.style.display = 'none';
+        carouselNextBtn.style.display = 'none';
+        carouselDotsContainer.style.display = 'none';
+        carouselTrack.innerHTML = '<p style="text-align: center; padding: 50px; color: var(--text-color-light);">No hay banners disponibles.</p>';
     }
 }
 
+/**
+ * Crea un elemento de slide HTML para el carrusel.
+ * @param {Object} banner - Objeto con datos del banner (imageUrl, title, description, link, buttonText).
+ * @returns {HTMLElement} - El elemento div del slide.
+ */
 function createSlideElement(banner) {
     const slide = document.createElement('div');
     slide.classList.add('carousel-slide');
-    // Asignar ID al slide para aria-controls
-    slide.setAttribute('id', banner.id);
     slide.style.backgroundImage = `url(${banner.imageUrl})`;
-    slide.setAttribute('role', 'tabpanel'); // Para accesibilidad
-    slide.setAttribute('aria-labelledby', `dot-${banner.id}`); // Asociar con el dot
-
-    const caption = document.createElement('div');
-    caption.classList.add('carousel-caption');
-    caption.innerHTML = `
-        <h2>${banner.title}</h2>
-        <p>${banner.description}</p>
-        <a href="${banner.link}" class="btn">${banner.buttonText}</a>
+    slide.setAttribute('id', banner.id); // Asegura que el slide tenga un ID para aria-controls
+    slide.innerHTML = `
+        <div class="carousel-caption">
+            <h2>${banner.title}</h2>
+            <p>${banner.description}</p>
+            <a href="${banner.link}" class="btn-primary">${banner.buttonText}</a>
+        </div>
     `;
-    slide.appendChild(caption);
     return slide;
 }
 
+/**
+ * Crea un elemento de dot (indicador de slide) HTML.
+ * @param {number} index - El índice del slide al que representa el dot.
+ * @returns {HTMLElement} - El elemento button del dot.
+ */
 function createDotElement(index) {
-    const dot = document.createElement('span');
-    dot.classList.add('dot');
-    dot.setAttribute('role', 'tab');
+    const dot = document.createElement('button');
+    dot.classList.add('carousel-dot');
     dot.setAttribute('aria-label', `Ir al slide ${index + 1}`);
-    dot.setAttribute('id', `dot-banner${index + 1}`); // Asignar un ID único al dot
-    dot.setAttribute('aria-selected', 'false'); // Estado inicial
-    dot.setAttribute('tabindex', '-1'); // No enfocable por defecto, solo el activo
     return dot;
 }
 
+/**
+ * Muestra un slide específico del carrusel.
+ * @param {number} index - El índice del slide a mostrar.
+ */
 function showSlide(index) {
-    if (slides.length === 0) return;
+    if (totalSlides === 0) return; // No hacer nada si no hay slides
 
-    if (index >= slides.length) {
-        currentSlide = 0;
+    if (index >= totalSlides) {
+        currentSlide = 0; // Vuelve al principio
     } else if (index < 0) {
-        currentSlide = slides.length - 1;
+        currentSlide = totalSlides - 1; // Vuelve al final
     } else {
         currentSlide = index;
     }
@@ -115,16 +118,19 @@ function showSlide(index) {
     resetAutoSlide();
 }
 
+/**
+ * Actualiza las clases 'active' y los atributos de accesibilidad de slides y dots.
+ */
 function updateCarousel() {
     slides.forEach((slide, index) => {
         if (index === currentSlide) {
             slide.classList.add('active');
             slide.setAttribute('aria-hidden', 'false');
-            slide.setAttribute('tabindex', '0'); // Hacer el slide actual enfocable
+            slide.setAttribute('tabindex', '0');
         } else {
             slide.classList.remove('active');
             slide.setAttribute('aria-hidden', 'true');
-            slide.setAttribute('tabindex', '-1'); // Ocultar de la navegación del teclado
+            slide.setAttribute('tabindex', '-1');
         }
     });
 
@@ -132,15 +138,18 @@ function updateCarousel() {
         if (index === currentSlide) {
             dot.classList.add('active');
             dot.setAttribute('aria-selected', 'true');
-            dot.setAttribute('tabindex', '0'); // Hacer el dot actual enfocable
+            dot.setAttribute('tabindex', '0');
         } else {
             dot.classList.remove('active');
             dot.setAttribute('aria-selected', 'false');
-            dot.setAttribute('tabindex', '-1'); // Ocultar de la navegación del teclado
+            dot.setAttribute('tabindex', '-1');
         }
     });
 }
 
+/**
+ * Inicia el temporizador para el auto-avance del carrusel.
+ */
 function startAutoSlide() {
     stopAutoSlide(); // Asegura que solo un intervalo esté activo
     autoSlideInterval = setInterval(() => {
@@ -148,10 +157,16 @@ function startAutoSlide() {
     }, slideDuration);
 }
 
+/**
+ * Detiene el temporizador del auto-avance del carrusel.
+ */
 function stopAutoSlide() {
     clearInterval(autoSlideInterval);
 }
 
+/**
+ * Reinicia el temporizador del auto-avance (llamado después de interacción del usuario).
+ */
 function resetAutoSlide() {
     stopAutoSlide();
     startAutoSlide();
