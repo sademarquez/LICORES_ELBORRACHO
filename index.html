@@ -3,52 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EL BORRACHO - Licores a Domicilio</title>
-    <link rel="icon" href="images/icons/favicon.ico" type="image/x-icon">
+    <title>EL BORRACHO - Licores a Domicilio</title> <link rel="icon" href="images/icons/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/responsive.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <div id="ageVerificationModal" class="modal" style="display:flex;">
-        <div class="modal-content">
-            <h2>¡Bienvenido a EL BORRACHO!</h2>
-            <p>Para acceder a nuestro sitio, debes confirmar que eres mayor de edad.</p>
-            <div class="age-buttons">
-                <button id="confirmAgeBtn">Soy Mayor de 18 Años</button>
-                <button id="declineAgeBtn">No Soy Mayor de Edad</button>
-            </div>
-        </div>
-    </div>
-
     <header class="main-header">
         <div class="container">
             <div class="header-content">
-                <a href="/" class="logo" aria-label="Ir a la página de inicio de EL BORRACHO">
+                <a href="/" class="logo">
                     <img src="images/icons/logo-elborracho.svg" alt="Logo de EL BORRACHO">
-                    <span>EL BORRACHO</span>
-                </a>
-                <button id="menuToggle" class="menu-toggle" aria-label="Abrir menú de navegación" aria-expanded="false">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <nav class="main-nav" aria-label="Navegación principal del sitio">
+                    <span>EL BORRACHO</span> </a>
+                <nav class="main-nav">
                     <ul class="nav-list">
                         <li><a href="#novedades">Novedades</a></li>
-                        <li><a href="#licores">Licores</a></li>
-                        <li><a href="#cervezas">Cervezas</a></li>
-                        <li><a href="#snacks">Snacks</a></li>
-                        <li><a href="#otras-bebidas">Otras Bebidas</a></li>
+                        <li><a href="#licores">Licores</a></li> <li><a href="#cervezas">Cervezas</a></li> <li><a href="#snacks">Snacks</a></li> <li><a href="#otras-bebidas">Otras Bebidas</a></li>
                         <li><a href="#marcas">Marcas</a></li>
+                        <li><a href="#soporte">Soporte</a></li>
                     </ul>
                 </nav>
                 <div class="header-actions">
-                    <button id="searchIcon" class="icon-btn" aria-label="Abrir búsqueda de productos">
-                        <i class="fas fa-search"></i>
-                    </button>
-                    <button id="cartIcon" class="icon-btn" aria-label="Abrir carrito de compras">
+                    <div class="search-box">
+                        <input type="text" id="searchInput" placeholder="Buscar licores...">
+                        <button id="searchButton" aria-label="Buscar"><i class="fas fa-search"></i></button>
+                    </div>
+                    <a href="#" id="cartIcon" class="cart-icon" aria-label="Ver Carrito">
                         <i class="fas fa-shopping-cart"></i>
                         <span id="cartCount" class="cart-count">0</span>
+                    </a>
+                    <button class="menu-toggle" aria-label="Abrir menú">
+                        <i class="fas fa-bars"></i>
                     </button>
                 </div>
             </div>
@@ -56,184 +42,123 @@
     </header>
 
     <main>
-        <section id="novedades" class="hero-section" aria-labelledby="novedades-title">
-            <div class="carousel-container" role="region" aria-label="Carrusel de Novedades">
-                <div id="carouselTrack" class="carousel-track">
+        <div id="ageVerificationModal" class="modal" style="display: flex;">
+            <div class="modal-content age-verification-content">
+                <h2>Verificación de Edad</h2>
+                <p>Para acceder a este sitio, debes ser mayor de edad.</p>
+                <div class="age-verification-buttons">
+                    <button id="confirmAgeBtn" class="btn-primary">Soy mayor de 18</button>
+                    <button id="declineAgeBtn" class="btn-secondary">No, salir</button>
+                </div>
+            </div>
+        </div>
+
+        <section id="novedades" class="hero-section">
+            <div class="carousel-container">
+                <div class="carousel-track" id="carouselTrack">
                     </div>
-                <button id="carouselPrev" class="carousel-nav-btn" aria-label="Slide anterior">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                <button id="carouselNext" class="carousel-nav-btn" aria-label="Siguiente slide">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-                <div id="carouselDots" class="carousel-dots" role="tablist" aria-label="Indicadores del carrusel">
+                <button class="carousel-btn prev" id="carouselPrev" aria-label="Slide anterior">&#10094;</button>
+                <button class="carousel-btn next" id="carouselNext" aria-label="Siguiente slide">&#10095;</button>
+                <div class="carousel-dots" id="carouselDots">
                     </div>
             </div>
         </section>
 
-        <section id="licores" class="container" aria-labelledby="licores-title">
-            <h2 id="licores-title" class="section-title">Nuestros Licores</h2>
+        <section id="marcas" class="brands-section container">
+            <h2>Nuestras Marcas</h2>
+            <div class="brands-grid" id="brandsGrid">
+                </div>
+        </section>
+
+        <section id="licores" class="products-section container">
+            <h2>Licores</h2>
             <div class="product-filters">
-                <input type="text" id="productSearchInput" placeholder="Buscar licor por nombre o marca..." aria-label="Buscar licor">
                 <select id="brandFilter" aria-label="Filtrar por marca">
                     <option value="">Todas las Marcas</option>
-                    </select>
+                </select>
                 <select id="priceFilter" aria-label="Ordenar por precio">
                     <option value="">Ordenar por Precio</option>
-                    <option value="asc">Menor Precio</option>
-                    <option value="desc">Mayor Precio</option>
+                    <option value="asc">Menor a Mayor</option>
+                    <option value="desc">Mayor a Menor</option>
                 </select>
             </div>
-            <div id="allProductsGrid" class="product-grid">
+            <div class="product-grid" id="allProductsGrid">
                 </div>
         </section>
 
-        <section id="cervezas" class="container" aria-labelledby="cervezas-title">
-            <h2 id="cervezas-title" class="section-title">Cervezas Frías</h2>
-            <div id="allProductsGridCervezas" class="product-grid">
+        <section id="cervezas" class="products-section container">
+            <h2>Cervezas</h2>
+            <div class="product-grid" id="allProductsGridCervezas">
                 </div>
         </section>
 
-        <section id="snacks" class="container" aria-labelledby="snacks-title">
-            <h2 id="snacks-title" class="section-title">Snacks para tu Compañía</h2>
-            <div id="allProductsGridSnacks" class="product-grid">
+        <section id="snacks" class="products-section container">
+            <h2>Snacks</h2>
+            <div class="product-grid" id="allProductsGridSnacks">
                 </div>
         </section>
 
-        <section id="otras-bebidas" class="container" aria-labelledby="otras-bebidas-title">
-            <h2 id="otras-bebidas-title" class="section-title">Otras Bebidas</h2>
-            <div id="allProductsGridOtrasBebidas" class="product-grid">
+        <section id="otras-bebidas" class="products-section container">
+            <h2>Otras Bebidas</h2>
+            <div class="product-grid" id="allProductsGridOtrasBebidas">
                 </div>
         </section>
 
-        <section id="marcas" class="container brands-section" aria-labelledby="brands-title">
-            <h2 id="brands-title" class="section-title">Nuestras Marcas</h2>
-            <div id="brandsGrid" class="brand-grid">
-                </div>
-        </section>
-
-        <section id="soporte" class="container support-section" aria-labelledby="support-title">
-            <h2 id="support-title" class="section-title">¿Necesitas Ayuda?</h2>
-            <p>Estamos aquí para asistirte. Puedes reportar una falla, agendar una cita o contactarnos directamente.</p>
+        <section id="soporte" class="support-section container">
+            <h3>¿Necesitas Ayuda?</h3>
+            <p>Contáctanos para cualquier pregunta o inconveniente. Estamos aquí para ayudarte.</p>
             <div class="support-buttons">
-                <button id="reportFaultBtn" class="btn" aria-label="Reportar una falla">
-                    <i class="fas fa-bug"></i> Reportar Falla
-                </button>
-                <button id="bookAppointmentBtn" class="btn" aria-label="Agendar una cita">
-                    <i class="fas fa-calendar-alt"></i> Agendar Cita
-                </button>
-                <a href="https://wa.me/TU_NUMERO_WHATSAPP" target="_blank" class="btn" id="directWhatsappBtn" aria-label="Contactar por WhatsApp directamente">
-                    <i class="fab fa-whatsapp"></i> WhatsApp Directo
-                </a>
+                <a href="https://wa.me/573109876543" target="_blank" class="btn-primary"><i class="fab fa-whatsapp"></i> Chatear por WhatsApp</a>
+                <button id="reportFaultBtn" class="btn-secondary"><i class="fas fa-bug"></i> Reportar un Fallo</button>
             </div>
         </section>
+
+        <div id="faultReportModal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h3>Reportar un Fallo</h3>
+                <form id="faultReportForm">
+                    <div class="input-group">
+                        <label for="faultName">Tu Nombre</label>
+                        <input type="text" id="faultName" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="faultEmail">Tu Correo Electrónico</label>
+                        <input type="email" id="faultEmail">
+                    </div>
+                    <div class="input-group">
+                        <label for="faultDescription">Descripción del Fallo</label>
+                        <textarea id="faultDescription" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary"><i class="fab fa-whatsapp"></i> Enviar Reporte por WhatsApp</button>
+                </form>
+            </div>
+        </div>
+
     </main>
 
-    <footer class="main-footer">
-        <div class="container footer-content">
-            <div class="footer-info">
-                <p>&copy; <span id="currentYear"></span> EL BORRACHO. Todos los derechos reservados.</p>
-                <p><a href="mailto:pedidos@elborracho.com" id="footerEmail">pedidos@elborracho.com</a> | <a href="tel:+573109876543" id="footerPhone">+57 310 987 6543</a></p>
-                <p id="footerAddress">Popayán, Cauca, Colombia</p>
-            </div>
-            <nav class="footer-nav" aria-label="Navegación del pie de página">
-                <ul class="nav-list">
-                    <li><a href="#novedades">Novedades</a></li>
-                    <li><a href="#licores">Licores</a></li>
-                    <li><a href="#cervezas">Cervezas</a></li>
-                    <li><a href="#snacks">Snacks</a></li>
-                    <li><a href="#otras-bebidas">Otras Bebidas</a></li>
-                    <li><a href="#marcas">Marcas</a></li>
-                    <li><a href="#soporte">Soporte</a></li>
-                </ul>
-            </nav>
-            <div class="social-links" aria-label="Síguenos en redes sociales">
-                <a href="#" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                <a href="#" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                <a href="#" target="_blank" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
-            </div>
-        </div>
-    </footer>
-
-    <aside id="cartSidebar" class="cart-sidebar" aria-label="Carrito de Compras">
+    <div id="cartSidebar" class="cart-sidebar">
         <div class="cart-header">
-            <h2>Tu Carrito</h2>
-            <button id="closeCartBtn" class="icon-btn" aria-label="Cerrar carrito">
-                <i class="fas fa-times"></i>
-            </button>
+            <h3>Tu Carrito (<span id="cartItemCount">0</span>)</h3>
+            <button id="closeCartBtn" class="close-btn" aria-label="Cerrar carrito">&times;</button>
         </div>
         <div id="cartItems" class="cart-items">
-            <p class="cart-empty-message">Tu carrito está vacío.</p>
-        </div>
-        <div class="cart-summary">
-            <div class="total-price">
-                <span>Total:</span>
-                <span id="cartTotalPrice">$0.00</span>
             </div>
-            <button id="checkoutWhatsappBtn" class="checkout-whatsapp-btn" aria-label="Finalizar compra y enviar pedido por WhatsApp">
-                <i class="fab fa-whatsapp"></i> Finalizar Pedido
-            </button>
-        </div>
-    </aside>
-
-    <div id="faultReportModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="faultReportTitle">
-        <div class="modal-content">
-            <span class="close-btn" aria-label="Cerrar modal de reporte de falla">&times;</span>
-            <h3 id="faultReportTitle">Reportar una Falla</h3>
-            <form id="faultReportForm">
-                <div class="form-group">
-                    <label for="faultDescription">Describe la falla:</label>
-                    <textarea id="faultDescription" rows="5" placeholder="Ej: No puedo añadir productos al carrito." required aria-required="true"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="faultContact">Tu número de WhatsApp (opcional):</label>
-                    <input type="tel" id="faultContact" placeholder="Ej: +57 310 1234567" pattern="^\+?[0-9\s]{7,15}$" title="Ingresa un número de teléfono válido (opcional, con prefijo de país si aplica)">
-                </div>
-                <button type="submit" class="btn-primary"><i class="fab fa-whatsapp"></i> Enviar Reporte por WhatsApp</button>
-            </form>
+        <div class="cart-summary">
+            <p>Total: <span id="cartTotalPrice">$0</span></p>
+            <button id="checkoutWhatsappBtn" class="btn-primary checkout-whatsapp-btn"><i class="fab fa-whatsapp"></i> Finalizar Compra por WhatsApp</button>
         </div>
     </div>
 
-    <div id="appointmentModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="appointmentTitle">
-        <div class="modal-content">
-            <span class="close-btn" aria-label="Cerrar modal de agendamiento de cita">&times;</span>
-            <h3 id="appointmentTitle">Agendar una Cita</h3>
-            <form id="appointmentForm">
-                <div class="form-group">
-                    <label for="appointmentName">Tu Nombre:</label>
-                    <input type="text" id="appointmentName" placeholder="Tu nombre completo" required aria-required="true">
-                </div>
-                <div class="form-group">
-                    <label for="appointmentPhone">Tu número de WhatsApp:</label>
-                    <input type="tel" id="appointmentPhone" placeholder="Ej: +57 310 1234567" pattern="^\+?[0-9\s]{7,15}$" required aria-required="true" title="Ingresa tu número de teléfono de WhatsApp con prefijo de país (ej: +57)">
-                </div>
-                <div class="form-group">
-                    <label for="appointmentDate">Fecha Preferida:</label>
-                    <input type="date" id="appointmentDate" required aria-required="true">
-                </div>
-                <div class="form-group">
-                    <label for="appointmentTime">Hora Preferida:</label>
-                    <input type="time" id="appointmentTime" required aria-required="true">
-                </div>
-                <div class="form-group">
-                    <label for="appointmentReason">Motivo de la Cita:</label>
-                    <textarea id="appointmentReason" rows="3" placeholder="Ej: Consulta de productos, pedido especial, etc." required aria-required="true"></textarea>
-                </div>
-                <button type="submit" class="btn-primary"><i class="fab fa-whatsapp"></i> Solicitar Cita por WhatsApp</button>
-            </form>
-        </div>
-    </div>
+    <div id="toast-container"></div>
 
-    <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
-
-    <nav class="bottom-nav" aria-label="Navegación inferior móvil">
+    <nav class="bottom-nav">
         <a href="#novedades" class="nav-item active" aria-label="Inicio">
             <i class="fas fa-home"></i>
             <span>Inicio</span>
         </a>
         <a href="#licores" class="nav-item" aria-label="Licores">
-            <i class="fas fa-wine-bottle"></i>
-            <span>Licores</span>
+            <i class="fas fa-wine-bottle"></i> <span>Licores</span>
         </a>
         <a href="#" id="bottomNavSearch" class="nav-item" aria-label="Buscar">
             <i class="fas fa-search"></i>
@@ -241,15 +166,12 @@
         </a>
         <a href="#" id="bottomNavCart" class="nav-item" aria-label="Carrito">
             <i class="fas fa-shopping-cart"></i>
-            <span id="bottomCartCount" class="cart-count">0</span>
-            <span>Carrito</span>
+            <span id="bottomCartCount" class="cart-count">0</span> <span>Carrito</span>
         </a>
         <a href="#soporte" class="nav-item" aria-label="Soporte">
-            <i class="fas fa-headset"></i>
-            <span>Soporte</span>
+            <i class="fas fa-headset"></i> <span>Soporte</span>
         </a>
     </nav>
-
     <script src="js/main.js" type="module"></script>
     <script src="js/carousel.js" type="module"></script>
     <script src="js/products.js" type="module"></script>
