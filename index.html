@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <div id="ageVerificationModal" class="modal" style="display:block;">
+    <div id="ageVerificationModal" class="modal" style="display:flex;">
         <div class="modal-content age-verification-content">
             <h2 style="color: var(--primary-color);">Bienvenido a EL BORRACHO</h2>
             <p style="color: var(--text-color-light); font-size: 1.1em; margin-bottom: 25px;">
@@ -143,10 +143,7 @@
                 <button class="btn btn-secondary" id="requestDeliveryBtn">
                     <i class="fas fa-motorcycle"></i> Solicitar Entrega Especial
                 </button>
-                <button class="btn btn-info" id="bookAppointmentBtn">
-                    <i class="fas fa-calendar-alt"></i> Agendar Cita Técnica
-                </button>
-            </div>
+                </div>
         </section>
 
         <section id="contacto" class="contact-section container">
@@ -220,32 +217,6 @@
         </div>
     </div>
 
-    <div id="appointmentModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn">&times;</span>
-            <h2>Agendar Cita Técnica</h2>
-            <form id="appointmentForm">
-                <label for="appointmentName">Tu Nombre:</label>
-                <input type="text" id="appointmentName" required>
-
-                <label for="appointmentPhone">Tu Teléfono:</label>
-                <input type="tel" id="appointmentPhone" required>
-
-                <label for="appointmentDate">Fecha Preferida:</label>
-                <input type="date" id="appointmentDate" required>
-
-                <label for="appointmentTime">Hora Preferida:</label>
-                <input type="time" id="appointmentTime" required>
-
-                <label for="appointmentReason">Motivo de la Cita:</label>
-                <textarea id="appointmentReason" rows="3" required placeholder="Ej: Revisión de batería, Cambio de pantalla"></textarea>
-
-                <button type="submit" class="btn-primary"><i class="fab fa-whatsapp"></i> Solicitar Cita por WhatsApp</button>
-            </form>
-        </div>
-    </div>
-
-
     <div id="toast-container"></div>
 
     <script src="js/main.js" type="module"></script>
@@ -255,5 +226,6 @@
     <script src="js/cart.js" type="module"></script>
     <script src="js/toast.js" type="module"></script>
     <script src="js/support.js" type="module"></script>
-    <script src="js/age-verification.js" type="module"></script> </body>
+    <script src="js/age-verification.js" type="module"></script>
+</body>
 </html>
