@@ -9,11 +9,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const ageVerified = localStorage.getItem('ageVerified');
 
         if (ageVerified === 'true') {
-            ageVerificationModal.style.display = 'none'; // Ocultar si ya se verificó
+            // Si ya se verificó la edad en una sesión anterior, se oculta el modal.
+            ageVerificationModal.style.display = 'none';
         } else {
-            // Si no se ha verificado, el modal ya es visible por el 'style="display:flex;"' en el HTML
-            // No es necesario añadir ageVerificationModal.style.display = 'flex'; aquí, pero no hace daño si lo tenías.
-            // Lo más importante es que el display:flex en el HTML inicial sobreescriba el display:none del CSS general.
+            // Si NO se ha verificado, el modal permanece VISIBLE.
+            // El modal ya es visible por el 'style="display:flex;"' en el HTML.
+            // Esta rama 'else' simplemente asegura que no se oculta si no debe.
+            // NO se necesita ageVerificationModal.style.display = 'flex'; aquí
+            // porque ya está en el HTML y esa es la forma inicial de mostrarlo.
         }
 
         confirmAgeBtn.addEventListener('click', () => {
@@ -25,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.href = 'https://www.google.com'; // Redirigir a otra URL
         });
 
-        // Este modal NO se cierra al hacer clic fuera, forzando la interacción.
+        // Evitar que el modal se cierre al hacer clic fuera
         window.addEventListener('click', (event) => {
             if (event.target === ageVerificationModal) {
                 // No hacer nada, el usuario debe usar los botones.
