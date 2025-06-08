@@ -2,7 +2,7 @@
 
 let currentSlide = 0;
 let autoSlideInterval;
-const slideDuration = 1200; // Duración de cada slide en milisegundos
+const slideDuration = 1400; // Duración de cada slide en milisegundos
 
 let carouselTrack;
 let carouselDotsContainer;
