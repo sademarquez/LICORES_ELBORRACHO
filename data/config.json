@@ -27,6 +27,14 @@
             "imageUrl": "images/banners/banner-snacks.jpg",
             "link": "#snacks",
             "buttonText": "Explorar Snacks"
+        },
+        {
+            "id": "banner4",
+            "title": "Explora Otras Bebidas",
+            "description": "Desde gaseosas hasta energizantes, encuentra lo que necesitas.",
+            "imageUrl": "images/banners/banner-otras-bebidas.jpg",
+            "link": "#otras-bebidas",
+            "buttonText": "Ver Bebidas"
         }
     ],
     "brands": [
@@ -51,8 +59,12 @@
             "logoUrl": "images/icons/corona-logo.svg"
         },
         {
-            "name": "Smirnoff",
-            "logoUrl": "images/icons/smirnoff-logo.svg"
+            "name": "Coca-Cola",
+            "logoUrl": "images/icons/coca-cola-logo.svg"
+        },
+        {
+            "name": "Papas Margarita",
+            "logoUrl": "images/icons/margarita-logo.svg"
         }
     ]
 }
