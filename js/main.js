@@ -2,10 +2,10 @@
 
 import { initCarousel } from './carousel.js';
 import { renderProducts, setupProductFilters, renderBrands } from './products.js';
-import { setupSearch } from './search.js';
+import { setupSearch, toggleSearchModal } from './search.js'; // Importar toggleSearchModal
 import { initCart, updateCartCount, toggleCartSidebar } from './cart.js';
 import { setupSupport } from './support.js';
-import { showToastNotification } from './toast.js'; // Asegurarse de que toast está importado
+import { showToastNotification } from './toast.js';
 
 export const appState = {
     products: [],
@@ -15,125 +15,110 @@ export const appState = {
     contactInfo: {}
 };
 
-document.addEventListener('DOMContentLoaded', async () => {
-    console.log('DOM completamente cargado. Inicializando la aplicación...');
-
-    await loadInitialData(); // Asegura que los datos estén cargados antes de cualquier renderizado/setup
-
-    initCart();
-    updateCartCount(); // Actualiza el contador del carrito inicial
-
-    // Inicializa el carrusel SOLO si appState.banners tiene datos
-    if (appState.banners && appState.banners.length > 0) {
-        initCarousel(appState.banners);
-    } else {
-        console.warn('No hay datos de banners para inicializar el carrusel.');
-    }
-
-
-    // Renderiza productos en las nuevas secciones de licores, cervezas, snacks, etc.
-    // Pasa appState.products directamente a renderProducts
-    renderProducts(appState.products, '#allProductsGrid', { category: 'Licor' }); // Principal de Licores
-    renderProducts(appState.products, '#allProductsGridCervezas', { category: 'Cerveza' });
-    renderProducts(appState.products, '#allProductsGridSnacks', { category: 'Snack' });
-    renderProducts(appState.products, '#allProductsGridOtrasBebidas', { category: 'Otra Bebida' });
-
-    // Configura filtros y marcas solo si hay datos de productos y marcas cargados
-    if (appState.products.length > 0) {
-        setupProductFilters(appState.products);
-    } else {
-        console.warn('No hay productos para configurar filtros.');
-    }
-    if (appState.brands.length > 0) {
-        renderBrands(appState.brands);
-    } else {
-        console.warn('No hay marcas para renderizar.');
-    }
-
-    setupSearch(); // La búsqueda depende de appState.products que ya está cargado
-    setupBottomNavListeners(); // Configura los listeners de la barra inferior
-    setupSupport(appState.contactInfo.contactPhone); // Pasa el número de teléfono desde contactInfo
-
-    // Si había una funcionalidad de modal de búsqueda por categoría que se eliminó, asegúrate de que no se llama.
-    // main.js:144 Modal de búsqueda por categoría no encontrado. La funcionalidad no estará disponible.
-    // La línea que causaba esto (setupCategorySearchModal();) debería estar comentada o eliminada.
-});
-
+/**
+ * Carga los datos iniciales de configuración y productos desde archivos JSON.
+ * Popula appState con los datos cargados.
+ */
 async function loadInitialData() {
     try {
-        const productsResponse = await fetch('data/products.json'); // Ruta corregida a la carpeta 'data/'
-        const configResponse = await fetch('data/config.json');     // Ruta corregida a la carpeta 'data/'
-
-        if (!productsResponse.ok) {
-            throw new Error(`HTTP error! status: ${productsResponse.status} al cargar data/products.json`);
-        }
+        // Cargar config.json
+        const configResponse = await fetch('config.json');
         if (!configResponse.ok) {
-            throw new Error(`HTTP error! status: ${configResponse.status} al cargar data/config.json`);
+            throw new Error(`Error HTTP! status: ${configResponse.status} al cargar config.json`);
         }
-
-        appState.products = await productsResponse.json();
-        const config = await configResponse.json();
-        appState.banners = config.banners;
-        appState.brands = config.brands;
+        const configData = await configResponse.json();
+        appState.banners = configData.banners || [];
+        appState.brands = configData.brands || [];
         appState.contactInfo = {
-            contactPhone: config.contactPhone,
-            contactEmail: config.contactEmail,
-            address: config.address
+            email: configData.contactEmail,
+            phone: configData.contactPhone,
+            address: configData.address
         };
+        console.log('main.js: Datos de configuración cargados.');
 
-        console.log('Datos iniciales cargados exitosamente.');
+        // Cargar products.json
+        const productsResponse = await fetch('products.json');
+        if (!productsResponse.ok) {
+            throw new Error(`Error HTTP! status: ${productsResponse.status} al cargar products.json`);
+        }
+        appState.products = await productsResponse.json();
+        console.log('main.js: Datos de productos cargados. Total:', appState.products.length);
+
     } catch (error) {
-        console.error('Error al cargar los datos iniciales:', error);
-        showToastNotification('Error crítico: No se pudieron cargar los datos principales de la tienda. Por favor, recarga la página o inténtalo más tarde.', 'error', 10000);
+        console.error('main.js: Error al cargar los datos iniciales:', error);
+        showToastNotification('Error al cargar la información inicial de la tienda. Por favor, recarga la página.', 'error');
     }
 }
 
-// Función para manejar el scroll y la navegación inferior activa
-function setupBottomNavListeners() {
-    const bottomNavItems = document.querySelectorAll('.bottom-nav .nav-item');
-    const bottomNavSearch = document.getElementById('bottomNavSearch'); // Añadir listener al ícono de búsqueda
-    const bottomNavCart = document.getElementById('bottomNavCart');     // Añadir listener al ícono del carrito
+/**
+ * Configura los event listeners para la interfaz de usuario.
+ */
+function setupUIEventListeners() {
+    // Menu toggle para móviles
+    const menuToggle = document.getElementById('menuToggle');
+    const mainNav = document.querySelector('.main-nav');
+    if (menuToggle && mainNav) {
+        menuToggle.addEventListener('click', () => {
+            mainNav.classList.toggle('active');
+        });
+    }
 
-    // Listener para el botón de búsqueda del bottom nav
+    // Cerrar el menú si se hace clic fuera
+    document.addEventListener('click', (event) => {
+        if (mainNav && !mainNav.contains(event.target) && !menuToggle.contains(event.target) && mainNav.classList.contains('active')) {
+            mainNav.classList.remove('active');
+        }
+    });
+
+    // Abrir/cerrar modal de búsqueda desde el bottom nav
+    const bottomNavSearch = document.getElementById('bottomNavSearch');
+    const closeSearchModalBtn = document.getElementById('closeSearchModalBtn');
+    const headerSearchBtn = document.getElementById('headerSearchBtn'); // Botón de búsqueda del header
+
     if (bottomNavSearch) {
         bottomNavSearch.addEventListener('click', (e) => {
             e.preventDefault();
-            // Simular clic en el botón de búsqueda del header
-            const searchInput = document.getElementById('searchInput');
-            if (searchInput) {
-                searchInput.focus(); // Enfocar el campo de búsqueda
-                // Puedes también simular un clic en el botón de búsqueda del header si lo deseas
-                // document.getElementById('searchButton').click();
-            }
-            // Desplazar a la sección de licores para ver los resultados de búsqueda
-            const licoresSection = document.getElementById('licores');
-            if (licoresSection) {
-                licoresSection.scrollIntoView({ behavior: 'smooth' });
-            }
+            toggleSearchModal(true); // Abrir el modal de búsqueda
         });
     }
 
-    // Listener para el botón de carrito del bottom nav
+    if (closeSearchModalBtn) {
+        closeSearchModalBtn.addEventListener('click', () => {
+            toggleSearchModal(false); // Cerrar el modal de búsqueda
+        });
+    }
+
+    if (headerSearchBtn) {
+        headerSearchBtn.addEventListener('click', () => {
+            toggleSearchModal(true);
+        });
+    }
+
+    // Abrir/cerrar sidebar del carrito desde el bottom nav
+    const bottomNavCart = document.getElementById('bottomNavCart');
     if (bottomNavCart) {
         bottomNavCart.addEventListener('click', (e) => {
             e.preventDefault();
-            toggleCartSidebar(); // Abre/Cierra el sidebar del carrito
+            toggleCartSidebar(true); // Abrir el sidebar del carrito
         });
     }
+}
 
+/**
+ * Actualiza el estado activo en la navegación inferior basado en el scroll.
+ */
+function setupBottomNavActiveState() {
+    const bottomNavItems = document.querySelectorAll('.bottom-nav .nav-item');
+    const sections = ['novedades', 'licores', 'cervezas', 'snacks', 'otras-bebidas', 'marcas', 'soporte'];
 
     window.addEventListener('scroll', () => {
         let currentActiveSection = 'novedades'; // Por defecto
 
-        // Define los IDs de tus secciones principales que quieres que se reflejen en el nav inferior
-        const sections = ['novedades', 'licores', 'cervezas', 'snacks', 'otras-bebidas', 'marcas', 'soporte'];
-
         for (let i = sections.length - 1; i >= 0; i--) {
             const section = document.getElementById(sections[i]);
             if (section) {
-                // Ajusta el offset según el tamaño de tu header o cualquier elemento fijo
-                const offset = 150; // Para que la sección se active antes de que llegue al tope exacto
-                if (window.scrollY + window.innerHeight / 2 >= section.offsetTop) {
+                const offset = 150; // Ajusta este valor si tu header es muy grande
+                if (window.scrollY + window.innerHeight / 2 >= section.offsetTop - offset) {
                     currentActiveSection = sections[i];
                     break;
                 }
@@ -145,10 +130,8 @@ function setupBottomNavListeners() {
             currentActiveSection = 'novedades';
         }
 
-
         bottomNavItems.forEach(item => {
             item.classList.remove('active');
-            // Quitar el '#' para comparar con el ID de la sección
             const targetId = item.getAttribute('href') ? item.getAttribute('href').substring(1) : null;
             if (targetId && targetId === currentActiveSection) {
                 item.classList.add('active');
@@ -156,3 +139,60 @@ function setupBottomNavListeners() {
         });
     });
 }
+
+
+// Punto de entrada de la aplicación
+document.addEventListener('DOMContentLoaded', async () => {
+    console.log('DOM completamente cargado. Inicializando la aplicación...');
+
+    // Paso 1: Cargar datos iniciales
+    await loadInitialData();
+
+    // Paso 2: Inicializar carrito y actualizar su conteo
+    initCart();
+    updateCartCount();
+
+    // Paso 3: Inicializar carrusel (banners)
+    if (appState.banners && appState.banners.length > 0) {
+        initCarousel(appState.banners);
+    } else {
+        console.warn('main.js: No hay datos de banners para inicializar el carrusel.');
+    }
+
+    // Paso 4: Renderizar productos en las secciones correspondientes
+    // Asegúrate de que los IDs de los contenedores coincidan con tu HTML
+    renderProducts(appState.products, '#allProductsGrid', { category: 'Licor' }); // Sección principal de Licores
+    renderProducts(appState.products, '#allProductsGridCervezas', { category: 'Cerveza' });
+    renderProducts(appState.products, '#allProductsGridSnacks', { category: 'Snack' });
+    renderProducts(appState.products, '#allProductsGridOtrasBebidas', { category: 'Otra Bebida' });
+
+    // Renderizar productos en las secciones de Novedades y Ofertas
+    renderProducts(appState.products, '#newProductsGrid', { isNew: true, limit: 8 });
+    renderProducts(appState.products, '#offerProductsGrid', { isOnOffer: true, limit: 8 });
+
+    // Paso 5: Configurar filtros de productos (solo para la sección principal de licores)
+    setupProductFilters(appState.products, '#allProductsGrid'); // Pasar el ID del contenedor para el que se configuran los filtros
+
+    // Paso 6: Inicializar la funcionalidad de búsqueda
+    setupSearch();
+
+    // Paso 7: Renderizar marcas
+    if (appState.brands && appState.brands.length > 0) {
+        renderBrands(appState.brands, '#brandsCarouselTrack');
+    } else {
+        console.warn('main.js: No hay datos de marcas para renderizar.');
+    }
+
+    // Paso 8: Inicializar soporte con el número de WhatsApp desde config.json
+    if (appState.contactInfo.phone) {
+        setupSupport(appState.contactInfo.phone);
+    } else {
+        console.warn('main.js: Número de teléfono de contacto no encontrado en config.json para el soporte.');
+    }
+
+    // Paso 9: Configurar event listeners de UI
+    setupUIEventListeners();
+
+    // Paso 10: Configurar el estado activo de la barra de navegación inferior
+    setupBottomNavActiveState();
+});
