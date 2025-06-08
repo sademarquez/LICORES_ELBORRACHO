@@ -1,19 +1,292 @@
-/* ... (código existente) ... */
+/* css/styles.css */
+
+/* Variables CSS para colores, fuentes, etc. */
+:root {
+    /* Paleta de Colores EL BORRACHO (Oscura y Dorada/Ámbar) */
+    --primary-color: #FFBF00; /* Ámbar/Dorado vibrante */
+    --primary-color-dark: #E0A800; /* Ámbar más oscuro */
+    --secondary-color: #343a40; /* Gris oscuro, casi negro */
+    --secondary-color-dark: #23272b;
+    --accent-color: #FFDA6A; /* Tono más claro para acentos */
+    --accent-color-dark: #FFC107;
+
+    --text-color-dark: #FFFFFF; /* Texto blanco para contraste en fondos oscuros */
+    --text-color-light: #CED4DA; /* Texto gris claro para descripciones, etc. */
+    --white: #ffffff;
+    --light-bg: #212529; /* Fondo oscuro muy sutil */
+    --dark-bg: #1A1A1A; /* Fondo negro profundo para headers, footers */
+    --border-color: #495057; /* Color de borde oscuro */
+    --success-color: #28a745; /* Verde para mensajes de éxito */
+    --danger-color: #dc3545; /* Rojo para errores o eliminación */
+    --info-color: #17a2b8; /* Azul para información */
+
+    /* Tipografía */
+    --font-family-primary: 'Arial', sans-serif;
+    --font-family-secondary: 'Helvetica Neue', sans-serif;
+
+    /* Espaciado */
+    --spacing-xs: 5px;
+    --spacing-sm: 10px;
+    --spacing-md: 15px;
+    --spacing-lg: 20px;
+    --spacing-xl: 30px;
+    --spacing-xxl: 50px;
+
+    /* Sombras */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.4);
+
+    /* Bordes */
+    --border-radius: 8px;
+    --border-radius-sm: 4px;
+}
+
+/* Estilos Generales */
+body {
+    font-family: var(--font-family-primary);
+    margin: 0;
+    padding: 0;
+    background-color: var(--dark-bg); /* Fondo principal oscuro */
+    color: var(--text-color-dark); /* Color de texto predeterminado */
+    line-height: 1.6;
+    scroll-behavior: smooth; /* Desplazamiento suave al hacer clic en enlaces internos */
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+}
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: var(--primary-color-dark);
+}
+
+button,
+input[type="submit"] {
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Botones genéricos */
+.btn-primary {
+    background-color: var(--primary-color);
+    color: var(--dark-bg);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius-sm);
+    font-weight: bold;
+    text-align: center;
+    display: inline-block;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-color-dark);
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background-color: var(--secondary-color);
+    color: var(--white);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius-sm);
+    border: 1px solid var(--border-color);
+    text-align: center;
+    display: inline-block;
+}
+
+.btn-secondary:hover {
+    background-color: var(--border-color);
+    transform: translateY(-1px);
+}
+
+
+/* Header Principal */
+.main-header {
+    background-color: var(--dark-bg);
+    color: var(--white);
+    padding: var(--spacing-md) 0;
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow-sm);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* Permite que los elementos se envuelvan en pantallas pequeñas */
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    color: var(--primary-color);
+    font-size: 1.8em;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.logo img {
+    height: 40px; /* Tamaño del logo */
+    width: auto;
+}
+
+.main-nav .nav-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: var(--spacing-lg);
+}
+
+.main-nav .nav-list a {
+    color: var(--text-color-dark);
+    font-weight: bold;
+    padding: var(--spacing-xs) 0;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.main-nav .nav-list a:hover {
+    color: var(--primary-color);
+}
+
+.main-nav .nav-list a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--primary-color);
+    transition: width 0.3s ease;
+}
+
+.main-nav .nav-list a:hover::after,
+.main-nav .nav-list a.active::after {
+    width: 100%;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+}
+
+.action-icon {
+    color: var(--text-color-dark);
+    font-size: 1.5em;
+    position: relative;
+    padding: var(--spacing-xs); /* Añadir padding para mejorar el área de clic */
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.action-icon:hover {
+    color: var(--primary-color);
+    transform: scale(1.1);
+}
+
+/* Contador del Carrito */
+.cart-count {
+    background-color: var(--danger-color); /* Un color llamativo para el contador */
+    color: var(--white);
+    font-size: 0.8em;
+    font-weight: bold;
+    border-radius: 50%;
+    padding: 3px 7px;
+    position: absolute;
+    top: -5px; /* Ajustar posición */
+    right: -5px; /* Ajustar posición */
+    min-width: 20px; /* Asegurar que sea circular para 1 o 2 dígitos */
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    animation: bounce 0.5s ease-in-out; /* Animación para el contador */
+}
+
+/* Animación para el contador del carrito */
+@keyframes bounce {
+    0% { transform: scale(0.8); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+/* Barra de Navegación Inferior (solo en móviles) */
+.bottom-nav {
+    display: none; /* Oculto por defecto, se muestra en responsive.css */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--dark-bg);
+    border-top: 1px solid var(--border-color);
+    padding: var(--spacing-sm) 0;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.4);
+    z-index: 999;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
 
 .bottom-nav .nav-item {
-    font-size: 0.9em; /* Aumentar ligeramente el tamaño del texto */
-    padding: 8px 0; /* Aumentar el padding para hacer el botón más grande */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: var(--text-color-light); /* Color de texto para los ítems inactivos */
+    font-size: 0.75em; /* Tamaño de fuente para las etiquetas */
+    flex: 1; /* Para que ocupen el mismo ancho */
+    padding: 5px 0;
+    transition: color 0.2s ease;
+    position: relative; /* Para el contador del carrito */
 }
 
 .bottom-nav .nav-item i {
-    font-size: 1.6em; /* Aumentar el tamaño de los iconos */
-    margin-bottom: 5px; /* Ajustar el espacio entre icono y texto */
+    font-size: 1.4em; /* Tamaño de los iconos */
+    margin-bottom: 3px;
+    color: var(--text-color-light); /* Color de icono inactivo */
+    transition: color 0.2s ease;
 }
 
-/* Ajustes adicionales para el contador del carrito, si es necesario */
+.bottom-nav .nav-item.active {
+    color: var(--primary-color); /* Color activo */
+}
+
+.bottom-nav .nav-item.active i {
+    color: var(--primary-color); /* Color de icono activo */
+}
+
+.bottom-nav .nav-item:hover {
+    color: var(--primary-color);
+}
+
+.bottom-nav .nav-item:hover i {
+    color: var(--primary-color);
+}
+
+/* Estilo para el contador del carrito en la barra inferior */
 .bottom-nav .nav-item .cart-count {
-    top: -5px; /* Ajustar posición vertical */
-    right: 15px; /* Ajustar posición horizontal */
-    padding: 3px 7px; /* Aumentar tamaño del contador */
-    font-size: 0.7em; /* Ajustar tamaño de fuente del contador */
+    background-color: var(--danger-color); /* Un color llamativo para el contador */
+    color: var(--white);
+    font-size: 0.7em; /* Un poco más pequeño que el del header */
+    font-weight: bold;
+    border-radius: 50%;
+    padding: 2px 6px; /* Ajustar padding */
+    position: absolute;
+    top: 0px; /* Ajusta esto para posicionarlo correctamente */
+    right: 15px; /* Ajusta esto para posicionarlo correctamente */
+    min-width: 18px;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    animation: none; /* No animar constantemente en la barra inferior */
 }
