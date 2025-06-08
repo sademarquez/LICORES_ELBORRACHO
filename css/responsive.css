@@ -13,14 +13,14 @@
         width: 100%;
         display: none; /* Ocultar por defecto para el menú hamburguesa */
         flex-direction: column;
-        background-color: var(--white);
+        background-color: var(--dark-bg); /* Usa el color de fondo oscuro del header */
         position: absolute;
         top: 100%;
         left: 0;
         box-shadow: var(--shadow-md);
         padding: var(--spacing-md);
         border-top: 1px solid var(--border-color);
-        z-index: 100; /* Asegurarse de que el menú está sobre otros elementos */
+        z-index: 90; /* Un poco menos que el header para no superponerse */
     }
 
     .main-nav.active {
@@ -30,101 +30,138 @@
     .main-nav .nav-list {
         flex-direction: column;
         gap: var(--spacing-sm);
+        width: 100%; /* Asegura que la lista ocupe el ancho completo */
+    }
+
+    .main-nav .nav-list li {
+        width: 100%; /* Asegura que cada ítem ocupe el ancho completo */
     }
 
     .main-nav .nav-list a {
         padding: var(--spacing-sm) 0;
         width: 100%;
         color: var(--text-color-dark); /* Color de texto para enlaces del menú móvil */
+        display: block; /* Para que el padding y width funcionen bien */
+        text-align: center; /* Centrar texto en el menú móvil */
     }
-    
+
     .main-nav .nav-list a::after {
         background-color: var(--primary-color); /* Asegurar color de subrayado en móvil */
+        left: 50%; /* Centrar el subrayado */
+        transform: translateX(-50%);
+    }
+    
+    .header-actions {
+        width: 100%;
+        justify-content: flex-end; /* Alinea los iconos a la derecha en móvil */
+        gap: var(--spacing-lg); /* Más espacio entre los iconos */
+    }
+
+    /* Mostrar botón de menú hamburguesa en móvil */
+    .menu-toggle {
+        display: block;
+        background: none;
+        border: none;
+        color: var(--primary-color);
+        font-size: 1.5em;
+        cursor: pointer;
+        padding: var(--spacing-xs);
+        order: 1; /* Coloca el botón primero si es necesario */
+        position: absolute; /* Posicionamiento absoluto para controlarlo mejor */
+        right: var(--spacing-md); /* Alinearlo a la derecha del header */
+        top: var(--spacing-md); /* Alinearlo a la parte superior */
+    }
+
+    .logo {
+        order: 2; /* Coloca el logo en el medio si es necesario */
+        margin-right: auto; /* Empuja el logo a la izquierda */
+        margin-left: 0;
     }
 
     .header-actions {
-        width: 100%;
-        justify-content: space-between;
-    }
-
-    .search-bar {
-        width: calc(100% - 60px); /* Ajustar el ancho de la barra de búsqueda */
-    }
-
-    .cart-icon-container {
-        position: static;
-        margin-left: var(--spacing-md);
+        order: 3; /* Coloca las acciones al final */
+        width: auto; /* Ajustar ancho automáticamente */
     }
 
     .hero-section {
-        height: 250px; /* Reducir altura del carrusel en móvil */
+        height: 250px; /* Menor altura para carrusel en móvil */
     }
 
     .carousel-caption h2 {
-        font-size: 1.8em;
+        font-size: 2em; /* Texto más pequeño en carrusel */
     }
 
     .carousel-caption p {
-        font-size: 0.9em;
+        font-size: 1em;
+        margin-bottom: var(--spacing-md);
     }
 
-    .carousel-caption .btn-primary {
-        padding: var(--spacing-sm) var(--spacing-md);
-        font-size: 0.9em;
+    .carousel-nav-btn {
+        padding: var(--spacing-sm);
+        font-size: 1.2em;
     }
 
-    .main-section {
-        padding: var(--spacing-md) var(--spacing-sm);
-    }
-
-    .section-title {
-        font-size: 1.8em;
+    .carousel-dots {
+        bottom: var(--spacing-sm); /* Puntos más cerca del borde en móvil */
     }
 
     .product-grid {
-        /* Ajustado para mostrar 2-4 productos en móviles */
-        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    }
-
-    .product-card .add-to-cart-btn {
-        font-size: 0.9em;
-        padding: var(--spacing-sm) var(--spacing-md);
+        grid-template-columns: 1fr; /* Una columna en móvil */
     }
 
     .product-filters {
-        flex-direction: column;
-        gap: var(--spacing-md);
-    }
-
-    .product-filters select,
-    .product-filters input {
-        width: 100%;
-        max-width: none; /* Eliminar restricción de ancho en móvil */
-    }
-
-    .brand-list {
-        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* Marcas más pequeñas */
-    }
-
-    .footer-content {
-        flex-direction: column;
-        text-align: center;
-        gap: var(--spacing-lg);
-    }
-
-    .footer-nav ul {
-        flex-direction: column;
+        flex-direction: column; /* Filtros apilados en móvil */
         gap: var(--spacing-sm);
     }
 
-    .support-actions {
-        flex-direction: column;
-        gap: var(--spacing-md);
+    .product-filters select,
+    .product-filters input[type="text"] {
+        max-width: 100%; /* Ocupar todo el ancho disponible */
     }
 
+    .brands-section .brand-grid {
+        gap: var(--spacing-md); /* Menor espacio entre marcas en móvil */
+    }
+
+    .brand-item {
+        width: 100px; /* Marcas más pequeñas en móvil */
+        height: 70px;
+    }
+
+    .support-buttons {
+        flex-direction: column; /* Botones de soporte apilados */
+    }
+
+    .support-buttons .btn {
+        width: 100%; /* Ocupar todo el ancho */
+    }
+
+    /* Modales en móvil */
     .modal-content {
         width: 95%; /* Ocupar más ancho en pantallas pequeñas */
         padding: var(--spacing-lg);
+    }
+
+    /* Mostrar la barra de navegación inferior en móvil */
+    .bottom-nav {
+        display: flex;
+    }
+
+    /* Ocultar la navegación principal del header en móvil si la barra inferior está presente */
+    /* Este estilo ya está en main.js pero es bueno tener la media query CSS para asegurar */
+    .main-nav {
+        display: none;
+    }
+
+    /* Ajustar padding del main para evitar que el contenido quede debajo del bottom-nav */
+    main {
+        padding-bottom: calc(var(--spacing-xl) + 60px); /* Ajusta según la altura del bottom-nav */
+    }
+
+    /* Ocultar searchIcon y cartIcon del header en móvil, ya están en bottom-nav */
+    .header-actions #searchIcon,
+    .header-actions #cartIcon {
+        display: none;
     }
 }
 
@@ -138,8 +175,9 @@
         gap: var(--spacing-md);
     }
 
+    /* Mostrar navegación normal en tablets */
     .main-nav {
-        display: flex; /* Mostrar navegación normal en tablets */
+        display: flex;
         position: static;
         box-shadow: none;
         border-top: none;
@@ -151,8 +189,9 @@
         flex-direction: row;
     }
 
+    /* Ocultar hamburguesa en tablets */
     .menu-toggle {
-        display: none; /* Ocultar hamburguesa en tablets */
+        display: none;
     }
 
     .hero-section {
@@ -171,24 +210,53 @@
     .product-filters input {
         max-width: 200px; /* Un poco más de espacio en tablet */
     }
+
+    /* Ocultar la barra de navegación inferior en tablets */
+    .bottom-nav {
+        display: none;
+    }
+
+    /* Mostrar searchIcon y cartIcon del header en tablet */
+    .header-actions #searchIcon,
+    .header-actions #cartIcon {
+        display: block;
+    }
 }
 
 /* Desktop (1024px y más) */
 @media (min-width: 1024px) {
-    .product-grid {
-        grid-template-columns: repeat(4, 1fr); /* 4 columnas en escritorio */
-    }
-
-    .container {
-        max-width: 1200px; /* Ancho máximo para el contenido */
-    }
-
-    .main-nav {
-        display: flex !important; /* Asegurar que se muestra en desktop */
-        position: static;
-    }
-
+    /* Asegurar que el menú hamburguesa esté oculto en desktop */
     .menu-toggle {
-        display: none !important; /* Asegurar que se oculta en desktop */
+        display: none;
+    }
+
+    /* Asegurar que la navegación principal esté visible en desktop */
+    .main-nav {
+        display: flex !important; /* Usar !important para anular posibles estilos de JS */
+        position: static;
+        box-shadow: none;
+        border-top: none;
+        padding: 0;
+        width: auto;
+    }
+
+    .main-nav .nav-list {
+        flex-direction: row;
+    }
+
+    /* Ocultar la barra de navegación inferior en desktop */
+    .bottom-nav {
+        display: none;
+    }
+
+    /* Mostrar searchIcon y cartIcon del header en desktop */
+    .header-actions #searchIcon,
+    .header-actions #cartIcon {
+        display: block;
+    }
+
+    /* Resetear padding del main para desktop si fue afectado por bottom-nav */
+    main {
+        padding-bottom: var(--spacing-xl);
     }
 }
