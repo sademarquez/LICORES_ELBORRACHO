@@ -1,176 +1,211 @@
 <!DOCTYPE html>
-<html lang="es" class="scroll-smooth">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Licores El Borracho</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico">
+    <title>EL BORRACHO - Tu Licorería Online</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
-<body class="bg-slate-900 text-white font-sans">
-
-    <div id="notification-container" class="fixed top-4 right-4 z-[1001] w-80">
-        </div>
-
-    <header class="fixed top-0 left-0 w-full z-50 bg-slate-800/80 panel-glass p-4 shadow-lg">
-        <div class="container mx-auto flex justify-between items-center">
-            <a href="#home" class="flex items-center group">
-                <img src="assets/img/logo.png" alt="Licores El Borracho Logo" class="h-12 md:h-16 transition-transform duration-300 group-hover:scale-105">
+<body>
+    <header class="main-header">
+        <div class="container">
+            <div class="header-content">
+                <a href="/" class="logo">
+                    <img src="images/icons/logo-elborracho.svg" alt="Logo de EL BORRACHO">
+                    <span>EL BORRACHO</span>
                 </a>
-            
-            <nav class="hidden md:block">
-                <ul class="flex space-x-6 items-center">
-                    <li><a href="#home" class="hover:text-yellow-400 text-lg font-semibold transition-colors duration-200">Inicio</a></li>
-                    <li><a href="#destacados" class="hover:text-yellow-400 text-lg font-semibold transition-colors duration-200">Destacados</a></li>
-                    <li><a href="#catalogo" class="hover:text-yellow-400 text-lg font-semibold transition-colors duration-200">Catálogo</a></li>
-                    <li><a href="#contacto" class="hover:text-yellow-400 text-lg font-semibold transition-colors duration-200">Contacto</a></li>
-                    <li>
-                        <div class="relative">
-                            <input type="text" id="product-search-desktop" placeholder="Buscar productos..." class="bg-slate-700/60 border border-slate-600 rounded-full py-2 pl-4 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 transition-all duration-300 w-48 hover:w-64">
-                            <button id="search-button-desktop" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-yellow-400 transition-colors duration-200" aria-label="Buscar producto">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
-                                </svg>
-                            </button>
-                        </div>
-                    </li>
-                    <li>
-                        <button id="nav-cart-button-desktop" class="relative bg-yellow-500 text-slate-900 p-2 rounded-full hover:bg-yellow-600 transition-all duration-200 transform hover:scale-105 shadow-md" aria-label="Abrir carrito de compras">
-                            🛒 <span id="cart-count-desktop" class="absolute top-0 right-0 -mt-1 -mr-1 bg-red-600 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">0</span>
-                        </button>
-                    </li>
-                </ul>
-            </nav>
-
-            <div class="md:hidden flex items-center space-x-4">
-                <button id="nav-cart-button-mobile" class="relative bg-yellow-500 text-slate-900 p-2 rounded-full hover:bg-yellow-600 transition-all duration-200 transform hover:scale-105 shadow-md" aria-label="Abrir carrito de compras móvil">
-                    🛒 <span id="cart-count-mobile" class="absolute top-0 right-0 -mt-1 -mr-1 bg-red-600 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">0</span>
-                </button>
-                <button id="hamburger-menu-btn" class="text-white text-3xl focus:outline-none transition-colors duration-200 hover:text-yellow-400" aria-label="Abrir menú de navegación">
-                    &#9776;
-                </button>
+                <nav class="main-nav">
+                    <ul class="nav-list">
+                        <li><a href="#novedades">Novedades</a></li>
+                        <li><a href="#licores">Licores</a></li>
+                        <li><a href="#otras-bebidas">Otras Bebidas</a></li>
+                        <li><a href="#snacks">Snacks & Más</a></li>
+                        <li><a href="#marcas">Marcas</a></li>
+                        <li><a href="#servicios">Servicios</a></li>
+                        <li><a href="#contacto">Contacto</a></li>
+                    </ul>
+                </nav>
+                <div class="header-actions">
+                    <div class="search-bar">
+                        <input type="text" id="searchInput" placeholder="Buscar productos...">
+                        <button id="searchButton" aria-label="Buscar"><i class="fas fa-search"></i></button>
+                    </div>
+                    <div class="cart-icon" id="cartIconContainer">
+                        <a href="#" id="cartIcon" aria-label="Ver carrito">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="cart-count" id="cartCount">0</span>
+                        </a>
+                    </div>
+                    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
             </div>
         </div>
     </header>
 
-    <div id="mobile-menu" class="fixed top-0 left-0 h-full w-64 bg-slate-800/90 panel-glass shadow-lg z-50 transform -translate-x-full transition-transform duration-300 ease-in-out md:hidden">
-        <div class="p-6">
-            <button id="close-mobile-menu" class="text-white text-4xl absolute top-4 right-4 focus:outline-none hover:text-yellow-400 transition-colors duration-200" aria-label="Cerrar menú de navegación">&times;</button>
-            <img src="assets/img/logo.png" alt="Licores El Borracho Logo" class="h-16 mx-auto mb-8 mt-4">
-            <ul class="space-y-4 text-center">
-                <li><a href="#home" class="block text-white hover:text-yellow-400 text-xl font-semibold transition-colors py-2 duration-200">Inicio</a></li>
-                <li><a href="#destacados" class="block text-white hover:text-yellow-400 text-xl font-semibold transition-colors py-2 duration-200">Destacados</a></li>
-                <li><a href="#catalogo" class="block text-white hover:text-yellow-400 text-xl font-semibold transition-colors py-2 duration-200">Catálogo</a></li>
-                <li><a href="#contacto" class="block text-white hover:text-yellow-400 text-xl font-semibold transition-colors py-2 duration-200">Contacto</a></li>
-                <li class="mt-8">
-                    <div class="relative mx-auto w-full max-w-xs">
-                        <input type="text" id="product-search-mobile" placeholder="Buscar productos..." class="bg-slate-700/60 border border-slate-600 rounded-full py-2 pl-4 pr-10 text-base focus:outline-none focus:ring-2 focus:ring-yellow-500 transition-all duration-300 w-full">
-                        <button id="search-button-mobile" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-yellow-400 transition-colors duration-200" aria-label="Buscar producto móvil">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
-                            </svg>
-                        </button>
+    <aside class="cart-sidebar" id="cartSidebar">
+        <div class="sidebar-header">
+            <h3>Tu Carrito</h3>
+            <button class="close-btn" id="closeCartBtn">&times;</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <p class="cart-empty-message">Tu carrito está vacío.</p>
+        </div>
+        <div class="cart-summary">
+            <p>Total: <span id="cartTotalPrice">$0</span></p>
+            <button class="btn btn-primary checkout-whatsapp-btn" id="checkoutWhatsappBtn">
+                <i class="fab fa-whatsapp"></i> Finalizar Pedido por WhatsApp
+            </button>
+        </div>
+    </aside>
+
+    <main>
+        <section class="hero-section" id="home">
+            <div class="carousel-container">
+                <div class="carousel-track" id="carouselTrack">
                     </div>
-                </li>
-            </ul>
-        </div>
-    </div>
-
-    <section id="home" class="hero-section relative h-screen bg-cover bg-center flex items-center justify-center text-white" style="background-image: url('assets/img/static_background.jpg');">
-        <div class="absolute inset-0 bg-black opacity-20"></div>
-        <div class="container mx-auto text-center z-10 animate-fade-in panel-glass p-8 rounded-lg shadow-xl max-w-3xl">
-            <h1 class="text-5xl md:text-6xl font-extrabold text-yellow-400 mb-4 leading-tight drop-shadow-lg">Licores El Borracho</h1>
-            <p class="text-xl md:text-2xl mb-8 font-light drop-shadow-md">
-                Tu destino para las mejores bebidas en Popayán.
-            </p>
-            <a href="#catalogo" class="bg-yellow-500 text-slate-900 px-8 py-4 rounded-full text-xl font-semibold hover:bg-yellow-600 transition-transform transform hover:scale-105 shadow-lg inline-block">
-                Explora el Catálogo
-            </a>
-        </div>
-    </section>
-
-    <section id="destacados" class="py-16 bg-slate-900 text-white animate-fade-in-up">
-        <div class="container mx-auto px-4">
-            <h2 class="text-4xl font-extrabold text-center text-yellow-400 mb-12">Productos Destacados</h2>
-
-            <div class="relative overflow-hidden">
-                <div id="destacados-productos-track" class="carousel-track flex transition-transform duration-500 ease-in-out">
+                <button class="carousel-btn prev" id="carouselPrev" aria-label="Anterior">&#10094;</button>
+                <button class="carousel-btn next" id="carouselNext" aria-label="Siguiente">&#10095;</button>
+                <div class="carousel-dots" id="carouselDots">
                     </div>
+            </div>
+        </section>
 
-                <button id="carousel-prev" class="absolute left-0 top-1/2 -translate-y-1/2 bg-slate-700/70 p-3 rounded-full text-white text-2xl z-10 hover:bg-slate-600/70 transition-colors duration-200 transform hover:scale-110" aria-label="Producto anterior">
-                    &#10094;
+        <section id="novedades" class="products-section container">
+            <h2>✨ Novedades de EL BORRACHO ✨</h2>
+            <div class="product-grid" id="newProductsGrid">
+                </div>
+        </section>
+
+        <section id="licores" class="products-section container">
+            <h2>🍷 Licores</h2>
+            <div class="product-filters">
+                <select id="brandFilter">
+                    <option value="">Todas las Marcas</option>
+                    </select>
+                <select id="priceFilter">
+                    <option value="">Ordenar por Precio</option>
+                    <option value="asc">Menor a Mayor</option>
+                    <option value="desc">Mayor a Menor</option>
+                </select>
+                <input type="text" id="productSearchInput" placeholder="Buscar licor...">
+            </div>
+            <div class="product-grid" id="licoresGrid">
+                </div>
+        </section>
+
+        <section id="otras-bebidas" class="products-section container">
+            <h2>🥤 Otras Bebidas</h2>
+            <div class="product-grid" id="bebidasGrid">
+                </div>
+        </section>
+
+        <section id="snacks" class="products-section container">
+            <h2>🍫 Snacks & Más</h2>
+            <div class="product-grid" id="snacksGrid">
+                </div>
+        </section>
+
+        <section id="marcas" class="brands-section container">
+            <h2>Nuestras Marcas Favoritas</h2>
+            <div class="brands-list" id="brandsList">
+                </div>
+        </section>
+
+        <section id="servicios" class="support-section container">
+            <h2>🛵 Pedidos & Soporte EL BORRACHO 📞</h2>
+            <p>¿Necesitas ayuda con tu pedido o tienes alguna consulta?</p>
+            <div class="support-actions">
+                <button class="btn btn-primary" id="reportIssueBtn">
+                    <i class="fas fa-question-circle"></i> Reportar Problema con Pedido
                 </button>
-                <button id="carousel-next" class="absolute right-0 top-1/2 -translate-y-1/2 bg-slate-700/70 p-3 rounded-full text-white text-2xl z-10 hover:bg-slate-600/70 transition-colors duration-200 transform hover:scale-110" aria-label="Siguiente producto">
-                    &#10095;
+                <button class="btn btn-secondary" id="requestDeliveryBtn">
+                    <i class="fas fa-motorcycle"></i> Solicitar Entrega Especial
                 </button>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section id="catalogo" class="py-16 bg-slate-800 text-white animate-fade-in-up">
-        <div class="container mx-auto px-4">
-            <h2 class="text-4xl font-extrabold text-center text-yellow-400 mb-12">Nuestro Catálogo</h2>
-            <div id="productos-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-                </div>
-            <p id="no-products-found" class="text-white text-center py-8 hidden">No se encontraron productos que coincidan con la búsqueda.</p>
-        </div>
-    </section>
-
-    <section id="contacto" class="py-16 bg-slate-900 text-white animate-fade-in-up">
-        <div class="container mx-auto px-4 text-center">
-            <h2 class="text-4xl font-extrabold text-yellow-400 mb-8">Contáctanos</h2>
-            <p class="text-lg mb-4">Estamos aquí para ayudarte. No dudes en contactarnos para cualquier pregunta o pedido especial.</p>
-            <div class="flex flex-col md:flex-row justify-center items-center md:space-x-8 space-y-6 md:space-y-0">
-                <div class="flex items-center text-xl panel-glass p-4 rounded-lg shadow-md transition-transform hover:scale-105 duration-200 cursor-pointer">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-yellow-400 mr-3" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M7 2a2 2 0 00-2 2v12a2 2 0 002 2h6a2 2 0 002-2V4a2 2 0 00-2-2H7zm3 15a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
-                    </svg>
-                    <span>+57 321 8765432</span>
-                </div>
-                <div class="flex items-center text-xl panel-glass p-4 rounded-lg shadow-md transition-transform hover:scale-105 duration-200 cursor-pointer">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-yellow-400 mr-3" viewBox="0 0 20 20" fill="currentColor">
-                        <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                        <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                    </svg>
-                    <span>info@licoreselborracho.com</span>
-                </div>
+        <section id="contacto" class="contact-section container">
+            <h2>📍 Contáctanos</h2>
+            <p>Estamos listos para atender tus pedidos.</p>
+            <div class="contact-info">
+                <p><i class="fas fa-map-marker-alt"></i> Popayán, Cauca, Colombia</p>
+                <p><i class="fas fa-envelope"></i> pedidos@elborracho.com</p>
+                <p><i class="fab fa-whatsapp"></i> +57 310 987 6543</p>
             </div>
-            <p class="mt-8 text-md text-slate-400">Visítanos en: Carrera 5 # 10-20, Popayán, Cauca.</p>
-        </div>
-    </section>
-
-    <footer class="bg-slate-900/80 panel-glass py-8 text-center text-slate-400 border-t border-slate-700/50">
-        <div class="container mx-auto px-4">
-            <p>&copy; 2024 Licores El Borracho. Todos los derechos reservados.</p>
-            <div class="flex justify-center space-x-6 mt-4">
-                <a href="https://facebook.com" target="_blank" class="hover:text-yellow-400 transition-colors duration-200">Facebook</a>
-                <a href="https://instagram.com" target="_blank" class="hover:text-yellow-400 transition-colors duration-200">Instagram</a>
-                <a href="https://twitter.com" target="_blank" class="hover:text-yellow-400 transition-colors duration-200">Twitter</a>
+            <div class="social-media">
+                <a href="#" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
             </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <p>&copy; 2025 EL BORRACHO. Todos los derechos reservados.</p>
+            <p>¡Disfruta con responsabilidad!</p>
         </div>
     </footer>
 
-    <button id="cart-button" class="fixed bottom-8 right-8 bg-yellow-500 hover:bg-yellow-600 text-slate-900 p-4 rounded-full shadow-lg text-2xl z-40 transition-all duration-200 transform hover:scale-110" aria-label="Abrir carrito de compras">
-        🛒 <span id="cart-count" class="absolute top-0 right-0 -mt-2 -mr-2 bg-red-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
-    </button>
+    <div id="issueReportModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Reportar Problema con Pedido</h2>
+            <form id="issueReportForm">
+                <label for="issueName">Tu Nombre:</label>
+                <input type="text" id="issueName" required>
 
-    <div id="cart-modal" class="modal">
-        <div class="modal-content bg-slate-800/80 panel-glass border border-slate-700/50">
-            <span class="close-button" id="close-cart-modal" aria-label="Cerrar carrito">&times;</span>
-            <h3 class="text-3xl font-bold mb-6 text-yellow-400">Tu Carrito</h3>
-            <div id="cart-items" class="max-h-80 overflow-y-auto mb-6">
-                </div>
-            <div class="flex justify-between items-center text-xl font-bold mb-6 border-t border-slate-700/50 pt-4">
-                <span>Total:</span>
-                <span id="cart-total" class="text-yellow-400">$0</span>
-            </div>
-            <button id="finalize-purchase-btn" class="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors duration-200 transform hover:scale-[1.01] shadow-md">
-                Finalizar Compra por WhatsApp
-            </button>
+                <label for="issuePhone">Tu Teléfono:</label>
+                <input type="tel" id="issuePhone" required>
+
+                <label for="issueOrderNumber">Número de Pedido (opcional):</label>
+                <input type="text" id="issueOrderNumber" placeholder="Ej: #EB12345">
+
+                <label for="issueDescription">Describe el Problema:</label>
+                <textarea id="issueDescription" rows="5" required placeholder="Ej: Faltó un producto, botella rota, entrega tardía"></textarea>
+
+                <button type="submit" class="btn-primary"><i class="fab fa-whatsapp"></i> Enviar Reporte por WhatsApp</button>
+            </form>
         </div>
     </div>
 
-    <script src="assets/js/script.js"></script>
+    <div id="deliveryRequestModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Solicitar Entrega Especial</h2>
+            <form id="deliveryRequestForm">
+                <label for="deliveryName">Tu Nombre:</label>
+                <input type="text" id="deliveryName" required>
+
+                <label for="deliveryPhone">Tu Teléfono:</label>
+                <input type="tel" id="deliveryPhone" required>
+
+                <label for="deliveryAddress">Dirección de Entrega:</label>
+                <input type="text" id="deliveryAddress" required placeholder="Ej: Calle 10 # 5-20, Barrio Centro">
+
+                <label for="deliveryDateTime">Fecha y Hora Preferida:</label>
+                <input type="datetime-local" id="deliveryDateTime" required>
+
+                <label for="deliveryDetails">Detalles Adicionales del Pedido:</label>
+                <textarea id="deliveryDetails" rows="3" placeholder="Ej: 2 botellas de Aguardiente, 1 sixpack de Club Colombia"></textarea>
+
+                <button type="submit" class="btn-primary"><i class="fab fa-whatsapp"></i> Solicitar Entrega por WhatsApp</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <script src="js/main.js" type="module"></script>
+    <script src="js/carousel.js" type="module"></script>
+    <script src="js/products.js" type="module"></script>
+    <script src="js/search.js" type="module"></script>
+    <script src="js/cart.js" type="module"></script>
+    <script src="js/toast.js" type="module"></script>
+    <script src="js/support.js" type="module"></script>
 </body>
 </html>
