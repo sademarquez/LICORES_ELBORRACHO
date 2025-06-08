@@ -1,7 +1,7 @@
 {
     "siteName": "EL BORRACHO",
     "contactEmail": "pedidos@elborracho.com",
-    "contactPhone": "573109876543",
+    "contactPhone": "573109876543", // This is crucial for WhatsApp functionality
     "address": "Popayán, Cauca, Colombia",
     "banners": [
         {
@@ -27,14 +27,6 @@
             "imageUrl": "images/banners/banner-snacks.jpg",
             "link": "#snacks",
             "buttonText": "Explorar Snacks"
-        },
-        {
-            "id": "banner4",
-            "title": "Explora Otras Bebidas",
-            "description": "Desde gaseosas hasta energizantes, encuentra lo que necesitas.",
-            "imageUrl": "images/banners/banner-otras-bebidas.jpg",
-            "link": "#otras-bebidas",
-            "buttonText": "Ver Bebidas"
         }
     ],
     "brands": [
@@ -57,14 +49,6 @@
         {
             "name": "Corona",
             "logoUrl": "images/icons/corona-logo.svg"
-        },
-        {
-            "name": "Coca-Cola",
-            "logoUrl": "images/icons/coca-cola-logo.svg"
-        },
-        {
-            "name": "Papas Margarita",
-            "logoUrl": "images/icons/margarita-logo.svg"
         }
     ]
 }
