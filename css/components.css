@@ -26,7 +26,6 @@
     height: 100%;
     position: relative;
     display: flex;
-    flex-direction: column; /* Para apilar título y descripción */
     align-items: center; /* Centra el contenido verticalmente */
     justify-content: center; /* Centra el contenido horizontalmente */
     background-size: cover;
@@ -34,7 +33,6 @@
     color: var(--white);
     text-align: center;
     flex-shrink: 0; /* Asegura que no se encoja */
-    padding: var(--spacing-md); /* Espacio para el contenido */
 }
 
 .carousel-slide::before {
@@ -50,71 +48,47 @@
 
 .carousel-caption {
     position: relative;
-    z-index: 2;
+    z-index: 2; /* Asegura que el texto esté sobre la capa de oscurecimiento */
     padding: var(--spacing-md);
     max-width: 800px;
-    opacity: 0; /* Oculto por defecto */
-    transform: translateY(20px); /* Ligeramente desplazado */
-    transition: opacity 0.5s ease, transform 0.5s ease;
-}
-
-.carousel-slide.active .carousel-caption {
-    opacity: 1; /* Visible cuando el slide está activo */
-    transform: translateY(0); /* Vuelve a su posición original */
 }
 
 .carousel-caption h2 {
     font-size: 3em;
     margin-bottom: var(--spacing-sm);
-    color: var(--primary-color);
-    text-shadow: var(--shadow-sm);
+    text-shadow: var(--shadow-text);
 }
 
 .carousel-caption p {
     font-size: 1.2em;
     margin-bottom: var(--spacing-lg);
-    color: var(--text-color-light);
+    text-shadow: var(--shadow-text);
 }
 
-.carousel-caption .btn {
-    background-color: var(--primary-color);
-    color: var(--dark-bg);
-    padding: var(--spacing-sm) var(--spacing-lg);
-    border-radius: var(--border-radius);
-    text-decoration: none;
-    font-weight: bold;
-    transition: background-color var(--transition-speed) ease, transform 0.2s ease;
-}
-
-.carousel-caption .btn:hover {
-    background-color: var(--primary-color-dark);
-    transform: translateY(-2px); /* Pequeño efecto hover */
-}
-
-.carousel-nav-btn {
+.carousel-btn {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     background-color: rgba(0, 0, 0, 0.5);
     color: var(--white);
     border: none;
-    padding: var(--spacing-md) var(--spacing-sm);
+    padding: var(--spacing-md);
     cursor: pointer;
-    font-size: 1.5em;
-    z-index: 3;
-    border-radius: var(--border-radius);
-    transition: background-color var(--transition-speed) ease;
+    font-size: 2em;
+    z-index: 10;
+    border-radius: var(--border-radius-sm);
+    transition: background-color 0.3s ease;
 }
 
-.carousel-nav-btn:hover {
-    background-color: rgba(0, 0, 0, 0.8);
+.carousel-btn:hover {
+    background-color: rgba(0, 0, 0, 0.7);
 }
 
-#carouselPrev {
+.carousel-btn.prev {
     left: var(--spacing-md);
 }
 
-#carouselNext {
+.carousel-btn.next {
     right: var(--spacing-md);
 }
 
@@ -123,43 +97,38 @@
     bottom: var(--spacing-md);
     left: 50%;
     transform: translateX(-50%);
-    z-index: 3;
     display: flex;
     gap: var(--spacing-sm);
+    z-index: 10;
 }
 
-.dot {
+.carousel-dot {
     width: 12px;
     height: 12px;
     background-color: rgba(255, 255, 255, 0.5);
     border-radius: 50%;
     cursor: pointer;
-    transition: background-color var(--transition-speed) ease, transform var(--transition-speed) ease;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.dot.active {
+.carousel-dot.active {
     background-color: var(--primary-color);
     transform: scale(1.2);
 }
 
-/* Product Grid */
-.product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: var(--spacing-lg);
-    padding: var(--spacing-md) 0;
-}
-
+/* Product Card */
 .product-card {
     background-color: var(--dark-bg);
+    border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
+    padding: var(--spacing-md);
+    text-align: center;
     box-shadow: var(--shadow-sm);
-    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
     display: flex;
     flex-direction: column;
-    position: relative;
-    border: 1px solid var(--border-color);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    justify-content: space-between;
+    height: 100%; /* Asegura que todas las tarjetas tengan la misma altura */
 }
 
 .product-card:hover {
@@ -168,146 +137,102 @@
 }
 
 .product-card img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.product-card-content {
-    padding: var(--spacing-md);
-    flex-grow: 1; /* Permite que el contenido ocupe el espacio restante */
-    display: flex;
-    flex-direction: column;
+    max-width: 100%;
+    height: 180px; /* Altura fija para las imágenes */
+    object-fit: contain; /* Para que la imagen se ajuste sin cortarse */
+    border-radius: var(--border-radius-sm);
+    margin-bottom: var(--spacing-md);
+    background-color: var(--light-bg); /* Fondo para imágenes con transparencia */
 }
 
 .product-card h3 {
-    margin-top: 0;
-    margin-bottom: var(--spacing-xs);
-    font-size: 1.2em;
+    font-size: 1.3em;
     color: var(--primary-color);
-    min-height: 2.4em; /* Asegura un alto mínimo para el título en dos líneas */
+    margin-bottom: var(--spacing-sm);
+    flex-grow: 1; /* Permite que el título ocupe espacio si es largo */
 }
 
 .product-card p {
-    font-size: 0.9em;
     color: var(--text-color-light);
-    flex-grow: 1; /* Para que la descripción ocupe espacio antes del precio */
-    margin-bottom: var(--spacing-sm); /* Espacio antes del precio/botón */
-    min-height: 4em; /* Asegura un alto mínimo para la descripción */
-    overflow: hidden; /* Oculta el texto si se desborda */
-    text-overflow: ellipsis; /* Añade puntos suspensivos */
-    display: -webkit-box;
-    -webkit-line-clamp: 3; /* Limita a 3 líneas */
-    -webkit-box-orient: vertical;
+    font-size: 0.9em;
+    margin-bottom: var(--spacing-sm);
+    line-height: 1.4;
 }
 
 .product-card .price {
-    font-size: 1.4em;
+    font-size: 1.5em;
+    color: var(--white);
     font-weight: bold;
-    color: var(--accent-color);
-    margin-top: var(--spacing-sm);
-    white-space: nowrap; /* Evita que el precio se rompa en varias líneas */
+    margin-bottom: var(--spacing-sm);
+}
+
+.product-card .price.on-offer {
+    color: var(--danger-color); /* Color rojo para precios de oferta */
 }
 
 .product-card .old-price {
-    text-decoration: line-through;
+    font-size: 1em;
     color: var(--text-color-light);
-    font-size: 0.9em;
+    text-decoration: line-through;
     margin-left: var(--spacing-sm);
+    display: inline-block; /* Para que aparezca junto al nuevo precio */
 }
 
 .product-card .add-to-cart-btn {
     background-color: var(--primary-color);
-    color: var(--secondary-color-dark);
+    color: var(--secondary-color-dark); /* Texto oscuro para el botón de añadir al carrito */
     border: none;
-    padding: var(--spacing-sm);
-    border-radius: var(--border-radius);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius-sm);
     cursor: pointer;
-    font-size: 0.9em;
+    transition: background-color 0.3s ease, transform 0.2s ease;
     font-weight: bold;
-    margin-top: var(--spacing-md);
-    transition: background-color var(--transition-speed) ease;
+    margin-top: var(--spacing-sm);
 }
 
 .product-card .add-to-cart-btn:hover {
     background-color: var(--primary-color-dark);
+    transform: translateY(-2px);
 }
 
-.product-card .badge {
-    position: absolute;
-    top: var(--spacing-sm);
-    right: var(--spacing-sm);
-    background-color: var(--danger-color);
-    color: var(--white);
-    padding: 5px 10px;
-    border-radius: var(--border-radius);
-    font-size: 0.8em;
-    font-weight: bold;
-    text-transform: uppercase;
-    z-index: 10;
-}
-
-.product-card .new-badge {
-    background-color: var(--info-color); /* Azul para "Nuevo" */
-}
-
-/* Product Filters */
-.product-filters {
-    display: flex;
-    justify-content: center;
-    gap: var(--spacing-md);
-    margin-bottom: var(--spacing-xl);
-    flex-wrap: wrap; /* Permite que los filtros se envuelvan en pantallas pequeñas */
-}
-
-.product-filters select,
-.product-filters input[type="text"] {
-    flex-grow: 1;
-    max-width: 250px; /* Ancho máximo para cada filtro */
-    padding: var(--spacing-sm);
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
-    background-color: var(--secondary-color);
-    color: var(--text-color-light);
-}
-
-.product-filters input::placeholder {
-    color: var(--text-color-light);
-    opacity: 0.7;
+/* Product Grid (for all product sections) */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: var(--spacing-xl);
+    margin-top: var(--spacing-lg);
 }
 
 /* Brands Section */
 .brands-section {
-    background-color: var(--dark-bg);
     padding: var(--spacing-xl) 0;
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow-sm);
     text-align: center;
-    margin-top: var(--spacing-xl);
-    border: 1px solid var(--border-color);
 }
 
-.brand-grid {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
+.brands-section h2 {
+    color: var(--white);
+    margin-bottom: var(--spacing-xl);
+    font-size: 2.5em;
+}
+
+.brands-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: var(--spacing-lg);
-    padding: var(--spacing-md);
+    justify-items: center;
+    align-items: center;
 }
 
 .brand-item {
-    background-color: var(--light-bg);
-    padding: var(--spacing-md);
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow-sm);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 120px;
-    height: 80px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    background-color: var(--dark-bg);
     border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-md);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .brand-item:hover {
@@ -317,63 +242,248 @@
 
 .brand-item img {
     max-width: 100%;
-    max-height: 100%;
+    max-height: 80px;
     object-fit: contain;
+    filter: brightness(0) invert(1); /* Para logos oscuros en fondo claro */
 }
+
+/* Modals */
+.modal {
+    display: none; /* Hidden by default - THIS IS THE CRITICAL CHANGE */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.7); /* Black w/ opacity */
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.show-modal { /* New class to show the modal */
+    display: flex;
+}
+
+.modal-content {
+    background-color: var(--dark-bg);
+    margin: auto;
+    padding: var(--spacing-xl);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    width: 90%;
+    max-width: 500px;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    color: var(--text-color-light);
+    animation: fadeIn 0.3s ease-out;
+}
+
+.modal-content h2,
+.modal-content h3 {
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-md);
+    text-align: center;
+}
+
+.modal-content p {
+    margin-bottom: var(--spacing-md);
+    text-align: center;
+}
+
+.modal-content .close-btn {
+    color: var(--text-color-light);
+    font-size: 2em;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.modal-content .close-btn:hover,
+.modal-content .close-btn:focus {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+/* Forms in Modals */
+.input-group {
+    margin-bottom: var(--spacing-md);
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: var(--spacing-sm);
+    color: var(--white);
+    font-weight: bold;
+}
+
+.input-group input[type="text"],
+.input-group input[type="email"],
+.input-group input[type="tel"],
+.input-group input[type="date"],
+.input-group input[type="time"],
+.input-group textarea {
+    width: calc(100% - 20px); /* Ajuste para padding */
+    padding: var(--spacing-sm);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+    background-color: var(--light-bg);
+    color: var(--white);
+    font-size: 1em;
+}
+
+.input-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.modal-content button[type="submit"] {
+    width: 100%;
+    padding: var(--spacing-md);
+    background-color: var(--primary-color);
+    color: var(--secondary-color-dark);
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-lg);
+}
+
+.modal-content button[type="submit"]:hover {
+    background-color: var(--primary-color-dark);
+    transform: translateY(-2px);
+}
+
+/* Age Verification Specific Styles */
+.age-verification-content {
+    text-align: center;
+}
+
+.age-verification-buttons {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: center;
+    margin-top: var(--spacing-lg);
+}
+
+/* Buttons (General styles, already defined in styles.css but kept for clarity) */
+.btn-primary {
+    background-color: var(--primary-color);
+    color: var(--secondary-color-dark);
+    border: none;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+    text-decoration: none; /* Asegura que los enlaces se vean como botones */
+    display: inline-flex; /* Para alinear íconos y texto */
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-color-dark);
+}
+
+.btn-secondary {
+    background-color: var(--secondary-color);
+    color: var(--white);
+    border: 1px solid var(--border-color);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    font-weight: bold;
+    text-decoration: none; /* Asegura que los enlaces se vean como botones */
+    display: inline-flex; /* Para alinear íconos y texto */
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+}
+
+.btn-secondary:hover {
+    background-color: var(--secondary-color-dark);
+    border-color: var(--primary-color); /* Un pequeño detalle al pasar el ratón */
+}
+
 
 /* Cart Sidebar */
 .cart-sidebar {
     position: fixed;
+    right: 0;
     top: 0;
-    right: -400px; /* Oculto por defecto */
-    width: 380px;
-    max-width: 90vw; /* Máximo 90% del viewport width en móviles */
+    width: 100%;
+    max-width: 400px;
     height: 100%;
     background-color: var(--dark-bg);
     box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
-    z-index: 150;
+    transform: translateX(100%);
+    transition: transform 0.3s ease-out;
+    z-index: 1001; /* Mayor que el modal */
     display: flex;
     flex-direction: column;
-    transition: right 0.3s ease-in-out;
-    border-left: 1px solid var(--border-color);
 }
 
 .cart-sidebar.open {
-    right: 0; /* Visible */
+    transform: translateX(0);
 }
 
 .cart-header {
-    background-color: var(--secondary-color-dark);
-    padding: var(--spacing-md);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: var(--spacing-md);
     border-bottom: 1px solid var(--border-color);
-    flex-shrink: 0; /* Evita que el header se encoja */
+    color: var(--primary-color);
 }
 
-.cart-header h2 {
-    color: var(--primary-color);
+.cart-header h3 {
     margin: 0;
     font-size: 1.5em;
 }
 
+.cart-header .close-btn {
+    background: none;
+    border: none;
+    color: var(--text-color-light);
+    font-size: 2em;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.cart-header .close-btn:hover {
+    color: var(--primary-color);
+}
+
 .cart-items {
-    flex-grow: 1; /* Ocupa el espacio restante */
+    flex-grow: 1; /* Permite que los elementos del carrito llenen el espacio disponible */
+    overflow-y: auto;
     padding: var(--spacing-md);
-    overflow-y: auto; /* Scroll si el contenido es largo */
 }
 
 .cart-item {
     display: flex;
     align-items: center;
     margin-bottom: var(--spacing-md);
-    padding-bottom: var(--spacing-sm);
+    padding-bottom: var(--spacing-md);
     border-bottom: 1px dashed var(--border-color);
+    color: var(--text-color-light);
 }
 
 .cart-item:last-child {
-    border-bottom: none;
+    border-bottom: none; /* Eliminar el borde del último elemento */
     margin-bottom: 0;
     padding-bottom: 0;
 }
@@ -381,26 +491,25 @@
 .cart-item img {
     width: 60px;
     height: 60px;
-    object-fit: cover;
-    border-radius: var(--border-radius);
+    object-fit: contain;
+    border-radius: var(--border-radius-sm);
     margin-right: var(--spacing-md);
-    border: 1px solid var(--border-color);
+    background-color: var(--light-bg);
 }
 
-.cart-item-info {
+.cart-item-details {
     flex-grow: 1;
 }
 
-.cart-item-info h4 {
+.cart-item-details h4 {
     margin: 0 0 5px 0;
-    color: var(--text-color-dark);
     font-size: 1.1em;
+    color: var(--white);
 }
 
-.cart-item-info p {
-    margin: 0;
-    color: var(--text-color-light);
+.cart-item-details .price {
     font-size: 0.9em;
+    color: var(--text-color-light);
 }
 
 .cart-item-actions {
@@ -410,52 +519,70 @@
 }
 
 .cart-item-actions button {
-    background: none;
+    background-color: var(--secondary-color);
+    color: var(--white);
     border: 1px solid var(--border-color);
-    color: var(--text-color-dark);
-    padding: 5px 8px;
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius-sm);
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
-    font-size: 0.9em;
-    transition: background-color 0.2s ease, color 0.2s ease;
+    transition: background-color 0.2s ease;
 }
 
 .cart-item-actions button:hover {
-    background-color: var(--secondary-color);
-    color: var(--primary-color);
+    background-color: var(--secondary-color-dark);
 }
 
-.cart-item-actions button.remove-item-btn {
+.cart-item-actions span {
+    min-width: 20px;
+    text-align: center;
+    font-weight: bold;
+    color: var(--white);
+}
+
+.cart-item .remove-item-btn {
     background-color: var(--danger-color);
     color: var(--white);
-    border-color: var(--danger-color);
+    border: none;
+    border-radius: var(--border-radius-sm);
+    padding: 5px 10px;
+    font-size: 0.8em;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-left: var(--spacing-md); /* Espacio entre acciones y eliminar */
 }
 
-.cart-item-actions button.remove-item-btn:hover {
+.cart-item .remove-item-btn:hover {
     background-color: #c82333;
-    border-color: #bd2130;
 }
+
 
 .cart-summary {
     padding: var(--spacing-md);
     border-top: 1px solid var(--border-color);
-    background-color: var(--secondary-color-dark);
-    flex-shrink: 0; /* Evita que el summary se encoja */
+    text-align: right;
+    color: var(--white);
 }
 
-.cart-summary .total-price {
-    display: flex;
-    justify-content: space-between;
+.cart-summary p {
     font-size: 1.3em;
     font-weight: bold;
-    color: var(--accent-color);
     margin-bottom: var(--spacing-md);
+    color: var(--primary-color);
+}
+
+.cart-summary span {
+    color: var(--white); /* Para el valor del total */
 }
 
 .checkout-whatsapp-btn {
     background-color: #25D366; /* Color de WhatsApp */
     color: var(--white);
     border: none;
+    border-radius: var(--border-radius);
     width: 100%;
     padding: var(--spacing-md);
     border-radius: var(--border-radius);
@@ -484,10 +611,9 @@
     text-align: center;
     color: var(--text-color-light);
     padding: var(--spacing-xl);
-    font-style: italic;
 }
 
-/* Support Section */
+/* Support Section (ya existente, solo añadiré el ícono si no estaba) */
 .support-section {
     background-color: var(--dark-bg);
     padding: var(--spacing-xl);
@@ -505,156 +631,103 @@
 
 .support-section p {
     color: var(--text-color-light);
+    font-size: 1.1em;
     margin-bottom: var(--spacing-lg);
-    max-width: 700px;
-    margin-left: auto;
-    margin-right: auto;
 }
 
 .support-buttons {
     display: flex;
     justify-content: center;
     gap: var(--spacing-md);
-    flex-wrap: wrap;
+    flex-wrap: wrap; /* Para que los botones se envuelvan en pantallas pequeñas */
 }
 
-.support-buttons .btn {
-    background-color: var(--secondary-color);
-    color: var(--text-color-dark);
-    border: 1px solid var(--border-color);
-    padding: var(--spacing-sm) var(--spacing-md);
-    border-radius: var(--border-radius);
-    text-decoration: none;
-    font-weight: bold;
-    transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-}
-
-.support-buttons .btn:hover {
-    background-color: var(--primary-color-dark);
-    color: var(--dark-bg); /* Cambia el color del texto a oscuro en hover */
-}
-
-.support-buttons .btn i {
-    font-size: 1.2em;
-}
-
-/* Modales específicos (Reportar Falla, Agendar Cita) - Usan .modal de styles.css */
-#faultReportModal .modal-content,
-#appointmentModal .modal-content {
-    max-width: 600px;
-}
-
-#faultReportModal textarea {
-    min-height: 100px;
-    resize: vertical;
-}
-
-#appointmentModal .form-group {
-    margin-bottom: var(--spacing-md);
-    text-align: left;
-}
-
-#appointmentModal .form-group label {
-    margin-bottom: var(--spacing-sm);
-    color: var(--text-color-light);
-}
-
-#appointmentModal .form-group input,
-#appointmentModal .form-group select,
-#appointmentModal .form-group textarea {
-    width: 100%;
-    padding: var(--spacing-sm);
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
-    background-color: var(--secondary-color);
-    color: var(--text-color-light);
-    box-sizing: border-box;
-}
-
-/* Age Verification Modal */
-#ageVerificationModal {
-    /* Este estilo se mantiene para el override inicial si es necesario */
-    /* display: flex; en styles.css se asegura de que esté visible */
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    background-color: rgba(0, 0, 0, 0.9); /* Fondo más oscuro */
-    z-index: 9999; /* Asegúrate de que esté en la parte superior */
+/* Toast Notifications */
+#toast-container {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden; /* Evita el scroll en el fondo */
-}
-
-#ageVerificationModal .modal-content {
-    background-color: var(--dark-bg);
-    padding: var(--spacing-xl);
-    border-radius: var(--border-radius);
-    max-width: 450px;
-    width: 90%;
-    box-shadow: 0 0 30px rgba(255, 191, 0, 0.5); /* Sombra dorada */
-    animation: fadeInScale 0.5s ease-out;
-    border: 2px solid var(--primary-color); /* Borde dorado */
-}
-
-@keyframes fadeInScale {
-    from { opacity: 0; transform: scale(0.8); }
-    to { opacity: 1; transform: scale(1); }
-}
-
-#ageVerificationModal h2 {
-    color: var(--primary-color);
-    font-size: 2em;
-    margin-bottom: var(--spacing-md);
-}
-
-#ageVerificationModal p {
-    color: var(--text-color-light);
-    font-size: 1.1em;
-    margin-bottom: var(--spacing-lg);
-}
-
-#ageVerificationModal .age-buttons {
+    bottom: var(--spacing-xl);
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
-    flex-direction: column; /* Botones apilados */
+    flex-direction: column-reverse; /* Para que los nuevos toasts aparezcan encima */
     gap: var(--spacing-md);
-    width: 100%;
+    z-index: 10000;
 }
 
-#ageVerificationModal .age-buttons button {
-    padding: var(--spacing-md);
-    font-size: 1.1em;
-    font-weight: bold;
+.toast {
+    background-color: var(--dark-bg);
+    color: var(--white);
+    padding: var(--spacing-md) var(--spacing-lg);
     border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+    min-width: 250px;
+    max-width: 90vw;
+    text-align: center;
+    font-size: 0.95em;
+    border: 1px solid var(--border-color);
+}
+
+.toast.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.toast.hide {
+    opacity: 0;
+    transform: translateY(20px);
+    /* visibility will be handled by the transitionend event listener in JS */
+}
+
+.toast-success {
+    border-left: 5px solid var(--success-color);
+}
+
+.toast-error {
+    border-left: 5px solid var(--danger-color);
+}
+
+.toast-warning {
+    border-left: 5px solid var(--primary-color); /* Usar el color principal para advertencias */
+}
+
+.toast-info {
+    border-left: 5px solid var(--info-color);
+}
+
+/* Back to top button (optional, if implemented) */
+.back-to-top {
+    position: fixed;
+    bottom: var(--spacing-xl);
+    right: var(--spacing-xl);
+    background-color: var(--primary-color);
+    color: var(--secondary-color-dark);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5em;
+    box-shadow: var(--shadow-md);
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    width: 100%;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    z-index: 900;
+    opacity: 0;
+    visibility: hidden;
 }
 
-#ageVerificationModal #confirmAgeBtn {
-    background-color: var(--success-color); /* Verde para confirmar */
-    color: var(--white);
-    border: none;
+.back-to-top.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
 }
 
-#ageVerificationModal #confirmAgeBtn:hover {
-    background-color: #218838;
-    transform: translateY(-2px);
-}
-
-#ageVerificationModal #declineAgeBtn {
-    background-color: var(--danger-color); /* Rojo para declinar */
-    color: var(--white);
-    border: none;
-}
-
-#ageVerificationModal #declineAgeBtn:hover {
-    background-color: #c82333;
-    transform: translateY(-2px);
+.back-to-top:hover {
+    background-color: var(--primary-color-dark);
+    transform: translateY(-3px);
 }
