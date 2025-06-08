@@ -1,142 +1,152 @@
-[
-    {
-        "id": "aguardiente-antioqueno-rojo",
-        "name": "Aguardiente Antioqueño Rojo Tapa Roja",
-        "brand": "Aguardiente Antioqueño",
-        "category": "Licor",
-        "description": "El sabor tradicional de Antioquia, ideal para cualquier celebración. Botella de 750ml.",
-        "price": 45000,
-        "imageUrl": "images/products/aguardiente-antioqueno-rojo.jpg",
-        "isOnOffer": false,
-        "offerPrice": null,
-        "isNew": true,
-        "stock": 100,
-        "rating": 4.5
-    },
-    {
-        "id": "ron-viejo-caldas-8-anos",
-        "name": "Ron Viejo de Caldas 8 Años",
-        "brand": "Ron Viejo de Caldas",
-        "category": "Licor",
-        "description": "Ron añejo premium con 8 años de maduración, suave y con carácter. Botella de 750ml.",
-        "price": 75000,
-        "imageUrl": "images/products/ron-viejo-caldas-8-anos.jpg",
-        "isOnOffer": true,
-        "offerPrice": 68000,
-        "isNew": false,
-        "stock": 70,
-        "rating": 4.7
-    },
-    {
-        "id": "whisky-buchanans-12-anos",
-        "name": "Whisky Buchanan's 12 Años",
-        "brand": "Buchanan's",
-        "category": "Licor",
-        "description": "Whisky escocés blended de 12 años, suave y equilibrado. Botella de 750ml.",
-        "price": 120000,
-        "imageUrl": "images/products/whisky-buchanans-12-anos.jpg",
-        "isOnOffer": false,
-        "offerPrice": null,
-        "isNew": false,
-        "stock": 50,
-        "rating": 4.8
-    },
-    {
-        "id": "cerveza-club-colombia-dorada",
-        "name": "Cerveza Club Colombia Dorada",
-        "brand": "Club Colombia",
-        "category": "Cerveza",
-        "description": "Cerveza tipo Lager, suave y refrescante. Pack de 6 unidades de 330ml.",
-        "price": 18000,
-        "imageUrl": "images/products/cerveza-club-colombia-dorada.jpg",
-        "isOnOffer": false,
-        "offerPrice": null,
-        "isNew": true,
-        "stock": 200,
-        "rating": 4.3
-    },
-    {
-        "id": "cerveza-corona-extra",
-        "name": "Cerveza Corona Extra",
-        "brand": "Corona",
-        "category": "Cerveza",
-        "description": "La cerveza mexicana más popular, ideal para disfrutar con limón. Botella de 355ml.",
-        "price": 5000,
-        "imageUrl": "images/products/cerveza-corona-extra.jpg",
-        "isOnOffer": false,
-        "offerPrice": null,
-        "isNew": false,
-        "stock": 150,
-        "rating": 4.2
-    },
-    {
-        "id": "cerveza-poker",
-        "name": "Cerveza Poker",
-        "brand": "Poker",
-        "category": "Cerveza",
-        "description": "La cerveza preferida para compartir con amigos. Six-pack de latas 330ml.",
-        "price": 15000,
-        "imageUrl": "images/products/cerveza-poker.jpg",
-        "isOnOffer": true,
-        "offerPrice": 13500,
-        "isNew": false,
-        "stock": 250,
-        "rating": 4.0
-    },
-    {
-        "id": "papas-margarita-pollo",
-        "name": "Papas Margarita Pollo",
-        "brand": "Margarita",
-        "category": "Snack",
-        "description": "Deliciosas papas fritas sabor a pollo, el acompañamiento perfecto para tus bebidas. Paquete de 135g.",
-        "price": 4000,
-        "imageUrl": "images/products/papas-margarita-pollo.jpg",
-        "isOnOffer": false,
-        "offerPrice": null,
-        "isNew": true,
-        "stock": 300,
-        "rating": 4.0
-    },
-    {
-        "id": "mani-la-especial",
-        "name": "Maní La Especial Salado",
-        "brand": "La Especial",
-        "category": "Snack",
-        "description": "Maní tostado y salado, el snack clásico para cualquier ocasión. Paquete de 150g.",
-        "price": 5000,
-        "imageUrl": "images/products/mani-la-especial-salado.jpg",
-        "isOnOffer": false,
-        "offerPrice": null,
-        "isNew": false,
-        "stock": 250,
-        "rating": 4.1
-    },
-    {
-        "id": "gaseosa-coca-cola",
-        "name": "Gaseosa Coca-Cola Original",
-        "brand": "Coca-Cola",
-        "category": "Otra Bebida",
-        "description": "El refresco clásico y burbujeante, perfecto para acompañar cualquier momento. Botella de 1.5L.",
-        "price": 6000,
-        "imageUrl": "images/products/gaseosa-coca-cola.jpg",
-        "isOnOffer": false,
-        "offerPrice": null,
-        "isNew": false,
-        "stock": 180,
-        "rating": 4.6
-    },
-    {
-        "id": "chocolatina-jet",
-        "name": "Chocolatina Jet Grande",
-        "brand": "Jet",
-        "category": "Snack",
-        "description": "La clásica chocolatina de leche con el inconfundible sabor colombiano. Unidad de 30g.",
-        "price": 1500,
-        "imageUrl": "images/products/chocolatina-jet.jpg",
-        "isOnOffer": false,
-        "offerPrice": null,
-        "isNew": true,
-        "stock": 400,
-        "rating": 4.4
+// js/products.js
+
+import { appState } from './main.js';
+import { showToastNotification } from './toast.js';
+import { addToCart } from './cart.js'; // Asegúrate de importar addToCart
+
+export function renderProducts(productsToRender, containerSelector, options = {}) {
+    const container = document.querySelector(containerSelector);
+    if (!container) {
+        console.error(`Contenedor no encontrado para renderizar productos: ${containerSelector}`);
+        return;
     }
-]
+
+    let filteredProducts = [...productsToRender];
+
+    if (options.isNew) {
+        filteredProducts = filteredProducts.filter(p => p.isNew);
+    }
+    if (options.limit) {
+        filteredProducts = filteredProducts.slice(0, options.limit);
+    }
+    if (options.category) { // Filtrar por categoría si se especifica
+        filteredProducts = filteredProducts.filter(p => p.category === options.category);
+    }
+
+    container.innerHTML = '';
+
+    if (filteredProducts.length === 0) {
+        container.innerHTML = `<p style="text-align: center; grid-column: 1 / -1; color: var(--text-color-light);">No hay productos disponibles en esta sección.</p>`;
+        return;
+    }
+
+    filteredProducts.forEach(product => {
+        const productCard = document.createElement('div');
+        productCard.classList.add('product-card');
+        productCard.dataset.id = product.id;
+
+        const displayPrice = product.isOnOffer ? product.offerPrice : product.price;
+        const oldPriceHtml = product.isOnOffer ? `<span class="product-old-price">$${product.price.toLocaleString('es-CO')}</span>` : '';
+
+        productCard.innerHTML = `
+            <div class="product-image-container">
+                <img src="${product.imageUrl}" alt="${product.name}" class="product-image">
+                ${product.isNew ? '<span class="product-badge new">NUEVO</span>' : ''}
+                ${product.isOnOffer ? '<span class="product-badge offer">OFERTA</span>' : ''}
+            </div>
+            <div class="product-info">
+                <h3 class="product-name">${product.name}</h3>
+                <p class="product-brand">${product.brand}</p>
+                <p class="product-description">${product.description}</p>
+                <div class="product-price">
+                    <span class="product-current-price">$${displayPrice.toLocaleString('es-CO')}</span>
+                    ${oldPriceHtml}
+                </div>
+                <div class="product-actions">
+                    <button class="btn btn-primary add-to-cart-btn" data-product-id="${product.id}">
+                        <i class="fas fa-cart-plus"></i> Añadir al Carrito
+                    </button>
+                </div>
+            </div>
+        `;
+        container.appendChild(productCard);
+    });
+
+    // Añadir event listeners a los botones "Añadir al Carrito"
+    container.querySelectorAll('.add-to-cart-btn').forEach(button => {
+        button.addEventListener('click', (e) => {
+            const productId = e.currentTarget.dataset.productId;
+            const productToAdd = appState.products.find(p => p.id === productId);
+            if (productToAdd) {
+                addToCart(productToAdd);
+            } else {
+                console.error('Producto no encontrado para añadir al carrito:', productId);
+            }
+        });
+    });
+}
+
+export function setupProductFilters(productsData) {
+    const brandFilter = document.getElementById('brandFilter');
+    const priceFilter = document.getElementById('priceFilter');
+    const productSearchInput = document.getElementById('productSearch');
+
+    if (!brandFilter || !priceFilter || !productSearchInput) {
+        console.warn('Elementos de filtro de productos no encontrados. Los filtros no funcionarán.');
+        return;
+    }
+
+    // Llenar el filtro de marcas dinámicamente
+    const brands = [...new Set(productsData.map(product => product.brand))].sort();
+    brandFilter.innerHTML = '<option value="">Todas las Marcas</option>';
+    brands.forEach(brand => {
+        const option = document.createElement('option');
+        option.value = brand;
+        option.textContent = brand;
+        brandFilter.appendChild(option);
+    });
+
+    const applyFilters = () => {
+        const selectedBrand = brandFilter.value;
+        const selectedPriceOrder = priceFilter.value;
+        const searchTerm = productSearchInput.value.toLowerCase().trim();
+
+        // Filtra solo los productos de la categoría "Licor" para esta cuadrícula principal
+        let filtered = productsData.filter(product => product.category === 'Licor');
+
+        filtered = filtered.filter(product => {
+            const matchesBrand = selectedBrand === '' || product.brand === selectedBrand;
+            const matchesSearch = product.name.toLowerCase().includes(searchTerm) ||
+                                  product.brand.toLowerCase().includes(searchTerm) ||
+                                  product.description.toLowerCase().includes(searchTerm);
+            return matchesBrand && matchesSearch;
+        });
+
+        if (selectedPriceOrder === 'asc') {
+            filtered.sort((a, b) => (a.offerPrice || a.price) - (b.offerPrice || b.price));
+        } else if (selectedPriceOrder === 'desc') {
+            filtered.sort((a, b) => (b.offerPrice || b.price) - (a.offerPrice || a.price));
+        }
+
+        renderProducts(filtered, '#allProductsGrid', { category: 'Licor' }); // Asegura que se filtre por categoría aquí también
+    };
+
+    brandFilter.addEventListener('change', applyFilters);
+    priceFilter.addEventListener('change', applyFilters);
+    productSearchInput.addEventListener('input', applyFilters);
+}
+
+// NUEVA FUNCIÓN: renderBrands (Asegúrate de que esta función exista en products.js y esté exportada)
+export function renderBrands(brandsData) {
+    const brandsContainer = document.getElementById('brandsGrid');
+    if (!brandsContainer) {
+        console.warn('Contenedor de marcas no encontrado (#brandsGrid). Las marcas no se renderizarán.');
+        return;
+    }
+
+    brandsContainer.innerHTML = ''; // Limpiar el contenedor antes de añadir
+
+    if (brandsData && brandsData.length > 0) {
+        brandsData.forEach(brand => {
+            const brandItem = document.createElement('div');
+            brandItem.classList.add('brand-item');
+            brandItem.innerHTML = `
+                <img src="${brand.logoUrl}" alt="${brand.name} Logo" class="brand-logo">
+                <p class="brand-name">${brand.name}</p>
+            `;
+            brandsContainer.appendChild(brandItem);
+        });
+    } else {
+        brandsContainer.innerHTML = `<p class="text-center">No hay marcas disponibles.</p>`;
+    }
+}
