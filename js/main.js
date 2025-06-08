@@ -4,7 +4,7 @@ import { initCarousel } from './carousel.js';
 import { renderProducts, setupProductFilters, renderBrands } from './products.js';
 import { setupSearch } from './search.js';
 import { initCart, updateCartCount, toggleCartSidebar } from './cart.js';
-import { setupSupport } from './support.js'; // Will be repurposed for 'Domicilios y Pedidos'
+import { setupSupport } from './support.js';
 
 export const appState = {
     products: [],
@@ -13,41 +13,6 @@ export const appState = {
     brands: [],
     contactInfo: {}
 };
-
-async function loadInitialData() {
-    try {
-        // Adjust paths if config.json and products.json are in a different directory
-        const [configResponse, productsResponse] = await Promise.all([
-            fetch('/config.json'), // Assuming it's in the root or accessible directly
-            fetch('/products.json') // Assuming it's in the root or accessible directly
-        ]);
-
-        if (!configResponse.ok) {
-            throw new Error(`HTTP error! status: ${configResponse.status} for config.json`);
-        }
-        if (!productsResponse.ok) {
-            throw new Error(`HTTP error! status: ${productsResponse.status} for products.json`);
-        }
-
-        const configData = await configResponse.json();
-        const productsData = await productsResponse.json();
-
-        appState.contactInfo = configData.contactInfo || {}; // Ensure contactInfo is available
-        appState.banners = configData.banners || [];
-        appState.brands = configData.brands || [];
-        appState.products = productsData || [];
-
-        console.log('Datos iniciales cargados con éxito.');
-        console.log('Productos cargados en appState:', appState.products.length, 'productos encontrados.');
-        if (appState.products.length === 0) {
-            console.warn('¡Advertencia! appState.products está vacío. Los productos no se mostrarán.');
-        }
-
-    } catch (error) {
-        console.error('Error al cargar los datos iniciales:', error);
-    }
-}
-
 
 document.addEventListener('DOMContentLoaded', async () => {
     console.log('DOM completamente cargado. Inicializando la aplicación...');
@@ -69,27 +34,71 @@ document.addEventListener('DOMContentLoaded', async () => {
     setupSearch();
     renderBrands(appState.brands);
     setupBottomNavListeners(); // NUEVO: Configura los listeners de la barra inferior
-    setupSupport(appState.contactInfo.contactPhone); // Pass the contact phone number
-    setupScrollSpy(); // NEW: Setup scroll spy for bottom navigation
+    setupSupport(appState.contactInfo.contactPhone); // Pasa el número de teléfono desde contactInfo
 
-    // Agrega esto para asegurar que el modal de verificación de edad se inicialice
-    // aunque no se importe directamente aquí, se espera que age-verification.js se ejecute.
-    // Si no se ejecuta, asegúrate de que esté correctamente enlazado en index.html
-    // <script src="js/age-verification.js" type="module"></script>
+    setupScrollHighlight(); // Para resaltar la navegación inferior al hacer scroll
+
+    // console.log('Estado inicial de la aplicación:', appState); // Para depuración
+
 });
+
+async function loadInitialData() {
+    try {
+        // --- CORRECCIÓN AQUÍ: CAMBIO DE RUTA PARA config.json y products.json ---
+        const [configResponse, productsResponse] = await Promise.all([
+            fetch('./data/config.json'), // Ruta correcta: están en la carpeta 'data'
+            fetch('./data/products.json') // Ruta correcta: están en la carpeta 'data'
+        ]);
+
+        if (!configResponse.ok) throw new Error(`HTTP error! status: ${configResponse.status} for config.json`);
+        if (!productsResponse.ok) throw new Error(`HTTP error! status: ${productsResponse.status} for products.json`);
+
+        const configData = await configResponse.json();
+        const productsData = await productsResponse.json();
+
+        appState.banners = configData.banners;
+        appState.brands = configData.brands;
+        appState.contactInfo = {
+            contactPhone: configData.contactPhone,
+            contactEmail: configData.contactEmail,
+            address: configData.address
+        };
+        appState.products = productsData; // Asigna los productos cargados al appState
+        console.log('Datos iniciales cargados con éxito.');
+
+    } catch (error) {
+        console.error('Error al cargar los datos iniciales:', error);
+        // showToastNotification('Error al cargar la información inicial. Por favor, recarga la página.', 'error');
+        // Considera mostrar un mensaje al usuario si los datos esenciales no cargan
+    }
+}
+
+// ... (el resto de tu código main.js, incluyendo setupBottomNavListeners y setupScrollHighlight)
 
 function setupBottomNavListeners() {
     const bottomNavSearch = document.getElementById('bottomNavSearch');
     const bottomNavCart = document.getElementById('bottomNavCart');
-    const searchInput = document.getElementById('searchInput'); // Get the main search input
+    const searchModal = document.getElementById('searchModal');
+    const closeSearchBtn = document.getElementById('closeSearchBtn');
 
-    if (bottomNavSearch) {
+
+    if (bottomNavSearch && searchModal && closeSearchBtn) {
         bottomNavSearch.addEventListener('click', (e) => {
             e.preventDefault();
-            // Scroll to the search input in the header and focus it
-            if (searchInput) {
-                searchInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                searchInput.focus();
+            searchModal.style.display = 'block';
+            document.body.classList.add('no-scroll');
+        });
+
+        closeSearchBtn.addEventListener('click', () => {
+            searchModal.style.display = 'none';
+            document.body.classList.remove('no-scroll');
+        });
+
+        // Cerrar modal al hacer clic fuera
+        window.addEventListener('click', (event) => {
+            if (event.target === searchModal) {
+                searchModal.style.display = 'none';
+                document.body.classList.remove('no-scroll');
             }
         });
     }
@@ -97,29 +106,28 @@ function setupBottomNavListeners() {
     if (bottomNavCart) {
         bottomNavCart.addEventListener('click', (e) => {
             e.preventDefault();
-            toggleCartSidebar(true); // Always open the cart sidebar
+            toggleCartSidebar(true); // Fuerza a abrir el carrito
         });
     }
 }
 
 
-function setupScrollSpy() {
+function setupScrollHighlight() {
     const sections = document.querySelectorAll('section[id]');
     const bottomNavItems = document.querySelectorAll('.bottom-nav .nav-item');
 
     window.addEventListener('scroll', () => {
-        let currentActiveSection = 'novedades'; // Default to novedades
+        let currentActiveSection = 'novedades'; // Por defecto
 
         sections.forEach(section => {
             const sectionTop = section.offsetTop;
-            const sectionHeight = section.clientHeight;
-            // Adjust this value based on your header height and desired scroll offset
-            if (scrollY >= sectionTop - 150 && scrollY < sectionTop + sectionHeight - 150) {
-                currentActiveSection = section.getAttribute('id');
+            // Un offset para que la sección se active un poco antes de que su borde superior toque la parte superior de la ventana
+            if (scrollY >= sectionTop - 150) {
+                currentActiveSection = section.id;
             }
         });
 
-        // Special case for the top of the page, where 'novedades' might be the active section
+        // Caso especial para la sección de Novedades si estamos al principio de la página
         if (scrollY < document.getElementById('licores').offsetTop - 150) {
             currentActiveSection = 'novedades';
         }
@@ -135,26 +143,3 @@ function setupScrollSpy() {
         });
     });
 }
-
-
-// Función setupMobileMenu() comentada/removida, ya que la barra inferior la reemplaza
-// function setupMobileMenu() {
-//     const menuToggle = document.getElementById('menuToggle');
-//     const mainNav = document.querySelector('.main-nav');
-
-//     if (menuToggle && mainNav) {
-//         menuToggle.addEventListener('click', () => {
-//             mainNav.classList.toggle('active');
-//             menuToggle.querySelector('i').classList.toggle('fa-bars');
-//             menuToggle.querySelector('i').classList.toggle('fa-times');
-//         });
-
-//         mainNav.addEventListener('click', (e) => {
-//             if (e.target.tagName === 'A' || e.target.tagName === 'LI') {
-//                 mainNav.classList.remove('active');
-//                 menuToggle.querySelector('i').classList.remove('fa-times');
-//                 menuToggle.querySelector('i').classList.add('fa-bars');
-//             }\
-//         });
-//     }
-// }
