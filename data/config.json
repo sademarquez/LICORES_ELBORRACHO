@@ -1,7 +1,7 @@
 {
     "siteName": "EL BORRACHO",
     "contactEmail": "pedidos@elborracho.com",
-    "contactPhone": "573109876543", // This is crucial for WhatsApp functionality
+    "contactPhone": "573109876543",
     "address": "Popayán, Cauca, Colombia",
     "banners": [
         {
@@ -49,6 +49,14 @@
         {
             "name": "Corona",
             "logoUrl": "images/icons/corona-logo.svg"
+        },
+        {
+            "name": "Poker",
+            "logoUrl": "images/icons/poker-logo.svg"
+        },
+        {
+            "name": "Coca-Cola",
+            "logoUrl": "images/icons/coca-cola-logo.svg"
         }
     ]
 }
