@@ -1,28 +1,19 @@
 // js/support.js
 
-// Ya no necesitamos appState aquí si solo vamos a redirigir a WhatsApp fijo.
-// import { appState } from './main.js'; // ELIMINADO
-// import { showToastNotification } from './toast.js'; // ELIMINADO ya que no hay toasts para reportar fallos
+// Al no haber modales ni formularios de soporte, no se necesita importar appState ni showToastNotification.
+// import { appState } from './main.js'; 
+// import { showToastNotification } from './toast.js';
 
-let whatsappNumber = ''; // Se inicializará con el número de config.json
+let whatsappNumber = ''; // Aunque ya no se usa directamente en este módulo, se mantiene por si se decide usar para el enlace de WhatsApp en el futuro.
 
 export function setupSupport(phone) {
-    whatsappNumber = phone;
+    whatsappNumber = phone; // Captura el número, aunque ya no se use en este archivo.
 
-    // ELIMINADO: const reportFaultBtn = document.getElementById('reportFaultBtn');
-    // ELIMINADO: const bookAppointmentBtn = document.getElementById('bookAppointmentBtn');
+    // Se han ELIMINADO todas las referencias a botones, modales y formularios de soporte
+    // (reportFaultBtn, bookAppointmentBtn, faultReportModal, appointmentModal, faultReportForm, appointmentForm).
+    // También se eliminó toda la lógica asociada a ellos (event listeners, funciones send...).
 
-    // ELIMINADO: const faultReportModal = document.getElementById('faultReportModal');
-    // ELIMINADO: const appointmentModal = document.getElementById('appointmentModal');
-
-    // ELIMINADO: const faultReportForm = document.getElementById('faultReportForm');
-    // ELIMINADO: const appointmentForm = document.getElementById('appointmentForm');
-
-    // Toda la lógica de abrir/cerrar modales y enviar formularios ha sido eliminada.
-    // Solo se mantiene la impresión en consola para saber que el módulo se carga.
-
-    console.log('Módulo de soporte configurado. Solo se permite contacto directo por WhatsApp.');
+    console.log('Módulo de soporte configurado. La única forma de contacto es el chat directo por WhatsApp.');
 }
 
-// ELIMINADO: function sendFaultReportToWhatsApp() { ... }
-// ELIMINADO: function sendAppointmentRequestToWhatsApp() { ... }
+// Todas las funciones (sendFaultReportToWhatsApp, sendAppointmentRequestToWhatsApp) han sido ELIMINADAS.
