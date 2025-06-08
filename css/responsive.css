@@ -24,4 +24,30 @@
     .product-card .old-price {
         font-size: 0.8em;
     }
+}/* Mobile-First Approach */
+/* Estilos para dispositivos pequeños (hasta 767px) */
+@media (max-width: 767px) {
+    /* ... (código existente) ... */
+
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); /* 2 columnas en móviles */
+        gap: var(--spacing-md); /* Espacio entre productos */
+    }
+
+    .product-card {
+        padding: var(--spacing-sm); /* Reducir padding de la tarjeta en móvil */
+    }
+
+    .product-card h3 {
+        font-size: 1em; /* Ajustar tamaño del título del producto */
+        margin-bottom: var(--spacing-xs);
+    }
+
+    .product-card .product-price {
+        font-size: 1.1em; /* Ajustar tamaño del precio */
+    }
+    
+    .product-card .old-price {
+        font-size: 0.8em;
+    }
 }
