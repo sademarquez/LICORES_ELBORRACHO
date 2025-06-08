@@ -229,6 +229,38 @@
     flex-grow: 1; /* Permite que la descripción ocupe el espacio restante */
 }
 
+/* ESTILOS PARA DESCRIPCIONES COLAPSABLES */
+.product-description-collapsed {
+    max-height: 2.7em; /* Aproximadamente 2 líneas de texto */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Limita a 2 líneas */
+    -webkit-box-orient: vertical;
+    margin-bottom: var(--spacing-sm);
+}
+
+.product-details-toggle {
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    font-size: 0.85em;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
+    margin-top: var(--spacing-xs);
+    margin-bottom: var(--spacing-md);
+    display: block; /* Para que ocupe su propia línea */
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.product-details-toggle:hover {
+    color: var(--primary-color-dark);
+}
+
+
 .product-card .price {
     font-size: 1.3em;
     font-weight: bold;
@@ -378,6 +410,11 @@
     cursor: pointer;
     padding: 0;
 }
+
+.cart-header .close-btn:hover {
+    color: var(--danger-color); /* Para que el cierre sea más notorio */
+}
+
 
 .cart-items {
     flex-grow: 1; /* Ocupa el espacio restante */
