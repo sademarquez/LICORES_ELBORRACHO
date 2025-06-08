@@ -26,6 +26,7 @@
     height: 100%;
     position: relative;
     display: flex;
+    flex-direction: column; /* Para apilar título y descripción */
     align-items: center; /* Centra el contenido verticalmente */
     justify-content: center; /* Centra el contenido horizontalmente */
     background-size: cover;
@@ -33,6 +34,7 @@
     color: var(--white);
     text-align: center;
     flex-shrink: 0; /* Asegura que no se encoja */
+    padding: var(--spacing-md); /* Espacio para el contenido */
 }
 
 .carousel-slide::before {
@@ -46,38 +48,47 @@
     z-index: 1;
 }
 
-.carousel-content {
+.carousel-caption {
     position: relative;
     z-index: 2;
     padding: var(--spacing-md);
     max-width: 800px;
+    opacity: 0; /* Oculto por defecto */
+    transform: translateY(20px); /* Ligeramente desplazado */
+    transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
-.carousel-content h2 {
+.carousel-slide.active .carousel-caption {
+    opacity: 1; /* Visible cuando el slide está activo */
+    transform: translateY(0); /* Vuelve a su posición original */
+}
+
+.carousel-caption h2 {
     font-size: 3em;
     margin-bottom: var(--spacing-sm);
     color: var(--primary-color);
     text-shadow: var(--shadow-sm);
 }
 
-.carousel-content p {
+.carousel-caption p {
     font-size: 1.2em;
     margin-bottom: var(--spacing-lg);
-    color: var(--text-color-dark);
+    color: var(--text-color-light);
 }
 
-.carousel-btn {
+.carousel-caption .btn {
     background-color: var(--primary-color);
-    color: var(--secondary-color-dark);
+    color: var(--dark-bg);
     padding: var(--spacing-sm) var(--spacing-lg);
     border-radius: var(--border-radius);
-    text-transform: uppercase;
+    text-decoration: none;
     font-weight: bold;
-    transition: background-color var(--transition-speed) ease;
+    transition: background-color var(--transition-speed) ease, transform 0.2s ease;
 }
 
-.carousel-btn:hover {
+.carousel-caption .btn:hover {
     background-color: var(--primary-color-dark);
+    transform: translateY(-2px); /* Pequeño efecto hover */
 }
 
 .carousel-nav-btn {
@@ -112,28 +123,26 @@
     bottom: var(--spacing-md);
     left: 50%;
     transform: translateX(-50%);
+    z-index: 3;
     display: flex;
     gap: var(--spacing-sm);
-    z-index: 3;
 }
 
-.carousel-dot {
+.dot {
     width: 12px;
     height: 12px;
     background-color: rgba(255, 255, 255, 0.5);
     border-radius: 50%;
     cursor: pointer;
     transition: background-color var(--transition-speed) ease, transform var(--transition-speed) ease;
-    border: 1px solid rgba(0, 0, 0, 0.2); /* Borde sutil para mejor visibilidad */
 }
 
-.carousel-dot.active,
-.carousel-dot:hover {
+.dot.active {
     background-color: var(--primary-color);
     transform: scale(1.2);
 }
 
-/* Product Cards */
+/* Product Grid */
 .product-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -142,16 +151,15 @@
 }
 
 .product-card {
-    background-color: var(--secondary-color);
+    background-color: var(--dark-bg);
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-sm);
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    text-align: center;
+    position: relative;
+    border: 1px solid var(--border-color);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    border: 1px solid var(--border-color); /* Borde sutil */
-    position: relative; /* Para insignias de oferta/nuevo */
 }
 
 .product-card:hover {
@@ -159,7 +167,7 @@
     box-shadow: var(--shadow-md);
 }
 
-.product-card-image {
+.product-card img {
     width: 100%;
     height: 200px;
     object-fit: cover;
@@ -168,48 +176,57 @@
 
 .product-card-content {
     padding: var(--spacing-md);
-    flex-grow: 1; /* Permite que el contenido ocupe el espacio disponible */
+    flex-grow: 1; /* Permite que el contenido ocupe el espacio restante */
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Empuja el botón al final */
 }
 
-.product-card-title {
+.product-card h3 {
+    margin-top: 0;
+    margin-bottom: var(--spacing-xs);
     font-size: 1.2em;
     color: var(--primary-color);
-    margin-bottom: var(--spacing-xs);
-    font-weight: bold;
+    min-height: 2.4em; /* Asegura un alto mínimo para el título en dos líneas */
 }
 
-.product-card-brand {
+.product-card p {
     font-size: 0.9em;
     color: var(--text-color-light);
-    margin-bottom: var(--spacing-sm);
+    flex-grow: 1; /* Para que la descripción ocupe espacio antes del precio */
+    margin-bottom: var(--spacing-sm); /* Espacio antes del precio/botón */
+    min-height: 4em; /* Asegura un alto mínimo para la descripción */
+    overflow: hidden; /* Oculta el texto si se desborda */
+    text-overflow: ellipsis; /* Añade puntos suspensivos */
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Limita a 3 líneas */
+    -webkit-box-orient: vertical;
 }
 
-.product-card-price {
+.product-card .price {
     font-size: 1.4em;
-    color: var(--white);
     font-weight: bold;
-    margin-bottom: var(--spacing-md);
+    color: var(--accent-color);
+    margin-top: var(--spacing-sm);
+    white-space: nowrap; /* Evita que el precio se rompa en varias líneas */
 }
 
-.product-card-price .old-price {
+.product-card .old-price {
     text-decoration: line-through;
     color: var(--text-color-light);
-    font-size: 0.8em;
+    font-size: 0.9em;
     margin-left: var(--spacing-sm);
 }
 
 .product-card .add-to-cart-btn {
-    width: 100%;
-    padding: var(--spacing-sm);
-    font-size: 1em;
     background-color: var(--primary-color);
     color: var(--secondary-color-dark);
     border: none;
+    padding: var(--spacing-sm);
     border-radius: var(--border-radius);
     cursor: pointer;
+    font-size: 0.9em;
+    font-weight: bold;
+    margin-top: var(--spacing-md);
     transition: background-color var(--transition-speed) ease;
 }
 
@@ -217,15 +234,7 @@
     background-color: var(--primary-color-dark);
 }
 
-.product-card .add-to-cart-btn:disabled {
-    background-color: var(--border-color);
-    color: var(--text-color-light);
-    cursor: not-allowed;
-    opacity: 0.7;
-}
-
-/* Insignias de Novedad/Oferta */
-.badge {
+.product-card .badge {
     position: absolute;
     top: var(--spacing-sm);
     right: var(--spacing-sm);
@@ -235,337 +244,219 @@
     border-radius: var(--border-radius);
     font-size: 0.8em;
     font-weight: bold;
+    text-transform: uppercase;
     z-index: 10;
 }
 
-.badge.new {
+.product-card .new-badge {
     background-color: var(--info-color); /* Azul para "Nuevo" */
-    left: var(--spacing-sm);
-    right: auto; /* Para que no se solape con "Oferta" si ambos están */
-}
-
-.badge.offer {
-    background-color: var(--danger-color); /* Rojo para "Oferta" */
 }
 
 /* Product Filters */
 .product-filters {
     display: flex;
-    flex-wrap: wrap;
-    gap: var(--spacing-md);
     justify-content: center;
-    align-items: center;
+    gap: var(--spacing-md);
     margin-bottom: var(--spacing-xl);
-    background-color: var(--secondary-color);
-    padding: var(--spacing-md);
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow-sm);
-    border: 1px solid var(--border-color);
+    flex-wrap: wrap; /* Permite que los filtros se envuelvan en pantallas pequeñas */
 }
 
 .product-filters select,
 .product-filters input[type="text"] {
-    flex: 1; /* Permite que los inputs crezcan */
-    min-width: 150px; /* Ancho mínimo para cada filtro */
-    max-width: 250px; /* Ancho máximo para cada filtro */
-    margin-bottom: 0; /* Eliminar margen inferior predeterminado de input */
-}
-
-.product-filters label {
-    color: var(--text-color-dark);
-    font-weight: bold;
-    margin-right: var(--spacing-xs);
-}
-
-
-/* Search Overlay (Barra de búsqueda en el header) */
-.search-overlay {
-    display: none; /* Oculto por defecto */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.9);
-    z-index: 200;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.search-overlay.active {
-    display: flex;
-    opacity: 1;
-}
-
-.search-container {
-    background-color: var(--dark-bg);
-    padding: var(--spacing-xl);
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow-lg);
-    width: 90%;
-    max-width: 600px;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-md);
-    animation: scaleIn 0.3s ease-out;
-}
-
-@keyframes scaleIn {
-    from { transform: scale(0.9); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-}
-
-.search-container input[type="text"] {
     flex-grow: 1;
-    font-size: 1.1em;
-    padding-right: 50px; /* Espacio para el ícono de búsqueda dentro del input */
-}
-
-.search-input-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-.search-input-wrapper button {
-    position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    background: none;
-    border: none;
-    color: var(--primary-color);
-    font-size: 1.5em;
+    max-width: 250px; /* Ancho máximo para cada filtro */
     padding: var(--spacing-sm);
-    cursor: pointer;
-}
-
-.close-search-btn {
-    position: absolute;
-    top: var(--spacing-md);
-    right: var(--spacing-md);
-    background: none;
-    border: none;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background-color: var(--secondary-color);
     color: var(--text-color-light);
-    font-size: 1.8em;
-    cursor: pointer;
-    transition: color var(--transition-speed) ease;
 }
 
-.close-search-btn:hover {
-    color: var(--danger-color);
+.product-filters input::placeholder {
+    color: var(--text-color-light);
+    opacity: 0.7;
 }
 
 /* Brands Section */
 .brands-section {
+    background-color: var(--dark-bg);
     padding: var(--spacing-xl) 0;
-    text-align: center;
-}
-
-.brands-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: var(--spacing-lg);
-    margin-top: var(--spacing-xl);
-    justify-items: center;
-}
-
-.brand-card {
-    background-color: var(--secondary-color);
     border-radius: var(--border-radius);
-    padding: var(--spacing-md);
     box-shadow: var(--shadow-sm);
+    text-align: center;
+    margin-top: var(--spacing-xl);
+    border: 1px solid var(--border-color);
+}
+
+.brand-grid {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--spacing-lg);
+    padding: var(--spacing-md);
+}
+
+.brand-item {
+    background-color: var(--light-bg);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    height: 80px;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     border: 1px solid var(--border-color);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 120px; /* Asegura un tamaño mínimo */
 }
 
-.brand-card:hover {
+.brand-item:hover {
     transform: translateY(-3px);
     box-shadow: var(--shadow-md);
 }
 
-.brand-logo {
-    max-width: 80%;
-    max-height: 80px;
+.brand-item img {
+    max-width: 100%;
+    max-height: 100%;
     object-fit: contain;
-    margin-bottom: var(--spacing-sm);
 }
 
-.brand-name {
-    font-size: 0.9em;
-    color: var(--text-color-light);
-    font-weight: bold;
-}
-
-/* Shopping Cart Sidebar */
+/* Cart Sidebar */
 .cart-sidebar {
     position: fixed;
     top: 0;
-    right: -350px; /* Oculto por defecto, se deslizará */
-    width: 350px;
+    right: -400px; /* Oculto por defecto */
+    width: 380px;
+    max-width: 90vw; /* Máximo 90% del viewport width en móviles */
     height: 100%;
     background-color: var(--dark-bg);
-    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.4);
-    z-index: 300;
-    transition: right 0.3s ease-in-out;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
+    z-index: 150;
     display: flex;
     flex-direction: column;
-    padding: var(--spacing-md);
+    transition: right 0.3s ease-in-out;
     border-left: 1px solid var(--border-color);
 }
 
 .cart-sidebar.open {
-    right: 0;
+    right: 0; /* Visible */
 }
 
 .cart-header {
+    background-color: var(--secondary-color-dark);
+    padding: var(--spacing-md);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: var(--spacing-md);
     border-bottom: 1px solid var(--border-color);
-    margin-bottom: var(--spacing-md);
+    flex-shrink: 0; /* Evita que el header se encoja */
 }
 
-.cart-header h3 {
-    margin: 0;
+.cart-header h2 {
     color: var(--primary-color);
-}
-
-.close-cart-btn {
-    background: none;
-    border: none;
-    color: var(--text-color-light);
-    font-size: 1.8em;
-    cursor: pointer;
-    transition: color var(--transition-speed) ease;
-}
-
-.close-cart-btn:hover {
-    color: var(--danger-color);
+    margin: 0;
+    font-size: 1.5em;
 }
 
 .cart-items {
-    flex-grow: 1; /* Permite que la lista de ítems ocupe el espacio disponible */
-    overflow-y: auto; /* Scroll para los ítems si hay muchos */
-    padding-right: var(--spacing-xs); /* Espacio para el scrollbar */
+    flex-grow: 1; /* Ocupa el espacio restante */
+    padding: var(--spacing-md);
+    overflow-y: auto; /* Scroll si el contenido es largo */
 }
 
 .cart-item {
     display: flex;
     align-items: center;
-    gap: var(--spacing-md);
     margin-bottom: var(--spacing-md);
-    padding: var(--spacing-sm);
-    background-color: var(--secondary-color);
-    border-radius: var(--border-radius);
-    border: 1px solid var(--border-color);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 1px dashed var(--border-color);
 }
 
-.cart-item-image {
+.cart-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.cart-item img {
     width: 60px;
     height: 60px;
     object-fit: cover;
     border-radius: var(--border-radius);
+    margin-right: var(--spacing-md);
+    border: 1px solid var(--border-color);
 }
 
-.cart-item-details {
+.cart-item-info {
     flex-grow: 1;
 }
 
-.cart-item-details h4 {
+.cart-item-info h4 {
     margin: 0 0 5px 0;
-    color: var(--white);
-    font-size: 1em;
+    color: var(--text-color-dark);
+    font-size: 1.1em;
 }
 
-.cart-item-details p {
+.cart-item-info p {
     margin: 0;
     color: var(--text-color-light);
     font-size: 0.9em;
 }
 
-.cart-item-quantity {
+.cart-item-actions {
     display: flex;
     align-items: center;
-    gap: var(--spacing-xs);
+    gap: var(--spacing-sm);
 }
 
-.quantity-btn {
-    background-color: var(--border-color);
-    color: var(--white);
-    border: none;
-    border-radius: 50%;
-    width: 25px;
-    height: 25px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-.quantity-btn:hover {
-    background-color: var(--primary-color-dark);
-}
-
-.quantity-btn:disabled {
-    background-color: #555;
-    cursor: not-allowed;
-    opacity: 0.6;
-}
-
-.item-quantity-display {
-    color: var(--white);
-    font-weight: bold;
-    min-width: 20px;
-    text-align: center;
-}
-
-.remove-item-btn {
+.cart-item-actions button {
     background: none;
-    border: none;
-    color: var(--danger-color);
-    font-size: 1.2em;
+    border: 1px solid var(--border-color);
+    color: var(--text-color-dark);
+    padding: 5px 8px;
+    border-radius: var(--border-radius);
     cursor: pointer;
-    margin-left: var(--spacing-sm);
-    transition: transform 0.2s ease;
+    font-size: 0.9em;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.remove-item-btn:hover {
-    transform: scale(1.1);
-}
-
-.cart-summary {
-    padding-top: var(--spacing-md);
-    border-top: 1px solid var(--border-color);
-    margin-top: var(--spacing-md);
-    text-align: right;
-}
-
-.cart-summary p {
-    margin: 0 0 var(--spacing-sm) 0;
-    font-size: 1.1em;
-    color: var(--white);
-}
-
-.cart-summary span {
-    font-weight: bold;
+.cart-item-actions button:hover {
+    background-color: var(--secondary-color);
     color: var(--primary-color);
 }
 
+.cart-item-actions button.remove-item-btn {
+    background-color: var(--danger-color);
+    color: var(--white);
+    border-color: var(--danger-color);
+}
+
+.cart-item-actions button.remove-item-btn:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+
+.cart-summary {
+    padding: var(--spacing-md);
+    border-top: 1px solid var(--border-color);
+    background-color: var(--secondary-color-dark);
+    flex-shrink: 0; /* Evita que el summary se encoja */
+}
+
+.cart-summary .total-price {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.3em;
+    font-weight: bold;
+    color: var(--accent-color);
+    margin-bottom: var(--spacing-md);
+}
+
 .checkout-whatsapp-btn {
-    background-color: #25D366; /* Verde WhatsApp */
+    background-color: #25D366; /* Color de WhatsApp */
     color: var(--white);
     border: none;
+    width: 100%;
     padding: var(--spacing-md);
     border-radius: var(--border-radius);
     font-size: 1.1em;
@@ -593,9 +484,10 @@
     text-align: center;
     color: var(--text-color-light);
     padding: var(--spacing-xl);
+    font-style: italic;
 }
 
-/* Support Section (ya existente, solo añadiré el ícono si no estaba) */
+/* Support Section */
 .support-section {
     background-color: var(--dark-bg);
     padding: var(--spacing-xl);
@@ -614,48 +506,155 @@
 .support-section p {
     color: var(--text-color-light);
     margin-bottom: var(--spacing-lg);
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .support-buttons {
     display: flex;
-    flex-direction: column;
-    gap: var(--spacing-md);
-    max-width: 400px;
-    margin: 0 auto;
-}
-
-.support-buttons .btn-primary,
-.support-buttons .btn-secondary {
-    width: 100%;
-    padding: var(--spacing-sm) var(--spacing-md);
-    font-size: 1.1em;
-    display: flex;
-    align-items: center;
     justify-content: center;
-    gap: var(--spacing-sm);
-    border-radius: var(--border-radius);
-    text-align: center;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    gap: var(--spacing-md);
+    flex-wrap: wrap;
 }
 
-.support-buttons .btn-primary {
-    background-color: var(--primary-color);
-    color: var(--secondary-color-dark);
-    border: none;
-}
-
-.support-buttons .btn-primary:hover {
-    background-color: var(--primary-color-dark);
-    transform: translateY(-2px);
-}
-
-.support-buttons .btn-secondary {
+.support-buttons .btn {
     background-color: var(--secondary-color);
     color: var(--text-color-dark);
     border: 1px solid var(--border-color);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius);
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
 }
 
-.support-buttons .btn-secondary:hover {
-    background-color: var(--secondary-color-dark);
+.support-buttons .btn:hover {
+    background-color: var(--primary-color-dark);
+    color: var(--dark-bg); /* Cambia el color del texto a oscuro en hover */
+}
+
+.support-buttons .btn i {
+    font-size: 1.2em;
+}
+
+/* Modales específicos (Reportar Falla, Agendar Cita) - Usan .modal de styles.css */
+#faultReportModal .modal-content,
+#appointmentModal .modal-content {
+    max-width: 600px;
+}
+
+#faultReportModal textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+#appointmentModal .form-group {
+    margin-bottom: var(--spacing-md);
+    text-align: left;
+}
+
+#appointmentModal .form-group label {
+    margin-bottom: var(--spacing-sm);
+    color: var(--text-color-light);
+}
+
+#appointmentModal .form-group input,
+#appointmentModal .form-group select,
+#appointmentModal .form-group textarea {
+    width: 100%;
+    padding: var(--spacing-sm);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background-color: var(--secondary-color);
+    color: var(--text-color-light);
+    box-sizing: border-box;
+}
+
+/* Age Verification Modal */
+#ageVerificationModal {
+    /* Este estilo se mantiene para el override inicial si es necesario */
+    /* display: flex; en styles.css se asegura de que esté visible */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.9); /* Fondo más oscuro */
+    z-index: 9999; /* Asegúrate de que esté en la parte superior */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Evita el scroll en el fondo */
+}
+
+#ageVerificationModal .modal-content {
+    background-color: var(--dark-bg);
+    padding: var(--spacing-xl);
+    border-radius: var(--border-radius);
+    max-width: 450px;
+    width: 90%;
+    box-shadow: 0 0 30px rgba(255, 191, 0, 0.5); /* Sombra dorada */
+    animation: fadeInScale 0.5s ease-out;
+    border: 2px solid var(--primary-color); /* Borde dorado */
+}
+
+@keyframes fadeInScale {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+#ageVerificationModal h2 {
+    color: var(--primary-color);
+    font-size: 2em;
+    margin-bottom: var(--spacing-md);
+}
+
+#ageVerificationModal p {
+    color: var(--text-color-light);
+    font-size: 1.1em;
+    margin-bottom: var(--spacing-lg);
+}
+
+#ageVerificationModal .age-buttons {
+    display: flex;
+    flex-direction: column; /* Botones apilados */
+    gap: var(--spacing-md);
+    width: 100%;
+}
+
+#ageVerificationModal .age-buttons button {
+    padding: var(--spacing-md);
+    font-size: 1.1em;
+    font-weight: bold;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: 100%;
+}
+
+#ageVerificationModal #confirmAgeBtn {
+    background-color: var(--success-color); /* Verde para confirmar */
+    color: var(--white);
+    border: none;
+}
+
+#ageVerificationModal #confirmAgeBtn:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+}
+
+#ageVerificationModal #declineAgeBtn {
+    background-color: var(--danger-color); /* Rojo para declinar */
+    color: var(--white);
+    border: none;
+}
+
+#ageVerificationModal #declineAgeBtn:hover {
+    background-color: #c82333;
     transform: translateY(-2px);
 }
