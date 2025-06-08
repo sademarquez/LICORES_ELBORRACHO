@@ -1,0 +1,200 @@
+/* css/responsive.css */
+
+/* Mobile-First Approach */
+/* Estilos para dispositivos pequeños (hasta 767px) */
+@media (max-width: 767px) {
+    .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-md);
+    }
+
+    .main-nav {
+        width: 100%;
+        display: none; /* Ocultar por defecto para el menú hamburguesa */
+        flex-direction: column;
+        background-color: var(--white);
+        position: absolute;
+        top: 100%;
+        left: 0;
+        box-shadow: var(--shadow-md);
+        padding: var(--spacing-md);
+        border-top: 1px solid var(--border-color);
+        z-index: 100; /* Asegurarse de que el menú está sobre otros elementos */
+    }
+
+    .main-nav.active {
+        display: flex;
+    }
+
+    .main-nav .nav-list {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+
+    .main-nav .nav-list a {
+        padding: var(--spacing-sm) 0;
+        width: 100%;
+        color: var(--text-color-dark); /* Color de texto para enlaces del menú móvil */
+    }
+    
+    .main-nav .nav-list a::after {
+        background-color: var(--primary-color); /* Asegurar color de subrayado en móvil */
+    }
+
+    .header-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .search-bar {
+        flex-grow: 1;
+        margin-right: var(--spacing-md);
+    }
+
+    .menu-toggle {
+        display: block; /* Mostrar el botón de menú hamburguesa */
+    }
+
+    .hero-section {
+        height: 300px; /* Ajusta la altura del carrusel para móviles */
+    }
+
+    .carousel-caption h2 {
+        font-size: 2em;
+    }
+
+    .carousel-caption p {
+        font-size: 1em;
+    }
+
+    .carousel-nav {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2em;
+        padding: var(--spacing-sm);
+    }
+
+    .product-grid {
+        grid-template-columns: 1fr; /* Una columna en pantallas muy pequeñas */
+    }
+
+    .footer-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .footer-section {
+        min-width: unset;
+        width: 100%;
+    }
+
+    .footer-section ul {
+        padding: 0;
+    }
+
+    /* Cart Sidebar */
+    .cart-sidebar {
+        width: 100%; /* Ocupa todo el ancho en móvil */
+        max-width: 100%;
+    }
+
+    /* Support Section */
+    .support-actions {
+        flex-direction: column; /* Botones de soporte apilados */
+    }
+
+    .support-actions .btn-primary,
+    .support-actions .btn-secondary {
+        max-width: 100%; /* Los botones ocupan todo el ancho disponible */
+    }
+
+    /* Modales */
+    .modal-content {
+        width: 95%; /* Más ancho en móviles */
+        padding: var(--spacing-md);
+    }
+
+    .modal-content h2 {
+        font-size: 1.5em;
+    }
+}
+
+/* Tablet (768px a 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Dos o tres columnas */
+    }
+
+    .header-actions {
+        gap: var(--spacing-md);
+    }
+
+    .main-nav {
+        display: flex; /* Mostrar navegación normal en tablets */
+        position: static;
+        box-shadow: none;
+        border-top: none;
+        padding: 0;
+        width: auto;
+    }
+
+    .main-nav .nav-list {
+        flex-direction: row;
+    }
+
+    .menu-toggle {
+        display: none; /* Ocultar hamburguesa en tablets */
+    }
+
+    .hero-section {
+        height: 380px;
+    }
+
+    .carousel-caption h2 {
+        font-size: 2.5em;
+    }
+
+    .carousel-caption p {
+        font-size: 1.1em;
+    }
+
+    .product-filters select,
+    .product-filters input {
+        max-width: 200px; /* Un poco más de espacio en tablet */
+    }
+}
+
+/* Desktop (1024px y más) */
+@media (min-width: 1024px) {
+    .product-grid {
+        grid-template-columns: repeat(4, 1fr); /* 4 columnas en escritorio */
+    }
+
+    .container {
+        max-width: 1200px; /* Ancho máximo para el contenido */
+    }
+
+    .main-nav {
+        display: flex !important; /* Asegurar que se muestra en desktop */
+        position: static;
+        box-shadow: none;
+        border-top: none;
+        padding: 0;
+        width: auto;
+    }
+
+    .menu-toggle {
+        display: none;
+    }
+
+    .hero-section {
+        height: 450px;
+    }
+
+    .product-filters select,
+    .product-filters input {
+        max-width: 250px; /* Volver al ancho original en desktop */
+    }
+}

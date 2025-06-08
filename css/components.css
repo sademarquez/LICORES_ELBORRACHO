@@ -1,0 +1,542 @@
+/* css/components.css */
+
+/* Hero Section y Carrusel */
+.hero-section {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    height: 450px; /* Altura fija para el carrusel */
+    background-color: var(--dark-bg); /* Color de fondo mientras carga la imagen */
+}
+
+.carousel-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.carousel-track {
+    display: flex;
+    height: 100%;
+    transition: transform 0.5s ease-in-out; /* Velocidad de transición del slide */
+}
+
+.carousel-slide {
+    min-width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    align-items: center; /* Centra el contenido verticalmente */
+    justify-content: center; /* Centra el contenido horizontalmente */
+    background-size: cover;
+    background-position: center;
+    color: var(--white);
+    text-align: center;
+    flex-shrink: 0; /* Asegura que no se encoja */
+}
+
+.carousel-slide::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Oscurece la imagen para que el texto resalte */
+    z-index: 1;
+}
+
+.carousel-caption {
+    position: relative; /* Para que esté por encima de la imagen */
+    z-index: 2;
+    padding: var(--spacing-md);
+    max-width: 800px;
+}
+
+.carousel-caption h2 {
+    font-size: 3em;
+    margin-bottom: var(--spacing-sm);
+    color: var(--primary-color);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.carousel-caption p {
+    font-size: 1.2em;
+    margin-bottom: var(--spacing-lg);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+}
+
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: var(--white);
+    border: none;
+    padding: var(--spacing-md);
+    cursor: pointer;
+    font-size: 1.5em;
+    z-index: 3;
+    border-radius: var(--border-radius);
+    transition: background-color 0.3s ease;
+}
+
+.carousel-btn:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.carousel-btn.prev {
+    left: var(--spacing-md);
+}
+
+.carousel-btn.next {
+    right: var(--spacing-md);
+}
+
+.carousel-dots {
+    position: absolute;
+    bottom: var(--spacing-md);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+.carousel-dots .dot {
+    width: 12px;
+    height: 12px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.carousel-dots .dot.active {
+    background-color: var(--primary-color);
+    transform: scale(1.2);
+}
+
+/* Tarjetas de Producto */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.product-card {
+    background-color: var(--dark-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+}
+
+.product-card .product-image-container {
+    width: 100%;
+    height: 200px; /* Altura fija para la imagen */
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--light-bg); /* Fondo para imágenes con transparencia */
+}
+
+.product-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Para que la imagen se ajuste sin recortarse */
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover img {
+    transform: scale(1.05);
+}
+
+.product-card .product-info {
+    padding: var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Permite que la información ocupe el espacio restante */
+}
+
+.product-card .product-badges {
+    position: absolute;
+    top: var(--spacing-sm);
+    left: var(--spacing-sm);
+    display: flex;
+    gap: var(--spacing-xs);
+    z-index: 10;
+}
+
+.product-card .badge {
+    background-color: var(--primary-color);
+    color: var(--dark-bg);
+    font-size: 0.7em;
+    font-weight: bold;
+    padding: 3px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+}
+
+.product-card .badge.offer {
+    background-color: var(--danger-color); /* Rojo para ofertas */
+    color: var(--white);
+}
+
+.product-card h3 {
+    font-size: 1.3em;
+    color: var(--white);
+    margin-bottom: var(--spacing-xs);
+    flex-grow: 1; /* Permite que el título ocupe espacio si es largo */
+}
+
+.product-card .product-description {
+    font-size: 0.9em;
+    color: var(--text-color-light);
+    margin-bottom: var(--spacing-sm);
+    height: 3em; /* Limita la altura de la descripción para consistencia */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.product-card .product-brand {
+    font-size: 0.85em;
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-xs);
+}
+
+.product-card .product-price {
+    font-size: 1.5em;
+    color: var(--white);
+    font-weight: bold;
+    margin-top: var(--spacing-sm);
+    display: flex;
+    align-items: baseline;
+    gap: var(--spacing-sm);
+}
+
+.product-card .product-price .old-price {
+    font-size: 0.8em;
+    color: var(--text-color-light);
+    text-decoration: line-through;
+    font-weight: normal;
+}
+
+/* Product Rating */
+.product-rating {
+    color: #FFD700; /* Color dorado para las estrellas */
+    font-size: 0.9em;
+    margin-bottom: var(--spacing-sm);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.product-rating i {
+    color: #FFD700; /* Estrellas doradas */
+}
+
+.product-rating span {
+    color: var(--text-color-light);
+    font-size: 0.85em;
+}
+
+/* Product Stock */
+.product-stock {
+    font-size: 0.85em;
+    margin-top: var(--spacing-sm);
+    color: var(--text-color-light);
+}
+
+.product-stock.low-stock {
+    color: var(--danger-color); /* Rojo para bajo stock */
+    font-weight: bold;
+}
+
+.product-card .add-to-cart-btn {
+    background-color: var(--primary-color);
+    color: var(--dark-bg);
+    border: none;
+    padding: var(--spacing-sm);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 0.9em;
+    font-weight: bold;
+    width: 100%;
+    margin-top: var(--spacing-md);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.product-card .add-to-cart-btn:hover {
+    background-color: var(--primary-color-dark);
+    transform: translateY(-2px);
+}
+
+/* Lista de Marcas */
+.brands-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-xl);
+}
+
+.brand-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+    background-color: var(--dark-bg);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    width: 150px; /* Ancho fijo para cada item de marca */
+}
+
+.brand-item:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary-color);
+}
+
+.brand-item img {
+    max-height: 60px;
+    width: auto;
+    object-fit: contain;
+    filter: brightness(0) invert(1); /* Para logos que son negros y hacerlos blancos */
+    transition: filter 0.3s ease;
+}
+.brand-item:hover img {
+    filter: brightness(1) saturate(100%) hue-rotate(0deg) invert(0); /* Ejemplo: Quitar el filtro al hover, o darle un color */
+    filter: brightness(0) invert(1) saturate(100%) hue-rotate(20deg); /* O darle un tono dorado */
+    filter: drop-shadow(0 0 5px var(--primary-color));
+}
+
+.brand-item span {
+    color: var(--white);
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+/* Sidebar del Carrito */
+.cart-sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 350px;
+    height: 100%;
+    background-color: var(--dark-bg);
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.4);
+    transform: translateX(100%);
+    transition: transform 0.3s ease-out;
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid var(--border-color);
+}
+
+.cart-sidebar.open {
+    transform: translateX(0);
+}
+
+.cart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-md);
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--secondary-color-dark);
+}
+
+.cart-header h3 {
+    color: var(--primary-color);
+    margin: 0;
+    font-size: 1.5em;
+}
+
+.cart-header .close-btn {
+    background: none;
+    border: none;
+    color: var(--white);
+    font-size: 2em;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.cart-header .close-btn:hover {
+    color: var(--danger-color);
+}
+
+.cart-items {
+    flex-grow: 1;
+    padding: var(--spacing-md);
+    overflow-y: auto;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    border-bottom: 1px solid rgba(var(--border-color), 0.5);
+    padding-bottom: var(--spacing-md);
+}
+
+.cart-item img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+}
+
+.cart-item-details {
+    flex-grow: 1;
+}
+
+.cart-item-details h4 {
+    color: var(--white);
+    margin-bottom: var(--spacing-xs);
+    font-size: 1.1em;
+}
+
+.cart-item-details p {
+    color: var(--text-color-light);
+    font-size: 0.9em;
+}
+
+.cart-item-quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-xs);
+}
+
+.cart-item-quantity-controls button {
+    background-color: var(--secondary-color);
+    color: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+.cart-item-quantity-controls button:hover {
+    background-color: var(--secondary-color-dark);
+}
+
+.cart-item-quantity-controls span {
+    color: var(--white);
+    font-weight: bold;
+}
+
+.remove-item-btn {
+    background: none;
+    border: none;
+    color: var(--danger-color);
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.remove-item-btn:hover {
+    color: var(--danger-color);
+    transform: scale(1.1);
+}
+
+.cart-footer {
+    padding: var(--spacing-md);
+    border-top: 1px solid var(--border-color);
+    background-color: var(--secondary-color-dark);
+}
+
+.cart-total {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.4em;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-md);
+}
+
+.checkout-whatsapp-btn {
+    background-color: #25D366; /* Verde de WhatsApp */
+    color: var(--white);
+    border: none;
+    width: 100%;
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius);
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+}
+
+.checkout-whatsapp-btn:hover {
+    background-color: #1DA851;
+    transform: translateY(-2px);
+}
+
+.checkout-whatsapp-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.cart-empty-message {
+    text-align: center;
+    color: var(--text-color-light);
+    padding: var(--spacing-xl);
+}
+
+/* Support Section (ya existente, solo añadiré el ícono si no estaba) */
+.support-section {
+    background-color: var(--dark-bg);
+    padding: var(--spacing-xl);
+    text-align: center;
+    border-radius: var(--border-radius);
+    margin-top: var(--spacing-xl);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-color);
+}
+
+.support-section h3 {
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-md);
+}
+
+.support-section p {
+    color: var(--text-color-light);
+    font-size: 1.1em;
+    margin-bottom: var(--spacing-lg);
+}
+
+.support-actions {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-lg);
+    flex-wrap: wrap;
+    margin-top: var(--spacing-xl);
+}
+
+.support-actions .btn-primary,
+.support-actions .btn-secondary {
+    min-width: 200px; /* Asegura que los botones no sean demasiado pequeños */
+}
