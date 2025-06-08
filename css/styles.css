@@ -20,7 +20,11 @@
     --danger-color: #dc3545; /* Rojo para errores o eliminación */
     --info-color: #17a2b8; /* Azul para información */
 
-    /* Espaciados */
+    /* Fuentes */
+    --font-primary: 'Montserrat', sans-serif;
+    --font-secondary: 'Open Sans', sans-serif;
+
+    /* Espaciado */
     --spacing-xs: 5px;
     --spacing-sm: 10px;
     --spacing-md: 20px;
@@ -33,24 +37,27 @@
     --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.3);
     --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.4);
 
-    /* Fuentes */
-    --font-family-primary: 'Montserrat', sans-serif; /* Puedes cambiar esta fuente */
-    --font-size-base: 16px;
+    /* Transiciones */
+    --transition-speed: 0.3s;
 }
 
-/* Base global */
+/* Estilos Generales */
 body {
-    font-family: var(--font-family-primary);
-    line-height: 1.6;
+    font-family: var(--font-primary);
     margin: 0;
-    padding-bottom: 70px; /* Espacio para la barra de navegación inferior en móviles */
+    padding: 0;
     background-color: var(--light-bg);
-    color: var(--text-color-light);
-    overflow-x: hidden; /* Evitar scroll horizontal */
+    color: var(--text-color-dark);
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    /* Suavizado de scroll */
+    scroll-behavior: smooth;
 }
 
 .container {
-    max-width: 1100px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 0 var(--spacing-md);
 }
@@ -58,96 +65,99 @@ body {
 a {
     color: var(--primary-color);
     text-decoration: none;
-    transition: color 0.2s ease;
+    transition: color var(--transition-speed) ease;
 }
 
 a:hover {
     color: var(--primary-color-dark);
 }
 
-img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-}
-
 h1, h2, h3, h4, h5, h6 {
-    color: var(--text-color-dark);
-    line-height: 1.2;
+    color: var(--primary-color);
+    margin-top: 0;
     margin-bottom: var(--spacing-md);
+    font-weight: bold;
 }
 
-section {
-    padding: var(--spacing-xl) 0;
-}
-
-/* Botones genéricos */
-.btn-primary,
-.btn-secondary {
-    display: inline-block;
+button {
+    background-color: var(--primary-color);
+    color: var(--secondary-color-dark);
+    border: none;
     padding: var(--spacing-sm) var(--spacing-md);
     border-radius: var(--border-radius);
-    text-align: center;
     cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.2s ease, transform 0.2s ease;
-    border: none;
     font-size: 1em;
+    transition: background-color var(--transition-speed) ease;
 }
 
-.btn-primary {
-    background-color: var(--primary-color);
-    color: var(--dark-bg); /* Texto oscuro para contraste en dorado */
-}
-
-.btn-primary:hover {
+button:hover {
     background-color: var(--primary-color-dark);
-    transform: translateY(-2px);
 }
 
-.btn-secondary {
-    background-color: transparent;
-    color: var(--primary-color);
-    border: 1px solid var(--primary-color);
+button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    opacity: 0.7;
 }
 
-.btn-secondary:hover {
-    background-color: var(--primary-color);
-    color: var(--dark-bg);
-    transform: translateY(-2px);
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="date"],
+input[type="time"],
+textarea,
+select {
+    width: 100%;
+    padding: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background-color: var(--secondary-color);
+    color: var(--text-color-light);
+    box-sizing: border-box; /* Asegura que el padding no aumente el ancho total */
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: var(--text-color-light);
+    opacity: 0.7;
 }
 
 /* Header */
 .main-header {
     background-color: var(--dark-bg);
     padding: var(--spacing-md) 0;
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--shadow-md);
     position: sticky;
     top: 0;
-    z-index: 100;
+    left: 0;
+    width: 100%;
+    z-index: 100; /* Asegura que el header esté sobre otros elementos */
 }
 
 .header-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap; /* Permite que los elementos se envuelvan en pantallas pequeñas */
 }
 
 .logo {
     display: flex;
     align-items: center;
     gap: var(--spacing-sm);
+    color: var(--primary-color);
     font-size: 1.5em;
     font-weight: bold;
-    color: var(--text-color-dark);
+    text-transform: uppercase;
 }
 
 .logo img {
     height: 40px; /* Ajusta el tamaño del logo */
-    width: auto;
+    vertical-align: middle; /* Alinea el logo con el texto */
 }
 
-/* Navegación principal (desktop/tablet) */
 .main-nav .nav-list {
     display: flex;
     list-style: none;
@@ -157,10 +167,10 @@ section {
 }
 
 .main-nav .nav-list a {
-    color: var(--text-color-light);
+    color: var(--text-color-dark);
     font-weight: bold;
-    position: relative;
-    padding-bottom: 5px;
+    position: relative; /* Para el efecto de subrayado */
+    padding-bottom: 5px; /* Espacio para el subrayado */
 }
 
 .main-nav .nav-list a::after {
@@ -171,7 +181,7 @@ section {
     width: 0;
     height: 2px;
     background-color: var(--primary-color);
-    transition: width 0.3s ease;
+    transition: width var(--transition-speed) ease-out;
 }
 
 .main-nav .nav-list a:hover::after,
@@ -179,849 +189,227 @@ section {
     width: 100%;
 }
 
-/* Acciones del Header (Búsqueda, Carrito) */
 .header-actions {
     display: flex;
     align-items: center;
     gap: var(--spacing-md);
 }
 
-.search-bar {
-    display: flex;
-    align-items: center;
-    background-color: var(--light-bg);
-    border-radius: var(--border-radius);
-    padding: 5px 10px;
-}
-
-.search-bar input {
-    border: none;
-    background: none;
-    color: var(--text-color-light);
-    padding: 0;
-    margin-right: 5px;
-    font-size: 1em;
-    outline: none;
-}
-
-.search-bar button {
+.header-actions .icon-btn {
     background: none;
     border: none;
-    color: var(--text-color-light);
-    cursor: pointer;
-    font-size: 1em;
-}
-
-.cart-icon {
-    position: relative;
     color: var(--text-color-dark);
-    font-size: 1.5em;
+    font-size: 1.2em;
+    cursor: pointer;
+    padding: var(--spacing-xs);
+    position: relative; /* Para el contador del carrito */
 }
 
-.cart-count {
-    background-color: var(--primary-color);
-    color: var(--dark-bg); /* Texto oscuro para contraste */
+.header-actions .icon-btn:hover {
+    color: var(--primary-color);
+}
+
+.header-actions .cart-count {
+    background-color: var(--danger-color);
+    color: var(--white);
     font-size: 0.7em;
-    font-weight: bold;
     border-radius: 50%;
-    padding: 3px 6px;
-    min-width: 18px;
-    text-align: center;
+    padding: 2px 6px;
     position: absolute;
-    top: -8px;
-    right: -8px;
-    display: flex; /* Para centrar el número si es de un solo dígito */
-    justify-content: center;
-    align-items: center;
-    height: 18px;
-    box-shadow: var(--shadow-sm);
-}
-
-/* Menú hamburguesa (solo en móvil, oculto por defecto en desktop) */
-.menu-toggle {
-    display: none; /* Oculto por defecto, se muestra en responsive.css */
-    background: none;
-    border: none;
-    color: var(--text-color-dark);
-    font-size: 1.8em;
-    cursor: pointer;
-}
-
-/* Hero Section y Carrusel */
-.hero-section {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-    height: 450px; /* Altura fija para el carrusel */
-    background-color: var(--dark-bg); /* Color de fondo mientras carga la imagen */
-}
-
-.carousel-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-}
-
-.carousel-track {
-    display: flex;
-    height: 100%;
-    transition: transform 0.5s ease-in-out;
-}
-
-.carousel-slide {
-    min-width: 100%;
-    height: 100%;
-    position: relative;
-    display: flex;
-    align-items: center; /* Centra el contenido verticalmente */
-    justify-content: center; /* Centra el contenido horizontalmente */
-    background-size: cover;
-    background-position: center;
-    color: var(--white);
+    top: -5px;
+    right: -5px;
+    min-width: 18px; /* Asegura que el círculo sea visible incluso con un solo dígito */
     text-align: center;
+    line-height: 1; /* Para centrar el número verticalmente */
 }
 
-.carousel-slide::before {
+/* Secciones Principales */
+main {
+    flex-grow: 1; /* Permite que el contenido principal ocupe el espacio disponible */
+    padding: var(--spacing-xl) 0;
+}
+
+section {
+    margin-bottom: var(--spacing-xl);
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+    font-size: 2.5em;
+    color: var(--primary-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.section-title::after {
     content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.6); /* Oscurece la imagen para que el texto resalte */
-    z-index: 1;
-}
-
-.carousel-caption {
-    position: relative; /* Para que esté por encima de la imagen */
-    z-index: 2;
-    max-width: 800px;
-    padding: var(--spacing-md);
-}
-
-.carousel-caption h2 {
-    font-size: 3em;
-    margin-bottom: var(--spacing-sm);
-    color: var(--primary-color);
-}
-
-.carousel-caption p {
-    font-size: 1.2em;
-    margin-bottom: var(--spacing-lg);
-}
-
-.carousel-caption .btn-primary {
-    font-size: 1.1em;
-    padding: var(--spacing-sm) var(--spacing-lg);
-}
-
-.carousel-dots {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 3;
-    display: flex;
-    gap: 8px;
-}
-
-.carousel-dots .dot {
-    width: 12px;
-    height: 12px;
-    background-color: rgba(255, 255, 255, 0.5);
-    border-radius: 50%;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.carousel-dots .dot.active {
-    background-color: var(--primary-color);
-}
-
-.carousel-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.5);
-    color: var(--white);
-    border: none;
-    padding: 10px 15px;
-    cursor: pointer;
-    font-size: 1.5em;
-    z-index: 3;
-    border-radius: var(--border-radius);
-    transition: background-color 0.3s ease;
-}
-
-.carousel-btn:hover {
-    background-color: rgba(0, 0, 0, 0.8);
-}
-
-.carousel-btn.prev {
-    left: 10px;
-}
-
-.carousel-btn.next {
-    right: 10px;
-}
-
-/* Secciones de Productos */
-.product-section {
-    background-color: var(--dark-bg);
-    margin-top: var(--spacing-md);
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow-md);
-}
-
-.product-section h2 {
-    text-align: center;
-    color: var(--primary-color);
-    margin-bottom: var(--spacing-lg);
-}
-
-.product-filters {
-    display: flex;
-    justify-content: center;
-    gap: var(--spacing-md);
-    margin-bottom: var(--spacing-lg);
-    flex-wrap: wrap; /* Para que los filtros se envuelvan en pantallas pequeñas */
-}
-
-.product-filters input,
-.product-filters select {
-    padding: var(--spacing-sm);
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
-    background-color: var(--light-bg);
-    color: var(--text-color-light);
-    font-size: 0.9em;
-    flex: 1; /* Permitir que los inputs crezcan */
-    max-width: 250px; /* Ancho máximo para inputs */
-}
-
-.product-filters input::placeholder {
-    color: var(--text-color-light);
-    opacity: 0.7;
-}
-
-.product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: var(--spacing-md);
-    justify-content: center; /* Centra las tarjetas si no llenan la cuadrícula */
-}
-
-.product-card {
-    background-color: var(--light-bg);
-    border-radius: var(--border-radius);
-    overflow: hidden;
-    box-shadow: var(--shadow-sm);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    text-align: center;
-    padding: var(--spacing-md); /* Padding interno para el contenido de la tarjeta */
-    display: flex; /* Para flexbox interno */
-    flex-direction: column;
-    justify-content: space-between; /* Empujar botón hacia abajo */
-}
-
-.product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-md);
-}
-
-.product-card img {
-    width: 100%;
-    height: 200px; /* Altura fija para las imágenes de producto */
-    object-fit: contain; /* Para que la imagen completa sea visible y no se corte */
-    margin-bottom: var(--spacing-md);
-    border-radius: var(--border-radius); /* Bordes redondeados para la imagen */
-}
-
-.product-card h3 {
-    font-size: 1.1em;
-    margin-bottom: var(--spacing-sm);
-    color: var(--text-color-dark);
-}
-
-.product-card p {
-    font-size: 0.9em;
-    color: var(--text-color-light);
-    margin-bottom: var(--spacing-md);
-    flex-grow: 1; /* Para que ocupe el espacio disponible */
-}
-
-.product-card .price-info {
-    font-size: 1.2em;
-    font-weight: bold;
-    color: var(--primary-color);
-    margin-bottom: var(--spacing-md);
-}
-
-.product-card .old-price {
-    font-size: 0.8em;
-    text-decoration: line-through;
-    color: var(--text-color-light);
-    margin-right: 5px;
-}
-
-.product-card .add-to-cart-btn {
-    width: 100%;
-    padding: var(--spacing-sm);
-}
-
-/* Sección de Marcas */
-.brands-section {
-    background-color: var(--light-bg);
-    margin-top: var(--spacing-md);
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow-md);
-}
-
-.brands-section h2 {
-    text-align: center;
-    color: var(--primary-color);
-    margin-bottom: var(--spacing-lg);
-}
-
-.brands-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: var(--spacing-md);
-}
-
-.brand-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    background-color: var(--dark-bg);
-    padding: var(--spacing-md);
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow-sm);
-    transition: transform 0.2s ease;
-    width: 120px; /* Tamaño fijo para los items de marca */
-}
-
-.brand-item:hover {
-    transform: translateY(-5px);
-}
-
-.brand-item img {
+    display: block;
     width: 80px;
-    height: 80px;
-    object-fit: contain;
-    margin-bottom: var(--spacing-sm);
-}
-
-.brand-item span {
-    font-size: 0.9em;
-    font-weight: bold;
-    color: var(--text-color-dark);
-}
-
-/* Support Section */
-.support-section {
-    background-color: var(--dark-bg);
-    padding: var(--spacing-xl);
-    text-align: center;
-    border-radius: var(--border-radius);
-    margin-top: var(--spacing-xl);
-    box-shadow: var(--shadow-sm);
-    border: 1px solid var(--border-color);
-}
-
-.support-section h2 {
-    color: var(--primary-color);
-    margin-bottom: var(--spacing-md);
-}
-
-.support-section p {
-    color: var(--text-color-light);
-    font-size: 1.1em;
-    margin-bottom: var(--spacing-lg);
-}
-
-.support-actions {
-    display: flex;
-    justify-content: center;
-    gap: var(--spacing-lg);
-    flex-wrap: wrap;
-    margin-top: var(--spacing-xl);
-}
-
-.support-actions .btn-primary,
-.support-actions .btn-secondary {
-    min-width: 200px; /* Asegurar que los botones tengan un ancho decente */
-    padding: var(--spacing-md);
-}
-
-/* Contact Section */
-.contact-section {
-    background-color: var(--light-bg);
-    margin-top: var(--spacing-md);
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow-md);
-    text-align: center;
-}
-
-.contact-section h2 {
-    color: var(--primary-color);
-    margin-bottom: var(--spacing-lg);
-}
-
-.contact-info p {
-    font-size: 1.1em;
-    margin-bottom: var(--spacing-sm);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--spacing-sm);
-}
-
-.contact-info i {
-    color: var(--primary-color);
-    font-size: 1.2em;
-}
-
-.contact-info .whatsapp-link {
-    color: var(--success-color);
-    font-weight: bold;
+    height: 3px;
+    background-color: var(--primary-color-dark);
+    margin: var(--spacing-sm) auto 0;
+    border-radius: 5px;
 }
 
 /* Footer */
-footer {
+.main-footer {
     background-color: var(--dark-bg);
     color: var(--text-color-light);
+    padding: var(--spacing-xl) 0;
     text-align: center;
-    padding: var(--spacing-md) 0;
-    margin-top: var(--spacing-xl);
+    margin-top: auto; /* Empuja el footer hacia abajo */
+    border-top: 1px solid var(--border-color); /* Borde superior para separar */
 }
 
-.footer-links a {
-    color: var(--text-color-light);
-    margin: 0 var(--spacing-sm);
-}
-
-.footer-links a:hover {
-    color: var(--primary-color);
-}
-
-/* Carrito Sidebar */
-.cart-sidebar {
-    position: fixed;
-    top: 0;
-    right: -350px; /* Oculto por defecto */
-    width: 350px; /* Ancho del sidebar */
-    height: 100%;
-    background-color: var(--dark-bg);
-    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.4);
-    z-index: 200; /* Asegurar que esté por encima de todo */
-    transition: right 0.3s ease-in-out;
+.footer-content {
     display: flex;
     flex-direction: column;
-}
-
-.cart-sidebar.open {
-    right: 0; /* Abierto */
-}
-
-.sidebar-header {
-    display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: var(--spacing-md);
-    border-bottom: 1px solid var(--border-color);
-    background-color: var(--secondary-color);
+    gap: var(--spacing-md);
 }
 
-.sidebar-header h3 {
-    color: var(--text-color-dark);
+.footer-nav .nav-list {
+    display: flex;
+    list-style: none;
     margin: 0;
-}
-
-.sidebar-header .close-btn {
-    background: none;
-    border: none;
-    color: var(--text-color-light);
-    font-size: 1.8em;
-    cursor: pointer;
-}
-
-.cart-items-container {
-    flex-grow: 1; /* Ocupa el espacio disponible */
-    overflow-y: auto; /* Scroll si hay muchos ítems */
-    padding: var(--spacing-md);
-}
-
-.cart-item {
-    display: flex;
-    align-items: center;
+    padding: 0;
     gap: var(--spacing-md);
-    margin-bottom: var(--spacing-md);
-    padding-bottom: var(--spacing-md);
-    border-bottom: 1px dashed var(--border-color);
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
-.cart-item:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
-    padding-bottom: 0;
+.footer-nav .nav-list a {
+    color: var(--text-color-light);
+    transition: color var(--transition-speed) ease;
 }
 
-.cart-item img {
-    width: 60px;
-    height: 60px;
-    object-fit: contain;
-    border-radius: var(--border-radius);
+.footer-nav .nav-list a:hover {
+    color: var(--primary-color);
 }
 
-.cart-item-details {
-    flex-grow: 1;
+.social-links {
+    display: flex;
+    gap: var(--spacing-md);
 }
 
-.cart-item-details h4 {
-    font-size: 1em;
-    margin: 0 0 5px 0;
-    color: var(--text-color-dark);
+.social-links a {
+    color: var(--text-color-light);
+    font-size: 1.5em;
+    transition: color var(--transition-speed) ease;
 }
 
-.cart-item-details p {
+.social-links a:hover {
+    color: var(--primary-color);
+}
+
+.footer-info p {
+    margin: 0;
     font-size: 0.9em;
-    color: var(--text-color-light);
-    margin: 0 0 5px 0;
 }
 
-.cart-item-actions {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-}
-
-.cart-item-actions button {
-    background-color: var(--secondary-color);
-    color: var(--text-color-dark);
-    border: 1px solid var(--border-color);
-    border-radius: 50%;
-    width: 25px;
-    height: 25px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    font-size: 1.2em;
-    transition: background-color 0.2s ease;
-}
-
-.cart-item-actions button:hover {
-    background-color: var(--primary-color-dark);
-    color: var(--dark-bg);
-}
-
-.cart-item-actions span {
-    font-weight: bold;
-    color: var(--text-color-dark);
-}
-
-.cart-summary {
-    padding: var(--spacing-md);
-    border-top: 1px solid var(--border-color);
-    background-color: var(--secondary-color);
-    text-align: center;
-}
-
-.cart-summary p {
-    font-size: 1.2em;
-    font-weight: bold;
-    color: var(--text-color-dark);
-    margin-bottom: var(--spacing-md);
-}
-
-.cart-summary span#cartTotalPrice {
-    color: var(--primary-color);
-}
-
-.checkout-whatsapp-btn {
-    background-color: #25D366; /* Color de WhatsApp */
-    color: var(--dark-bg); /* Texto oscuro para contraste */
-    padding: var(--spacing-md) var(--spacing-lg);
-    font-size: 1.1em;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: var(--spacing-sm);
-}
-
-.checkout-whatsapp-btn:hover {
-    background-color: #1DA851;
-}
-
-.checkout-whatsapp-btn:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
-}
-
-.cart-empty-message {
-    text-align: center;
-    color: var(--text-color-light);
-    padding: var(--spacing-xl);
-}
-
-/* Support Section */
-.support-section {
-    background-color: var(--dark-bg); /* Fondo oscuro para la sección de soporte */
-    padding: var(--spacing-xl);
-    text-align: center;
-    border-radius: var(--border-radius);
-    margin-top: var(--spacing-xl);
-    box-shadow: var(--shadow-sm); /* Un poco de sombra para destacarlo */
-    border: 1px solid var(--border-color);
-}
-
-.support-section h2 {
-    color: var(--primary-color);
-    margin-bottom: var(--spacing-md);
-}
-
-.support-section p {
-    color: var(--text-color-light);
-    font-size: 1.1em;
-    margin-bottom: var(--spacing-lg);
-}
-
-.support-actions {
-    display: flex;
-    justify-content: center;
-    gap: var(--spacing-lg);
-    flex-wrap: wrap; /* Permitir que los botones se envuelvan en pantallas pequeñas */
-    margin-top: var(--spacing-xl);
-}
-
-.support-actions .btn-primary,
-.support-actions .btn-secondary {
-    min-width: 200px;
-    padding: var(--spacing-md);
-}
-
-/* Modales */
-/* Modal de Verificación de Edad */
-#ageVerificationModal {
-    display: flex; /* Asegura que esté visible por defecto al cargar la página */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.9); /* Fondo oscuro semitransparente */
-    backdrop-filter: blur(5px); /* Efecto de desenfoque, si el navegador lo soporta */
-    z-index: 1000;
-    justify-content: center;
-    align-items: center;
-    opacity: 1; /* Asegurar que la opacidad inicial sea 1 */
-    transition: opacity 0.3s ease; /* Transición para ocultarse */
-}
-
-#ageVerificationModal.hidden {
-    opacity: 0;
-    pointer-events: none; /* Deshabilita interacciones cuando está oculto */
-}
-
-.age-verification-content {
-    background-color: var(--dark-bg); /* Fondo oscuro elegante */
-    padding: var(--spacing-xl);
-    border-radius: var(--border-radius-lg); /* Bordes más redondeados */
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8);
-    text-align: center;
-    max-width: 450px;
-    width: 90%;
-    border: 1px solid var(--border-color); /* Borde sutil */
-    transform: translateY(0);
-    transition: transform 0.4s ease-out, opacity 0.4s ease-out;
-}
-
-#ageVerificationModal.hidden .age-verification-content {
-    transform: translateY(-50px);
-    opacity: 0;
-}
-
-
-.age-verification-content h2 {
-    color: var(--primary-color); /* Título dorado */
-    font-size: 2em;
-    margin-bottom: var(--spacing-md);
-    text-shadow: 0 0 5px rgba(255, 191, 0, 0.4); /* Pequeña sombra dorada */
-}
-
-.age-verification-content p {
-    color: var(--text-color-light); /* Texto claro */
-    margin-bottom: var(--spacing-lg);
-    line-height: 1.6;
-    font-size: 1.1em;
-}
-
-.age-verification-buttons {
-    display: flex;
-    justify-content: center;
-    gap: var(--spacing-md);
-    flex-wrap: wrap; /* Para que los botones se adapten en móviles */
-}
-
-.age-verification-buttons .btn-primary,
-.age-verification-buttons .btn-secondary {
-    flex: 1; /* Para que ocupen el espacio disponible */
-    min-width: 150px; /* Ancho mínimo para los botones */
-    padding: var(--spacing-sm) var(--spacing-md);
-    font-size: 1em;
-    text-transform: uppercase;
-    font-weight: bold;
-    border: none;
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.age-verification-buttons .btn-primary {
-    background-color: var(--primary-color);
-    color: var(--dark-bg);
-}
-
-.age-verification-buttons .btn-primary:hover {
-    background-color: var(--primary-color-dark);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(255, 191, 0, 0.4);
-}
-
-.age-verification-buttons .btn-secondary {
-    background-color: var(--secondary-color);
-    color: var(--text-color-dark);
-    border: 1px solid var(--border-color);
-}
-
-.age-verification-buttons .btn-secondary:hover {
-    background-color: var(--secondary-color-dark);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-}
-
-/* Para pantallas muy pequeñas, hacer los botones de edad en columna */
-@media (max-width: 480px) {
-    .age-verification-buttons {
-        flex-direction: column;
-    }
-}
+/* Modal General */
 .modal {
-    display: none; /* Oculto por defecto */
-    position: fixed;
-    z-index: 300; /* Por encima de todo lo demás */
+    display: none; /* Oculto por defecto, JS lo manejará */
+    position: fixed; /* Posición fija en la pantalla */
+    z-index: 200; /* Por encima de todo lo demás */
     left: 0;
     top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto; /* Habilitar scroll si el contenido es muy largo */
-    background-color: rgba(0, 0, 0, 0.7); /* Fondo semi-transparente oscuro */
+    width: 100%; /* Ancho completo */
+    height: 100%; /* Alto completo */
+    overflow: auto; /* Habilitar scroll si es necesario */
+    background-color: rgba(0, 0, 0, 0.7); /* Fondo semi-transparente */
+    justify-content: center; /* Centrar contenido horizontalmente */
+    align-items: center; /* Centrar contenido verticalmente */
+    /* Para centrar el modal con flexbox */
     display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .modal-content {
     background-color: var(--dark-bg);
-    margin: auto;
+    margin: auto; /* Para centrado si no se usa flex */
     padding: var(--spacing-xl);
-    border-radius: var(--border-radius);
-    width: 90%;
-    max-width: 500px;
-    position: relative;
-    box-shadow: var(--shadow-lg);
     border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    width: 90%; /* Ancho base */
+    max-width: 500px; /* Ancho máximo */
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    animation: fadeIn 0.3s ease-out; /* Animación de entrada */
 }
 
-.modal-content .close-btn {
-    color: var(--text-color-light);
-    font-size: 2em;
-    font-weight: bold;
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    cursor: pointer;
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-.modal-content .close-btn:hover,
-.modal-content .close-btn:focus {
+.modal-content h3 {
     color: var(--primary-color);
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.modal-content h2 {
     margin-top: 0;
     margin-bottom: var(--spacing-lg);
-    color: var(--primary-color);
+    text-align: center;
 }
 
-.modal-content form label {
+.modal-content label {
     display: block;
     margin-bottom: var(--spacing-sm);
-    font-weight: bold;
-    color: var(--text-color-dark);
+    color: var(--text-color-light);
 }
 
-.modal-content form input[type="text"],
-.modal-content form input[type="tel"],
-.modal-content form input[type="date"],
-.modal-content form input[type="time"],
-.modal-content form textarea {
-    width: calc(100% - 20px); /* Ajustar padding */
-    padding: var(--spacing-md);
-    margin-bottom: var(--spacing-lg);
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
-    font-size: 1em;
-    font-family: inherit; /* Heredar la fuente principal */
-    background-color: var(--light-bg);
-    color: var(--text-color-dark);
-}
-
-.modal-content form textarea {
-    resize: vertical; /* Permitir redimensionar verticalmente */
-}
-
-.modal-content form input:focus,
-.modal-content form textarea:focus {
-    border-color: var(--primary-color);
-    outline: none;
-    box-shadow: 0 0 5px rgba(255, 191, 0, 0.5);
-}
-
-.modal-content form .btn-primary {
+.modal-content button.btn-primary {
+    display: block;
     width: 100%;
-    padding: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+    background-color: var(--primary-color); /* Asegura que el botón primario use el color primario */
+    color: var(--secondary-color-dark);
 }
 
-/* Toast Notifications */
+.modal-content button.btn-primary:hover {
+    background-color: var(--primary-color-dark);
+}
+
+
+.close-btn {
+    color: var(--text-color-light);
+    font-size: 1.8em;
+    position: absolute;
+    top: var(--spacing-md);
+    right: var(--spacing-md);
+    cursor: pointer;
+    transition: color var(--transition-speed) ease;
+}
+
+.close-btn:hover {
+    color: var(--danger-color);
+}
+
+
+/* Estilos para el Toast Notification */
 #toast-container {
     position: fixed;
-    bottom: 80px; /* Ajustado para estar encima de la nueva barra de navegación inferior */
+    bottom: var(--spacing-lg);
     left: 50%;
     transform: translateX(-50%);
     z-index: 1000;
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    width: 90%;
-    max-width: 350px;
+    gap: var(--spacing-sm);
+    align-items: center; /* Centra los toasts horizontalmente */
+    pointer-events: none; /* Permite clics a través del contenedor si no hay toast */
 }
 
 .toast {
-    background-color: var(--dark-bg);
-    color: var(--text-color-dark);
-    padding: var(--spacing-md);
+    background-color: var(--secondary-color-dark);
+    color: var(--white);
+    padding: var(--spacing-md) var(--spacing-lg);
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-md);
     opacity: 0;
     transform: translateY(20px);
-    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    max-width: 300px;
     text-align: center;
+    pointer-events: auto; /* Habilita clics en el toast mismo */
 }
 
 .toast.show {
@@ -1031,44 +419,40 @@ footer {
 
 .toast.hide {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(20px); /* Vuelve a bajar al desaparecer */
 }
 
 .toast-success {
     background-color: var(--success-color);
-    color: var(--dark-bg);
 }
 
 .toast-error {
     background-color: var(--danger-color);
-    color: var(--dark-bg);
+}
+
+.toast-warning {
+    background-color: var(--primary-color-dark); /* Usar el color primario oscuro para advertencias */
 }
 
 .toast-info {
     background-color: var(--info-color);
-    color: var(--dark-bg);
 }
 
-.toast-warning {
-    background-color: #ffc107; /* Amarillo de advertencia */
-    color: var(--dark-bg);
-}
-
-/* NUEVOS ESTILOS PARA LA BARRA DE NAVEGACIÓN INFERIOR */
+/* Bottom Navigation Bar (Barra Inferior Móvil) */
 .bottom-nav {
-    display: none; /* Por defecto, oculto para desktop */
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
-    background-color: var(--dark-bg); /* Fondo oscuro como tu header */
-    color: var(--white);
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5); /* Sombra sutil hacia arriba */
-    z-index: 999; /* Alto z-index para que esté siempre encima */
-    justify-content: space-around; /* Distribuir ítems uniformemente */
-    align-items: center;
-    padding: 10px 0;
-    text-align: center;
+    background-color: var(--dark-bg);
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
+    padding: 8px 0;
+    z-index: 100;
+    /* Asegurarse de que esté oculta en desktop y solo visible en móvil por responsive.css */
+    display: none; /* Ocultar por defecto, se muestra en responsive.css para móvil */
 }
 
 .bottom-nav .nav-item {
@@ -1111,15 +495,14 @@ footer {
 .bottom-nav .nav-item .cart-count {
     position: absolute;
     top: 0px; /* Ajusta esto para posicionarlo correctamente */
-    right: 15px; /* Ajusta esto para posicionarlo correctamente */
-    background-color: var(--primary-color);
-    color: var(--dark-bg); /* Color de texto oscuro para contraste */
-    font-size: 0.6em;
-    font-weight: bold;
+    right: 50%;
+    transform: translateX(calc(50% + 15px)); /* Ajusta para que quede a la derecha del icono */
+    background-color: var(--danger-color);
+    color: var(--white);
+    font-size: 0.7em;
     border-radius: 50%;
-    padding: 3px 6px;
+    padding: 2px 6px;
     min-width: 18px;
     text-align: center;
-    line-height: 1;
-    border: 1px solid var(--dark-bg); /* Borde para contrastar con el fondo */
+    line-height: 1; /* Para centrar el número verticalmente */
 }
