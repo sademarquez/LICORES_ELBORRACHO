@@ -2,52 +2,46 @@
 
 import { appState } from './main.js';
 import { renderProducts } from './products.js';
-import { showToastNotification } from './toast.js'; // Asegúrate de importar toast
+import { showToastNotification } from './toast.js';
+
+let searchModal;
+let searchInput;
+let searchButton;
+let searchResultsGrid;
+let closeSearchModalBtn; // Añadir referencia al botón de cerrar
 
 export function setupSearch() {
-    const searchModal = document.getElementById('searchModal');
-    const searchInput = document.getElementById('searchInput'); // Este es el input dentro del modal
-    const searchButton = document.getElementById('searchButton'); // Este es el botón dentro del modal
-    const searchResultsGrid = document.getElementById('searchResultsGrid'); // NUEVO: Contenedor para los resultados de búsqueda
+    searchModal = document.getElementById('searchModal');
+    searchInput = document.getElementById('searchInput');
+    searchButton = document.getElementById('searchButton');
+    searchResultsGrid = document.getElementById('searchResultsGrid');
+    closeSearchModalBtn = document.getElementById('closeSearchModalBtn'); // Obtener el botón de cerrar
 
-    if (!searchModal || !searchInput || !searchButton || !searchResultsGrid) {
+    if (!searchModal || !searchInput || !searchButton || !searchResultsGrid || !closeSearchModalBtn) {
         console.warn('search.js: Algunos elementos del modal de búsqueda no se encontraron. La funcionalidad de búsqueda podría estar limitada.');
         return;
     }
-
-    // Opcional: Si quieres que el campo de búsqueda principal (header) también abra el modal,
-    // asegúrate de que el ID `mainSearchInput` o `mainSearchButton` redirija a `bottomNavSearch` o active el modal directamente.
-    // Pero para mantener la consistencia con el flujo del `bottom-nav`, nos enfocaremos en el modal.
 
     const performSearch = () => {
         const searchTerm = searchInput.value.toLowerCase().trim();
         let filteredProducts = [];
 
-        if (searchTerm.length > 0) { // Solo busca si hay un término
+        if (searchTerm.length > 0) {
             filteredProducts = appState.products.filter(product =>
                 product.name.toLowerCase().includes(searchTerm) ||
-                product.description.toLowerCase().includes(searchTerm) ||
                 product.brand.toLowerCase().includes(searchTerm) ||
-                (product.category && product.category.toLowerCase().includes(searchTerm))
+                (product.description ? product.description.toLowerCase().includes(searchTerm) : false)
             );
+            // Renderizar los productos encontrados en la cuadrícula de resultados
+            renderProducts(filteredProducts, '#searchResultsGrid');
         } else {
-            // Si el campo de búsqueda está vacío, no se muestran productos.
-            // showToastNotification('Ingresa un término de búsqueda.', 'info');
-        }
-
-        // Renderiza los productos filtrados en el *nuevo* contenedor de resultados dentro del modal
-        renderProducts(filteredProducts, '#searchResultsGrid'); // Usamos el nuevo contenedor para resultados
-
-        // Mostrar un mensaje si no hay resultados
-        if (searchTerm.length > 0 && filteredProducts.length === 0) {
-            searchResultsGrid.innerHTML = `<p class="no-results-message">No se encontraron resultados para "${searchTerm}".</p>`;
-        } else if (searchTerm.length === 0) {
+            // Si el término de búsqueda está vacío, limpiar resultados y mostrar mensaje inicial
             searchResultsGrid.innerHTML = `<p class="no-results-message">Ingresa un término para buscar productos.</p>`;
         }
 
-        // Si se encontraron resultados y el modal está abierto, puedes opcionalmente
-        // desplazar al inicio de los resultados si el modal es muy largo.
-        // searchResultsGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if (searchTerm.length > 0 && filteredProducts.length === 0) {
+            searchResultsGrid.innerHTML = `<p class="no-results-message">No se encontraron resultados para "${searchTerm}".</p>`;
+        }
     };
 
     searchButton.addEventListener('click', performSearch);
@@ -58,17 +52,39 @@ export function setupSearch() {
         }
     });
 
+    // Cerrar el modal al hacer clic en el botón de cerrar
+    closeSearchModalBtn.addEventListener('click', () => {
+        toggleSearchModal(false);
+    });
+
     // Limpiar resultados al abrir el modal (opcional, para una experiencia más limpia)
     searchModal.addEventListener('click', (event) => {
-        // Si el modal se abre, y no es un clic en el input o botón de búsqueda, limpiar
-        if (event.target === searchModal && searchInput.value !== '') {
-            searchInput.value = ''; // Limpiar el input
-            searchResultsGrid.innerHTML = `<p class="no-results-message">Ingresa un término para buscar productos.</p>`; // Limpiar resultados visuales
+        if (event.target === searchModal) { // Solo si el clic fue en el fondo oscuro
+            toggleSearchModal(false); // Cerrar el modal
         }
     });
 
-    // NOTA: La lógica para abrir/cerrar el modal de búsqueda ya está en main.js (bottomNavSearch)
-    // No la duplicamos aquí.
-
     console.log('search.js: Módulo de búsqueda configurado.');
+}
+
+/**
+ * Muestra u oculta el modal de búsqueda.
+ * @param {boolean} open - Si es true, abre el modal; si es false, lo cierra.
+ */
+export function toggleSearchModal(open) {
+    if (searchModal) {
+        if (typeof open === 'boolean') {
+            searchModal.style.display = open ? 'flex' : 'none';
+        } else {
+            // Alternar estado si no se especifica 'open'
+            searchModal.style.display = searchModal.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        // Limpiar el input y los resultados cada vez que se abre el modal
+        if (searchModal.style.display === 'flex') {
+            searchInput.value = '';
+            searchResultsGrid.innerHTML = `<p class="no-results-message">Ingresa un término para buscar productos.</p>`;
+            searchInput.focus(); // Enfocar el input para una mejor UX
+        }
+    }
 }
