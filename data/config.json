@@ -1,29 +1,29 @@
 {
     "siteName": "EL BORRACHO",
     "contactEmail": "pedidos@elborracho.com",
-    "contactPhone": "573109876543",  // Nuevo número de WhatsApp sin '+' ni espacios
+    "contactPhone": "573109876543",
     "address": "Popayán, Cauca, Colombia",
     "banners": [
         {
             "id": "banner1",
-            "title": "¡Ofertas Semanales en Licores!",
-            "description": "Descubre descuentos increíbles en tus bebidas favoritas. ¡Salud!",
-            "imageUrl": "images/banners/banner-licores.jpg",
+            "title": "¡Novedad! Licores Premium",
+            "description": "Descubre nuestra selección exclusiva de licores finos.",
+            "imageUrl": "images/banners/banner-licores-premium.jpg",
             "link": "#licores",
-            "buttonText": "Ver Ofertas"
+            "buttonText": "Ver Licores"
         },
         {
             "id": "banner2",
-            "title": "Nueva Selección de Cervezas Artesanales",
-            "description": "Explora sabores únicos de cervecerías locales e internacionales.",
+            "title": "Ofertas de Cervezas",
+            "description": "Las mejores marcas de cerveza con descuentos increíbles.",
             "imageUrl": "images/banners/banner-cervezas.jpg",
             "link": "#otras-bebidas",
             "buttonText": "Comprar Cervezas"
         },
         {
             "id": "banner3",
-            "title": "Snacks Perfectos para Tu Noche",
-            "description": "Combina tu bebida con nuestra variedad de snacks y dulces.",
+            "title": "Snacks para tus Bebidas",
+            "description": "Acompaña tus licores con nuestros deliciosos snacks y más.",
             "imageUrl": "images/banners/banner-snacks.jpg",
             "link": "#snacks",
             "buttonText": "Explorar Snacks"
@@ -31,36 +31,24 @@
     ],
     "brands": [
         {
+            "name": "Aguardiente Antioqueño",
+            "logoUrl": "images/icons/antioqueno-logo.svg"
+        },
+        {
+            "name": "Ron Viejo de Caldas",
+            "logoUrl": "images/icons/ron-caldas-logo.svg"
+        },
+        {
             "name": "Buchanan's",
             "logoUrl": "images/icons/buchanans-logo.svg"
         },
         {
-            "name": "Old Parr",
-            "logoUrl": "images/icons/oldparr-logo.svg"
+            "name": "Club Colombia",
+            "logoUrl": "images/icons/club-colombia-logo.svg"
         },
         {
-            "name": "Smirnoff",
-            "logoUrl": "images/icons/smirnoff-logo.svg"
-        },
-        {
-            "name": "Poker",
-            "logoUrl": "images/icons/poker-logo.svg"
-        },
-        {
-            "name": "Coca-Cola",
-            "logoUrl": "images/icons/cocacola-logo.svg"
-        },
-        {
-            "name": "Papas Margarita",
-            "logoUrl": "images/icons/margarita-logo.svg"
-        },
-        {
-            "name": "Lucky Strike",
-            "logoUrl": "images/icons/lucky-strike-logo.svg"
-        },
-        {
-            "name": "Oreo",
-            "logoUrl": "images/icons/oreo-logo.svg"
+            "name": "Corona",
+            "logoUrl": "images/icons/corona-logo.svg"
         }
     ]
 }
