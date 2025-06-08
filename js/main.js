@@ -1,10 +1,10 @@
-// js/main.js
-
+// js/main.js (solo se añade una línea de importación, el resto ya estaba)
 import { initCarousel } from './carousel.js';
 import { renderProducts, setupProductFilters, renderBrands } from './products.js';
 import { setupSearch } from './search.js';
-import { initCart, updateCartCount, toggleCartSidebar } from './cart.js';
+import { initCart, updateCartCount, toggleCartSidebar } from './cart.js'; // Importamos toggleCartSidebar también
 import { setupSupport } from './support.js';
+import { showToastNotification } from './toast.js'; // Asegúrate de importar toast.js si se va a usar aquí
 
 export const appState = {
     products: [],
@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     initCarousel(appState.banners);
     // Renderiza productos en las nuevas secciones de licores, cervezas, snacks, etc.
+    renderProducts(appState.products, '#novedadesGrid', { isNew: true, limit: 8 }); // Mostrar novedades
     renderProducts(appState.products, '#allProductsGrid', { category: 'Licor' }); // Principal de Licores
     renderProducts(appState.products, '#allProductsGridCervezas', { category: 'Cerveza' });
     renderProducts(appState.products, '#allProductsGridSnacks', { category: 'Snack' });
@@ -34,90 +35,73 @@ document.addEventListener('DOMContentLoaded', async () => {
     setupSearch();
     renderBrands(appState.brands);
     setupBottomNavListeners(); // NUEVO: Configura los listeners de la barra inferior
-    setupSupport(appState.contactInfo.contactPhone);
+    setupSupport(appState.contactInfo.contactPhone); // Pasa solo el teléfono de contacto
 
-    console.log('Aplicación inicializada con éxito.');
+    // Listener para el botón de búsqueda en la barra inferior (si no está ya)
+    const bottomNavSearch = document.getElementById('bottomNavSearch');
+    if (bottomNavSearch) {
+        bottomNavSearch.addEventListener('click', (e) => {
+            e.preventDefault();
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                // Desplazarse a la sección de licores y enfocar el input de búsqueda
+                document.getElementById('licores').scrollIntoView({ behavior: 'smooth' });
+                searchInput.focus();
+            } else {
+                showToastNotification('Elemento de búsqueda no encontrado.', 'warning');
+            }
+        });
+    }
+
+    // Inicializar la verificación de edad (ya se inicializa con el DOMContentLoaded en age-verification.js)
+    // No es necesario llamar una función aquí si el script ya lo hace al cargar.
 });
 
 async function loadInitialData() {
     try {
-        const productsResponse = await fetch('data/products.json');
-        const configResponse = await fetch('data/config.json');
+        const [configResponse, productsResponse] = await Promise.all([
+            fetch('config.json'),
+            fetch('products.json')
+        ]);
 
-        if (!productsResponse.ok) throw new Error('Error al cargar productos');
-        if (!configResponse.ok) throw new Error('Error al cargar configuración');
+        if (!configResponse.ok) throw new Error(`HTTP error! status: ${configResponse.status} for config.json`);
+        if (!productsResponse.ok) throw new Error(`HTTP error! status: ${productsResponse.status} for products.json`);
 
-        appState.products = await productsResponse.json();
-        const config = await configResponse.json();
-        appState.banners = config.banners || [];
-        appState.brands = config.brands || [];
-        appState.contactInfo = {
-            contactPhone: config.contactPhone,
-            contactEmail: config.contactEmail
-        };
-        console.log('Banners cargados:', appState.banners.length);
-        console.log('Marcas cargadas desde config.json:', appState.brands.length);
-        console.log('Información de contacto cargada:', appState.contactInfo);
+        appState.contactInfo = await configResponse.json();
+        appState.banners = appState.contactInfo.banners; // Asignar banners desde config.json
+        appState.brands = appState.contactInfo.brands; // Asignar marcas desde config.json
 
+        const productsData = await productsResponse.json();
+        appState.products = productsData;
+
+        console.log('Datos iniciales cargados:', appState);
     } catch (error) {
-        console.error('Error al cargar datos iniciales:', error);
+        console.error('Error al cargar los datos iniciales:', error);
+        showToastNotification('Error al cargar la información. Intenta de nuevo más tarde.', 'error');
     }
 }
 
-// NUEVA FUNCIÓN: Configura los listeners para la barra de navegación inferior
+// Funciones para la navegación inferior (ya existían)
 function setupBottomNavListeners() {
-    const bottomNavSearch = document.getElementById('bottomNavSearch');
-    const bottomNavCart = document.getElementById('bottomNavCart');
-    const searchInput = document.getElementById('searchInput'); // La barra de búsqueda principal en el header
-
-    // Para la búsqueda: al hacer clic en el icono de búsqueda inferior, enfocar la barra de búsqueda principal
-    if (bottomNavSearch && searchInput) {
-        bottomNavSearch.addEventListener('click', (e) => {
-            e.preventDefault();
-            // Desplazar la página a la sección de filtros/productos y luego enfocar el input de búsqueda
-            // Asumiendo que la sección #licores contiene la barra de búsqueda principal
-            document.getElementById('licores').scrollIntoView({ behavior: 'smooth' });
-            setTimeout(() => { // Pequeño retraso para asegurar el scroll antes de enfocar
-                searchInput.focus();
-            }, 300);
-        });
-    }
-
-    // Para el carrito: al hacer clic en el icono de carrito inferior, abrir el sidebar
-    if (bottomNavCart) {
-        bottomNavCart.addEventListener('click', (e) => {
-            e.preventDefault();
-            toggleCartSidebar(true); // Abre el sidebar del carrito
-        });
-    }
-
-    // Lógica para resaltar el ítem activo en la barra inferior al hacer scroll
-    const sections = document.querySelectorAll('main section[id]');
     const bottomNavItems = document.querySelectorAll('.bottom-nav .nav-item');
-
     window.addEventListener('scroll', () => {
         let currentActiveSection = '';
         const scrollY = window.scrollY;
 
-        sections.forEach(section => {
-            // Un offset para que la sección se considere activa un poco antes de llegar a su top
-            const sectionTop = section.offsetTop - 150;
-            const sectionHeight = section.offsetHeight;
-
-            if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+        // Determinar la sección activa basada en el scroll
+        document.querySelectorAll('section').forEach(section => {
+            if (section.offsetTop <= scrollY + 150) { // +150px para activar antes
                 currentActiveSection = section.id;
             }
         });
 
-        // Asegurarse de que el "Inicio" (Novedades) esté activo al principio de la página
+        // Caso especial para la parte superior de la página si es necesario
         if (scrollY < document.getElementById('licores').offsetTop - 150) {
-            currentActiveSection = 'novedades';
+            currentActiveSection = 'novedades'; // O la sección más alta relevante
         }
-
 
         bottomNavItems.forEach(item => {
             item.classList.remove('active');
-            // Quitar el '#' para comparar con el ID de la sección
             const targetId = item.getAttribute('href') ? item.getAttribute('href').substring(1) : null;
             if (targetId && targetId === currentActiveSection) {
                 item.classList.add('active');
@@ -125,26 +109,3 @@ function setupBottomNavListeners() {
         });
     });
 }
-
-
-// Función setupMobileMenu() comentada/removida, ya que la barra inferior la reemplaza
-// function setupMobileMenu() {
-//     const menuToggle = document.getElementById('menuToggle');
-//     const mainNav = document.querySelector('.main-nav');
-
-//     if (menuToggle && mainNav) {
-//         menuToggle.addEventListener('click', () => {
-//             mainNav.classList.toggle('active');
-//             menuToggle.querySelector('i').classList.toggle('fa-bars');
-//             menuToggle.querySelector('i').classList.toggle('fa-times');
-//         });
-
-//         mainNav.addEventListener('click', (e) => {
-//             if (e.target.tagName === 'A' || e.target.tagName === 'LI') {
-//                 mainNav.classList.remove('active');
-//                 menuToggle.querySelector('i').classList.remove('fa-times');
-//                 menuToggle.querySelector('i').classList.add('fa-bars');
-//             }
-//         });
-//     }
-// }
