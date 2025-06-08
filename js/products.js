@@ -11,10 +11,11 @@ export function renderProducts(productsToRender, containerSelector, options = {}
         return;
     }
 
-    let filteredProducts = [...productsToRender];
+    let filteredProducts = [...productsToRender]; // Copia para no modificar el original
 
-    if (options.isNew) {
-        filteredProducts = filteredProducts.filter(p => p.isNew);
+    // Aplicar filtros basados en las opciones
+    if (options.isNew !== undefined) { // Usar undefined para verificar si la opción existe
+        filteredProducts = filteredProducts.filter(p => p.isNew === options.isNew);
     }
     if (options.limit) {
         filteredProducts = filteredProducts.slice(0, options.limit);
@@ -23,7 +24,7 @@ export function renderProducts(productsToRender, containerSelector, options = {}
         filteredProducts = filteredProducts.filter(p => p.category === options.category);
     }
 
-    container.innerHTML = '';
+    container.innerHTML = ''; // Limpiar el contenedor antes de renderizar
 
     if (filteredProducts.length === 0) {
         container.innerHTML = `<p style="text-align: center; grid-column: 1 / -1; color: var(--text-color-light);">No hay productos disponibles en esta sección.</p>`;
@@ -33,82 +34,81 @@ export function renderProducts(productsToRender, containerSelector, options = {}
     filteredProducts.forEach(product => {
         const productCard = document.createElement('div');
         productCard.classList.add('product-card');
-        productCard.dataset.id = product.id;
+        productCard.dataset.id = product.id; // Almacena el ID del producto en el dataset
 
-        const displayPrice = product.isOnOffer ? product.offerPrice : product.price;
-        const oldPriceHtml = product.isOnOffer ? `<span class="old-price">$${product.price.toLocaleString('es-CO')}</span>` : '';
+        const displayPrice = product.isOnOffer && product.offerPrice !== null ? product.offerPrice : product.price;
+        const oldPriceHtml = product.isOnOffer && product.offerPrice !== null ? `<span class="old-price">$${product.price.toLocaleString('es-CO')}</span>` : '';
+        const badgeHtml = product.isOnOffer ? `<span class="badge">Oferta</span>` : (product.isNew ? `<span class="badge new-badge">Nuevo</span>` : '');
 
         productCard.innerHTML = `
+            ${badgeHtml}
             <img src="${product.imageUrl}" alt="${product.name}">
-            <h3>${product.name}</h3>
-            <p>${product.description}</p>
-            <div class="price-info">
-                ${oldPriceHtml}
-                <span class="current-price">$${displayPrice.toLocaleString('es-CO')}</span>
+            <div class="product-card-content">
+                <h3>${product.name}</h3>
+                <p>${product.description}</p>
+                <div class="price-container">
+                    <span class="price">$${displayPrice.toLocaleString('es-CO')}</span>
+                    ${oldPriceHtml}
+                </div>
+                <button class="add-to-cart-btn" data-id="${product.id}" aria-label="Añadir ${product.name} al carrito">Añadir al Carrito</button>
             </div>
-            <button class="btn-primary add-to-cart-btn" data-product-id="${product.id}">
-                <i class="fas fa-cart-plus"></i> Agregar al Carrito
-            </button>
         `;
-
-        // Event listener para el botón "Agregar al Carrito"
-        const addToCartBtn = productCard.querySelector('.add-to-cart-btn');
-        if (addToCartBtn) {
-            addToCartBtn.addEventListener('click', (event) => {
-                const productId = event.currentTarget.dataset.productId;
-                const productToAdd = appState.products.find(p => p.id === productId);
-                if (productToAdd) {
-                    addToCart(productToAdd);
-                    showToastNotification(`${productToAdd.name} agregado al carrito`, 'success');
-                } else {
-                    showToastNotification('Error al agregar producto', 'error');
-                }
-            });
-        }
-
         container.appendChild(productCard);
+    });
+
+    // Añadir event listeners a los botones de añadir al carrito después de renderizar
+    container.querySelectorAll('.add-to-cart-btn').forEach(button => {
+        button.addEventListener('click', (e) => {
+            const productId = e.currentTarget.dataset.id;
+            const productToAdd = appState.products.find(p => p.id === productId);
+            if (productToAdd) {
+                addToCart(productToAdd);
+            } else {
+                showToastNotification('Producto no encontrado.', 'error');
+            }
+        });
     });
 }
 
-// Función para cargar las marcas y renderizarlas
-export function renderBrands(brandsData) {
-    const brandsListContainer = document.getElementById('brandsList');
-    if (!brandsListContainer) return;
-
-    brandsListContainer.innerHTML = '';
-
-    if (brandsData && brandsData.length > 0) {
-        brandsData.forEach(brand => {
-            const brandItem = document.createElement('a');
-            // Cambiar el enlace para que filtre por la categoría de licores con la marca
-            brandItem.href = `#licores?brand=${encodeURIComponent(brand.name)}`;
-            brandItem.classList.add('brand-item');
-            brandItem.innerHTML = `
-                <img src="${brand.logoUrl}" alt="Logo ${brand.name}">
-                <span>${brand.name}</span>
-            `;
-            brandsListContainer.appendChild(brandItem);
-        });
-    } else {
-        console.warn('No se encontraron datos de marcas para renderizar.');
+export function renderBrands(brandsToRender) {
+    const brandsGrid = document.getElementById('brandsGrid');
+    if (!brandsGrid) {
+        console.warn('Contenedor de marcas no encontrado. No se pueden renderizar las marcas.');
+        return;
     }
+
+    brandsGrid.innerHTML = ''; // Limpiar el contenedor
+
+    if (brandsToRender.length === 0) {
+        brandsGrid.innerHTML = `<p style="text-align: center; grid-column: 1 / -1; color: var(--text-color-light);">No hay marcas disponibles en este momento.</p>`;
+        return;
+    }
+
+    brandsToRender.forEach(brand => {
+        const brandItem = document.createElement('div');
+        brandItem.classList.add('brand-item');
+        brandItem.innerHTML = `
+            <img src="${brand.logoUrl}" alt="Logo de ${brand.name}">
+        `;
+        brandsGrid.appendChild(brandItem);
+    });
+    console.log('Marcas renderizadas con éxito.');
 }
 
-// Configuración de filtros de productos (solo aplica a la sección principal de licores por su ID)
+
 export function setupProductFilters(productsData) {
     const brandFilter = document.getElementById('brandFilter');
     const priceFilter = document.getElementById('priceFilter');
     const productSearchInput = document.getElementById('productSearchInput');
-    const allProductsGrid = document.getElementById('allProductsGrid'); // Asumimos que este es el contenedor principal a filtrar
 
-    if (!brandFilter || !priceFilter || !productSearchInput || !allProductsGrid) {
-        console.warn('Elementos de filtro no encontrados. Los filtros no funcionarán.');
+    if (!brandFilter || !priceFilter || !productSearchInput) {
+        console.warn('Elementos de filtro de productos no encontrados. Los filtros no funcionarán.');
         return;
     }
 
     // Llenar el filtro de marcas dinámicamente
-    const uniqueBrands = [...new Set(productsData.map(p => p.brand))].sort();
-    uniqueBrands.forEach(brand => {
+    const brands = [...new Set(productsData.filter(p => p.category === 'Licor').map(p => p.brand))].sort();
+    brands.forEach(brand => {
         const option = document.createElement('option');
         option.value = brand;
         option.textContent = brand;
@@ -132,9 +132,9 @@ export function setupProductFilters(productsData) {
         });
 
         if (selectedPriceOrder === 'asc') {
-            filtered.sort((a, b) => (a.offerPrice || a.price) - (b.offerPrice || b.price));
+            filtered.sort((a, b) => (a.isOnOffer && a.offerPrice !== null ? a.offerPrice : a.price) - (b.isOnOffer && b.offerPrice !== null ? b.offerPrice : b.price));
         } else if (selectedPriceOrder === 'desc') {
-            filtered.sort((a, b) => (b.offerPrice || b.price) - (a.offerPrice || a.price));
+            filtered.sort((a, b) => (b.isOnOffer && b.offerPrice !== null ? b.offerPrice : b.price) - (a.isOnOffer && a.offerPrice !== null ? a.offerPrice : a.price));
         }
 
         renderProducts(filtered, '#allProductsGrid', { category: 'Licor' }); // Asegura que se filtre por categoría aquí también
@@ -142,5 +142,6 @@ export function setupProductFilters(productsData) {
 
     brandFilter.addEventListener('change', applyFilters);
     priceFilter.addEventListener('change', applyFilters);
-    productSearchInput.addEventListener('input', applyFilters);
+    productSearchInput.addEventListener('input', applyFilters); // 'input' es mejor que 'keypress' para búsqueda en tiempo real
+    console.log('Filtros de producto configurados.');
 }
