@@ -3,128 +3,188 @@
 /* Mobile-First Approach */
 /* Estilos para dispositivos pequeños (hasta 767px) */
 @media (max-width: 767px) {
-    .header-content {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: var(--spacing-md);
+    /* Ocultar el menú hamburguesa y el main-nav para que la barra inferior tome el control */
+    .menu-toggle {
+        display: none; /* Ocultar el botón de hamburguesa */
     }
 
     .main-nav {
-        width: 100%;
-        display: none; /* Ocultar por defecto para el menú hamburguesa */
-        flex-direction: column;
-        background-color: var(--white);
-        position: absolute;
-        top: 100%;
-        left: 0;
-        box-shadow: var(--shadow-md);
-        padding: var(--spacing-md);
-        border-top: 1px solid var(--border-color);
-        z-index: 100; /* Asegurarse de que el menú está sobre otros elementos */
+        display: none !important; /* Ocultar la navegación superior móvil */
     }
 
-    .main-nav.active {
-        display: flex;
-    }
-
-    .main-nav .nav-list {
-        flex-direction: column;
+    .header-content {
+        flex-direction: row; /* Mantener elementos del header en una fila */
+        justify-content: space-between; /* Espaciar logo y acciones */
+        align-items: center;
         gap: var(--spacing-sm);
-    }
-
-    .main-nav .nav-list a {
-        padding: var(--spacing-sm) 0;
-        width: 100%;
-        color: var(--text-color-dark); /* Color de texto para enlaces del menú móvil */
-    }
-    
-    .main-nav .nav-list a::after {
-        background-color: var(--primary-color); /* Asegurar color de subrayado en móvil */
+        width: 100%; /* Asegurar que el header ocupa todo el ancho */
+        padding: 0 var(--spacing-md); /* Añadir padding al contenido del header */
     }
 
     .header-actions {
-        width: 100%;
-        justify-content: space-between;
+        display: flex; /* Asegurar que las acciones del header se muestren */
+        gap: var(--spacing-md);
+        align-items: center;
     }
 
-    .search-bar {
-        flex-grow: 1;
-        margin-right: var(--spacing-md);
+    .header-actions .search-bar {
+        display: none; /* Ocultar la barra de búsqueda del header en móvil si la activaremos desde el bottom nav */
     }
 
-    .menu-toggle {
-        display: block; /* Mostrar el botón de menú hamburguesa */
+    .header-actions .cart-icon {
+        position: relative; /* Para el contador del carrito */
+        padding: var(--spacing-sm); /* Hacer el icono más fácil de tocar */
     }
 
+    /* Mostrar la barra de navegación inferior para móviles */
+    .bottom-nav {
+        display: flex; /* Mostrar la barra inferior */
+    }
+
+    /* Ajustes para el resto del contenido en móvil (MEJORAS GRÁFICAS) */
     .hero-section {
-        height: 300px; /* Ajusta la altura del carrusel para móviles */
+        height: 280px; /* Altura óptima para móviles */
     }
 
     .carousel-caption h2 {
-        font-size: 2em;
+        font-size: 1.8em; /* Un poco más pequeño para caber */
+        margin-bottom: var(--spacing-sm);
     }
 
     .carousel-caption p {
+        font-size: 0.9em;
+        display: -webkit-box; /* Limitar líneas para evitar descripciones largas */
+        -webkit-line-clamp: 2; /* Mostrar máximo 2 líneas */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-bottom: var(--spacing-md);
+    }
+
+    .carousel-slide::before {
+        background-color: rgba(0, 0, 0, 0.4); /* Reducir opacidad para hacer la imagen más visible */
+    }
+
+    /* Ajuste de cuadrículas de productos para ser más gráficos */
+    .product-grid {
+        grid-template-columns: 1fr; /* Una sola columna para una visualización grande y gráfica */
+        gap: var(--spacing-lg); /* Más espacio entre tarjetas para destacarlas */
+    }
+
+    .product-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: var(--spacing-md);
+        box-shadow: var(--shadow-md);
+        border-radius: var(--border-radius);
+        background-color: var(--light-bg);
+    }
+
+    .product-card img {
+        width: 100%; /* La imagen ocupa todo el ancho de la tarjeta */
+        max-width: 250px; /* Limitar el tamaño máximo de la imagen para evitar que sea abrumadora */
+        height: auto;
+        object-fit: contain; /* Asegurar que la imagen completa sea visible */
+        margin-bottom: var(--spacing-md);
+    }
+
+    .product-card h3 {
+        font-size: 1.2em; /* Tamaño de fuente para el nombre del producto */
+        text-align: center;
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .product-card .price-info {
+        font-size: 1.4em; /* Precio más grande y visible */
+        margin-bottom: var(--spacing-md);
+    }
+
+    .product-card .add-to-cart-btn {
+        width: 90%; /* Botón de carrito más ancho y fácil de tocar */
+        padding: var(--spacing-sm) var(--spacing-md);
         font-size: 1em;
     }
 
-    .carousel-nav {
-        width: 40px;
-        height: 40px;
-        font-size: 1.2em;
-        padding: var(--spacing-sm);
+    .product-card .old-price {
+        font-size: 0.9em;
+        text-decoration: line-through;
+        color: var(--text-color-light);
+    }
+    .product-card .current-price {
+        color: var(--primary-color);
+        font-weight: bold;
     }
 
-    .product-grid {
-        grid-template-columns: 1fr; /* Una columna en pantallas muy pequeñas */
+    /* Cuadrícula de marcas para móvil */
+    .brands-list {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* 3 columnas para logos en móvil */
+        gap: var(--spacing-md); /* Espacio entre logos */
+        justify-items: center; /* Centrar logos en sus celdas */
+        align-items: center;
     }
 
-    .footer-content {
+    .brand-item {
+        display: flex;
         flex-direction: column;
         align-items: center;
         text-align: center;
+        padding: var(--spacing-sm);
+        border-radius: var(--border-radius);
+        transition: transform 0.2s ease-in-out;
     }
 
-    .footer-section {
-        min-width: unset;
-        width: 100%;
+    .brand-item img {
+        width: 80px; /* Tamaño del logo en móvil */
+        height: 80px;
+        object-fit: contain;
+        margin-bottom: var(--spacing-sm);
     }
 
-    .footer-section ul {
-        padding: 0;
+    .brand-item span {
+        font-size: 0.85em; /* Tamaño de texto de la marca, más pequeño */
+        color: var(--text-color-light);
     }
 
-    /* Cart Sidebar */
-    .cart-sidebar {
-        width: 100%; /* Ocupa todo el ancho en móvil */
-        max-width: 100%;
+    /* Ajustes para la sección de filtros */
+    .product-filters {
+        flex-direction: column; /* Apilar filtros verticalmente */
+        align-items: center;
+    }
+    .product-filters input,
+    .product-filters select {
+        width: 90%; /* Ocupar casi todo el ancho */
+        max-width: 300px; /* Limitar para que no sean enormes */
     }
 
-    /* Support Section */
-    .support-actions {
-        flex-direction: column; /* Botones de soporte apilados */
+    /* Ajuste para el padding del contenedor principal en secciones */
+    .container {
+        padding: 0 var(--spacing-sm); /* Menos padding en los lados en móvil */
     }
 
-    .support-actions .btn-primary,
-    .support-actions .btn-secondary {
-        max-width: 100%; /* Los botones ocupan todo el ancho disponible */
+    section {
+        padding: var(--spacing-md) 0; /* Menos padding vertical entre secciones */
     }
 
-    /* Modales */
-    .modal-content {
-        width: 95%; /* Más ancho en móviles */
-        padding: var(--spacing-md);
-    }
-
-    .modal-content h2 {
-        font-size: 1.5em;
+    /* Ajuste del footer */
+    footer {
+        padding-bottom: 80px; /* Asegurar que el footer no se oculte por la barra inferior */
     }
 }
 
-/* Tablet (768px a 1023px) */
+/* Tablet (768px a 1023px) - Asegurar que la barra inferior no se muestre */
 @media (min-width: 768px) and (max-width: 1023px) {
+    .bottom-nav {
+        display: none; /* Ocultar la barra inferior en tablets */
+    }
+
+    body {
+        padding-bottom: 0; /* No se necesita padding extra en tablets */
+    }
+
     .product-grid {
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Dos o tres columnas */
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Dos o tres columnas en tablet */
     }
 
     .header-actions {
@@ -132,12 +192,13 @@
     }
 
     .main-nav {
-        display: flex; /* Mostrar navegación normal en tablets */
-        position: static;
-        box-shadow: none;
-        border-top: none;
-        padding: 0;
-        width: auto;
+        display: flex !important; /* Mostrar navegación normal en tablets */
+        position: static !important; /* Quitar posicionamiento absoluto */
+        box-shadow: none !important;
+        border-top: none !important;
+        padding: 0 !important;
+        width: auto !important;
+        background-color: transparent !important; /* Para que no tenga fondo blanco */
     }
 
     .main-nav .nav-list {
@@ -164,10 +225,28 @@
     .product-filters input {
         max-width: 200px; /* Un poco más de espacio en tablet */
     }
+
+    /* Ajuste para que la barra de búsqueda sea visible y funcional */
+    .header-actions .search-bar {
+        display: flex; /* Asegurar que la barra de búsqueda se muestra */
+    }
+
+    /* Ajuste para el padding del contenedor principal en secciones */
+    .container {
+        padding: 0 var(--spacing-md);
+    }
 }
 
-/* Desktop (1024px y más) */
+/* Desktop (1024px y más) - Asegurar que la barra inferior no se muestre */
 @media (min-width: 1024px) {
+    .bottom-nav {
+        display: none; /* Ocultar la barra inferior en desktop */
+    }
+
+    body {
+        padding-bottom: 0; /* No se necesita padding extra en desktop */
+    }
+
     .product-grid {
         grid-template-columns: repeat(4, 1fr); /* 4 columnas en escritorio */
     }
@@ -178,23 +257,24 @@
 
     .main-nav {
         display: flex !important; /* Asegurar que se muestra en desktop */
-        position: static;
-        box-shadow: none;
-        border-top: none;
-        padding: 0;
-        width: auto;
+        position: static !important;
+        background-color: transparent !important;
+        box-shadow: none !important;
+        width: auto !important;
+        padding: 0 !important;
     }
 
-    .menu-toggle {
-        display: none;
+    .main-nav .nav-list {
+        flex-direction: row;
+        gap: var(--spacing-lg);
     }
 
-    .hero-section {
-        height: 450px;
+    .main-nav .nav-list a {
+        color: var(--text-color-light); /* Color de texto para enlaces del menú desktop */
     }
 
-    .product-filters select,
-    .product-filters input {
-        max-width: 250px; /* Volver al ancho original en desktop */
+    /* Asegurar que la barra de búsqueda del header se muestra en desktop */
+    .header-actions .search-bar {
+        display: flex;
     }
 }
