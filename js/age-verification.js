@@ -9,26 +9,32 @@ document.addEventListener('DOMContentLoaded', () => {
         const ageVerified = localStorage.getItem('ageVerified');
 
         if (ageVerified === 'true') {
-            // Si ya se verificó la edad en una sesión anterior, se oculta el modal.
-            ageVerificationModal.style.display = 'none';
+            // Si ya se verificó la edad en una sesión anterior, se oculta el modal con clase
+            ageVerificationModal.classList.add('hidden');
         } else {
-            // Si NO se ha verificado, el modal permanece VISIBLE.
-            // El modal ya es visible por el 'style="display:flex;"' en el HTML.
-            // Esta rama 'else' simplemente asegura que no se oculta si no debe.
-            // NO se necesita ageVerificationModal.style.display = 'flex'; aquí
-            // porque ya está en el HTML y esa es la forma inicial de mostrarlo.
+            // El modal ya es visible por el 'style="display:flex;"' en el HTML
+            // y las transiciones CSS controlarán su apariencia inicial.
         }
 
         confirmAgeBtn.addEventListener('click', () => {
-            ageVerificationModal.style.display = 'none';
+            // Añadir clase hidden para animar la salida antes de ocultar completamente
+            ageVerificationModal.classList.add('hidden');
             localStorage.setItem('ageVerified', 'true');
+            // Quitar el display:flex después de la animación
+            ageVerificationModal.addEventListener('transitionend', () => {
+                if (ageVerificationModal.classList.contains('hidden')) {
+                    ageVerificationModal.style.display = 'none';
+                }
+            }, { once: true });
         });
 
         declineAgeBtn.addEventListener('click', () => {
             window.location.href = 'https://www.google.com'; // Redirigir a otra URL
         });
 
-        // Evitar que el modal se cierre al hacer clic fuera
+        // Evitar que el modal se cierre al hacer clic fuera - CUIDADO: si hay una clase de ocultar, se debe mantener esta lógica.
+        // La solicitud indica que el modal de edad NO debe cerrarse al hacer clic fuera, solo con los botones.
+        // La implementación actual ya lo hace. No se necesita cambio aquí.
         window.addEventListener('click', (event) => {
             if (event.target === ageVerificationModal) {
                 // No hacer nada, el usuario debe usar los botones.
