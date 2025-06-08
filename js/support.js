@@ -17,30 +17,26 @@ export function setupSupport(phone) {
     const faultReportForm = document.getElementById('faultReportForm');
     const appointmentForm = document.getElementById('appointmentForm');
 
-    const whatsappQueryBtn = document.getElementById('whatsappQueryBtn');
-    const whatsappAppointmentBtn = document.getElementById('whatsappAppointmentBtn');
-
-
     // Abrir modales
     if (reportFaultBtn && faultReportModal) {
         reportFaultBtn.addEventListener('click', () => {
-            faultReportModal.style.display = 'block';
+            faultReportModal.style.display = 'flex'; // Usar flex para centrar
         });
     }
     if (bookAppointmentBtn && appointmentModal) {
         bookAppointmentBtn.addEventListener('click', () => {
-            appointmentModal.style.display = 'block';
+            appointmentModal.style.display = 'flex'; // Usar flex para centrar
         });
     }
 
-    // Cerrar modales
+    // Cerrar modales (revisado para ser más robusto)
     document.querySelectorAll('.modal .close-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.target.closest('.modal').style.display = 'none';
         });
     });
 
-    // Cerrar modales al hacer clic fuera (opcional, pero buena UX)
+    // Cerrar modales al hacer clic fuera
     window.addEventListener('click', (event) => {
         if (event.target === faultReportModal) {
             faultReportModal.style.display = 'none';
@@ -50,95 +46,66 @@ export function setupSupport(phone) {
         }
     });
 
-    // Manejo de formularios
+    // Enviar formulario de consulta por WhatsApp
     if (faultReportForm) {
         faultReportForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            sendFaultReport();
+            sendFaultReportToWhatsApp();
         });
     }
 
+    // Enviar formulario de agendamiento por WhatsApp
     if (appointmentForm) {
         appointmentForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            sendAppointmentRequest();
+            sendAppointmentRequestToWhatsApp();
         });
     }
-
-    // Manejo de botones de WhatsApp dentro de los modales
-    if (whatsappQueryBtn) {
-        whatsappQueryBtn.addEventListener('click', sendFaultReportToWhatsApp);
-    }
-    if (whatsappAppointmentBtn) {
-        whatsappAppointmentBtn.addEventListener('click', sendAppointmentRequestToWhatsApp);
-    }
-
     console.log('support.js: Módulo de soporte configurado.');
 }
 
-function sendFaultReport() {
-    const orderNumber = document.getElementById('orderNumber').value;
-    const contactEmail = document.getElementById('contactEmail').value;
-    const issueDescription = document.getElementById('issueDescription').value;
-
-    if (!contactEmail || !issueDescription) {
-        showToastNotification('Por favor, completa los campos de correo y descripción.', 'error');
-        return;
-    }
-
-    console.log('Enviando reporte de falla:', { orderNumber, contactEmail, issueDescription });
-    showToastNotification('Tu consulta ha sido enviada. Nos pondremos en contacto contigo pronto.', 'success');
-    document.getElementById('faultReportForm').reset();
-    document.getElementById('faultReportModal').style.display = 'none';
-}
-
 function sendFaultReportToWhatsApp() {
-    const orderNumber = document.getElementById('orderNumber').value;
-    const contactEmail = document.getElementById('contactEmail').value;
-    const issueDescription = document.getElementById('issueDescription').value;
-
-    if (!contactEmail || !issueDescription) {
-        showToastNotification('Por favor, completa los campos de correo y descripción para enviar por WhatsApp.', 'error');
+    if (!whatsappNumber) {
+        showToastNotification('Número de WhatsApp no configurado. No se puede enviar la consulta.', 'error');
+        console.error('WhatsApp number is not configured in appState.contactInfo.phone');
         return;
     }
 
-    let message = `¡Hola EL BORRACHO!%0A*Consulta sobre un Pedido*%0A%0A`;
-    if (orderNumber) {
-        message += `*Número de Pedido:* ${orderNumber}%0A`;
-    }
-    message += `*Correo Electrónico:* ${contactEmail}%0A`;
-    message += `*Descripción:* ${issueDescription}%0A%0A`;
-    message += `Por favor, ayúdame con esto. ¡Gracias!`;
+    const name = document.getElementById('faultName').value;
+    const email = document.getElementById('faultEmail').value;
+    const orderNumber = document.getElementById('faultOrderNumber').value;
+    const description = document.getElementById('faultDescription').value;
 
-    // CORRECCIÓN CRÍTICA AQUÍ: Se eliminan los delimitadores de LaTeX
+    if (!name || !description) {
+        showToastNotification('Por favor, completa los campos obligatorios (Nombre y Descripción).', 'error');
+        return;
+    }
+
+    let message = `¡Hola EL BORRACHO!%0AMi nombre es *${name}*.%0A%0A`;
+    if (orderNumber) {
+        message += `Mi número de pedido es: *${orderNumber}*%0A`;
+    }
+    if (email) {
+        message += `Mi correo electrónico: ${email}%0A`;
+    }
+    message += `*Consulta:* ${description}%0A%0A`;
+    message += `Agradezco su pronta respuesta.`;
+
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
 
-    showToastNotification('Consulta enviada a WhatsApp. Espera nuestra respuesta.', 'success');
+    showToastNotification('Tu consulta ha sido enviada. Pronto nos contactaremos contigo.', 'success');
     document.getElementById('faultReportForm').reset();
     document.getElementById('faultReportModal').style.display = 'none';
 }
 
-
-function sendAppointmentRequest() {
-    const name = document.getElementById('appointmentName').value;
-    const phone = document.getElementById('appointmentPhone').value;
-    const date = document.getElementById('appointmentDate').value;
-    const time = document.getElementById('appointmentTime').value;
-    const reason = document.getElementById('appointmentReason').value;
-
-    if (!name || !phone || !date || !time || !reason) {
-        showToastNotification('Por favor, completa todos los campos para agendar tu pedido/entrega.', 'error');
+function sendAppointmentRequestToWhatsApp() {
+    if (!whatsappNumber) {
+        showToastNotification('Número de WhatsApp no configurado. No se puede agendar el pedido.', 'error');
+        console.error('WhatsApp number is not configured in appState.contactInfo.phone');
         return;
     }
 
-    console.log('Enviando solicitud de cita:', { name, phone, date, time, reason });
-    showToastNotification('Tu solicitud de pedido/entrega ha sido enviada. Nos pondremos en contacto para confirmar.', 'success');
-    document.getElementById('appointmentForm').reset();
-    document.getElementById('appointmentModal').style.display = 'none';
-}
-
-function sendAppointmentRequestToWhatsApp() {
     const name = document.getElementById('appointmentName').value;
     const phone = document.getElementById('appointmentPhone').value;
     const date = document.getElementById('appointmentDate').value;
@@ -158,7 +125,6 @@ function sendAppointmentRequestToWhatsApp() {
     message += `*Detalles del Pedido/Servicio:* ${reason}%0A%0A`;
     message += `Por favor, confírmame la disponibilidad y el proceso de entrega. ¡Gracias!`;
 
-    // CORRECCIÓN CRÍTICA AQUÍ: Se eliminan los delimitadores de LaTeX
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
 
