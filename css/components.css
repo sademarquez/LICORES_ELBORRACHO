@@ -1,13 +1,12 @@
 /* css/components.css */
 
-/* Hero Section y Carrusel (Principal) */
+/* Hero Section y Carrusel */
 .hero-section {
     position: relative;
     width: 100%;
     overflow: hidden;
-    height: 480px; /* Altura ajustada para ser más imponente */
+    height: 450px; /* Altura fija para el carrusel */
     background-color: var(--dark-bg); /* Color de fondo mientras carga la imagen */
-    box-shadow: inset 0 -10px 20px rgba(0, 0, 0, 0.5); /* Sombra interna sutil */
 }
 
 .carousel-container {
@@ -19,7 +18,7 @@
 .carousel-track {
     display: flex;
     height: 100%;
-    transition: transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1); /* Curva más suave */
+    transition: transform 0.5s ease-in-out; /* Velocidad de transición del slide */
 }
 
 .carousel-slide {
@@ -34,7 +33,6 @@
     color: var(--white);
     text-align: center;
     flex-shrink: 0; /* Asegura que no se encoja */
-    overflow: hidden; /* Para que la imagen de fondo no se desborde */
 }
 
 .carousel-slide::before {
@@ -44,53 +42,34 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.65); /* Oscurece la imagen para que el texto resalte, más opaco */
+    background-color: rgba(0, 0, 0, 0.6); /* Oscurece la imagen para que el texto resalte */
     z-index: 1;
-    transition: background-color 0.5s ease; /* Suavizar el oscurecimiento */
 }
 
-.carousel-slide-content {
+.slide-content {
     position: relative;
-    z-index: 2; /* Asegura que el contenido esté sobre el overlay */
+    z-index: 2;
+    padding: var(--spacing-md);
     max-width: 800px;
-    padding: var(--spacing-lg);
-    transform: translateY(0); /* Reiniciar transform para animaciones */
-    opacity: 1; /* Reiniciar opacity para animaciones */
-    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.6s ease-out; /* Animación de entrada más elástica */
 }
 
-.carousel-slide:not(.active) .carousel-slide-content {
-    opacity: 0;
-    transform: translateY(20px);
-}
-
-.carousel-slide h2 {
-    font-size: 3.5em; /* Más grande y llamativo */
+.slide-content h2 {
+    font-size: 3em;
     margin-bottom: var(--spacing-sm);
-    color: var(--primary-color); /* Color dorado */
-    text-shadow: 0 0 15px rgba(255, 191, 0, 0.7); /* Resplandor dorado */
+    color: var(--primary-color);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    line-height: 1.2;
 }
 
-.carousel-slide p {
-    font-size: 1.3em;
-    margin-bottom: var(--spacing-xl);
+.slide-content h2::after {
+    display: none; /* No underline for carousel titles */
+}
+
+.slide-content p {
+    font-size: 1.2em;
+    margin-bottom: var(--spacing-lg);
     color: var(--text-color-dark);
-    opacity: 0.9;
-}
-
-.carousel-slide .btn-primary {
-    padding: var(--spacing-md) var(--spacing-xxl);
-    font-size: 1.1em;
-    border-radius: 50px; /* Botones más redondeados */
-    background-color: var(--accent-color);
-    color: var(--dark-bg);
-    box-shadow: var(--shadow-md);
-}
-
-.carousel-slide .btn-primary:hover {
-    background-color: var(--primary-color);
-    box-shadow: var(--shadow-lg);
-    transform: translateY(-3px) scale(1.03);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 .carousel-btn {
@@ -103,29 +82,20 @@
     padding: var(--spacing-md);
     cursor: pointer;
     font-size: 2em;
+    border-radius: var(--border-radius);
     z-index: 10;
-    border-radius: 50%;
-    transition: all 0.3s ease;
-    width: 60px; /* Tamaño fijo */
-    height: 60px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: var(--shadow-md);
+    transition: background-color 0.3s ease;
 }
 
 .carousel-btn:hover {
-    background-color: var(--primary-color);
-    color: var(--dark-bg);
-    box-shadow: var(--shadow-lg);
-    transform: translateY(-50%) scale(1.1);
+    background-color: rgba(0, 0, 0, 0.7);
 }
 
-.carousel-btn.prev-btn {
+.carousel-btn.prev {
     left: var(--spacing-md);
 }
 
-.carousel-btn.next-btn {
+.carousel-btn.next {
     right: var(--spacing-md);
 }
 
@@ -135,25 +105,82 @@
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-    gap: var(--spacing-xs);
+    gap: var(--spacing-sm);
     z-index: 10;
 }
 
 .dot {
-    width: 10px;
-    height: 10px;
+    width: 12px;
+    height: 12px;
     background-color: rgba(255, 255, 255, 0.5);
     border-radius: 50%;
     cursor: pointer;
-    transition: all 0.3s ease;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-.dot.active, .dot:hover {
+.dot.active {
     background-color: var(--primary-color);
-    border-color: var(--primary-color);
     transform: scale(1.2);
 }
+
+/* Modales */
+.modal {
+    /* Ya definidos en styles.css */
+}
+
+/* Toast Notifications */
+#toast-container {
+    position: fixed;
+    bottom: var(--spacing-lg);
+    right: var(--spacing-lg);
+    z-index: 4000;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    pointer-events: none; /* Permite clics a través del contenedor */
+}
+
+.toast {
+    background-color: var(--info-color);
+    color: var(--white);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    min-width: 250px;
+    max-width: 350px;
+    text-align: center;
+    pointer-events: auto; /* Permite la interacción con el toast individual */
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.toast.hide {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.toast-success {
+    background-color: var(--success-color);
+}
+
+.toast-error {
+    background-color: var(--danger-color);
+}
+
+.toast-warning {
+    background-color: var(--primary-color-dark); /* Color más oscuro para advertencias */
+}
+
+.toast-info {
+    background-color: var(--info-color);
+}
+
 
 /* Age Verification Modal */
 .age-verification-modal {
@@ -162,19 +189,11 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.95); /* Más oscuro para inmersión */
+    background-color: rgba(0, 0, 0, 0.9);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 10000; /* Asegura que esté por encima de todo */
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.5s ease, visibility 0.5s ease;
-}
-
-.age-verification-modal.active {
-    opacity: 1;
-    visibility: visible;
 }
 
 .age-verification-content {
@@ -185,41 +204,21 @@
     box-shadow: var(--shadow-lg);
     max-width: 450px;
     width: 90%;
-    transform: translateY(-30px);
-    transition: transform 0.5s ease-out;
-}
-
-.age-verification-modal.active .age-verification-content {
-    transform: translateY(0);
 }
 
 .age-verification-content h2 {
     color: var(--primary-color);
     margin-bottom: var(--spacing-md);
-    font-size: 2.2em; /* Título más prominente */
-    text-shadow: 0 0 10px rgba(255, 191, 0, 0.5);
+    font-size: 2em;
 }
 
 .age-verification-content p {
     color: var(--text-color-light);
     margin-bottom: var(--spacing-lg);
-    font-size: 1.1em;
 }
 
 .age-verification-buttons {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     gap: var(--spacing-md);
 }
-
-.age-verification-buttons .btn-primary,
-.age-verification-buttons .btn-secondary {
-    flex: 1; /* Distribuye el espacio entre botones */
-    max-width: 180px;
-    padding: var(--spacing-md);
-    font-size: 1.1em;
-    border-radius: var(--border-radius);
-}
-
-/* Efecto flotante en tarjetas de productos. Los estilos base están en styles.css */
-/* Aquí se pueden añadir overrides o estilos específicos de componentes si es necesario. */
