@@ -1,6 +1,6 @@
 // js/age-verification.js
 
-document.addEventListener('DOMContentLoaded', () => {
+export function initAgeVerification() { // Exportar la función para ser llamada desde main.js
     console.log('age-verification.js: DOM cargado. Inicializando verificación de edad...');
 
     const ageVerificationModal = document.getElementById('ageVerificationModal');
@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const ageVerified = localStorage.getItem('ageVerified');
 
     if (ageVerified === 'true') {
-        ageVerificationModal.classList.add('hidden'); // Usa la clase .hidden
+        ageVerificationModal.classList.add('hidden'); // Usa .hidden class
         console.log('age-verification.js: Edad ya verificada. Ocultando modal.');
     } else {
         ageVerificationModal.classList.remove('hidden'); // Asegura que el modal sea visible
@@ -31,17 +31,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     declineAgeBtn.addEventListener('click', () => {
         console.log('age-verification.js: Botón "No soy mayor de 18" clicado. Redirigiendo...');
-        // Redirige a Google o a una página "segura" si no es mayor de edad.
-        window.location.href = 'https://www.google.com';
+        // Considera una salida más elegante o una página específica para "edad-restringida"
+        window.location.href = 'https://www.google.com'; // Redirige a Google o a una página "segura"
     });
 
-    // Evita que el modal se cierre al hacer clic fuera, lo cual es importante para la verificación de edad.
+    // Evita que el modal se cierre al hacer clic fuera, lo cual es deseado para la verificación de edad
     window.addEventListener('click', (event) => {
         if (event.target === ageVerificationModal) {
-            // No hacer nada, mantener el modal abierto si se hace clic en el fondo.
+            // No hacer nada, mantener el modal abierto si se hace clic en el fondo del overlay
             console.log('age-verification.js: Clic en el fondo del modal de verificación de edad. No se cierra.');
         }
     });
 
     console.log('age-verification.js: Módulo de verificación de edad configurado.');
-});
+}
+
+// No es necesario llamar a initAgeVerification() aquí si se llama desde main.js
