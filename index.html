@@ -25,29 +25,31 @@
     <header class="main-header">
         <div class="container">
             <div class="header-content">
-                <div class="logo">
-                    <a href="#novedades">
-                        <img src="images/logo-el-borracho.png" alt="EL BORRACHO Logo">
+                <div class="header-logo">
+                    <a href="#home">
+                        <img src="images/icons/logo.png" alt="El Borracho Logo">
                     </a>
                 </div>
-                <button class="menu-toggle" aria-label="Abrir menú">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <nav class="main-nav">
+                <nav class="main-nav" id="mainNav">
                     <ul class="nav-list">
-                        <li><a href="#novedades">Inicio</a></li>
-                        <li><a href="#licores">Licores</a></li>
-                        <li><a href="#categorias">Categorías</a></li> <li><a href="#marcas">Marcas</a></li> <li><a href="#ofertas">Ofertas</a></li>
-                        <li><a href="#soporte">Soporte</a></li>
+                        <li><a href="#novedades" class="nav-link active">Novedades</a></li>
+                        <li><a href="#ofertas" class="nav-link">Ofertas</a></li>
+                        <li><a href="#licores" class="nav-link">Licores</a></li>
+                        <li><a href="#marcas" class="nav-link">Marcas</a></li>
+                        <li><a href="#contacto" class="nav-link">Contacto</a></li>
+                        <li><a href="#soporte" class="nav-link">Soporte</a></li>
                     </ul>
                 </nav>
                 <div class="header-actions">
-                    <button id="searchOpenBtn" class="icon-button" aria-label="Buscar producto">
+                    <button class="header-action-btn" id="searchHeaderBtn" aria-label="Abrir Búsqueda">
                         <i class="fas fa-search"></i>
                     </button>
-                    <button id="cartOpenBtn" class="icon-button cart-button" aria-label="Ver carrito">
+                    <button class="header-action-btn" id="cartHeaderBtn" aria-label="Abrir Carrito">
                         <i class="fas fa-shopping-cart"></i>
                         <span id="cartCount" class="cart-count">0</span>
+                    </button>
+                    <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menú">
+                        <i class="fas fa-bars"></i>
                     </button>
                 </div>
             </div>
@@ -55,248 +57,179 @@
     </header>
 
     <main>
-        <section id="hero" class="hero-section">
+        <section id="home" class="hero-section">
             <div class="carousel-container">
-                <div id="carouselTrack" class="carousel-track">
+                <div class="carousel-track" id="carouselTrack">
                     </div>
-                <button class="carousel-button prev" id="carouselPrev" aria-label="Anterior">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                <button class="carousel-button next" id="carouselNext" aria-label="Siguiente">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-                <div class="carousel-dots" id="carouselDots"></div>
+                <div class="carousel-navigation">
+                    <button id="carouselPrev" class="carousel-btn" aria-label="Slide Anterior"><i class="fas fa-chevron-left"></i></button>
+                    <button id="carouselNext" class="carousel-btn" aria-label="Siguiente Slide"><i class="fas fa-chevron-right"></i></button>
+                </div>
+                <div class="carousel-dots" id="carouselDots">
+                    </div>
             </div>
         </section>
 
-        <section id="marcas" class="section-brands py-5">
+        <section id="novedades" class="products-section container">
+            <h2 class="section-title">Novedades</h2>
+            <div id="newProductsGrid" class="product-grid">
+                </div>
+        </section>
+
+        <section id="ofertas" class="products-section container">
+            <h2 class="section-title">Ofertas Especiales</h2>
+            <div id="offerProductsGrid" class="product-grid">
+                </div>
+        </section>
+
+        <section id="licores" class="products-section container">
+            <h2 class="section-title">Nuestros Licores</h2>
+            <div class="product-filters">
+                <select id="licorBrandFilter" aria-label="Filtrar por Marca">
+                    <option value="">Todas las Marcas</option>
+                    </select>
+                <select id="licorPriceFilter" aria-label="Ordenar por Precio">
+                    <option value="">Ordenar por Precio</option>
+                    <option value="asc">Menor a Mayor</option>
+                    <option value="desc">Mayor a Menor</option>
+                </select>
+                <input type="text" id="licorProductSearch" placeholder="Buscar licor..." aria-label="Buscar licor por nombre">
+            </div>
+            <div id="allProductsGrid" class="product-grid">
+                </div>
+        </section>
+
+        <section id="marcas" class="brands-section">
             <div class="container">
-                <h2 class="section-title text-center mb-4">Nuestras Marcas Destacadas</h2>
-                <div class="carousel-container brands-carousel-wrapper"> <div id="brandsCarouselTrack" class="brands-carousel-track">
+                <h2 class="section-title">Nuestras Marcas Destacadas</h2>
+                <div class="brands-carousel">
+                    <div class="brands-carousel-track" id="brandsCarouselTrack">
                         </div>
-                    <button class="carousel-button prev" id="brandsCarouselPrev" aria-label="Marca Anterior">
-                        <i class="fas fa-chevron-left"></i>
-                    </button>
-                    <button class="carousel-button next" id="brandsCarouselNext" aria-label="Marca Siguiente">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                    <div class="carousel-dots" id="brandsCarouselDots">
-                        </div>
                 </div>
             </div>
         </section>
 
-
-        <section id="categorias" class="section-categories py-5">
-            <div class="container">
-                <h2 class="section-title text-center mb-4">Explorar por Categoría</h2>
-                <div id="categoriesGrid" class="categories-grid">
-                    </div>
+        <section id="contacto" class="contact-section container">
+            <h2 class="section-title">Contáctanos</h2>
+            <div class="contact-info">
+                <p>¿Tienes alguna pregunta o necesitas ayuda? Estamos aquí para asistirte.</p>
+                <ul>
+                    <li><i class="fas fa-envelope"></i> <span id="contactEmail"></span></li>
+                    <li><i class="fas fa-phone-alt"></i> <span id="contactPhone"></span></li>
+                    <li><i class="fas fa-map-marker-alt"></i> <span id="contactAddress"></span></li>
+                </ul>
             </div>
         </section>
 
-
-        <section id="novedades" class="section-products py-5">
-            <div class="container">
-                <h2 class="section-title text-center mb-4">🔥 Novedades</h2>
-                <div id="newProductsGrid" class="product-grid">
-                    </div>
+        <section id="soporte" class="support-section container">
+            <h2 class="section-title">Soporte</h2>
+            <p>Elige una opción para obtener ayuda:</p>
+            <div class="support-buttons">
+                <button id="reportFaultBtn" class="btn-primary">Reportar una Falla/Problema</button>
+                <button id="bookAppointmentBtn" class="btn-secondary">Agendar Pedido/Entrega</button>
             </div>
         </section>
-
-        <section id="licores" class="section-products py-5">
-            <div class="container">
-                <h2 class="section-title text-center mb-4">🥃 Licores</h2>
-
-                <div class="product-filters-container">
-                    <div class="product-filters">
-                        <div class="filter-group">
-                            <label for="licorBrandFilter">Marca:</label>
-                            <select id="licorBrandFilter">
-                                <option value="">Todas</option>
-                                </select>
-                        </div>
-                        <div class="filter-group">
-                            <label for="licorPriceFilter">Precio:</label>
-                            <select id="licorPriceFilter">
-                                <option value="">Por defecto</option>
-                                <option value="asc">Menor a Mayor</option>
-                                <option value="desc">Mayor a Menor</option>
-                            </select>
-                        </div>
-                        <div class="filter-group product-search-group">
-                            <input type="text" id="licorProductSearch" placeholder="Buscar en licores...">
-                            <button id="clearLicorSearch" class="btn-secondary" aria-label="Limpiar búsqueda">X</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="allProductsGrid" class="product-grid">
-                    </div>
-            </div>
-        </section>
-
-        <section id="ofertas" class="section-products py-5">
-            <div class="container">
-                <h2 class="section-title text-center mb-4">💸 Ofertas Especiales</h2>
-                <div id="offerProductsGrid" class="product-grid">
-                    </div>
-            </div>
-        </section>
-
-        <section id="soporte" class="section-support py-5">
-            <div class="container">
-                <h2 class="section-title text-center mb-4">¿Necesitas Ayuda?</h2>
-                <p class="text-center mb-4 text-color-light">Estamos aquí para asistirte. Puedes reportar un problema o agendar una entrega/pedido.</p>
-
-                <div class="support-options">
-                    <button id="reportFaultBtn" class="btn-secondary"><i class="fas fa-wrench"></i> Reportar un Problema</button>
-                    <button id="bookAppointmentBtn" class="btn-primary"><i class="fas fa-calendar-alt"></i> Agendar Pedido/Entrega</button>
-                </div>
-
-                <div class="contact-info mt-5 text-center">
-                    <h3>Contacto Directo</h3>
-                    <p><i class="fas fa-envelope"></i> Email: <a href="mailto:pedidos@elborracho.com" id="contactEmail">pedidos@elborracho.com</a></p>
-                    <p><i class="fab fa-whatsapp"></i> WhatsApp: <a href="https://wa.me/573109876543" target="_blank" id="contactPhone">573109876543</a></p>
-                    <p><i class="fas fa-map-marker-alt"></i> Dirección: <span id="contactAddress">Popayán, Cauca, Colombia</span></p>
-                </div>
-            </div>
-        </section>
-
-        <div id="faultReportModal" class="modal">
-            <div class="modal-content">
-                <span class="close-btn">&times;</span>
-                <h2>Reportar un Problema</h2>
-                <form id="faultReportForm">
-                    <div class="input-group">
-                        <label for="faultName">Tu Nombre:</label>
-                        <input type="text" id="faultName" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="faultEmail">Tu Email:</label>
-                        <input type="email" id="faultEmail">
-                    </div>
-                    <div class="input-group">
-                        <label for="faultType">Tipo de Problema:</label>
-                        <select id="faultType" required>
-                            <option value="">Selecciona</option>
-                            <option value="pedido">Problema con un Pedido</option>
-                            <option value="producto">Problema con un Producto</option>
-                            <option value="web">Problema con la Web</option>
-                            <option value="otro">Otro</option>
-                        </select>
-                    </div>
-                    <div class="input-group">
-                        <label for="faultDescription">Descripción del Problema:</label>
-                        <textarea id="faultDescription" rows="5" required></textarea>
-                    </div>
-                    <button type="submit" class="btn-primary">Enviar Reporte por WhatsApp</button>
-                </form>
-            </div>
-        </div>
-
-        <div id="appointmentModal" class="modal">
-            <div class="modal-content">
-                <span class="close-btn">&times;</span>
-                <h2>Agendar Pedido/Entrega</h2>
-                <form id="appointmentForm">
-                    <div class="input-group">
-                        <label for="appointmentName">Tu Nombre:</label>
-                        <input type="text" id="appointmentName" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="appointmentPhone">Tu Teléfono (WhatsApp):</label>
-                        <input type="tel" id="appointmentPhone" placeholder="+57 3XX XXX XXXX" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="appointmentDate">Fecha Preferida:</label>
-                        <input type="date" id="appointmentDate" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="appointmentTime">Hora Preferida:</label>
-                        <input type="time" id="appointmentTime" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="appointmentReason">Detalles del Pedido/Servicio:</label>
-                        <textarea id="appointmentReason" rows="5" placeholder="Ej: Pedido de 2 Aguardientes, entrega a domicilio en X dirección, o solicitud de cotización de evento." required></textarea>
-                    </div>
-                    <button type="submit" class="btn-primary">Enviar Solicitud por WhatsApp</button>
-                </form>
-            </div>
-        </div>
-
-        <div id="cartSidebar" class="cart-sidebar">
-            <div class="sidebar-header">
-                <h3>Tu Carrito</h3>
-                <button id="closeCartBtn" class="close-btn" aria-label="Cerrar carrito">&times;</button>
-            </div>
-            <div id="cartItems" class="cart-items">
-                </div>
-            <div class="cart-summary">
-                <p>Total: <span id="cartTotalPrice">$0</span></p>
-                <button id="checkoutWhatsappBtn" class="btn-primary btn-block">
-                    <i class="fab fa-whatsapp"></i> Finalizar Pedido por WhatsApp
-                </button>
-                <button id="clearCartBtn" class="btn-secondary btn-block mt-2">
-                    <i class="fas fa-trash"></i> Vaciar Carrito
-                </button>
-            </div>
-        </div>
-
-
-        <div id="searchModal" class="search-modal">
-            <div class="search-modal-content">
-                <span class="close-btn" id="closeSearchModalBtn">&times;</span>
-                <h2>Buscar Productos</h2>
-                <div class="search-input-group">
-                    <input type="text" id="searchInput" placeholder="Escribe para buscar..." aria-label="Término de búsqueda">
-                    <button id="searchButton" class="btn-primary" aria-label="Realizar búsqueda"><i class="fas fa-search"></i></button>
-                </div>
-                <div id="searchResultsGrid" class="product-grid search-results-grid">
-                    <p class="no-results-message">Ingresa un término para buscar productos.</p>
-                </div>
-            </div>
-        </div>
-
     </main>
 
     <footer class="main-footer">
-        <div class="container footer-content">
-            <div class="footer-section about-us">
-                <h3>EL BORRACHO</h3>
-                <p>Tu licorería a domicilio de confianza en Popayán. Calidad, variedad y servicio rápido.</p>
-            </div>
-            <div class="footer-section quick-links">
-                <h3>Enlaces Rápidos</h3>
-                <ul>
-                    <li><a href="#novedades">Inicio</a></li>
-                    <li><a href="#licores">Licores</a></li>
-                    <li><a href="#ofertas">Ofertas</a></li>
-                    <li><a href="#soporte">Soporte</a></li>
-                    <li><a href="#" id="privacyPolicyLink">Política de Privacidad</a></li>
-                </ul>
-            </div>
-            <div class="footer-section contact-footer">
-                <h3>Contacto</h3>
-                <p><i class="fas fa-envelope"></i> <span id="footerContactEmail">pedidos@elborracho.com</span></p>
-                <p><i class="fab fa-whatsapp"></i> <span id="footerContactPhone">573109876543</span></p>
-                <p><i class="fas fa-map-marker-alt"></i> <span id="footerContactAddress">Popayán, Cauca, Colombia</span></p>
-            </div>
-            <div class="footer-section social-media">
-                <h3>Síguenos</h3>
-                <div class="social-icons">
-                    <a href="https://facebook.com/elborracho" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                    <a href="https://instagram.com/elborracho" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="https://twitter.com/elborracho" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>EL BORRACHO</h3>
+                    <p>Tu tienda de licores a domicilio de confianza. Calidad y variedad a un clic.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Enlaces Rápidos</h3>
+                    <ul>
+                        <li><a href="#novedades">Novedades</a></li>
+                        <li><a href="#ofertas">Ofertas</a></li>
+                        <li><a href="#licores">Licores</a></li>
+                        <li><a href="#marcas">Marcas</a></li>
+                        <li><a href="#contacto">Contacto</a></li>
+                        <li><a href="#soporte">Soporte</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Síguenos</h3>
+                    <div class="footer-social-links">
+                        <a href="https://facebook.com/elborracho" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://instagram.com/elborracho" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://twitter.com/elborracho" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Contacto</h3>
+                    <p>Email: <span id="footerContactEmail"></span></p>
+                    <p>Teléfono: <span id="footerContactPhone"></span></p>
                 </div>
             </div>
-        </div>
-        <div class="footer-bottom">
-            <div class="container">
-                <p>&copy; 2025 EL BORRACHO. Todos los derechos reservados. <br> Prohibida la venta de alcohol a menores de edad. Consume con responsabilidad.</p>
+            <div class="footer-bottom">
+                <p>&copy; 2023 EL BORRACHO. Todos los derechos reservados. Diseñado por Tu Nombre/Empresa.</p>
             </div>
         </div>
     </footer>
+
+    <div id="searchModal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" id="closeSearchModal">&times;</button>
+            <h2>Buscar Productos</h2>
+            <div class="search-input-group">
+                <input type="text" id="searchInput" placeholder="Escribe para buscar...">
+                <button id="searchButton">Buscar</button>
+            </div>
+            <div id="searchResultsGrid" class="product-grid">
+                <p class="no-results-message">Ingresa un término para buscar productos.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="cartSidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h2>Tu Carrito</h2>
+            <button class="close-btn" id="closeCartBtn">&times;</button>
+        </div>
+        <div id="cartItems">
+            <p class="no-results-message">Tu carrito está vacío.</p>
+        </div>
+        <div class="cart-summary">
+            <p>Total: $<span id="cartTotalPrice">0</span></p>
+            <button id="checkoutWhatsappBtn" class="checkout-btn">Finalizar pedido por WhatsApp</button>
+        </div>
+    </div>
+
+    <div id="faultReportModal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn">&times;</button>
+            <h2>Reportar una Falla</h2>
+            <form id="faultReportForm" class="modal-form">
+                <label for="faultDescription">Describe el problema:</label>
+                <textarea id="faultDescription" rows="5" required></textarea>
+                <label for="faultContact">Tu Contacto (Email/Teléfono):</label>
+                <input type="text" id="faultContact" required>
+                <button type="submit" class="btn-primary">Enviar Reporte</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="appointmentModal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn">&times;</button>
+            <h2>Agendar Pedido/Entrega</h2>
+            <form id="appointmentForm" class="modal-form">
+                <label for="appointmentName">Tu Nombre:</label>
+                <input type="text" id="appointmentName" required>
+                <label for="appointmentPhone">Tu Teléfono:</label>
+                <input type="tel" id="appointmentPhone" required>
+                <label for="appointmentDate">Fecha Preferida:</label>
+                <input type="date" id="appointmentDate" required>
+                <label for="appointmentTime">Hora Preferida:</label>
+                <input type="time" id="appointmentTime" required>
+                <label for="appointmentReason">Detalles del Pedido/Servicio:</label>
+                <textarea id="appointmentReason" rows="5" placeholder="Ej: Pedido de 2 Aguardientes Antioqueños, entrega en dirección X, hora 8 PM" required></textarea>
+                <button type="submit" class="btn-primary">Agendar Cita por WhatsApp</button>
+            </form>
+        </div>
+    </div>
 
     <div id="toast-container"></div>
 
@@ -324,8 +257,8 @@
     <script src="js/main.js" type="module"></script>
     <script src="js/carousel.js" type="module"></script>
     <script src="js/products.js" type="module"></script>
-    <script src="js/cart.js" type="module"></script>
     <script src="js/search.js" type="module"></script>
+    <script src="js/cart.js" type="module"></script>
     <script src="js/support.js" type="module"></script>
     <script src="js/toast.js" type="module"></script>
     <script src="js/age-verification.js" type="module"></script>
