@@ -42,117 +42,153 @@
         background-color: var(--primary-color); /* Asegurar color de subrayado en móvil */
     }
 
-    .menu-toggle {
-        display: block; /* Mostrar el botón de hamburguesa en móvil */
-        background: none;
-        border: none;
-        color: var(--white);
-        font-size: var(--font-size-xl);
-        cursor: pointer;
+    .header-actions {
+        width: 100%;
+        justify-content: space-between;
+        display: flex; /* Asegura que los botones estén en línea */
+        align-items: center;
     }
 
-    .header-actions {
-        display: none; /* Ocultar iconos de búsqueda y carrito en el header para móvil, usar bottom nav */
+    .header-actions .search-btn,
+    .header-actions .cart-btn {
+        display: none; /* Ocultar en el header para móviles, usar bottom-nav */
+    }
+
+    .menu-toggle {
+        display: block; /* Mostrar el botón de menú hamburguesa */
+        order: 1; /* Ponerlo al principio en el orden */
+        margin-right: auto; /* Empuja los otros elementos a la derecha */
+    }
+
+    .logo-link {
+        order: 2; /* Poner el logo en el medio */
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .cart-btn {
+        order: 3; /* Poner el carrito al final */
     }
 
     .hero-section {
-        height: 300px; /* Menor altura para carrusel en móvil */
+        height: 300px; /* Reducir altura del carrusel en móviles */
     }
 
-    .carousel-title {
-        font-size: 2em; /* Títulos más pequeños en móvil */
+    .carousel-content h2 {
+        font-size: 2em; /* Texto más pequeño */
     }
 
-    .carousel-description {
-        font-size: 1em; /* Descripciones más pequeñas */
-        margin-bottom: var(--spacing-md);
-    }
-
-    .carousel-button {
+    .carousel-content p {
         font-size: 0.9em;
-        padding: var(--spacing-sm) var(--spacing-md);
+    }
+
+    .carousel-btn {
+        padding: var(--spacing-sm);
+        font-size: 1em;
     }
 
     .product-grid {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* 2 columnas en móviles */
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); /* 2 columnas en móvil */
+        gap: var(--spacing-md);
     }
 
-    .product-card {
-        padding-bottom: var(--spacing-sm);
+    .product-card img {
+        height: 120px; /* Reducir altura de imagen de producto */
+    }
+
+    .product-card h3 {
+        font-size: 1em;
+    }
+
+    .product-card .price {
+        font-size: 1.2em;
     }
 
     .product-filters {
-        flex-direction: column;
-        align-items: stretch;
+        flex-direction: column; /* Apilar filtros verticalmente */
+        align-items: center;
     }
 
-    .product-filters input,
-    .product-filters select {
+    .product-filters select,
+    .product-filters input {
+        width: calc(100% - var(--spacing-md) * 2); /* Ocupar casi todo el ancho */
+        max-width: none; /* Eliminar restricción de ancho máximo */
+    }
+
+    .support-content {
+        flex-direction: column; /* Apilar opciones de soporte */
+    }
+
+    .support-option {
+        flex: 1 1 100%; /* Ocupar todo el ancho */
+        max-width: none;
+    }
+
+    .modal-content {
+        width: 95%; /* Modal más ancho en móvil */
+        padding: var(--spacing-lg);
+    }
+
+    .search-modal .search-input-group {
+        flex-direction: column; /* Apilar input y botón en búsqueda */
+    }
+
+    .search-modal #searchInput,
+    .search-modal #searchButton {
         width: 100%;
         max-width: none;
     }
 
-    .brands-carousel-track {
-        justify-content: flex-start; /* Permite el scroll natural */
+    .cart-sidebar {
+        width: 100%; /* El carrito ocupa todo el ancho */
     }
 
-    .brand-logo {
-        width: 80px;
-        height: 50px;
+    .bottom-nav {
+        display: flex; /* Mostrar siempre la barra inferior en móviles */
     }
 
-    .support-contact-info p {
-        font-size: var(--font-size-base);
-    }
-
-    .support-actions {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .support-actions .btn {
-        width: 90%; /* Botones de soporte de ancho completo */
-        max-width: 300px;
+    .logo {
+        height: 40px; /* Ajustar tamaño del logo */
     }
 
     .footer-content {
         flex-direction: column;
-        text-align: center;
+        align-items: flex-start;
+        gap: var(--spacing-lg);
     }
 
     .footer-section {
-        min-width: unset; /* Eliminar min-width */
+        text-align: center; /* Centrar texto en móvil */
         width: 100%;
     }
 
-    .footer-section .social-icons {
-        justify-content: center;
-        display: flex;
-    }
-
-    .bottom-nav {
-        display: flex; /* Asegurar que la barra inferior esté visible en móvil */
-        padding-bottom: env(safe-area-inset-bottom); /* Para iPhones con notch */
-    }
-
-    .main-header .container {
-        padding: 0 var(--spacing-sm);
-    }
-
-    main .container {
-        padding: 0 var(--spacing-sm);
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
     }
 }
 
 /* Tablet (768px a 1023px) */
 @media (min-width: 768px) and (max-width: 1023px) {
-    .header-content {
-        flex-direction: row; /* Volver a disposición horizontal */
-        justify-content: space-between;
+    .container {
+        padding: 0 var(--spacing-lg);
+    }
+
+    .main-header .logo {
+        height: 50px;
+    }
+
+    .header-actions .search-btn,
+    .header-actions .cart-btn {
+        display: inline-flex; /* Mostrar en tablet */
+    }
+
+    .menu-toggle {
+        display: none; /* Ocultar el menú hamburguesa */
     }
 
     .main-nav {
-        display: flex; /* Siempre visible en tablet, no hamburguesa */
+        display: flex; /* Mostrar navegación principal */
         position: static;
         background-color: transparent;
         box-shadow: none;
@@ -167,50 +203,48 @@
     }
 
     .main-nav .nav-list a {
-        padding: var(--spacing-sm) var(--spacing-sm);
+        padding: 0;
         width: auto;
-    }
-
-    .menu-toggle {
-        display: none; /* Ocultar hamburguesa */
-    }
-
-    .header-actions {
-        display: flex; /* Mostrar iconos de búsqueda y carrito */
+        color: var(--text-color-light);
     }
 
     .hero-section {
-        height: 400px;
+        height: 350px;
     }
 
-    .carousel-title {
+    .carousel-content h2 {
         font-size: 2.5em;
-    }
-
-    .carousel-description {
-        font-size: 1.1em;
     }
 
     .product-grid {
         grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* 3-4 columnas en tablet */
     }
 
-    .product-filters {
-        justify-content: center;
-        gap: var(--spacing-md);
+    .product-card img {
+        height: 150px;
     }
 
-    .product-filters input,
-    .product-filters select {
-        max-width: 200px; /* Limitar ancho para filtros */
+    .product-filters {
+        flex-direction: row; /* Volver a disposición horizontal */
+        justify-content: center;
+        align-items: flex-end;
+    }
+
+    .product-filters select,
+    .product-filters input {
+        max-width: 180px; /* Limitar el ancho */
+    }
+
+    .support-option {
+        flex: 1 1 calc(50% - var(--spacing-lg) / 2); /* 2 columnas en tablet */
     }
 
     .brands-carousel-track {
-        gap: var(--spacing-xl);
+        justify-content: flex-start; /* Permitir scroll horizontal */
     }
 
     .brand-logo {
-        width: 90px;
+        width: 120px;
         height: 60px;
     }
 
@@ -264,10 +298,23 @@
 
     .product-filters select,
     .product-filters input {
-        max-width: 250px; /* Ancho un poco mayor para filtros en desktop */
+        max-width: 250px; /* Ajustar ancho en desktop */
     }
 
-    .header-actions {
-        display: flex; /* Mostrar iconos de búsqueda y carrito */
+    .search-results-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Más columnas en desktop */
+    }
+
+    .cart-sidebar {
+        width: 400px; /* Ancho más generoso en desktop */
+    }
+
+    .support-option {
+        flex: 1 1 calc(33% - var(--spacing-lg) * 2 / 3); /* 3 columnas en desktop */
+    }
+
+    .brands-carousel-track {
+        justify-content: center; /* Centrar logos */
+        overflow-x: hidden; /* Ocultar scroll si todos caben */
     }
 }
