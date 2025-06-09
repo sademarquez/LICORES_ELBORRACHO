@@ -1,5 +1,6 @@
 // js/age-verification.js
 
+// Función exportada para ser llamada por main.js
 export function setupAgeVerification() {
     console.log('age-verification.js: Inicializando verificación de edad...');
 
@@ -31,7 +32,7 @@ export function setupAgeVerification() {
 
     declineAgeBtn.addEventListener('click', () => {
         console.log('age-verification.js: Botón "Soy Menor de Edad" clicado. Redirigiendo...');
-        window.location.href = 'https://www.google.com';
+        window.location.href = 'https://www.google.com'; // Redirigir a Google si es menor de edad
     });
 
     // Evitar que el modal se cierre al hacer clic fuera:
@@ -42,5 +43,5 @@ export function setupAgeVerification() {
         }
     });
 
-    console.log('age-verification.js: Módulo de verificación de edad configurado.');
+    console.log('age-verification.js: Verificación de edad configurada.');
 }
