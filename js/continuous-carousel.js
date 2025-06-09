@@ -1,85 +1,108 @@
 // js/continuous-carousel.js
 
-// Importar renderProductCard desde products.js para evitar redundancia
-import { renderProductCard } from './products.js';
-// Importar directamente addToCart ya que es una función central
-import { addToCart } from './cart.js';
-import { showToastNotification } from './toast.js'; // Importar showToastNotification
-import { appState } from './main.js'; // Necesario para acceder a appState.products
+import { appState } from './main.js';
+import { showToastNotification } from './toast.js';
 
+// No es necesario importar renderProductCard aquí si solo se usan logos de marcas.
+// Si se quiere un carrusel continuo de PRODUCTOS, entonces sí se usaría.
+// Para este caso, solo logos de marcas.
 
 /**
- * Inicializa un carrusel de productos con desplazamiento continuo (infinito).
- * Duplica los productos para crear el efecto de bucle.
- * @param {Array<Object>} products - El array de productos a mostrar en el carrusel.
- * @param {string} trackId - El ID del elemento que actúa como 'track' del carrusel.
+ * Inicializa un carrusel de logos continuo.
+ * Crea un efecto de desplazamiento infinito duplicando los elementos.
+ * @param {Array<Object>} itemsData - Array de objetos (ej. marcas) a mostrar.
+ * @param {string} trackId - El ID del elemento del track del carrusel (ej. 'continuousCarouselTrack').
+ * @param {string} carouselName - Nombre para los logs de consola.
  */
-export function initContinuousProductCarousel(products, trackId) {
+export function initContinuousProductCarousel(itemsData, trackId, carouselName = 'Carrusel Continuo') {
     const track = document.getElementById(trackId);
     if (!track) {
-        console.error(`continuous-carousel.js: Track del carrusel continuo no encontrado: #${trackId}`);
+        console.error(`continuous-carousel.js: Track del carrusel continuo no encontrado: #${trackId}. Inicialización abortada.`);
         return;
     }
 
-    track.innerHTML = ''; // Limpiar contenido existente
+    // Limpiar contenido previo para evitar duplicados si se llama varias veces
+    track.innerHTML = '';
+    track.style.animation = 'none'; // Detener animación si ya existía
+    track.style.transform = 'translateX(0)'; // Resetear posición
 
-    if (products.length === 0) {
-        track.innerHTML = `<p style="text-align: center; width: 100%; padding: var(--spacing-md);">No hay productos para el carrusel continuo.</p>`;
+    const itemsToDisplay = itemsData;
+
+    if (itemsToDisplay.length === 0) {
+        // console.warn(`continuous-carousel.js: No hay elementos para el carrusel continuo "${carouselName}".`); // ELIMINADO
+        track.innerHTML = `<p style="text-align: center; width: 100%; color: var(--text-color-light);">No hay elementos para mostrar en este carrusel.</p>`;
+        // Ocultar la sección si no hay contenido relevante. Asume que el contenedor padre es una sección.
+        track.parentElement.style.display = 'none';
         return;
-    }
-
-    // Clonar los productos para el efecto de bucle.
-    // Esto asegura que haya suficientes elementos para que la animación se vea continua.
-    const productsToDisplay = [...products, ...products]; // Duplicamos para un ciclo perfecto
-
-    productsToDisplay.forEach(product => {
-        // Usar la función estandarizada de products.js
-        const productCard = renderProductCard(product);
-        // Remover el event listener añadido por renderProductCard para manejarlo con delegación aquí
-        const originalAddToCartBtn = productCard.querySelector('.add-to-cart-btn');
-        if (originalAddToCartBtn) {
-            originalAddToCartBtn.replaceWith(originalAddToCartBtn.cloneNode(true)); // Eliminar el listener original
-        }
-        track.appendChild(productCard);
-    });
-
-    // Calcular la duración de la animación basada en el número de productos
-    // Esto es heurístico y puede requerir ajuste fino con CSS.
-    // Asumiendo que el ancho de una tarjeta es ~200px + gap, y el track tiene overflow.
-    // La duración debe ser proporcional al número total de elementos para que la velocidad sea constante.
-    const originalProductsCount = products.length;
-    if (originalProductsCount > 0) {
-        // Asumiendo un ancho de tarjeta aproximado y un gap para calcular el "ancho" total a desplazar.
-        // Esto es un estimado, el CSS real es el que define el ancho.
-        // La animación en CSS es del 50%, así que la duración debe basarse en la mitad del track duplicado.
-        const durationPerProduct = 3; // segundos por producto, ajustar para velocidad deseada
-        const animationDuration = originalProductsCount * durationPerProduct; // Duración total para la mitad del track
-
-        // Establecer la duración de la animación en una variable CSS para que CSS la pueda usar.
-        track.style.setProperty('--scroll-animation-duration', `${animationDuration}s`);
     } else {
-        console.warn('continuous-carousel.js: No hay productos para calcular el ancho o la duración de la animación (posiblemente no hay productos originales).');
+        // Mostrar la sección si hay contenido (en caso de que se haya ocultado antes)
+        if (track.parentElement.style.display === 'none') {
+             track.parentElement.style.display = ''; // Restaurar display por defecto
+        }
     }
 
+    // Duplicar elementos para crear el efecto de carrusel continuo
+    // Calculamos cuántas veces necesitamos duplicar para que el efecto sea "infinito"
+    // Esto dependerá del ancho del contenedor y el ancho de los elementos.
+    // Un valor seguro es duplicar al menos lo suficiente para llenar el ancho del track un par de veces.
+    // Para logos pequeños, podemos duplicar 5-10 veces.
+    const duplicateCount = 5; // Cantidad de veces que se duplica el conjunto de logos
 
-    // Delegación de eventos para los botones "Añadir al Carrito"
-    // Esto es importante porque los elementos se añaden dinámicamente y se duplican.
-    // Aquí el evento click se maneja para todos los botones dentro del track.
-    track.addEventListener('click', (event) => {
-        if (event.target.classList.contains('add-to-cart-btn')) {
-            const productId = event.target.dataset.productId;
-            // Buscar el producto original en appState.products
-            const productToAdd = appState.products.find(p => p.id === productId);
-            if (productToAdd) {
-                // Usar la función addToCart importada directamente
-                addToCart(productToAdd);
-                showToastNotification(`"${productToAdd.name}" añadido al carrito.`, 'success');
-            } else {
-                showToastNotification('Error: Producto no encontrado para añadir al carrito.', 'error');
-                console.error('continuous-carousel.js: Producto con ID', productId, 'no encontrado en appState.products.');
-            }
-        }
+    // Crear y añadir los elementos al track
+    itemsToDisplay.forEach(item => {
+        const itemElement = document.createElement('div');
+        itemElement.classList.add('brand-logo'); // Clase específica para logos de marcas
+        itemElement.innerHTML = `<img src="${item.logoUrl}" alt="${item.name} Logo" loading="lazy">`;
+        track.appendChild(itemElement);
     });
 
-    console.log(`continuous-carousel.js: Carrusel continuo inicializado para ${trackId} con ${products.length} productos originales.`);
+    // Duplicar los elementos existentes para el efecto continuo
+    for (let i = 0; i < duplicateCount; i++) {
+        itemsToDisplay.forEach(item => {
+            const itemElement = document.createElement('div');
+            itemElement.classList.add('brand-logo');
+            itemElement.innerHTML = `<img src="${item.logoUrl}" alt="${item.name} Logo" loading="lazy">`;
+            track.appendChild(itemElement);
+        });
+    }
+
+    // Configurar la animación CSS
+    setTimeout(() => {
+        // Calcular el ancho de un solo conjunto de elementos originales
+        // Esto se hace sumando el ancho de los primeros `itemsToDisplay.length` elementos
+        let originalContentWidth = 0;
+        const firstSetElements = track.querySelectorAll('.brand-logo');
+        if (firstSetElements.length > 0) {
+            for (let i = 0; i < itemsToDisplay.length; i++) {
+                if (firstSetElements[i]) {
+                    originalContentWidth += firstSetElements[i].offsetWidth;
+                    // También añadir el gap si es consistente, asumimos 20px de gap por CSS
+                    originalContentWidth += 2 * 20; // Aproximación: 20px de margin-left y 20px de margin-right
+                }
+            }
+        } else {
+            console.warn('continuous-carousel.js: No se encontraron elementos de marca para calcular el ancho.');
+            return;
+        }
+
+        // Si el totalWidth es 0, no se puede animar
+        if (originalContentWidth === 0) {
+            console.warn('continuous-carousel.js: El ancho calculado de los logos es cero, no se aplicará la animación continua.');
+            return;
+        }
+        
+        // Ajustar la velocidad basada en la cantidad de elementos y su ancho
+        // Velocidad: ej. 50px/segundo. Duración = Ancho_a_desplazar / velocidad_en_px_por_segundo
+        const scrollSpeedPxPerSecond = 80; // Ajusta este valor para cambiar la velocidad
+        const duration = originalContentWidth / scrollSpeedPxPerSecond; // Duración para un solo ciclo de desplazamiento
+
+        // Establecer la variable CSS para la duración de la animación
+        track.style.setProperty('--scroll-duration', `${duration}s`);
+        
+        // Asegurarse de que la animación se aplique
+        track.style.animation = `scroll-left var(--scroll-duration) linear infinite`;
+
+    }, 100); // Pequeño retraso para que el navegador calcule los anchos
+
+    // console.log(`continuous-carousel.js: Carrusel continuo inicializado para ${trackId} con ${itemsToDisplay.length} elementos originales.`); // ELIMINADO
 }
