@@ -834,3 +834,52 @@ main section {
     padding: var(--spacing-sm) var(--spacing-md);
     min-width: 100px;
 }
+/* Continuous Product Carousel (Novedades y Ofertas) */
+.continuous-carousel-container {
+    overflow: hidden; /* Oculta lo que se desborda para la animación */
+    width: 100%;
+    position: relative;
+    padding: var(--spacing-md) 0; /* Espaciado interno */
+}
+
+.continuous-carousel-track {
+    display: flex;
+    white-space: nowrap; /* Evita que los items se envuelvan */
+    animation: scroll-left linear infinite; /* Animación de scroll infinito */
+}
+
+.continuous-carousel-track .product-card {
+    /* Mantén tus estilos de product-card, pero añade un min-width */
+    min-width: 200px; /* Ancho mínimo para cada tarjeta de producto en el carrusel */
+    max-width: 200px; /* Asegura que tengan un ancho fijo */
+    flex-shrink: 0; /* No permite que se encojan */
+    margin-right: var(--spacing-md); /* Espacio entre tarjetas */
+    display: inline-block; /* Necesario para white-space: nowrap */
+}
+
+/* Puedes ajustar el tamaño de las imágenes dentro de las tarjetas del carrusel si es necesario */
+.continuous-carousel-track .product-card .product-image {
+    height: 150px; /* Altura fija para las imágenes en el carrusel continuo */
+    object-fit: contain; /* Ajusta la imagen sin recortarla */
+}
+
+
+/* Keyframes para la animación de scroll */
+@keyframes scroll-left {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); } /* Se mueve la mitad del track duplicado */
+}
+
+/* Pausar animación en hover */
+.continuous-carousel-container:hover .continuous-carousel-track {
+    animation-play-state: paused;
+}
+
+/* Opcional: Estilos para mejorar la apariencia en pantallas pequeñas si es necesario */
+@media (max-width: 767px) {
+    .continuous-carousel-track .product-card {
+        min-width: 180px; /* Ligeramente más pequeños en móvil */
+        max-width: 180px;
+        margin-right: var(--spacing-sm);
+    }
+}
