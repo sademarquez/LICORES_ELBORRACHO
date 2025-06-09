@@ -1,7 +1,7 @@
 {
     "siteName": "EL BORRACHO",
     "contactEmail": "pedidos@elborracho.com",
-    "contactPhone": "573174144815",
+    "contactPhone": "573109876543",
     "address": "Popayán, Cauca, Colombia",
     "banners": [
         {
@@ -55,8 +55,32 @@
             "logoUrl": "images/icons/poker-logo.svg"
         },
         {
+            "name": "Absolut",
+            "logoUrl": "images/icons/absolut-logo.svg"
+        },
+        {
+            "name": "Bombay Sapphire",
+            "logoUrl": "images/icons/bombay-logo.svg"
+        },
+        {
+            "name": "Johnnie Walker",
+            "logoUrl": "images/icons/johnnie-walker-logo.svg"
+        },
+        {
+            "name": "Margarita",
+            "logoUrl": "images/icons/margarita-logo.svg"
+        },
+        {
             "name": "Coca-Cola",
-            "logoUrl": "images/icons/coca-cola-logo.svg"
+            "logoUrl": "images/icons/cocacola-logo.svg"
         }
+    ],
+    "categories": [
+        "Licor",
+        "Cerveza",
+        "Snack",
+        "Gaseosa",
+        "Bebida No Alcohólica",
+        "Cigarrillos"
     ]
 }
