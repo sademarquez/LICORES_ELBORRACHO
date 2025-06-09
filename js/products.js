@@ -41,56 +41,69 @@ export function renderProducts(productsToRender, containerSelector, options = {}
         productCard.dataset.id = product.id;
 
         const displayPrice = product.isOnOffer ? product.offerPrice : product.price;
-        const oldPriceHtml = product.isOnOffer ? `<span class="old-price">$${product.price.toLocaleString('es-CO')}</span>` : '';
+        const oldPriceHtml = product.isOnOffer ? `<span class="product-price on-offer">$${product.price.toLocaleString('es-CO')}</span>` : '';
+        const newBadge = product.isNew ? '<span class="product-badge new">NUEVO</span>' : '';
+        const offerBadge = product.isOnOffer ? '<span class="product-badge offer">OFERTA</span>' : '';
 
         productCard.innerHTML = `
-            <img src="${product.imageUrl}" alt="${product.name}">
-            <h3>${product.name}</h3>
-            <p class="price">
-                ${oldPriceHtml}
-                $${displayPrice.toLocaleString('es-CO')}
-            </p>
-            <button class="add-to-cart-btn" data-product-id="${product.id}">
-                <i class="fas fa-cart-plus"></i> Añadir
-            </button>
+            ${newBadge}
+            ${offerBadge}
+            <div class="product-image-container">
+                <img src="${product.imageUrl}" alt="${product.name}">
+            </div>
+            <div class="product-info">
+                <h3>${product.name}</h3>
+                <p class="brand">${product.brand}</p>
+                <p class="product-description">${product.description}</p>
+                <div class="price-container">
+                    ${oldPriceHtml}
+                    <span class="product-price-new">$${displayPrice.toLocaleString('es-CO')}</span>
+                </div>
+                <div class="product-actions">
+                    <button class="btn-primary add-to-cart-btn" data-id="${product.id}" ${product.stock === 0 ? 'disabled' : ''}>
+                        ${product.stock > 0 ? '<i class="fas fa-cart-plus"></i> Añadir' : 'Agotado'}
+                    </button>
+                </div>
+            </div>
         `;
         container.appendChild(productCard);
     });
 
-    // Añadir event listeners para los botones "Añadir al Carrito"
+    // Añadir event listeners a los botones "Añadir al Carrito"
     container.querySelectorAll('.add-to-cart-btn').forEach(button => {
         button.addEventListener('click', (e) => {
-            const productId = e.target.dataset.productId || e.target.closest('button').dataset.productId;
+            const productId = e.currentTarget.dataset.id;
             const product = appState.products.find(p => p.id === productId);
             if (product) {
                 addToCart(product);
-                showToastNotification(`"${product.name}" añadido al carrito!`, 'success');
-            } else {
-                showToastNotification('Error al añadir el producto.', 'error');
             }
         });
     });
 }
 
-// Función para configurar los filtros de productos
-export function setupProductFilters(productsData, brandFilterSelector, priceFilterSelector, searchInputSelector, targetGridSelector, categoryToFilter = null) {
+/**
+ * Configura los filtros y la búsqueda para una sección específica de productos.
+ * @param {Array<Object>} allProducts - El array completo de productos.
+ * @param {string} brandFilterSelector - Selector del elemento select para filtrar por marca.
+ * @param {string} priceFilterSelector - Selector del elemento select para ordenar por precio.
+ * @param {string} productSearchInputSelector - Selector del input de búsqueda.
+ * @param {string} targetGridSelector - Selector del contenedor donde se renderizarán los productos.
+ * @param {string} categoryToFilter - La categoría específica para esta sección (ej: 'Licor', 'Snack').
+ */
+export function setupProductFilters(allProducts, brandFilterSelector, priceFilterSelector, productSearchInputSelector, targetGridSelector, categoryToFilter) {
     const brandFilter = document.querySelector(brandFilterSelector);
     const priceFilter = document.querySelector(priceFilterSelector);
-    const productSearchInput = document.querySelector(searchInputSelector);
-    const targetGrid = document.querySelector(targetGridSelector); // El contenedor donde se renderizarán los productos filtrados
+    const productSearchInput = document.querySelector(productSearchInputSelector);
+    const clearSearchButton = productSearchInput ? productSearchInput.nextElementSibling : null; // Asumiendo que el botón está inmediatamente después del input
 
-    if (!brandFilter || !priceFilter || !productSearchInput || !targetGrid) {
-        console.warn('Algunos elementos de filtro no se encontraron para la sección de Licores. Los filtros pueden no funcionar.');
+    if (!brandFilter || !priceFilter || !productSearchInput) {
+        console.warn(`products.js: No se encontraron todos los elementos de filtro para la sección ${categoryToFilter}.`);
         return;
     }
 
-    // Poblar el filtro de marcas
-    const brands = [...new Set(productsData
-        .filter(p => categoryToFilter ? p.category === categoryToFilter : true) // Filtra marcas solo de la categoría relevante
-        .map(p => p.brand)
-    )].sort();
-    
-    brandFilter.innerHTML = '<option value="">Todas las Marcas</option>';
+    // Poblar las opciones de marca
+    const brands = [...new Set(allProducts.filter(p => p.category === categoryToFilter).map(p => p.brand))].sort();
+    brandFilter.innerHTML = '<option value="">Todas</option>';
     brands.forEach(brand => {
         const option = document.createElement('option');
         option.value = brand;
@@ -100,23 +113,23 @@ export function setupProductFilters(productsData, brandFilterSelector, priceFilt
 
     const applyFilters = () => {
         const selectedBrand = brandFilter.value;
-        const selectedPriceOrder = priceFilter.value;
+        const selectedOrder = priceFilter.value;
         const searchTerm = productSearchInput.value.toLowerCase().trim();
 
-        // Empieza filtrando por la categoría si se especificó
-        let filtered = productsData.filter(product => categoryToFilter ? product.category === categoryToFilter : true);
-
-        filtered = filtered.filter(product => {
+        let filtered = allProducts.filter(product => {
+            const matchesCategory = product.category === categoryToFilter;
             const matchesBrand = selectedBrand === '' || product.brand === selectedBrand;
-            const matchesSearch = product.name.toLowerCase().includes(searchTerm) ||
+            const matchesSearch = searchTerm === '' ||
+                                  product.name.toLowerCase().includes(searchTerm) ||
                                   product.brand.toLowerCase().includes(searchTerm) ||
                                   product.description.toLowerCase().includes(searchTerm);
-            return matchesBrand && matchesSearch;
+            return matchesCategory && matchesBrand && matchesSearch;
         });
 
-        if (selectedPriceOrder === 'asc') {
+        // Ordenar por precio
+        if (selectedOrder === 'asc') {
             filtered.sort((a, b) => (a.offerPrice || a.price) - (b.offerPrice || b.price));
-        } else if (selectedPriceOrder === 'desc') {
+        } else if (selectedOrder === 'desc') {
             filtered.sort((a, b) => (b.offerPrice || b.price) - (a.offerPrice || a.price));
         }
 
@@ -128,29 +141,45 @@ export function setupProductFilters(productsData, brandFilterSelector, priceFilt
     priceFilter.addEventListener('change', applyFilters);
     productSearchInput.addEventListener('input', applyFilters);
 
+    if (clearSearchButton) {
+        clearSearchButton.addEventListener('click', () => {
+            productSearchInput.value = '';
+            applyFilters();
+        });
+    }
+
     // Ejecutar filtros al inicio para asegurar que el grid se renderice con la categoría correcta
     applyFilters();
 }
 
-// Función para renderizar marcas (como en el carrusel de marcas)
-export function renderBrands(brandsData, containerSelector) {
-    const container = document.querySelector(containerSelector);
+/**
+ * Renderiza las cards de categoría.
+ * @param {HTMLElement} container - El contenedor donde se renderizarán las cards.
+ * @param {Array<Object>} categoriesData - Array de objetos de categoría (nombre, imagen, link, etc.).
+ */
+export function renderCategoryCards(container, categoriesData) {
     if (!container) {
-        console.error(`Contenedor de marcas no encontrado: ${containerSelector}`);
+        console.error('products.js: Contenedor para cards de categoría no encontrado.');
         return;
     }
 
     container.innerHTML = ''; // Limpiar cualquier contenido existente
 
-    if (brandsData.length === 0) {
-        container.innerHTML = `<p style="text-align: center; grid-column: 1 / -1; color: var(--text-color-light);">No hay marcas disponibles.</p>`;
+    if (categoriesData.length === 0) {
+        container.innerHTML = `<p class="no-results-message" style="grid-column: 1 / -1;">No hay categorías disponibles.</p>`;
         return;
     }
 
-    brandsData.forEach(brand => {
-        const brandDiv = document.createElement('div');
-        brandDiv.classList.add('brand-logo');
-        brandDiv.innerHTML = `<img src="${brand.logoUrl}" alt="${brand.name} Logo">`;
-        container.appendChild(brandDiv);
+    categoriesData.forEach(category => {
+        const categoryCard = document.createElement('a');
+        categoryCard.href = category.link || `#${category.id}`; // Enlaza a la sección o usa un ID
+        categoryCard.classList.add('category-card');
+        categoryCard.dataset.category = category.name; // Para identificar la categoría
+
+        categoryCard.innerHTML = `
+            <img src="${category.imageUrl}" alt="${category.name}">
+            <h3>${category.name}</h3>
+        `;
+        container.appendChild(categoryCard);
     });
 }
