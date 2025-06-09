@@ -834,7 +834,6 @@ main section {
     padding: var(--spacing-sm) var(--spacing-md);
     min-width: 100px;
 }
-/* Continuous Product Carousel (Novedades y Ofertas) */
 .continuous-carousel-container {
     overflow: hidden; /* Oculta lo que se desborda para la animación */
     width: 100%;
