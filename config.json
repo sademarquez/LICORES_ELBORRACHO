@@ -1,45 +1,102 @@
 {
     "siteName": "EL BORRACHO",
     "contactEmail": "pedidos@elborracho.com",
-    "contactPhone": "573109876543",
+    "contactPhone": "573174144815",
     "address": "Popayán, Cauca, Colombia",
     "banners": [
         {
             "id": "banner1",
             "title": "¡Novedad! Licores Premium",
-            "description": "Descubre nuestra selección exclusiva de licores finos.",
+            "description": "Descubre nuestra selección exclusiva de licores finos para cada ocasión.",
             "imageUrl": "images/banners/banner-licores-premium.jpg",
-            "link": "#productos-destacados",
+            "link": "#licores",
             "buttonText": "Ver Licores"
         },
         {
             "id": "banner2",
-            "title": "Ofertas de Cervezas",
-            "description": "Las mejores marcas de cerveza con descuentos increíbles.",
+            "title": "Ofertas Increíbles en Cervezas",
+            "description": "Las mejores marcas de cerveza con descuentos que no querrás perderte.",
             "imageUrl": "images/banners/banner-cervezas.jpg",
-            "link": "#productos-destacados",
+            "link": "#cervezas",
             "buttonText": "Comprar Cervezas"
         },
         {
             "id": "banner3",
-            "title": "Snacks para tus Bebidas",
-            "description": "Acompaña tus licores con nuestros deliciosos snacks y más.",
+            "title": "Snacks y Bebidas no Alcohólicas",
+            "description": "Acompaña tus licores con nuestros deliciosos snacks y bebidas refrescantes.",
             "imageUrl": "images/banners/banner-snacks.jpg",
-            "link": "#productos-destacados",
+            "link": "#snacks",
             "buttonText": "Explorar Snacks"
         },
         {
             "id": "banner4",
-            "title": "Celebra con Nosotros",
-            "description": "Todo lo que necesitas para tu fiesta al mejor precio.",
-            "imageUrl": "images/banners/banner-celebracion.jpg",
-            "link": "#productos-destacados",
-            "buttonText": "Organizar Evento"
+            "title": "Entrega Rápida y Segura",
+            "description": "Tu pedido en la puerta de tu casa en tiempo récord y con total seguridad.",
+            "imageUrl": "images/banners/banner-delivery.jpg",
+            "link": "#support-section",
+            "buttonText": "Pedir Ahora"
         }
     ],
-    "contactInfo": {
-        "email": "pedidos@elborracho.com",
-        "phone": "573109876543",
-        "address": "Popayán, Cauca, Colombia"
-    }
+    "brands": [
+        {
+            "name": "Aguardiente Antioqueño",
+            "logoUrl": "images/icons/antioqueno-logo.svg"
+        },
+        {
+            "name": "Ron Viejo de Caldas",
+            "logoUrl": "images/icons/ron-caldas-logo.svg"
+        },
+        {
+            "name": "Buchanan's",
+            "logoUrl": "images/icons/buchanans-logo.svg"
+        },
+        {
+            "name": "Club Colombia",
+            "logoUrl": "images/icons/club-colombia-logo.svg"
+        },
+        {
+            "name": "Corona",
+            "logoUrl": "images/icons/corona-logo.svg"
+        },
+        {
+            "name": "Poker",
+            "logoUrl": "images/icons/poker-logo.svg"
+        },
+        {
+            "name": "Aguardiente caucano",
+            "logoUrl": "images/icons/aguardientecaucano-logo.svg"
+        },
+        {
+            "name": "Aguardiente Néctar",
+            "logoUrl": "images/icons/nectar-logo.svg"
+        },
+        {
+            "name": "Don Julio",
+            "logoUrl": "images/icons/donjulio-logo.svg"
+        },
+        {
+            "name": "Smirnoff",
+            "logoUrl": "images/icons/smirnoff-logo.svg"
+        },
+        {
+            "name": "Coca-Cola",
+            "logoUrl": "images/icons/cocacola-logo.svg"
+        },
+        {
+            "name": "Pepsi",
+            "logoUrl": "images/icons/pepsi-logo.svg"
+        },
+        {
+            "name": "Postobón",
+            "logoUrl": "images/icons/postobon-logo.svg"
+        },
+        {
+            "name": "Frito Lay",
+            "logoUrl": "images/icons/fritolay-logo.svg"
+        },
+        {
+            "name": "Marlboro",
+            "logoUrl": "images/icons/marlboro-logo.svg"
+        }
+    ]
 }
