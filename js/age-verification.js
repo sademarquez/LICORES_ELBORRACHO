@@ -42,5 +42,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    console.log('age-verification.js: Verificación de edad configurada.');
+    console.log('age-verification.js: Módulo de verificación de edad inicializado.');
 });
