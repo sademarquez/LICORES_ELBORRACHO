@@ -1,234 +1,212 @@
-// js/products.js
-
-import { appState } from './main.js';
-import { showToastNotification } from './toast.js';
-import { addToCart } from './cart.js';
-
-export function renderProducts(productsToRender, containerSelector, options = {}) {
-    const container = document.querySelector(containerSelector);
-    if (!container) {
-        console.error(`Contenedor no encontrado para renderizar productos: ${containerSelector}`);
-        return;
+[
+    {
+        "id": "aguardiente-caucano-verde",
+        "name": "Aguardiente caucano tapa verde",
+        "brand": "Aguardiente caucano",
+        "category": "Licor",
+        "description": "El sabor tradicional del cauca, ideal para cualquier celebración. Botella de 750ml.",
+        "price": 45000,
+        "imageUrl": "images/products/aguardientec.png",
+        "isOnOffer": false,
+        "offerPrice": null,
+        "isNew": true,
+        "stock": 100,
+        "rating": 4.5
+    },
+    {
+        "id": "ron-viejo-caldas-8-anos",
+        "name": "Ron Viejo de Caldas 8 Años",
+        "brand": "Ron Viejo de Caldas",
+        "category": "Licor",
+        "description": "Ron añejo premium con 8 años de maduración, suave y con carácter. Botella de 750ml.",
+        "price": 75000,
+        "imageUrl": "images/products/ron.png",
+        "isOnOffer": true,
+        "offerPrice": 68000,
+        "isNew": false,
+        "stock": 70,
+        "rating": 4.7
+    },
+    {
+        "id": "whisky-buchanans-12-anos",
+        "name": "Whisky Buchanan's Deluxe 12 Años",
+        "brand": "Buchanan's",
+        "category": "Licor",
+        "description": "Un clásico whisky escocés de 12 años, suave y con notas frutales. Botella de 750ml.",
+        "price": 120000,
+        "imageUrl": "images/products/buchanans.png",
+        "isOnOffer": false,
+        "offerPrice": null,
+        "isNew": false,
+        "stock": 50,
+        "rating": 4.8
+    },
+    {
+        "id": "cerveza-club-colombia-dorada",
+        "name": "Cerveza Club Colombia Dorada",
+        "brand": "Club Colombia",
+        "category": "Cerveza",
+        "description": "Cerveza tipo Lager, suave y refrescante. Pack de 6 unidades de 330ml.",
+        "price": 15000,
+        "imageUrl": "images/products/clubcolombia.png",
+        "isOnOffer": true,
+        "offerPrice": 13500,
+        "isNew": true,
+        "stock": 200,
+        "rating": 4.3
+    },
+    {
+        "id": "cerveza-corona",
+        "name": "Cerveza Corona Extra",
+        "brand": "Corona",
+        "category": "Cerveza",
+        "description": "Cerveza mexicana ligera y refrescante, ideal para acompañar con una rodaja de limón. Botella de 355ml.",
+        "price": 6000,
+        "imageUrl": "images/products/corona.png",
+        "isOnOffer": false,
+        "offerPrice": null,
+        "isNew": false,
+        "stock": 150,
+        "rating": 4.4
+    },
+    {
+        "id": "vodka-absolut",
+        "name": "Vodka Absolut Original",
+        "brand": "Absolut",
+        "category": "Licor",
+        "description": "Vodka sueco de trigo, puro y versátil para cócteles. Botella de 750ml.",
+        "price": 80000,
+        "imageUrl": "images/products/absolut.png",
+        "isOnOffer": false,
+        "offerPrice": null,
+        "isNew": false,
+        "stock": 60,
+        "rating": 4.6
+    },
+    {
+        "id": "tequila-jose-cuervo-especial",
+        "name": "Tequila Jose Cuervo Especial Reposado",
+        "brand": "Jose Cuervo",
+        "category": "Licor",
+        "description": "Tequila reposado con notas de agave y roble. Botella de 700ml.",
+        "price": 90000,
+        "imageUrl": "images/products/josecuervo.png",
+        "isOnOffer": false,
+        "offerPrice": null,
+        "isNew": false,
+        "stock": 40,
+        "rating": 4.2
+    },
+    {
+        "id": "snack-papas-fritas",
+        "name": "Papas Fritas Margaritas",
+        "brand": "Margarita",
+        "category": "Snack",
+        "description": "Crujientes papas fritas. Paquete de 150g.",
+        "price": 3000,
+        "imageUrl": "images/products/margarita.png",
+        "isOnOffer": false,
+        "offerPrice": null,
+        "isNew": false,
+        "stock": 300,
+        "rating": 4.0
+    },
+    {
+        "id": "snack-platano-maduro",
+        "name": "Plátano Maduro Picado",
+        "brand": "Sin marca",
+        "category": "Snack",
+        "description": "Deliciosos trozos de plátano maduro. Paquete de 100g.",
+        "price": 2500,
+        "imageUrl": "images/products/dmaduro.png",
+        "isOnOffer": false,
+        "offerPrice": null,
+        "isNew": false,
+        "stock": 250,
+        "rating": 3.9
+    },
+    {
+        "id": "snack-platano-verde",
+        "name": "Plátano Verde Picado",
+        "brand": "Sin marca",
+        "category": "Snack",
+        "description": "Chips de plátano verde. Paquete de 100g.",
+        "price": 2500,
+        "imageUrl": "images/products/dverde.png",
+        "isOnOffer": false,
+        "offerPrice": null,
+        "isNew": false,
+        "stock": 250,
+        "rating": 3.8
+    },
+    {
+        "id": "snack-platano-amarillo",
+        "name": "Plátano Maduro en Tajadas",
+        "brand": "Sin marca",
+        "category": "Snack",
+        "description": "Tajadas de plátano maduro crocantes. Paquete de 100g.",
+        "price": 2000,
+        "imageUrl": "images/products/damarillo.png",
+        "isOnOffer": false,
+        "offerPrice": null,
+        "isNew": false,
+        "stock": 300,
+        "rating": 4.2
+    },
+    {
+        "id": "cigarrillos-lucky-strike",
+        "name": "Cigarrillos Lucky Strike",
+        "brand": "Lucky Strike",
+        "category": "Cigarrillos",
+        "description": "Cigarrillos clásicos, 10 unidades.",
+        "price": 4000,
+        "imageUrl": "images/products/luky.png",
+        "isOnOffer": false,
+        "offerPrice": null,
+        "isNew": true,
+        "stock": 300,
+        "rating": 4.0
+    },
+    {
+        "id": "cigarrillos-pielroja",
+        "name": "Cigarrillos Pielroja",
+        "brand": "Pielroja",
+        "category": "Cigarrillos",
+        "description": "Cigarrillos nacionales, 18 unidades.",
+        "price": 5000,
+        "imageUrl": "images/products/pielroja.png",
+        "isOnOffer": false,
+        "offerPrice": null,
+        "isNew": false,
+        "stock": 250,
+        "rating": 4.1
+    },
+    {
+        "id": "gaseosa-coca-cola",
+        "name": "Gaseosa Coca-Cola Original",
+        "brand": "Coca-Cola",
+        "category": "Bebida no alcohólica",
+        "description": "Refrescante gaseosa. Botella de 1.5 litros.",
+        "price": 4000,
+        "imageUrl": "images/products/cocacola.png",
+        "isOnOffer": false,
+        "offerPrice": null,
+        "isNew": false,
+        "stock": 200,
+        "rating": 4.5
+    },
+    {
+        "id": "agua-cristal",
+        "name": "Agua Cristal",
+        "brand": "Cristal",
+        "category": "Bebida no alcohólica",
+        "description": "Agua purificada, ideal para hidratarse. Botella de 600ml.",
+        "price": 2000,
+        "imageUrl": "images/products/agua.png",
+        "isOnOffer": false,
+        "offerPrice": null,
+        "isNew": false,
+        "stock": 300,
+        "rating": 4.3
     }
-
-    let filteredProducts = [...productsToRender];
-
-    // Aplicar filtros iniciales basados en las opciones
-    // Combina productos nuevos y en oferta si la opción es true para el grid principal de novedades
-    if (options.isNewAndOffer) {
-        filteredProducts = filteredProducts.filter(p => p.isNew || p.isOnOffer);
-    } else {
-        if (options.isNew) {
-            filteredProducts = filteredProducts.filter(p => p.isNew);
-        }
-        if (options.isOnOffer) {
-            filteredProducts = filteredProducts.filter(p => p.isOnOffer);
-        }
-    }
-
-    if (options.category) {
-        filteredProducts = filteredProducts.filter(p => p.category === options.category);
-    }
-    if (options.limit) {
-        filteredProducts = filteredProducts.slice(0, options.limit);
-    }
-
-    container.innerHTML = '';
-
-    if (filteredProducts.length === 0) {
-        container.innerHTML = `<p style="text-align: center; grid-column: 1 / -1; color: var(--text-color-light);">No hay productos disponibles en esta sección.</p>`;
-        return;
-    }
-
-    filteredProducts.forEach(product => {
-        const productCard = document.createElement('div');
-        productCard.classList.add('product-card');
-        productCard.dataset.id = product.id;
-
-        const displayPrice = product.isOnOffer ? product.offerPrice : product.price;
-        const oldPriceHtml = product.isOnOffer ? `<span class="old-price">$${product.price.toLocaleString('es-CO')}</span>` : '';
-
-        productCard.innerHTML = `
-            <img src="${product.imageUrl}" alt="${product.name}">
-            <div class="product-info">
-                <h3>${product.name}</h3>
-                <p class="product-brand">${product.brand}</p>
-                <p class="product-description">${product.description}</p>
-                <div class="product-price">
-                    ${oldPriceHtml}
-                    <span class="current-price">$${displayPrice.toLocaleString('es-CO')}</span>
-                </div>
-                <div class="product-rating">
-                    ${'★'.repeat(Math.floor(product.rating))}${'☆'.repeat(5 - Math.floor(product.rating))}
-                    <span>(${product.rating})</span>
-                </div>
-                ${product.isNew ? '<span class="product-badge new">Nuevo</span>' : ''}
-                ${product.isOnOffer ? '<span class="product-badge offer">Oferta</span>' : ''}
-                <button class="btn-primary add-to-cart-btn" data-id="${product.id}" aria-label="Añadir ${product.name} al carrito">
-                    <i class="fas fa-shopping-cart"></i> Añadir
-                </button>
-            </div>
-        `;
-        container.appendChild(productCard);
-    });
-
-    // Añadir event listeners para los botones "Añadir al Carrito"
-    container.querySelectorAll('.add-to-cart-btn').forEach(button => {
-        button.addEventListener('click', (event) => {
-            const productId = event.currentTarget.dataset.id;
-            const productToAdd = appState.products.find(p => p.id === productId);
-            if (productToAdd) {
-                addToCart(productToAdd);
-            }
-        });
-    });
-}
-
-/**
- * Configura los filtros para una sección de productos específica.
- * @param {Array<Object>} allProducts - El array completo de productos.
- * @param {string} brandFilterSelector - Selector del elemento select para filtrar por marca.
- * @param {string} priceFilterSelector - Selector del elemento select para filtrar por precio.
- * @param {string} productSearchInputSelector - Selector del input para buscar productos.
- * @param {string} targetGridSelector - Selector del contenedor donde se renderizarán los productos filtrados.
- * @param {string} categoryToFilter - La categoría específica para filtrar en esta sección (ej. 'Licor', 'Cerveza', etc.).
- */
-export function setupProductFilters(allProducts, brandFilterSelector, priceFilterSelector, productSearchInputSelector, targetGridSelector, categoryToFilter) {
-    const brandFilter = document.querySelector(brandFilterSelector);
-    const priceFilter = document.querySelector(priceFilterSelector);
-    const productSearchInput = document.querySelector(productSearchInputSelector);
-
-    // Asegúrate de que todos los elementos existan
-    if (!brandFilter || !priceFilter || !productSearchInput || !document.querySelector(targetGridSelector)) {
-        console.warn(`setupProductFilters: Algunos elementos de filtro o contenedor no se encontraron para la categoría "${categoryToFilter}". Saltando la configuración de filtros.`);
-        return;
-    }
-
-    // Populate brand filter options
-    const brands = [...new Set(allProducts
-        .filter(p => p.category === categoryToFilter)
-        .map(p => p.brand))];
-    brandFilter.innerHTML = '<option value="">Todas</option>' + brands.map(brand => `<option value="${brand}">${brand}</option>`).join('');
-
-    const applyFilters = () => {
-        let filtered = allProducts.filter(p => p.category === categoryToFilter);
-
-        // Filtrar por marca
-        const selectedBrand = brandFilter.value;
-        if (selectedBrand) {
-            filtered = filtered.filter(p => p.brand === selectedBrand);
-        }
-
-        // Filtrar por término de búsqueda
-        const searchTerm = productSearchInput.value.toLowerCase().trim();
-        if (searchTerm) {
-            filtered = filtered.filter(product =>
-                product.name.toLowerCase().includes(searchTerm) ||
-                product.brand.toLowerCase().includes(searchTerm) ||
-                product.description.toLowerCase().includes(searchTerm)
-            );
-        }
-
-        // Ordenar por precio
-        const priceOrder = priceFilter.value;
-        if (priceOrder === 'asc') {
-            filtered.sort((a, b) => (a.isOnOffer ? a.offerPrice : a.price) - (b.isOnOffer ? b.offerPrice : b.price));
-        } else if (priceOrder === 'desc') {
-            filtered.sort((a, b) => (b.isOnOffer ? b.offerPrice : b.price) - (a.isOnOffer ? a.offerPrice : a.price));
-        }
-
-        renderProducts(filtered, targetGridSelector);
-    };
-
-    brandFilter.addEventListener('change', applyFilters);
-    priceFilter.addEventListener('change', applyFilters);
-    productSearchInput.addEventListener('input', applyFilters);
-
-    // Ejecutar filtros al inicio para asegurar que el grid se renderice con la categoría correcta
-    applyFilters();
-}
-
-/**
- * Renderiza un carrusel de productos horizontalmente, ideal para categorías específicas.
- * Este carrusel es para "swipe" en móviles y no usa dots ni botones de navegación explícitos.
- * @param {Array<Object>} productsToRender - Los productos a mostrar.
- * @param {string} containerSelector - El selector del div que será el track del carrusel (ej. '#cervezasCarousel').
- * @param {string} categoryToFilter - La categoría de productos a filtrar.
- */
-export function renderProductCarouselSection(allProducts, containerSelector, categoryToFilter) {
-    const container = document.querySelector(containerSelector);
-    if (!container) {
-        console.error(`Contenedor de carrusel de productos no encontrado: ${containerSelector}`);
-        return;
-    }
-
-    const filteredProducts = allProducts.filter(p => p.category === categoryToFilter);
-
-    container.innerHTML = ''; // Limpiar cualquier contenido existente
-
-    if (filteredProducts.length === 0) {
-        container.innerHTML = `<p style="text-align: center; width: 100%; color: var(--text-color-light);">No hay productos de ${categoryToFilter} disponibles.</p>`;
-        return;
-    }
-
-    filteredProducts.forEach(product => {
-        const productCard = document.createElement('div');
-        productCard.classList.add('product-card'); // Reutiliza el estilo de product-card
-        productCard.dataset.id = product.id;
-
-        const displayPrice = product.isOnOffer ? product.offerPrice : product.price;
-        const oldPriceHtml = product.isOnOffer ? `<span class="old-price">$${product.price.toLocaleString('es-CO')}</span>` : '';
-
-        productCard.innerHTML = `
-            <img src="${product.imageUrl}" alt="${product.name}">
-            <div class="product-info">
-                <h3>${product.name}</h3>
-                <p class="product-brand">${product.brand}</p>
-                <div class="product-price">
-                    ${oldPriceHtml}
-                    <span class="current-price">$${displayPrice.toLocaleString('es-CO')}</span>
-                </div>
-                ${product.isOnOffer ? '<span class="product-badge offer">Oferta</span>' : ''}
-                <button class="btn-primary add-to-cart-btn" data-id="${product.id}" aria-label="Añadir ${product.name} al carrito">
-                    <i class="fas fa-shopping-cart"></i> Añadir
-                </button>
-            </div>
-        `;
-        container.appendChild(productCard);
-    });
-
-    // Añadir event listeners para los botones "Añadir al Carrito"
-    container.querySelectorAll('.add-to-cart-btn').forEach(button => {
-        button.addEventListener('click', (event) => {
-            const productId = event.currentTarget.dataset.id;
-            const productToAdd = appState.products.find(p => p.id === productId);
-            if (productToAdd) {
-                addToCart(productToAdd);
-            }
-        });
-    });
-}
-
-
-// Función para renderizar marcas (como en el carrusel de marcas)
-export function renderBrands(brandsData, containerSelector) {
-    const container = document.querySelector(containerSelector);
-    if (!container) {
-        console.error(`Contenedor de marcas no encontrado: ${containerSelector}`);
-        return;
-    }
-
-    container.innerHTML = ''; // Limpiar cualquier contenido existente
-
-    if (brandsData.length === 0) {
-        container.innerHTML = `<p style="text-align: center; grid-column: 1 / -1; color: var(--text-color-light);">No hay marcas disponibles.</p>`;
-        return;
-    }
-
-    brandsData.forEach(brand => {
-        const brandDiv = document.createElement('div');
-        brandDiv.classList.add('brand-logo');
-        brandDiv.innerHTML = `<img src="${brand.logoUrl}" alt="${brand.name} Logo">`;
-        container.appendChild(brandDiv);
-    });
-}
+]
