@@ -773,3 +773,93 @@
 .product-carousel-wrapper::-webkit-scrollbar-thumb:hover {
     background: var(--accent-color);
 }
+/* css/components.css (añadir al final) */
+
+/* ... (código existente) ... */
+
+/* Estilos para Contenedores de Carrusel/Scroll Horizontal de Productos */
+.product-carousel-container {
+    overflow-x: auto; /* Permite el scroll horizontal si el contenido es muy ancho */
+    -webkit-overflow-scrolling: touch; /* Mejora el scroll en iOS */
+    padding-bottom: var(--spacing-sm); /* Espacio para la barra de scroll */
+    margin-bottom: var(--spacing-lg); /* Espacio inferior */
+}
+
+/* Opcional: Ocultar la barra de desplazamiento en algunos navegadores si el diseño lo permite */
+.product-carousel-container::-webkit-scrollbar {
+    height: 8px; /* Altura de la barra de scroll */
+}
+
+.product-carousel-container::-webkit-scrollbar-track {
+    background: var(--dark-bg); /* Fondo de la barra de scroll */
+    border-radius: var(--border-radius);
+}
+
+.product-carousel-container::-webkit-scrollbar-thumb {
+    background-color: var(--primary-color-dark); /* Color del 'pulgar' de la barra de scroll */
+    border-radius: var(--border-radius);
+    border: 2px solid var(--dark-bg); /* Margen alrededor del pulgar */
+}
+
+/* Asegurar que las tarjetas de producto no se encojan en el scroll horizontal */
+.product-carousel-container .product-grid {
+    display: flex; /* Cambia a flex para un diseño horizontal */
+    flex-wrap: nowrap; /* Evita que los ítems salten a la siguiente línea */
+    gap: var(--spacing-md); /* Espacio entre las tarjetas de producto */
+    padding: var(--spacing-xs) 0; /* Pequeño padding para el scroll */
+}
+
+.product-carousel-container .product-grid .product-card {
+    flex-shrink: 0; /* Previene que las tarjetas se hagan más pequeñas */
+    width: 200px; /* Ancho fijo para las tarjetas en el carrusel, ajusta según sea necesario */
+    max-width: 100%; /* Asegura que no desborde en pantallas muy pequeñas */
+}
+
+/* Estilos para el carrusel de marcas (ya estaba dinámico, solo ajustes visuales si es necesario) */
+.brands-carousel-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: var(--spacing-sm);
+    margin-bottom: var(--spacing-lg);
+}
+
+.brands-carousel-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.brands-carousel-container::-webkit-scrollbar-track {
+    background: var(--dark-bg);
+    border-radius: var(--border-radius);
+}
+
+.brands-carousel-container::-webkit-scrollbar-thumb {
+    background-color: var(--primary-color-dark);
+    border-radius: var(--border-radius);
+    border: 2px solid var(--dark-bg);
+}
+
+.brands-carousel-container .brands-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: var(--spacing-lg); /* Espacio entre logos de marca */
+    padding: var(--spacing-xs) 0;
+    align-items: center; /* Centra los logos verticalmente */
+}
+
+.brands-carousel-container .brands-grid .brand-logo {
+    flex-shrink: 0;
+    width: 120px; /* Ancho fijo para los logos de marca */
+    height: 80px; /* Altura fija para los logos de marca */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--secondary-color-dark); /* Fondo para el logo */
+    border-radius: var(--border-radius);
+    padding: var(--spacing-sm);
+}
+
+.brands-carousel-container .brands-grid .brand-logo img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* Asegura que el logo se ajuste sin distorsionarse */
+}
