@@ -3,132 +3,115 @@
 import { appState } from './main.js';
 import { renderProducts } from './products.js'; // Reutilizamos renderProducts
 
-let carousels = {}; // Objeto para almacenar instancias de carruseles por su ID de contenedor
+let categoryProductsCarouselContainer;
+let categoryCarouselTrack;
+let categoryPrevBtn;
+let categoryNextBtn;
+
+// Mantiene un registro de la posición actual del scroll para la navegación
+let currentScrollPosition = 0;
 
 /**
- * Inicializa un carrusel de productos de categoría con navegación.
- * @param {Array<Object>} productsData - Los productos a mostrar en este carrusel.
- * @param {string} containerSelector - El selector CSS del contenedor principal del carrusel (ej: '#newProductsCarousel').
- * @param {Object} options - Opciones de configuración para el carrusel.
- * @param {number} options.itemsPerView - Cuántos items se deben ver simultáneamente en una 'página' del carrusel. Por defecto 1.
+ * Configura un carrusel de productos por categoría en un contenedor específico.
+ * @param {Array<Object>} productsData - Array de productos a mostrar en este carrusel.
+ * @param {string} containerSelector - Selector CSS del contenedor principal del carrusel.
+ * @param {string} categoryName - Opcional, nombre de la categoría para filtrar.
  */
-export function setupCategoryProductCarousel(productsData, containerSelector, options = { itemsPerView: 1 }) {
-    const carouselContainer = document.querySelector(containerSelector);
-    if (!carouselContainer) {
-        console.error(`category-products-carousel.js: Contenedor del carrusel de categorías no encontrado: ${containerSelector}`);
+export function setupCategoryProductCarousel(productsData, containerSelector, categoryName = null) {
+    categoryProductsCarouselContainer = document.querySelector(containerSelector);
+    if (!categoryProductsCarouselContainer) {
+        console.warn(`category-products-carousel.js: Contenedor del carrusel de categorías no encontrado para "${containerSelector}".`);
         return;
     }
 
-    const carouselTrack = carouselContainer.querySelector('.carousel-track-category');
-    const prevBtn = carouselContainer.querySelector('.category-prev-btn');
-    const nextBtn = carouselContainer.querySelector('.category-next-btn');
+    categoryCarouselTrack = categoryProductsCarouselContainer.querySelector('.carousel-track-category');
+    categoryPrevBtn = categoryProductsCarouselContainer.querySelector('.category-prev-btn');
+    categoryNextBtn = categoryProductsCarouselContainer.querySelector('.category-next-btn');
 
-    if (!carouselTrack || !prevBtn || !nextBtn) {
-        console.warn(`category-products-carousel.js: Elementos del carrusel de categoría (track/botones) no encontrados para ${containerSelector}.`);
+    if (!categoryCarouselTrack || !categoryPrevBtn || !categoryNextBtn) {
+        console.warn('category-products-carousel.js: Elementos del carrusel de categoría (track/botones) no encontrados en el contenedor. La funcionalidad podría estar limitada.');
         return;
     }
-
-    // Almacenar o actualizar la instancia del carrusel
-    carousels[containerSelector] = {
-        products: productsData,
-        track: carouselTrack,
-        prevBtn: prevBtn,
-        nextBtn: nextBtn,
-        currentScrollPosition: 0,
-        itemsPerView: options.itemsPerView || 1, // Default a 1 si no se especifica
-        // Handler de scroll para actualizar botones
-        scrollHandler: () => updateNavigationButtons(containerSelector)
-    };
-
-    // Renderizar los productos inicialmente
-    // Nota: renderProducts ya filtra si se le pasa una opción de categoría
-    // Aquí, simplemente le pasamos los productos que ya deben estar filtrados para este carrusel.
-    renderProducts(productsData, `#${carouselTrack.id}`);
 
     // Limpiar event listeners previos para evitar duplicados si se llama varias veces
-    prevBtn.removeEventListener('click', carousels[containerSelector].prevHandler);
-    nextBtn.removeEventListener('click', carousels[containerSelector].nextHandler);
-    carouselTrack.removeEventListener('scroll', carousels[containerSelector].scrollHandler);
+    const newPrevBtn = categoryPrevBtn.cloneNode(true);
+    const newNextBtn = categoryNextBtn.cloneNode(true);
+    categoryPrevBtn.parentNode.replaceChild(newPrevBtn, categoryPrevBtn);
+    categoryNextBtn.parentNode.replaceChild(newNextBtn, categoryNextBtn);
+    categoryPrevBtn = newPrevBtn;
+    categoryNextBtn = newNextBtn;
 
+    categoryPrevBtn.addEventListener('click', () => scrollCarousel(-1));
+    categoryNextBtn.addEventListener('click', () => scrollCarousel(1));
 
-    // Añadir event listeners para los botones de navegación
-    carousels[containerSelector].prevHandler = () => scrollCarousel(containerSelector, -1);
-    carousels[containerSelector].nextHandler = () => scrollCarousel(containerSelector, 1);
+    // Filtrar productos si se especifica una categoría
+    const productsToDisplay = categoryName
+        ? productsData.filter(p => p.category === categoryName)
+        : productsData;
 
-    prevBtn.addEventListener('click', carousels[containerSelector].prevHandler);
-    nextBtn.addEventListener('click', carousels[containerSelector].nextHandler);
+    // Renderizar los productos en el track del carrusel.
+    // Usamos renderProducts pero directamente en el track, sin el grid por defecto.
+    renderProducts(productsToDisplay, categoryCarouselTrack, {
+        isCarousel: true // Una opción para que renderProducts sepa que está en un carrusel
+    });
 
-    // Añadir listener para actualizar la visibilidad de los botones al hacer scroll manual
-    carouselTrack.addEventListener('scroll', carousels[containerSelector].scrollHandler);
+    // Resetear posición de scroll y actualizar botones
+    currentScrollPosition = 0;
+    categoryCarouselTrack.scrollTo({ left: currentScrollPosition, behavior: 'auto' });
+    updateNavigationButtons();
 
-    // Resetear posición de scroll y actualizar botones al iniciar/re-inicializar
-    carouselTrack.scrollTo({ left: 0, behavior: 'instant' });
-    carousels[containerSelector].currentScrollPosition = 0;
-    updateNavigationButtons(containerSelector);
+    // Escuchar eventos de scroll en el track para actualizar la visibilidad de los botones
+    categoryCarouselTrack.addEventListener('scroll', updateNavigationButtons);
 
-    console.log(`category-products-carousel.js: Carrusel para ${containerSelector} inicializado con ${productsData.length} productos. Items por vista: ${options.itemsPerView}`);
+    console.log(`category-products-carousel.js: Carrusel para "${categoryName || 'Todos'}" configurado en "${containerSelector}".`);
 }
 
-/**
- * Desplaza el carrusel de productos de categoría.
- * @param {string} containerSelector - El selector CSS del contenedor principal del carrusel.
- * @param {number} direction - -1 para izquierda, 1 para derecha.
- */
-function scrollCarousel(containerSelector, direction) {
-    const carouselInstance = carousels[containerSelector];
-    if (!carouselInstance) return;
+function scrollCarousel(direction) {
+    if (!categoryCarouselTrack) return;
 
-    const { track, itemsPerView } = carouselInstance;
-
-    // Obtener el ancho de un solo item (tarjeta de producto)
-    const item = track.querySelector('.product-card');
-    if (!item) {
-        console.warn('category-products-carousel.js: No se encontraron tarjetas de producto en el carrusel para calcular el desplazamiento.');
+    // Calcular el ancho de un ítem y el gap entre ítems
+    const productCard = categoryCarouselTrack.querySelector('.product-card');
+    if (!productCard) {
+        console.warn('category-products-carousel.js: No se encontraron product-cards en el carrusel para calcular el scroll.');
         return;
     }
-    const itemWidth = item.offsetWidth;
-    const gap = parseFloat(getComputedStyle(track).gap) || 0;
 
-    // Calcular el monto de desplazamiento basado en itemsPerView
-    const scrollAmount = (itemWidth + gap) * itemsPerView;
+    const itemWidth = productCard.offsetWidth;
+    const computedStyle = getComputedStyle(categoryCarouselTrack);
+    // Asumiendo que el gap se define en el CSS como 'gap' o 'grid-gap'
+    const gap = parseFloat(computedStyle.gap || computedStyle.gridGap) || 0;
+
+    // Calcular el ancho de scroll basado en el número de ítems visibles o un valor fijo.
+    // Por ejemplo, desplazar 2 ítems a la vez o el 80% del ancho del contenedor.
+    const scrollAmount = (itemWidth + gap) * 2; // Desplazar 2 items a la vez
 
     if (direction === 1) { // Siguiente
-        carouselInstance.currentScrollPosition = Math.min(
-            carouselInstance.currentScrollPosition + scrollAmount,
-            track.scrollWidth - track.offsetWidth
+        currentScrollPosition = Math.min(
+            currentScrollPosition + scrollAmount,
+            categoryCarouselTrack.scrollWidth - categoryCarouselTrack.offsetWidth
         );
     } else { // Anterior
-        carouselInstance.currentScrollPosition = Math.max(
-            carouselInstance.currentScrollPosition - scrollAmount,
+        currentScrollPosition = Math.max(
+            currentScrollPosition - scrollAmount,
             0
         );
     }
 
-    track.scrollTo({
-        left: carouselInstance.currentScrollPosition,
+    categoryCarouselTrack.scrollTo({
+        left: currentScrollPosition,
         behavior: 'smooth'
     });
 
-    updateNavigationButtons(containerSelector); // Actualizar botones después del scroll
+    // La actualización de botones se manejará por el evento 'scroll' del track
 }
 
-/**
- * Actualiza la visibilidad de los botones de navegación de un carrusel específico.
- * @param {string} containerSelector - El selector CSS del contenedor principal del carrusel.
- */
-function updateNavigationButtons(containerSelector) {
-    const carouselInstance = carousels[containerSelector];
-    if (!carouselInstance) return;
+function updateNavigationButtons() {
+    if (!categoryCarouselTrack || !categoryPrevBtn || !categoryNextBtn) return;
 
-    const { track, prevBtn, nextBtn } = carouselInstance;
+    const { scrollLeft, scrollWidth, offsetWidth } = categoryCarouselTrack;
 
-    if (!track || !prevBtn || !nextBtn) return;
-
-    // Ocultar el botón "Anterior" si está al inicio
-    prevBtn.style.display = track.scrollLeft > 5 ? 'flex' : 'none'; // Pequeño margen para la detección
-
-    // Ocultar el botón "Siguiente" si está al final
-    // Se considera que está al final si el scrollLeft + offsetWidth es mayor o igual al scrollWidth
-    // Se añade un pequeño margen de error (ej: 5px) para evitar problemas de redondeo
-    nextBtn.style.display = (track.scrollLeft + track.offsetWidth + 5) < track.scrollWidth ? 'flex' : 'none';
+    // Mostrar/ocultar botones basados en la posición de scroll
+    categoryPrevBtn.style.display = scrollLeft > 0 ? 'block' : 'none';
+    // Se considera que hay más contenido si el scrollLeft actual + el ancho visible es menor que el ancho total
+    categoryNextBtn.style.display = (scrollLeft + offsetWidth + 1) < scrollWidth ? 'block' : 'none'; // +1 para margen de error
 }
