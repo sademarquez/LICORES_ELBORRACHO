@@ -3,11 +3,9 @@
 import { appState } from './main.js'; // Para acceder a contactInfo
 import { showToastNotification } from './toast.js';
 
-let whatsappNumber = ''; // Se inicializará con el número de config.json
+// let whatsappNumber = ''; // Ya no es necesario, se obtiene directamente de appState.contactInfo.phone
 
-export function setupSupport(phone) {
-    whatsappNumber = phone;
-
+export function setupSupport() { // No necesitas pasar el número aquí, se obtiene de appState
     const reportFaultBtn = document.getElementById('reportFaultBtn');
     const bookAppointmentBtn = document.getElementById('bookAppointmentBtn');
 
@@ -21,67 +19,42 @@ export function setupSupport(phone) {
     if (reportFaultBtn && faultReportModal) {
         reportFaultBtn.addEventListener('click', () => {
             faultReportModal.style.display = 'flex'; // Usar flex para centrar
-            faultReportModal.classList.add('open'); // Abrir con animación
         });
     }
     if (bookAppointmentBtn && appointmentModal) {
         bookAppointmentBtn.addEventListener('click', () => {
             appointmentModal.style.display = 'flex'; // Usar flex para centrar
-            appointmentModal.classList.add('open'); // Abrir con animación
         });
     }
 
     // Cerrar modales (revisado para ser más robusto)
-    document.querySelectorAll('.modal .close-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const modal = e.target.closest('.modal');
-            if (modal) {
-                modal.classList.remove('open');
-                // Esperar a que termine la transición antes de ocultar completamente
-                modal.addEventListener('transitionend', () => {
-                    if (!modal.classList.contains('open')) {
-                        modal.style.display = 'none';
-                    }
-                }, { once: true });
-            }
-        });
-    });
+    // Esta lógica ya está centralizada en main.js para .modal .close-btn
+    // Pero si quieres una lógica específica para estos botones, puedes mantenerla.
+    // Para evitar duplicidad, me baso en que main.js ya lo maneja.
 
-    // Cerrar modales al hacer clic fuera
-    window.addEventListener('click', (event) => {
-        if (faultReportModal && event.target === faultReportModal) {
-            faultReportModal.classList.remove('open');
-            faultReportModal.addEventListener('transitionend', () => {
-                if (!faultReportModal.classList.contains('open')) {
-                    faultReportModal.style.display = 'none';
-                }
-            }, { once: true });
-        }
-        if (appointmentModal && event.target === appointmentModal) {
-            appointmentModal.classList.remove('open');
-            appointmentModal.addEventListener('transitionend', () => {
-                if (!appointmentModal.classList.contains('open')) {
-                    appointmentModal.style.display = 'none';
-                }
-            }, { once: true });
-        }
-    });
-
-
-    // Envío de formularios vía WhatsApp
+    // Manejar envío de formularios
     if (faultReportForm) {
-        faultReportForm.addEventListener('submit', sendFaultReport);
-    }
-    if (appointmentForm) {
-        appointmentForm.addEventListener('submit', sendAppointmentRequest);
+        faultReportForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            sendFaultReport();
+        });
     }
 
+    if (appointmentForm) {
+        appointmentForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            sendAppointmentRequest();
+        });
+    }
     console.log('support.js: Módulo de soporte configurado.');
 }
 
-function sendFaultReport(event) {
-    event.preventDefault();
 
+/**
+ * Envía un reporte de fallo por WhatsApp.
+ */
+function sendFaultReport() {
+    const whatsappNumber = appState.contactInfo.phone;
     if (!whatsappNumber) {
         showToastNotification('Número de WhatsApp no configurado. No se puede enviar el reporte.', 'error');
         console.error('WhatsApp number is not configured in appState.contactInfo.phone');
@@ -90,37 +63,32 @@ function sendFaultReport(event) {
 
     const name = document.getElementById('faultName').value;
     const email = document.getElementById('faultEmail').value;
-    const phone = document.getElementById('faultPhone').value;
     const description = document.getElementById('faultDescription').value;
 
-    if (!name || !phone || !description) {
-        showToastNotification('Por favor, completa los campos requeridos (Nombre, Teléfono, Descripción).', 'error');
+    if (!name || !email || !description) {
+        showToastNotification('Por favor, completa todos los campos para reportar el problema.', 'error');
         return;
     }
 
-    let message = `¡Hola EL BORRACHO!%0AReporte de Incidencia:%0A%0A`;
+    let message = `¡Hola EL BORRACHO!%0AReporte de Problema:%0A%0A`;
     message += `*Nombre:* ${name}%0A`;
-    message += `*Teléfono:* ${phone}%0A`;
-    if (email) {
-        message += `*Email:* ${email}%0A`;
-    }
-    message += `*Descripción del Problema:*%0A${description}%0A%0A`;
-    message += `Por favor, ayúdame con esto. ¡Gracias!`;
+    message += `*Email:* ${email}%0A`;
+    message += `*Descripción del Problema:* ${description}%0A%0A`;
+    message += `Por favor, revisa este problema. ¡Gracias!`;
 
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
 
-    showToastNotification('Reporte de incidencia enviado a WhatsApp. En breve nos pondremos en contacto.', 'success');
+    showToastNotification('Reporte enviado a WhatsApp. Te contactaremos pronto.', 'success');
     document.getElementById('faultReportForm').reset();
-    document.getElementById('faultReportModal').classList.remove('open');
-    document.getElementById('faultReportModal').addEventListener('transitionend', () => {
-        document.getElementById('faultReportModal').style.display = 'none';
-    }, { once: true });
+    document.getElementById('faultReportModal').style.display = 'none';
 }
 
-function sendAppointmentRequest(event) {
-    event.preventDefault();
-
+/**
+ * Envía una solicitud de agendamiento por WhatsApp.
+ */
+function sendAppointmentRequest() {
+    const whatsappNumber = appState.contactInfo.phone;
     if (!whatsappNumber) {
         showToastNotification('Número de WhatsApp no configurado. No se puede agendar el pedido.', 'error');
         console.error('WhatsApp number is not configured in appState.contactInfo.phone');
@@ -151,8 +119,5 @@ function sendAppointmentRequest(event) {
 
     showToastNotification('Solicitud de pedido/entrega enviada a WhatsApp. Espera nuestra confirmación.', 'success');
     document.getElementById('appointmentForm').reset();
-    document.getElementById('appointmentModal').classList.remove('open');
-    document.getElementById('appointmentModal').addEventListener('transitionend', () => {
-        document.getElementById('appointmentModal').style.display = 'none';
-    }, { once: true });
+    document.getElementById('appointmentModal').style.display = 'none';
 }
