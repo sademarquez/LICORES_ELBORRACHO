@@ -24,23 +24,23 @@ export function setupSearch() {
         const searchTerm = searchInput.value.toLowerCase().trim();
         let filteredProducts = [];
 
-        if (searchTerm.length === 0) {
-            searchResultsGrid.innerHTML = `<p class="no-results-message">Ingresa un término para buscar productos.</p>`;
-            return;
+        if (searchTerm.length > 0) { // Solo busca si hay un término
+            filteredProducts = appState.products.filter(product =>
+                product.name.toLowerCase().includes(searchTerm) ||
+                product.brand.toLowerCase().includes(searchTerm) ||
+                product.description.toLowerCase().includes(searchTerm)
+            );
         }
 
-        filteredProducts = appState.products.filter(product =>
-            product.name.toLowerCase().includes(searchTerm) ||
-            product.brand.toLowerCase().includes(searchTerm) ||
-            (product.description && product.description.toLowerCase().includes(searchTerm)) // Asegura que la descripción exista
-        );
-
-        if (filteredProducts.length === 0) {
+        // Limpiar contenido anterior y mostrar mensaje apropiado
+        if (searchTerm.length === 0) {
+            searchResultsGrid.innerHTML = `<p class="no-results-message">Ingresa un término para buscar productos.</p>`;
+        } else if (filteredProducts.length === 0) {
             searchResultsGrid.innerHTML = `<p class="no-results-message">No se encontraron productos para "${searchTerm}".</p>`;
         } else {
             // Reutiliza renderProducts para mostrar los resultados de búsqueda
-            // Pasa un objeto vacío para las opciones para que renderProducts no los filtre adicionalmente
-            renderProducts(filteredProducts, '#searchResultsGrid', {});
+            // Pasa null para las opciones de categoría/oferta/novedad para que renderProducts no los filtre adicionalmente
+            renderProducts(filteredProducts, '#searchResultsGrid');
         }
     };
 
@@ -49,19 +49,6 @@ export function setupSearch() {
     searchInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
             performSearch();
-        }
-    });
-
-    // Cerrar modal al hacer clic en el botón de cerrar
-    const closeBtn = searchModal.querySelector('.close-btn');
-    if (closeBtn) {
-        closeBtn.addEventListener('click', () => toggleSearchModal(false));
-    }
-
-    // Cerrar modal al hacer clic fuera del contenido
-    searchModal.addEventListener('click', (e) => {
-        if (e.target === searchModal) {
-            toggleSearchModal(false);
         }
     });
 
@@ -78,13 +65,13 @@ export function toggleSearchModal(open) {
 
         if (searchModal.classList.contains('open')) {
             searchInput.focus(); // Autofocus al abrir el modal
-            // Limpiar resultados e input al abrir para una nueva búsqueda
+            // Opcional: Limpiar resultados e input al abrir si no quieres mantener la búsqueda anterior
             searchInput.value = '';
             searchResultsGrid.innerHTML = `<p class="no-results-message">Ingresa un término para buscar productos.</p>`;
-            document.body.style.overflow = 'hidden'; // Evitar scroll del body
         } else {
-            // Restablecer scroll del body al cerrar
-            document.body.style.overflow = '';
+            // Limpiar al cerrar, aunque ya lo hacemos al abrir para mayor consistencia
+            searchInput.value = '';
+            searchResultsGrid.innerHTML = `<p class="no-results-message">Ingresa un término para buscar productos.</p>`;
         }
     }
 }
