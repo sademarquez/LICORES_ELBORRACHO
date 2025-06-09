@@ -535,8 +535,6 @@ img {
     display: flex; /* CRUCIAL: Mantiene los elementos en una fila */
     animation: scroll-left 1.5s linear infinite; /* Velocidad ajustada a 1.5s como pediste */
     white-space: nowrap; /* Asegura que los elementos flex no salten de línea */
-    /* Este transform inicial no es necesario si la animación maneja la posición */
-    /* transform: translateX(0); */
 }
 
 .continuous-carousel-track:hover {
@@ -548,8 +546,6 @@ img {
     min-width: 250px; /* Ancho fijo para cada tarjeta en el carrusel continuo */
     flex-shrink: 0; /* IMPORANTE: Evita que las tarjetas se encojan */
     margin-right: var(--spacing-md); /* Espacio entre tarjetas */
-    /* Asegúrate de que no haya un display: inline-block aquí, ya que el padre es flex */
-    /* Elimina vertical-align si lo tenías */
 }
 
 .continuous-carousel-track .product-card .product-image {
@@ -559,7 +555,7 @@ img {
 }
 
 
-/* Sección de Marcas */
+/* Sección de Marcas - ESTILOS YA INCLUIDOS Y CORRECTOS PARA CARRUSEL CONTINUO */
 .brands-section {
     padding: var(--spacing-xl) 0;
     background-color: var(--dark-bg);
@@ -568,9 +564,13 @@ img {
 }
 
 .brands-logo-container {
-    display: flex;
-    animation: scroll-left 40s linear infinite; /* Ajusta la duración según el número de logos */
+    display: flex; /* CRUCIAL: Mantiene los logos en una fila */
+    animation: scroll-left 40s linear infinite; /* Animación para el scroll continuo de logos */
     white-space: nowrap; /* Evita que los logos se envuelvan */
+}
+
+.brands-logo-container:hover {
+    animation-play-state: paused; /* Pausa la animación al pasar el ratón */
 }
 
 .brand-logo {
@@ -596,7 +596,7 @@ img {
 }
 
 /* Keyframes para la animación de scroll */
-/* El valor -50% es porque duplicamos el contenido, así que el track es el doble de largo.
+/* El valor -50% es porque duplicamos el contenido (en JS), así que el track es el doble de largo.
    Al moverlo un 50%, esencialmente movemos el ancho total de los elementos originales,
    lo que crea el bucle perfecto. */
 @keyframes scroll-left {
