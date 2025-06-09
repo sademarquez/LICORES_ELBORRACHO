@@ -55,12 +55,12 @@
             "logoUrl": "images/icons/poker-logo.svg"
         },
         {
-            "name": "Coca-Cola",
-            "logoUrl": "images/icons/cocacola-logo.svg"
-        },
-        {
-            "name": "Marlboro",
-            "logoUrl": "images/icons/marlboro-logo.svg"
+            "name": "Aguardiente caucano",
+            "logoUrl": "images/icons/aguardientec-logo.svg"
         }
-    ]
+    ],
+    "socialMedia": {
+        "facebook": "https://facebook.com/elborracho",
+        "instagram": "https://instagram.com/elborracho"
+    }
 }
