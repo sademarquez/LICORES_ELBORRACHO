@@ -34,14 +34,11 @@ export function setupSearch() {
             product.brand.toLowerCase().includes(searchTerm) ||
             (product.description && product.description.toLowerCase().includes(searchTerm))
         );
-        
 
-        if (filteredProducts.length === 0) {
-            searchResultsGrid.innerHTML = `<p class="no-results-message">No se encontraron resultados para "${searchTerm}".</p>`;
+        if (filteredProducts.length > 0) {
+           renderProducts(filteredProducts, searchResultsGrid); // Usar renderProducts para mostrar resultados
         } else {
-            // Reutiliza renderProducts para mostrar los resultados de búsqueda
-            // Pasa null para las opciones de categoría/oferta/novedad para que renderProducts no los filtre adicionalmente
-            renderProducts(filteredProducts, '#searchResultsGrid');
+            searchResultsGrid.innerHTML = `<p class="no-results-message">No se encontraron productos para "${searchTerm}".</p>`;
         }
     };
 
@@ -56,6 +53,10 @@ export function setupSearch() {
     console.log('search.js: Módulo de búsqueda configurado.');
 }
 
+/**
+ * Abre o cierra el modal de búsqueda.
+ * @param {boolean} [open] - true para abrir, false para cerrar. Si no se especifica, toggles.
+ */
 export function toggleSearchModal(open) {
     if (searchModal) {
         if (typeof open === 'boolean') {
@@ -68,11 +69,10 @@ export function toggleSearchModal(open) {
 
         if (searchModal.classList.contains('open')) {
             searchInput.focus(); // Autofocus al abrir el modal
-            // Opcional: Limpiar resultados e input al abrir si no quieres mantener la búsqueda anterior
-            searchInput.value = '';
-            searchResultsGrid.innerHTML = `<p class="no-results-message">Ingresa un término para buscar productos.</p>`;
+            searchInput.value = ''; // Limpiar input al abrir
+            searchResultsGrid.innerHTML = `<p class="no-results-message">Ingresa un término para buscar productos.</p>`; // Limpiar resultados
         } else {
-            // Limpiar al cerrar, aunque ya lo hacemos al abrir para mayor consistencia
+            // Limpiar al cerrar también para consistencia
             searchInput.value = '';
             searchResultsGrid.innerHTML = `<p class="no-results-message">Ingresa un término para buscar productos.</p>`;
         }
