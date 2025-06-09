@@ -8,9 +8,9 @@ import { setupSupport } from './support.js';
 import { showToastNotification } from './toast.js';
 import { setupCategoryProductCarousel } from './category-products-carousel.js';
 import { initAgeVerification } from './age-verification.js';
-import { initContinuousProductCarousel } from './continuous-carousel.js'; // <-- ¡NUEVA IMPORTACIÓN!
+import { initContinuousProductCarousel } from './continuous-carousel.js'; // <-- THIS IMPORT IS CORRECT!
 
-// ... (appState y loadInitialData no cambian) ...
+// ... (appState and loadInitialData functions remain the same) ...
 
 // Evento principal que se dispara cuando todo el DOM ha sido cargado
 document.addEventListener('DOMContentLoaded', async () => {
@@ -27,9 +27,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Paso 4: Combinar Novedades y Ofertas y pasarlas al nuevo carrusel continuo
         const combinedProducts = appState.products.filter(p => p.isNew || p.isOnOffer);
-        initContinuousProductCarousel(combinedProducts, 'combinedProductsCarouselTrack', 2); // 2 segundos por artículo
+        // THIS CALL IS CORRECT. 'combinedProductsCarouselTrack' is the ID from index.html
+        // and '2' is the itemScrollDuration (2 seconds per item).
+        initContinuousProductCarousel(combinedProducts, 'combinedProductsCarouselTrack', 2);
 
-        // Paso 5: Renderizar productos en sus secciones (ahora sin novedades ni ofertas directas)
+        // Paso 5: Renderizar productos en sus secciones (now without direct novelties or offers sections)
         renderProducts(appState.products, '#licores .product-grid', { category: 'Licor', limit: 8 });
         renderProducts(appState.products, '#cervezas .product-grid', { category: 'Cerveza', limit: 8 });
         renderProducts(appState.products, '#snacks .product-grid', { category: 'Snack', limit: 8 });
