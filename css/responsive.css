@@ -4,25 +4,20 @@
 /* Estilos para dispositivos pequeños (hasta 767px) */
 @media (max-width: 767px) {
     .header-content {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        gap: 0;
-        width: 100%;
+        flex-direction: column; /* Revertido: Vuelve a apilar verticalmente */
+        align-items: flex-start; /* Revertido: Alinea a la izquierda */
+        gap: var(--spacing-md); /* Revertido: Espaciado vertical entre elementos */
     }
 
-    /* Mostrar el botón de menú móvil */
-    #mobileMenuToggle {
-        display: block; /* Visible en pantallas pequeñas */
-    }
+    /* #mobileMenuToggle no debe tener display: block aquí */
 
     .main-nav {
         width: 100%;
-        display: none; /* Permanece oculto por defecto, se mostrará con JavaScript */
+        display: none; /* Ocultar por defecto para el menú hamburguesa */
         flex-direction: column;
         background-color: var(--white);
         position: absolute;
-        top: 100%; /* Justo debajo del encabezado */
+        top: 100%;
         left: 0;
         box-shadow: var(--shadow-md);
         padding: var(--spacing-md);
@@ -31,7 +26,7 @@
     }
 
     .main-nav.active {
-        display: flex; /* Mostrar cuando se le añade la clase 'active' */
+        display: flex;
     }
 
     .main-nav .nav-list {
@@ -50,17 +45,19 @@
     }
 
     .header-actions {
-        display: flex;
-        gap: var(--spacing-md); /* Espacio entre el botón de menú, búsqueda y carrito */
-        width: auto;
+        width: 100%; /* Revertido: Vuelve a tomar todo el ancho */
+        justify-content: space-around; /* Revertido: Distribuye los íconos */
+        /* display: flex; y gap: var(--spacing-md); eran parte de la solución anterior, si los tenías aquí, se eliminan */
     }
 
+    /* mobileMenuToggle ya no debe tener reglas específicas aquí */
+
     .main-header .container {
-        padding: var(--spacing-sm) var(--spacing-md);
+        /* Padding sin ajuste específico aquí, como estaba antes */
     }
 
     .hero-section {
-        height: 300px;
+        height: 300px; /* Ajuste para pantallas más pequeñas */
     }
 
     .carousel-caption {
@@ -83,7 +80,7 @@
     }
 
     .product-grid {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* 2 columnas en móvil */
         gap: var(--spacing-md);
     }
 
@@ -128,6 +125,7 @@
         max-height: 50px;
     }
 
+    /* Contacto y Soporte */
     .contact-info-section,
     .support-section {
         padding: var(--spacing-xl) var(--spacing-md);
@@ -163,9 +161,10 @@
         padding: var(--spacing-sm);
     }
 
+    /* Carrito */
     .cart-sidebar {
-        width: 100%;
-        right: -100%;
+        width: 100%; /* Ocupa todo el ancho en móvil */
+        right: -100%; /* Asegura que esté completamente fuera de pantalla */
     }
 
     .cart-sidebar.open {
@@ -197,7 +196,7 @@
     }
 
     .bottom-nav {
-        display: flex;
+        display: flex; /* Asegura que la barra inferior esté visible en móvil */
     }
 }
 
@@ -208,19 +207,19 @@
     }
 
     .header-content {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        gap: var(--spacing-md);
+        flex-direction: row; /* Se mantuvo en fila en tablets */
+        justify-content: space-between; /* Espacio entre logo, nav y acciones */
+        align-items: center; /* Centrado vertical */
+        gap: var(--spacing-md); /* Espacio entre elementos principales */
     }
 
-    /* Ocultar el botón de menú móvil en tablets */
+    /* #mobileMenuToggle debe estar oculto en tablets */
     #mobileMenuToggle {
         display: none;
     }
 
     .main-nav {
-        display: flex;
+        display: flex; /* Mostrar navegación normal en tablets */
         position: static;
         box-shadow: none;
         border-top: none;
@@ -232,6 +231,7 @@
         flex-direction: row;
     }
 
+    /* Ocultar la barra inferior en tablets */
     .bottom-nav {
         display: none;
     }
@@ -250,7 +250,7 @@
 
     .product-filters select,
     .product-filters input {
-        max-width: 200px;
+        max-width: 200px; /* Un poco más de espacio en tablet */
     }
 
     .brands-carousel {
@@ -265,24 +265,24 @@
     }
 
     .product-grid {
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* 4-5 columnas en desktop */
     }
 
     .main-nav {
-        display: flex;
+        display: flex; /* Asegurar que la navegación principal esté visible en desktop */
     }
     
-    /* Ocultar el botón de menú móvil en desktop */
+    /* #mobileMenuToggle debe estar oculto en desktop */
     #mobileMenuToggle {
         display: none;
     }
 
     .bottom-nav {
-        display: none;
+        display: none; /* Asegura que la barra inferior esté oculta en desktop */
     }
 
     .hero-section {
-        height: 450px;
+        height: 450px; /* Altura original para desktop */
     }
 
     .carousel-caption h2 {
