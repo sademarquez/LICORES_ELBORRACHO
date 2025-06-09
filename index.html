@@ -25,216 +25,161 @@
     <header class="main-header">
         <div class="container">
             <div class="header-content">
-                <a href="#hero" class="logo">
-                    <img src="logo-el-borracho.png" alt="El Borracho Logo">
+                <a href="#home" class="logo">
+                    <img src="images/logo/logo-el-borracho.png" alt="EL BORRACHO Logo">
+                    <h1>EL BORRACHO</h1>
                 </a>
+                <nav class="main-nav" id="mainNav">
+                    <ul class="nav-list">
+                        <li><a href="#home">Inicio</a></li>
+                        <li><a href="#licores">Licores</a></li>
+                        <li><a href="#novedades">Novedades</a></li>
+                        <li><a href="#ofertas">Ofertas</a></li>
+                        <li><a href="#marcas">Marcas</a></li>
+                        <li><a href="#contacto">Contacto</a></li>
+                        <li><a href="#" id="desktopNavSearch">Buscar</a></li>
+                    </ul>
+                </nav>
                 <div class="header-actions">
-                    <div class="search-bar">
-                        <input type="text" id="headerSearchInput" placeholder="Buscar productos...">
-                        <button id="headerSearchBtn" class="btn-icon" aria-label="Buscar"><i class="fas fa-search"></i></button>
-                    </div>
-                    <div class="cart-icon" id="openCartBtn" aria-label="Abrir Carrito">
+                    <button class="cart-button" id="cartButton" aria-label="Abrir Carrito">
                         <i class="fas fa-shopping-cart"></i>
                         <span id="cartCount" class="cart-count">0</span>
-                    </div>
+                    </button>
                     <button class="menu-toggle" id="menuToggle" aria-label="Abrir Menú">
                         <i class="fas fa-bars"></i>
                     </button>
                 </div>
             </div>
-            <nav class="main-nav" id="mainNav">
-                <ul class="nav-list">
-                    <li><a href="#hero" class="nav-link">Inicio</a></li>
-                    <li><a href="#novedades" class="nav-link">Novedades</a></li>
-                    <li class="dropdown">
-                        <a href="#categorias" class="nav-link dropdown-toggle">Categorías <i class="fas fa-chevron-down"></i></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#licores" class="nav-link category-link" data-category="Licor">Licores</a></li>
-                            <li><a href="#cervezas" class="nav-link category-link" data-category="Cerveza">Cervezas</a></li>
-                            <li><a href="#vinos" class="nav-link category-link" data-category="Vino">Vinos</a></li>
-                            <li><a href="#cigarrillos" class="nav-link category-link" data-category="Cigarrillo">Cigarrillos</a></li>
-                            <li><a href="#bebidas-no-alcoholicas" class="nav-link category-link" data-category="Bebida no alcohólica">Bebidas No Alcohólicas</a></li>
-                            <li><a href="#snacks" class="nav-link category-link" data-category="Snack">Snacks</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#ofertas" class="nav-link">Ofertas</a></li>
-                    <li><a href="#marcas" class="nav-link">Marcas</a></li>
-                    <li><a href="#soporte" class="nav-link">Soporte</a></li>
-                </ul>
-            </nav>
         </div>
     </header>
 
     <main>
-        <section id="hero" class="hero-section">
+        <section id="home" class="hero-section">
             <div class="carousel-container">
                 <div class="carousel-track" id="carouselTrack">
                     </div>
-                <button class="carousel-btn prev" id="carouselPrev" aria-label="Anterior">&#10094;</button>
-                <button class="carousel-btn next" id="carouselNext" aria-label="Siguiente">&#10095;</button>
-                <div class="carousel-dots" id="carouselDots">
-                    </div>
+                <button class="carousel-btn prev" id="carouselPrev" aria-label="Anterior"></button>
+                <button class="carousel-btn next" id="carouselNext" aria-label="Siguiente"></button>
             </div>
-        </section>
-
-        <section id="novedades" class="section-container">
-            <div class="container">
-                <h2>Novedades</h2>
-                <div class="product-grid" id="newProductsGrid">
-                    </div>
-                <div class="btn-container">
-                    <a href="#productos-todos" class="btn-secondary">Ver más novedades</a>
+            <div class="carousel-dots" id="carouselDots">
                 </div>
+        </section>
+
+        <section id="novedades" class="products-section dynamic-carousel-section container">
+            <h2 class="section-title">Novedades</h2>
+            <div class="category-products-carousel-container" id="newProductsCarousel">
+                <div class="carousel-track-category product-grid" id="newProductsGrid">
+                    </div>
+                <button class="category-carousel-btn category-prev-btn" aria-label="Anterior producto"></button>
+                <button class="category-carousel-btn category-next-btn" aria-label="Siguiente producto"></button>
             </div>
         </section>
 
-        <section id="categoryCarousels" class="section-container bg-dark-alt">
-            <div class="container">
-                <h2>Explora por Categoría</h2>
-                <div class="category-carousel-wrapper" id="licoresCarousel">
-                    <div class="category-header">
-                        <h3>Licores</h3>
-                        <a href="#licores" class="btn-link">Ver todos</a>
+        <section id="ofertas" class="products-section dynamic-carousel-section container">
+            <h2 class="section-title">Ofertas Especiales</h2>
+            <div class="category-products-carousel-container" id="offerProductsCarousel">
+                <div class="carousel-track-category product-grid" id="onOfferProductsGrid">
                     </div>
-                    <div class="category-carousel">
-                        <button class="category-prev-btn carousel-arrow-btn" aria-label="Anterior Categoría">&#10094;</button>
-                        <div class="carousel-track-category product-grid" id="licoresGrid">
-                            </div>
-                        <button class="category-next-btn carousel-arrow-btn" aria-label="Siguiente Categoría">&#10095;</button>
+                <button class="category-carousel-btn category-prev-btn" aria-label="Anterior producto"></button>
+                <button class="category-carousel-btn category-next-btn" aria-label="Siguiente producto"></button>
+            </div>
+        </section>
+
+        <section id="marcas" class="brands-section container">
+            <h2 class="section-title">Nuestras Marcas</h2>
+            <div class="brands-grid" id="brandsGrid">
+                </div>
+        </section>
+
+        <section id="licores" class="products-section container">
+            <h2 class="section-title">Nuestros Productos</h2>
+            <div class="category-buttons-container">
+                <button class="category-button active" data-category="Todos">Todos</button>
+                <button class="category-button" data-category="Licor">Licores</button>
+                <button class="category-button" data-category="Bebida no alcohólica">Bebidas</button>
+                <button class="category-button" data-category="Snack">Snacks</button>
+                <button class="category-button" data-category="Cigarrillos">Cigarrillos</button>
+                <button class="category-button" data-category="Cerveza">Cervezas</button> </div>
+
+            <div class="category-products-carousel-container category-filter-carousel" id="filteredProductsCarousel">
+                <div class="carousel-track-category product-grid product-grid-2x2" id="filteredProductsGrid">
+                    </div>
+                <button class="category-carousel-btn category-prev-btn" aria-label="Anterior producto"></button>
+                <button class="category-carousel-btn category-next-btn" aria-label="Siguiente producto"></button>
+            </div>
+        </section>
+
+
+        <section id="contacto" class="contact-section container">
+            <h2 class="section-title">Contáctanos</h2>
+            <div class="contact-content">
+                <div class="contact-info-card">
+                    <h3>Información de Contacto</h3>
+                    <p><i class="fas fa-envelope"></i> Email: <span id="contactEmail"></span></p>
+                    <p><i class="fas fa-phone-alt"></i> Teléfono: <span id="contactPhone"></span></p>
+                    <p><i class="fas fa-map-marker-alt"></i> Dirección: <span id="contactAddress"></span></p>
+                    <div class="social-media">
+                        <a href="https://facebook.com/elborracho" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://instagram.com/elborracho" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
                     </div>
                 </div>
-
-                <div class="category-carousel-wrapper" id="cervezasCarousel">
-                    <div class="category-header">
-                        <h3>Cervezas</h3>
-                        <a href="#cervezas" class="btn-link">Ver todas</a>
-                    </div>
-                    <div class="category-carousel">
-                        <button class="category-prev-btn carousel-arrow-btn" aria-label="Anterior Categoría">&#10094;</button>
-                        <div class="carousel-track-category product-grid" id="cervezasGrid">
-                            </div>
-                        <button class="category-next-btn carousel-arrow-btn" aria-label="Siguiente Categoría">&#10095;</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="ofertas" class="section-container">
-            <div class="container">
-                <h2>Ofertas Destacadas</h2>
-                <div class="product-grid" id="offerProductsGrid">
-                    </div>
-                <div class="btn-container">
-                    <a href="#productos-todos" class="btn-secondary">Ver todas las ofertas</a>
-                </div>
-            </div>
-        </section>
-
-        <section id="marcas" class="section-container bg-dark-alt">
-            <div class="container">
-                <h2>Nuestras Marcas</h2>
-                <div class="brand-grid" id="brandsGrid">
-                    </div>
-            </div>
-        </section>
-
-        <section id="productos-todos" class="section-container hidden">
-            <div class="container">
-                <h2>Todos los Productos</h2>
-                <div class="product-filters">
-                    <input type="text" id="allProductsSearchInput" placeholder="Buscar por nombre o marca">
-                    <select id="categoryFilter">
-                        <option value="">Todas las Categorías</option>
-                        </select>
-                    <select id="priceFilter">
-                        <option value="">Ordenar por Precio</option>
-                        <option value="asc">Menor a Mayor</option>
-                        <option value="desc">Mayor a Menor</option>
-                    </select>
-                </div>
-                <div class="product-grid" id="allProductsGrid">
-                    </div>
-            </div>
-        </section>
-
-        <section id="soporte" class="section-container">
-            <div class="container">
-                <h2>Soporte y Contacto</h2>
-                <div class="support-content">
-                    <div class="contact-info">
-                        <h3>Contáctanos</h3>
-                        <p><i class="fas fa-envelope"></i> Email: <span id="contactEmail">cargando...</span></p>
-                        <p><i class="fas fa-phone"></i> Teléfono: <span id="contactPhone">cargando...</span></p>
-                        <p><i class="fas fa-map-marker-alt"></i> Dirección: <span id="contactAddress">cargando...</span></p>
-                        <div class="social-media">
-                            <a href="https://wa.me/573109876543" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                            <a href="https://facebook.com/elborracho" target="_blank" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-                            <a href="https://instagram.com/elborracho" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <div class="contact-form-card">
+                    <h3>Envíanos un Mensaje</h3>
+                    <form class="contact-form" id="contactForm">
+                        <div class="form-group">
+                            <label for="contactName">Nombre:</label>
+                            <input type="text" id="contactName" name="name" required>
                         </div>
-                    </div>
-                    <div class="support-options">
-                        <h3>¿Necesitas Ayuda?</h3>
-                        <button id="reportFaultBtn" class="btn-primary">Reportar un Problema</button>
-                        <button id="bookAppointmentBtn" class="btn-secondary">Agendar Pedido/Entrega</button>
-                    </div>
+                        <div class="form-group">
+                            <label for="contactEmailForm">Email:</label>
+                            <input type="email" id="contactEmailForm" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactMessage">Mensaje:</label>
+                            <textarea id="contactMessage" name="message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary">Enviar Mensaje</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section id="soporte" class="support-section container">
+            <h2 class="section-title">Soporte y Pedidos Especiales</h2>
+            <div class="support-cards">
+                <div class="support-card">
+                    <h3>Reportar un Problema</h3>
+                    <p>Si tienes algún inconveniente con tu pedido o el servicio, háznoslo saber.</p>
+                    <button id="reportFaultBtn" class="btn-secondary">Reportar Fallo</button>
+                </div>
+                <div class="support-card">
+                    <h3>Agendar Pedido/Entrega</h3>
+                    <p>Programa tu pedido o entrega a domicilio con antelación.</p>
+                    <button id="bookAppointmentBtn" class="btn-primary">Agendar por WhatsApp</button>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer class="main-footer">
-        <div class="container">
-            <p>&copy; 2025 EL BORRACHO. Todos los derechos reservados.</p>
-        </div>
-    </footer>
-
-    <div id="searchModal" class="modal">
-        <div class="modal-content search-modal-content">
-            <span class="close-btn" id="closeSearchModalBtn">&times;</span>
-            <h2>Buscar Productos</h2>
-            <div class="search-input-group">
-                <input type="text" id="searchInput" placeholder="Escribe para buscar...">
-                <button id="searchButton" class="btn-primary">Buscar</button>
-            </div>
-            <div class="search-results-grid product-grid" id="searchResultsGrid">
-                <p class="no-results-message">Ingresa un término para buscar productos.</p>
-            </div>
-        </div>
-    </div>
-
-    <div id="cartSidebar" class="cart-sidebar">
-        <div class="sidebar-header">
-            <h3>Tu Carrito</h3>
-            <button class="close-btn" id="closeCartBtn">&times;</button>
-        </div>
-        <div class="sidebar-content">
-            <div id="cartItems" class="cart-items-container">
-                </div>
-            <div class="cart-summary">
-                <p>Total: <span id="cartTotalPrice">$0</span></p>
-                <button id="checkoutWhatsappBtn" class="btn-primary btn-full-width">Finalizar Pedido por WhatsApp</button>
-            </div>
-        </div>
-    </div>
-
     <div id="faultReportModal" class="modal">
         <div class="modal-content">
             <span class="close-btn">&times;</span>
             <h2>Reportar un Problema</h2>
-            <form id="faultReportForm">
+            <form id="faultReportForm" class="modal-form">
                 <div class="form-group">
                     <label for="faultName">Tu Nombre:</label>
                     <input type="text" id="faultName" required>
                 </div>
                 <div class="form-group">
-                    <label for="faultEmail">Tu Email:</label>
-                    <input type="email" id="faultEmail" required>
+                    <label for="faultPhone">Tu Teléfono:</label>
+                    <input type="tel" id="faultPhone" required>
                 </div>
                 <div class="form-group">
-                    <label for="faultDescription">Descripción del Problema:</label>
+                    <label for="faultDescription">Describe el problema:</label>
                     <textarea id="faultDescription" rows="5" required></textarea>
                 </div>
-                <button type="submit" class="btn-primary">Enviar Reporte</button>
+                <button type="submit" class="btn-primary">Enviar Reporte por WhatsApp</button>
             </form>
         </div>
     </div>
@@ -243,14 +188,14 @@
         <div class="modal-content">
             <span class="close-btn">&times;</span>
             <h2>Agendar Pedido/Entrega</h2>
-            <form id="appointmentForm">
+            <form id="appointmentForm" class="modal-form">
                 <div class="form-group">
                     <label for="appointmentName">Tu Nombre:</label>
                     <input type="text" id="appointmentName" required>
                 </div>
                 <div class="form-group">
-                    <label for="appointmentPhone">Tu Teléfono (WhatsApp):</label>
-                    <input type="tel" id="appointmentPhone" placeholder="Ej: 573101234567" pattern="[0-9]{10,15}" title="Ingresa un número de teléfono válido (solo dígitos)" required>
+                    <label for="appointmentPhone">Tu Teléfono:</label>
+                    <input type="tel" id="appointmentPhone" required>
                 </div>
                 <div class="form-group">
                     <label for="appointmentDate">Fecha Preferida:</label>
@@ -262,10 +207,40 @@
                 </div>
                 <div class="form-group">
                     <label for="appointmentReason">Detalles del Pedido/Servicio:</label>
-                    <textarea id="appointmentReason" rows="5" placeholder="Ej: Pedido de Aguardiente, entrega a domicilio, o consulta de producto." required></textarea>
+                    <textarea id="appointmentReason" rows="5" placeholder="Ej: Pedido de 2 Aguardientes, entrega a las 8 PM en [Dirección]. O consulta sobre evento." required></textarea>
                 </div>
                 <button type="submit" class="btn-primary">Agendar Cita por WhatsApp</button>
             </form>
+        </div>
+    </div>
+
+    <div id="searchModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeSearchModalBtn">&times;</span>
+            <h2>Buscar Productos</h2>
+            <div class="search-input-group">
+                <input type="text" id="searchInput" placeholder="Buscar por nombre o marca...">
+                <button id="searchButton" class="btn-primary"><i class="fas fa-search"></i> Buscar</button>
+            </div>
+            <div class="search-results-grid product-grid" id="searchResultsGrid">
+                <p class="no-results-message">Ingresa un término para buscar productos.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="cartSidebar" class="cart-sidebar">
+        <div class="sidebar-header">
+            <h3>Tu Carrito</h3>
+            <button id="closeCartBtn" class="close-btn">&times;</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <p class="empty-cart-message">Tu carrito está vacío.</p>
+        </div>
+        <div class="cart-summary">
+            <p>Total: <span id="cartTotalPrice">$0</span></p>
+            <button id="checkoutWhatsappBtn" class="btn-primary checkout-btn">
+                <i class="fab fa-whatsapp"></i> Finalizar Pedido por WhatsApp
+            </button>
         </div>
     </div>
 
@@ -300,6 +275,5 @@
     <script src="js/support.js" type="module"></script>
     <script src="js/toast.js" type="module"></script>
     <script src="js/age-verification.js" type="module"></script>
-    <script src="js/category-products-carousel.js" type="module"></script>
-</body>
+    <script src="js/category-products-carousel.js" type="module"></script> </body>
 </html>
