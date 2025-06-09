@@ -1,6 +1,6 @@
 // js/age-verification.js
 
-document.addEventListener('DOMContentLoaded', () => {
+export function initAgeVerification() {
     console.log('age-verification.js: DOM cargado. Inicializando verificación de edad...');
 
     const ageVerificationModal = document.getElementById('ageVerificationModal');
@@ -12,27 +12,26 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    // --- CAMBIO CLAVE: Usar sessionStorage en lugar de localStorage ---
-    const ageVerified = sessionStorage.getItem('ageVerified');
+    const ageVerified = localStorage.getItem('ageVerified');
 
     if (ageVerified === 'true') {
         ageVerificationModal.style.display = 'none';
-        console.log('age-verification.js: Edad ya verificada en la sesión. Ocultando modal.');
+        console.log('age-verification.js: Edad ya verificada. Ocultando modal.');
     } else {
         ageVerificationModal.style.display = 'flex'; // Asegurarse de que sea visible
-        console.log('age-verification.js: Edad no verificada en la sesión. Mostrando modal.');
+        console.log('age-verification.js: Edad no verificada. Mostrando modal.');
     }
 
     confirmAgeBtn.addEventListener('click', () => {
         console.log('age-verification.js: Botón "Soy Mayor de 18" clicado.');
         ageVerificationModal.style.display = 'none';
-        sessionStorage.setItem('ageVerified', 'true'); // Guardar en sessionStorage
-        console.log('age-verification.js: Edad verificada y guardada en la sesión. Modal oculto.');
+        localStorage.setItem('ageVerified', 'true');
+        console.log('age-verification.js: Edad verificada y guardada. Modal oculto.');
     });
 
     declineAgeBtn.addEventListener('click', () => {
         console.log('age-verification.js: Botón "Soy Menor de Edad" clicado. Redirigiendo...');
-        window.location.href = 'https://www.google.com'; // O cualquier otra URL segura
+        window.location.href = 'https://www.google.com';
     });
 
     // Evitar que el modal se cierre al hacer clic fuera:
@@ -43,5 +42,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    console.log('age-verification.js: Inicialización completa.');
-});
+    console.log('age-verification.js: Verificación de edad configurada.');
+}
