@@ -1,12 +1,12 @@
 // js/main.js
 
 import { initCarousel } from './carousel.js';
-import { renderAllProducts, setupProductFilters, renderBrands, renderProductsCard } from './products.js'; // renderProducts -> renderAllProducts, e importamos renderProductsCard
+import { renderProducts, setupProductFilters, renderBrands } from './products.js';
 import { setupSearch, toggleSearchModal } from './search.js';
 import { initCart, updateCartCount, toggleCartSidebar } from './cart.js';
 import { setupSupport } from './support.js';
 import { showToastNotification } from './toast.js';
-import { setupCategoryProductCarousel, displayProductsByCategory } from './category-products-carousel.js'; // Importar el nuevo módulo
+import { setupCategoryProductCarousel } from './category-products-carousel.js'; // Importar el nuevo módulo
 
 /**
  * appState: Objeto global para almacenar el estado de la aplicación.
@@ -15,9 +15,10 @@ import { setupCategoryProductCarousel, displayProductsByCategory } from './categ
 export const appState = {
     products: [],
     cart: [],
-    banners: [], // Banners del carrusel principal
+    banners: [],
     brands: [],
-    contactInfo: {}
+    contactInfo: {},
+    activeCategory: null // Para rastrear la categoría activa para "Ver todos"
 };
 
 /**
@@ -48,23 +49,20 @@ async function loadInitialData() {
         if (!productsResponse.ok) {
             throw new Error(`Error HTTP! status: ${productsResponse.status} al cargar products.json`);
         }
-        const productsData = await productsResponse.json();
-        appState.products = productsData || [];
-        console.log('main.js: products.json cargado.', appState.products.length, 'productos.');
+        appState.products = await productsResponse.json();
+        console.log('main.js: products.json cargado. Total de productos:', appState.products.length);
 
-        console.log('main.js: Datos iniciales cargados con éxito.');
     } catch (error) {
         console.error('main.js: Error al cargar datos iniciales:', error);
-        showToastNotification('Error al cargar datos esenciales. Por favor, recarga la página.', 'error');
-        throw error; // Re-lanza el error para detener la ejecución si los datos son críticos
+        showToastNotification('Error al cargar datos. Algunas funciones podrían no estar disponibles.', 'error');
     }
 }
 
 /**
- * Configura los event listeners para la interacción de la UI.
+ * Configura los event listeners para la interfaz de usuario.
  */
 function setupUIEventListeners() {
-    // Toggle para el menú de navegación móvil
+    // Manejar toggle del menú de navegación móvil
     const menuToggle = document.getElementById('menuToggle');
     const mainNav = document.getElementById('mainNav');
     if (menuToggle && mainNav) {
@@ -74,184 +72,282 @@ function setupUIEventListeners() {
             menuToggle.querySelector('i').classList.toggle('fa-times');
         });
     } else {
-        console.warn('main.js: Elementos de menú móvil no encontrados.');
+        console.warn('main.js: Elementos de toggle de menú no encontrados.');
     }
 
-    // Navegación principal y navegación inferior: cerrar menú móvil al hacer clic en un enlace
-    document.querySelectorAll('.main-nav a, .bottom-nav a').forEach(link => {
+    // Cerrar menú móvil al hacer clic en un enlace
+    document.querySelectorAll('.main-nav .nav-link').forEach(link => {
         link.addEventListener('click', () => {
-            if (mainNav && mainNav.classList.contains('active')) {
+            if (mainNav.classList.contains('active')) {
                 mainNav.classList.remove('active');
-                menuToggle.querySelector('i').classList.remove('fa-times');
-                menuToggle.querySelector('i').classList.add('fa-bars');
+                if (menuToggle) {
+                    menuToggle.querySelector('i').classList.remove('fa-times');
+                    menuToggle.querySelector('i').classList.add('fa-bars');
+                }
             }
         });
     });
 
-    // Botones de abrir/cerrar carrito
-    const headerCartBtn = document.getElementById('headerCartBtn');
+    // Abrir/Cerrar modales genéricos (ej. Fault Report, Appointment)
+    document.querySelectorAll('.modal .close-btn').forEach(button => {
+        button.addEventListener('click', (event) => {
+            const modal = event.target.closest('.modal');
+            if (modal) {
+                modal.classList.remove('open');
+                modal.style.display = 'none'; // Asegurarse de que se oculta completamente
+            }
+        });
+    });
+
+    // Cerrar modales al hacer clic fuera del contenido
+    document.querySelectorAll('.modal').forEach(modal => {
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                modal.classList.remove('open');
+                modal.style.display = 'none';
+            }
+        });
+    });
+
+    // Abrir/Cerrar carrito
+    const openCartBtn = document.getElementById('openCartBtn');
     const bottomNavCart = document.getElementById('bottomNavCart');
-
-    if (headerCartBtn) {
-        headerCartBtn.addEventListener('click', () => toggleCartSidebar(true));
+    const closeCartBtn = document.getElementById('closeCartBtn'); // Este ya está en cart.js, pero lo referenciamos aquí para el evento de click principal
+    
+    if (openCartBtn) {
+        openCartBtn.addEventListener('click', () => toggleCartSidebar(true));
     } else {
-        console.warn('main.js: Botón de carrito del header no encontrado.');
+        console.warn('main.js: Botón para abrir carrito (header) no encontrado.');
     }
+
     if (bottomNavCart) {
-        bottomNavCart.addEventListener('click', () => toggleCartSidebar(true));
+        bottomNavCart.addEventListener('click', (e) => {
+            e.preventDefault(); // Evitar scroll a #
+            toggleCartSidebar(true);
+        });
     } else {
-        console.warn('main.js: Botón de carrito de la barra inferior no encontrado.');
+        console.warn('main.js: Botón para abrir carrito (bottom nav) no encontrado.');
     }
 
+    if (closeCartBtn) {
+        closeCartBtn.addEventListener('click', () => toggleCartSidebar(false));
+    } else {
+        console.warn('main.js: Botón para cerrar carrito (sidebar) no encontrado.');
+    }
 
-    // Botones de búsqueda (header y bottom nav)
+    // Abrir/Cerrar modal de búsqueda
     const headerSearchBtn = document.getElementById('headerSearchBtn');
     const bottomNavSearch = document.getElementById('bottomNavSearch');
-
+    const closeSearchModalBtn = document.getElementById('closeSearchModalBtn');
+    
     if (headerSearchBtn) {
         headerSearchBtn.addEventListener('click', () => toggleSearchModal(true));
     } else {
-        console.warn('main.js: Botón de búsqueda del header no encontrado.');
+        console.warn('main.js: Botón para abrir búsqueda (header) no encontrado.');
     }
+
     if (bottomNavSearch) {
-        bottomNavSearch.addEventListener('click', () => toggleSearchModal(true));
+        bottomNavSearch.addEventListener('click', (e) => {
+            e.preventDefault(); // Evitar scroll a #
+            toggleSearchModal(true);
+        });
     } else {
-        console.warn('main.js: Botón de búsqueda de la barra inferior no encontrado.');
+        console.warn('main.js: Botón para abrir búsqueda (bottom nav) no encontrado.');
     }
 
+    if (closeSearchModalBtn) {
+        closeSearchModalBtn.addEventListener('click', () => toggleSearchModal(false));
+    } else {
+        console.warn('main.js: Botón para cerrar búsqueda (modal) no encontrado.');
+    }
 
-    // Cerrar modales genéricos (búsqueda, reporte, agendar) al hacer clic en el botón de cerrar
-    document.querySelectorAll('.modal .close-btn').forEach(button => {
-        button.addEventListener('click', (e) => {
-            e.closest('.modal').classList.remove('open');
-            e.closest('.modal').style.display = 'none'; // Asegurar ocultado
-            document.body.style.overflow = ''; // Restaurar scroll del body
-        });
-    });
+    // Navegación a "Todos los Productos" con filtro de categoría
+    document.querySelectorAll('.category-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const category = e.target.dataset.category;
+            appState.activeCategory = category; // Guarda la categoría activa
+            const allProductsSection = document.getElementById('productos-todos');
+            const categoryFilter = document.getElementById('categoryFilter');
+            const allProductsSearchInput = document.getElementById('allProductsSearchInput');
+            const priceFilter = document.getElementById('priceFilter');
 
-    // Cerrar modales genéricos al hacer clic fuera del contenido
-    document.querySelectorAll('.modal').forEach(modal => {
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.classList.remove('open');
-                modal.style.display = 'none';
-                document.body.style.overflow = ''; // Restaurar scroll del body
+            if (allProductsSection) {
+                // Ocultar todas las secciones excepto "Todos los Productos"
+                document.querySelectorAll('main section').forEach(section => {
+                    if (section.id !== 'productos-todos') {
+                        section.classList.add('hidden');
+                    } else {
+                        section.classList.remove('hidden'); // Mostrar sección de todos los productos
+                    }
+                });
+                
+                // Aplicar el filtro de categoría y restablecer otros filtros
+                if (categoryFilter) {
+                    categoryFilter.value = category;
+                    // Disparar evento change para que setupProductFilters reaccione
+                    const event = new Event('change');
+                    categoryFilter.dispatchEvent(event);
+                }
+                if (allProductsSearchInput) allProductsSearchInput.value = '';
+                if (priceFilter) priceFilter.value = ''; // Resetear orden de precio
+                
+                // Scroll a la sección
+                allProductsSection.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                console.warn('main.js: Sección "Todos los Productos" no encontrada.');
             }
         });
     });
 
-    // Listener para añadir al carrito desde cualquier botón .add-to-cart-btn (delegación de eventos)
-    document.addEventListener('click', (event) => {
-        const addToCartBtn = event.target.closest('.add-to-cart-btn');
-        if (addToCartBtn) {
-            const productId = addToCartBtn.dataset.productId;
-            if (productId) {
-                initCart(); // Asegurarse de que el carrito esté inicializado
-                addToCart(productId);
+    // Manejar clic en "Ver todos" o "Ver más novedades"
+    document.querySelectorAll('a[href="#productos-todos"]').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            appState.activeCategory = null; // Resetear categoría activa al ver todos
+            const allProductsSection = document.getElementById('productos-todos');
+            const categoryFilter = document.getElementById('categoryFilter');
+            const allProductsSearchInput = document.getElementById('allProductsSearchInput');
+            const priceFilter = document.getElementById('priceFilter');
+
+            if (allProductsSection) {
+                document.querySelectorAll('main section').forEach(section => {
+                    if (section.id !== 'productos-todos') {
+                        section.classList.add('hidden');
+                    } else {
+                        section.classList.remove('hidden');
+                    }
+                });
+
+                if (categoryFilter) categoryFilter.value = ''; // Limpiar filtro de categoría
+                if (allProductsSearchInput) allProductsSearchInput.value = '';
+                if (priceFilter) priceFilter.value = '';
+
+                // Volver a configurar filtros para que renderice todo sin filtros específicos
+                setupProductFilters(appState.products, '#allProductsGrid', { targetCategoryFilterId: 'categoryFilter' });
+
+                allProductsSection.scrollIntoView({ behavior: 'smooth' });
             }
-        }
+        });
     });
 
-    // Manejo del formulario de contacto
-    const contactForm = document.getElementById('contactForm');
-    if (contactForm) {
-        contactForm.addEventListener('submit', (event) => {
-            event.preventDefault();
-            showToastNotification('Mensaje enviado. Te responderemos pronto.', 'success');
-            contactForm.reset();
-        });
-    }
 }
 
 /**
- * Configura el estado activo de la barra de navegación inferior en base al scroll.
+ * Configura el estado activo de la barra de navegación inferior.
  */
 function setupBottomNavActiveState() {
-    const sections = document.querySelectorAll('main section');
-    const bottomNavItems = document.querySelectorAll('.bottom-nav .nav-item');
+    const bottomNavLinks = document.querySelectorAll('.bottom-nav .nav-item');
+    const sections = document.querySelectorAll('main section[id]'); // Todas las secciones con ID
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            if (entry.isIntersecting && entry.intersectionRatio >= 0.5) { // Cuando al menos el 50% de la sección está visible
-                const currentId = entry.target.id;
-                bottomNavItems.forEach(item => {
-                    item.classList.remove('active');
-                    if (item.getAttribute('href') === `#${currentId}`) {
-                        item.classList.add('active');
-                    }
-                });
-                // También activar el enlace en el main-nav
-                document.querySelectorAll('.main-nav .nav-list a').forEach(link => {
+            if (entry.isIntersecting) {
+                const currentSectionId = entry.target.id;
+                bottomNavLinks.forEach(link => {
                     link.classList.remove('active');
-                    if (link.getAttribute('href') === `#${currentId}`) {
+                    if (link.getAttribute('href') === `#${currentSectionId}`) {
                         link.classList.add('active');
+                    }
+                    // Manejo especial para "Inicio" que apunta a #novedades pero el link es #novedades
+                    if (currentSectionId === 'novedades' && link.getAttribute('aria-label') === 'Inicio') {
+                         link.classList.add('active');
                     }
                 });
             }
         });
-    }, { threshold: 0.5 }); // Un umbral del 50%
+    }, {
+        root: null, // viewport
+        rootMargin: '0px 0px -50% 0px', // un poco por debajo del centro de la pantalla
+        threshold: 0.3 // cuando el 30% de la sección es visible
+    });
 
     sections.forEach(section => {
         observer.observe(section);
     });
 
-    // Activar el item "Inicio" por defecto al cargar la página si no hay scroll
-    const firstSection = document.getElementById('hero-section');
-    if (firstSection) {
-        const firstNavItem = document.querySelector('.bottom-nav .nav-item[href="#hero-section"]');
-        const firstMainNavItem = document.querySelector('.main-nav .nav-list a[href="#hero-section"]');
-        if (firstNavItem) firstNavItem.classList.add('active');
-        if (firstMainNavItem) firstMainNavItem.classList.add('active');
-    }
+    // Si la página carga sin scroll (arriba), asegurar que "Inicio" esté activo
+    // Después de un pequeño delay para que el observador tenga tiempo de actuar
+    setTimeout(() => {
+        const anyActive = Array.from(bottomNavLinks).some(link => link.classList.contains('active'));
+        if (!anyActive) {
+            const homeLink = document.querySelector('.bottom-nav .nav-item[aria-label="Inicio"]');
+            if (homeLink) homeLink.classList.add('active');
+        }
+    }, 500);
+
+    // Event listeners para los enlaces del bottom-nav que NO son modales
+    bottomNavLinks.forEach(link => {
+        if (!['bottomNavSearch', 'bottomNavCart'].includes(link.id)) { // Excluir los que abren modales/sidebars
+            link.addEventListener('click', (e) => {
+                // Eliminar 'active' de todos los enlaces del bottom-nav
+                bottomNavLinks.forEach(navLink => navLink.classList.remove('active'));
+                // Añadir 'active' solo al enlace clickeado
+                e.currentTarget.classList.add('active');
+            });
+        }
+    });
 }
 
 
-// Ejecución principal al cargar el DOM
+/**
+ * Inicializa la aplicación después de que el DOM esté completamente cargado.
+ */
 document.addEventListener('DOMContentLoaded', async () => {
+    console.log('main.js: DOM cargado. Inicializando la aplicación...');
+
+    // Paso 1: Cargar datos iniciales (productos, banners, configuración)
+    await loadInitialData();
+
     try {
-        // Paso 1: Cargar datos iniciales (products, config)
-        await loadInitialData();
-
-        // Paso 2: Inicializar el módulo de verificación de edad (ya se inicializa solo)
-        // age-verification.js se ejecuta automáticamente en DOMContentLoaded
-
-        // Paso 3: Inicializar el carrito (carga desde localStorage y renderiza)
-        initCart();
-
-        // Paso 4: Inicializar el carrusel principal (Ofertas y Novedades unificadas)
-        // Filtramos productos que sean ofertas o novedades para el carrusel principal
-        const heroProducts = appState.products.filter(p => p.isOnOffer || p.isNew);
-        if (heroProducts.length > 0) {
-            initCarousel(heroProducts, 'heroCarouselTrack', 'heroCarouselPrev', 'heroCarouselNext', 'heroCarouselDots', true); // True para carrusel de productos
-        } else if (appState.banners.length > 0) {
-            // Si no hay productos en oferta/novedad, usar los banners configurados
-            initCarousel(appState.banners, 'heroCarouselTrack', 'heroCarouselPrev', 'heroCarouselNext', 'heroCarouselDots', false);
+        // Paso 2: Inicializar carrusel de banners si hay datos
+        if (appState.banners.length > 0) {
+            initCarousel(appState.banners);
+            console.log('main.js: Carrusel de banners inicializado.');
         } else {
-            console.warn('main.js: No hay productos en oferta/novedad ni banners para el carrusel principal.');
+            console.warn('main.js: No se encontraron datos de banners para inicializar el carrusel.');
         }
 
+        // Paso 3: Renderizar productos en la sección "Novedades" (isNew)
+        renderProducts(appState.products, '#newProductsGrid', { isNew: true, limit: 8 });
+        console.log('main.js: Productos de novedades renderizados.');
 
-        // Paso 5: Renderizar todos los productos en la sección principal de productos
-        renderAllProducts(appState.products, '#allProductsGrid'); // Usar la nueva función renombrada
+        // Paso 4: Renderizar productos en la sección "Ofertas Destacadas" (isOnOffer)
+        renderProducts(appState.products, '#offerProductsGrid', { isOnOffer: true, limit: 8 });
+        console.log('main.js: Productos de ofertas renderizados.');
 
-        // Paso 6: Configurar filtros de productos
-        setupProductFilters(appState.products, '#allProductsGrid');
+        // Paso 5: Renderizar marcas
+        renderBrands(appState.brands, '#brandsGrid');
+        console.log('main.js: Marcas renderizadas.');
 
-        // Paso 7: Renderizar y configurar el carrusel de marcas
-        renderBrands(appState.brands, '#brandsLogosContainer');
+        // Paso 6: Configurar carruseles de productos por categoría
+        // Asegúrate de tener los contenedores en tu HTML para cada categoría
+        setupCategoryProductCarousel(appState.products, '#licoresCarousel', 'Licor');
+        setupCategoryProductCarousel(appState.products, '#cervezasCarousel', 'Cerveza');
+        // Agrega más categorías según sea necesario
 
-        // Paso 8: Configurar el módulo de búsqueda
+        console.log('main.js: Carruseles de categorías configurados.');
+
+
+        // Paso 7: Inicializar filtros para la sección "Todos los Productos"
+        setupProductFilters(appState.products, '#allProductsGrid', {
+            targetCategoryFilterId: 'categoryFilter',
+            targetSearchInputId: 'allProductsSearchInput',
+            targetPriceFilterId: 'priceFilter'
+        });
+        console.log('main.js: Filtros de productos configurados.');
+
+        // Paso 8: Inicializar módulo de búsqueda
         setupSearch();
+        console.log('main.js: Módulo de búsqueda inicializado.');
 
-        // Paso 9: Configurar el carrusel de productos por categoría
-        setupCategoryProductCarousel();
-        // Por defecto, mostrar la categoría 'Todos' al inicio
-        displayProductsByCategory('Todos');
-
+        // Paso 9: Inicializar carrito de compras
+        initCart();
+        console.log('main.js: Carrito inicializado.');
 
         // Paso 10: Inicializar módulo de soporte con el número de WhatsApp desde config.json
         if (appState.contactInfo.phone) {
-            setupSupport(); // setupSupport ya obtiene el número de appState
+            setupSupport(appState.contactInfo.phone);
         } else {
             console.warn('main.js: Número de teléfono de contacto no encontrado en config.json para el módulo de soporte.');
         }
@@ -268,14 +364,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('contactAddress').textContent = appState.contactInfo.address;
         
         // Actualizar el enlace de WhatsApp en el footer si existe
-        const whatsappFloatLink = document.querySelector('.whatsapp-float');
-        if (whatsappFloatLink && appState.contactInfo.phone) {
-            whatsappFloatLink.href = `https://wa.me/${appState.contactInfo.phone}`;
+        const footerWhatsappLink = document.querySelector('.social-media a[href*="whatsapp"]');
+        if (footerWhatsappLink && appState.contactInfo.phone) {
+            footerWhatsappLink.href = `https://wa.me/${appState.contactInfo.phone}`;
         }
 
 
     } catch (error) {
         console.error('main.js: No se pudieron cargar los productos o la aplicación no se renderizó completamente.', error);
-        showToastNotification('Error crítico al iniciar la aplicación. Contacta a soporte.', 'error');
+        showToastNotification('Error crítico al iniciar la aplicación.', 'error');
     }
 });
