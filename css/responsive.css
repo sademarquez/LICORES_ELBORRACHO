@@ -1,219 +1,141 @@
-/* css/responsive.css */
+/* responsive.css */
 
-/* Mobile-First Approach */
-/* Estilos para dispositivos pequeños (hasta 767px) */
-@media (max-width: 767px) {
-    .header-content {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: var(--spacing-md);
+/* General Adjustments for Smaller Screens */
+@media (max-width: 992px) {
+    .header-top-bar {
+        flex-wrap: wrap; /* Allow items to wrap to next line */
+        justify-content: center; /* Center items when wrapped */
+        padding: 0 15px;
     }
 
-    .main-nav {
+    .main-logo-container {
+        width: 100%; /* Logo takes full width */
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .search-bar-container {
+        order: 3; /* Move search bar to the bottom on small screens */
         width: 100%;
-        display: none; /* Ocultar por defecto para el menú hamburguesa */
-        flex-direction: column;
-        background-color: var(--dark-bg); /* Usar el color oscuro del header */
-        position: absolute;
-        top: 100%;
-        left: 0;
-        box-shadow: var(--shadow-md);
-        padding: var(--spacing-md);
-        border-top: 1px solid var(--border-color);
-        z-index: 100; /* Asegurarse de que el menú está sobre otros elementos */
+        margin: 10px 0;
     }
 
-    .main-nav.active {
-        display: flex;
-    }
-
-    .main-nav .nav-list {
-        flex-direction: column;
-        gap: var(--spacing-sm);
-    }
-
-    .main-nav .nav-list a {
-        padding: var(--spacing-sm) 0;
+    .header-icons-nav {
         width: 100%;
-        color: var(--text-color-light); /* Color de texto para enlaces del menú móvil */
-    }
-    
-    .main-nav .nav-list a::after {
-        background-color: var(--primary-color); /* Asegurar color de subrayado en móvil */
+        margin-top: 10px;
     }
 
-    /* Ocultar el campo de búsqueda del header en móvil (ahora solo un botón) */
-    .header-content .search-input-group {
-        display: none;
+    .header-icons-nav ul {
+        justify-content: center; /* Center icons */
+        gap: 15px;
     }
 
-    .cart-sidebar {
-        width: 100%; /* Ancho completo en móvil */
+    .main-navigation ul {
+        flex-wrap: wrap; /* Allow category buttons to wrap */
+        gap: 10px;
+        padding: 0 10px;
     }
 
-    .bottom-nav {
-        display: flex; /* Asegurar que la barra inferior esté visible en móvil */
+    .main-navigation button {
+        flex-basis: calc(50% - 10px); /* Two buttons per row */
+        font-size: 0.95rem;
+        padding: 8px 10px;
     }
 
-    /* Carruseles de productos en móvil (una columna para las tarjetas) */
-    .product-carousel-track .product-card {
-        width: 180px; /* Ancho más pequeño para mobile */
+    main {
+        padding: 0 15px;
     }
 
-    /* Carrusel 2x2 en móvil (todavía se muestra 2x2, pero más compacto) */
-    .product-carousel-2x2 .product-carousel-track {
-        grid-template-columns: repeat(2, 1fr); /* 2 columnas */
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Smaller cards */
+        gap: 15px;
     }
 
-    .product-carousel-wrapper .carousel-nav-btn {
-        font-size: 1em;
-        padding: var(--spacing-xs) var(--spacing-sm);
+    .product-card .product-image {
+        height: 120px;
     }
 
-    .brand-grid {
-        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); /* Logos más pequeños en móvil */
-        gap: var(--spacing-md);
+    .product-carousel-container .carousel-item {
+        width: 180px; /* Smaller width for carousel products */
     }
 
-    .brand-logo img {
-        height: 40px; /* Altura de logo más pequeña */
+    .carousel-caption {
+        bottom: 10px;
+        padding: 10px 15px;
+        max-width: 90%;
     }
 
-    .category-nav {
-        gap: var(--spacing-sm);
-        justify-content: flex-start; /* Permitir scroll si hay muchas categorías */
+    .carousel-caption h2 {
+        font-size: 1.5rem;
     }
 
-    .category-card {
-        min-width: 100px;
-        padding: var(--spacing-sm);
-    }
-
-    .contact-grid {
-        grid-template-columns: 1fr;
+    .carousel-caption p {
+        font-size: 1rem;
     }
 }
 
-/* Tablet (768px a 1023px) */
-@media (min-width: 768px) and (max-width: 1023px) {
-    .container {
-        padding: 0 var(--spacing-xl);
+@media (max-width: 768px) {
+    .main-logo {
+        max-height: 50px;
     }
 
-    .header-content {
-        flex-direction: row;
-        align-items: center;
-        /* .search-input-group ya no está en el header, así que este estilo no es necesario aquí */
+    .header-icons-nav a {
+        font-size: 1.1rem;
     }
 
-    .main-nav {
-        display: flex; /* Asegurar que la navegación principal esté visible */
-        position: static;
-        box-shadow: none;
-        border-top: none;
-        padding: var(--spacing-sm) 0;
+    .main-navigation button {
+        flex-basis: calc(33.33% - 10px); /* Three buttons per row (if many) */
     }
 
-    .main-nav .nav-list {
-        flex-direction: row;
-        gap: var(--spacing-lg);
+    .hero-section .carousel-item {
+        height: 280px; /* Smaller hero image */
     }
 
-    .menu-toggle {
-        display: none; /* Ocultar el menú hamburguesa */
-    }
-
-    .search-input-group input {
-        width: auto;
-    }
-
-    .search-input-group button {
-        width: auto;
-    }
-
-    .cart-sidebar {
-        width: 350px; /* Ancho fijo en tablet */
-    }
-
-    .product-carousel-track .product-card {
-        width: 200px; /* Ancho mediano para tablet */
-    }
-
-    .product-carousel-2x2 .product-carousel-track {
-        grid-template-columns: repeat(3, 1fr); /* 3 columnas en tablet */
-    }
-
-    .brand-grid {
-        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-        gap: var(--spacing-lg);
-    }
-
-    .category-card {
-        min-width: 130px;
-    }
-
-    .contact-grid {
-        grid-template-columns: repeat(2, 1fr);
+    .carousel-caption {
+        background-color: rgba(0, 0, 0, 0.75); /* More opaque on small screens */
     }
 }
 
-/* Desktop (1024px y más) */
-@media (min-width: 1024px) {
-    .container {
-        padding: 0 var(--spacing-xl);
+@media (max-width: 480px) {
+    .main-navigation button {
+        flex-basis: 100%; /* One button per row on very small screens */
+        margin-bottom: 5px;
     }
 
-    /* .product-grid { /* Ya no se usa para secciones principales */
-    /* grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); */
-    /* } */
-
-    .main-nav {
-        display: flex; /* Asegurar que la navegación principal esté visible en desktop */
+    .hero-section .carousel-item {
+        height: 200px; /* Even smaller hero image */
     }
 
-    .menu-toggle {
-        display: none; /* Asegurar que el menú hamburguesa no se muestre en desktop */
+    .carousel-caption {
+        position: static; /* Stack caption below image */
+        transform: none;
+        background-color: rgba(0, 0, 0, 0.8);
+        width: 100%;
+        border-radius: 0;
+        padding: 10px;
     }
 
-    .bottom-nav {
-        display: none; /* Ocultar la barra inferior en desktop */
+    .carousel-caption h2 {
+        font-size: 1.2rem;
     }
 
-    .hero-section {
-        height: 450px; /* Altura original del carrusel en desktop */
+    .carousel-caption p {
+        font-size: 0.9rem;
+        display: none; /* Hide description on very small screens */
     }
 
-    /* .product-filters select, /* Ya no se usan filtros en el grid principal */
-    /* .product-filters input { */
-    /* max-width: 250px; */
-    /* } */
-
-    .search-results-grid {
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Más columnas en desktop para resultados de búsqueda */
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Smallest cards */
+        gap: 10px;
     }
 
-    .cart-sidebar {
-        width: 400px; /* Ancho más grande en desktop */
+    .product-carousel-container .carousel-item {
+        width: 150px; /* Smallest width for carousel products */
     }
 
-    .product-carousel-track .product-card {
-        width: 220px; /* Ancho normal para desktop */
-    }
-
-    .product-carousel-2x2 .product-carousel-track {
-        grid-template-columns: repeat(4, 1fr); /* 4 columnas en desktop */
-    }
-
-    .brand-grid {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-        gap: var(--spacing-xxl);
-    }
-
-    .brand-logo img {
-        height: 70px;
-    }
-
-    .category-card {
-        min-width: 150px;
+    h2 {
+        font-size: 1.5rem;
+        text-align: center;
+        flex-direction: column; /* Icon above text */
     }
 }
