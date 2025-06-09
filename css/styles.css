@@ -1,524 +1,359 @@
-/* css/styles.css */
-
-/* Variables CSS para colores, fuentes, etc. */
-:root {
-    /* Paleta de Colores EL BORRACHO (Oscura y Dorada/Ámbar) */
-    --primary-color: #FFBF00; /* Ámbar/Dorado vibrante */
-    --primary-color-dark: #E0A800; /* Ámbar más oscuro */
-    --secondary-color: #343a40; /* Gris oscuro, casi negro */
-    --secondary-color-dark: #23272b;
-    --accent-color: #FFDA6A; /* Tono más claro para acentos */
-    --accent-color-dark: #FFC107;
-
-    --text-color-dark: #FFFFFF; /* Texto blanco para contraste en fondos oscuros */
-    --text-color-light: #CED4DA; /* Texto gris claro para descripciones, etc. */
-    --white: #ffffff;
-    --light-bg: #212529; /* Fondo oscuro muy sutil */
-    --dark-bg: #1A1A1A; /* Fondo negro profundo para headers, footers */
-    --border-color: #495057; /* Color de borde oscuro */
-    --success-color: #28a745; /* Verde para mensajes de éxito */
-    --danger-color: #dc3545; /* Rojo para errores o eliminación */
-    --info-color: #17a2b8; /* Azul para información */
-
-    /* Espaciado y Tamaños */
-    --spacing-xs: 5px;
-    --spacing-sm: 10px;
-    --spacing-md: 15px;
-    --spacing-lg: 20px;
-    --spacing-xl: 30px;
-    --spacing-xxl: 50px;
-
-    /* Bordes y Sombras */
-    --border-radius: 8px;
-    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
-    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.3);
-    --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.4);
-    --box-shadow-float: 0px 8px 20px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 191, 0, 0.3); /* Sombra para efecto flotante */
-
-    /* Transiciones */
-    --transition-speed: 0.3s;
-}
-
-/* Base global */
-* {
-    box-sizing: border-box;
+/* General Body and HTML Reset */
+body {
+    font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
-}
-
-html {
-    scroll-behavior: smooth; /* Desplazamiento suave al hacer clic en enlaces de anclaje */
-}
-
-body {
-    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    background-color: var(--dark-bg);
-    color: var(--text-color-dark);
+    background-color: #f4f4f4;
+    color: #333;
     line-height: 1.6;
-    overflow-x: hidden; /* Evita scroll horizontal no deseado */
 }
 
 a {
-    color: var(--primary-color);
+    color: #007bff;
     text-decoration: none;
-    transition: color var(--transition-speed) ease;
 }
 
 a:hover {
-    color: var(--accent-color);
+    text-decoration: underline;
 }
 
-ul {
-    list-style: none;
-}
-
-h1, h2, h3, h4, h5, h6 {
-    color: var(--text-color-dark);
-    margin-bottom: var(--spacing-md);
-    line-height: 1.2;
-}
-
-h1 { font-size: 2.8em; }
-h2 { font-size: 2.2em; }
-h3 { font-size: 1.8em; }
-h4 { font-size: 1.5em; }
-
-p {
-    margin-bottom: var(--spacing-sm);
-    color: var(--text-color-light);
-}
-
-img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 var(--spacing-lg);
-}
-
-.section {
-    padding: var(--spacing-xxl) 0;
-    margin-bottom: var(--spacing-lg);
-    background-color: var(--light-bg); /* Fondo más claro para las secciones */
-    border-radius: var(--border-radius);
-    overflow: hidden; /* Asegura que los carruseles se vean bien */
-    position: relative;
-    box-shadow: var(--shadow-md); /* Sombra base para las secciones */
-}
-
-.section-title {
-    text-align: center;
-    color: var(--primary-color);
-    margin-bottom: var(--spacing-xl);
-    font-size: 2.5em;
-    text-shadow: 0 0 10px rgba(255, 191, 0, 0.5); /* Efecto futurista */
-    position: relative;
-    padding-bottom: var(--spacing-sm);
-}
-
-.section-title::after {
-    content: '';
-    display: block;
-    width: 60px;
-    height: 3px;
-    background: linear-gradient_deg, var(--primary-color), var(--accent-color));
-    margin: var(--spacing-sm) auto 0;
-    border-radius: 2px;
-}
-
-/* Botones genéricos */
-.btn {
-    display: inline-block;
-    padding: var(--spacing-sm) var(--spacing-md);
-    border-radius: var(--border-radius);
-    font-weight: bold;
-    text-align: center;
-    cursor: pointer;
-    transition: all var(--transition-speed) ease;
-    border: none;
-}
-
-.btn-primary {
-    background-color: var(--primary-color);
-    color: var(--dark-bg);
-}
-
-.btn-primary:hover {
-    background-color: var(--primary-color-dark);
-    box-shadow: var(--shadow-sm);
-}
-
-.btn-secondary {
-    background-color: transparent;
-    color: var(--primary-color);
-    border: 2px solid var(--primary-color);
-}
-
-.btn-secondary:hover {
-    background-color: var(--primary-color);
-    color: var(--dark-bg);
-    box-shadow: var(--shadow-sm);
-}
-
-.icon-btn {
-    background: none;
-    border: none;
-    color: var(--text-color-dark);
-    font-size: 1.5em;
-    cursor: pointer;
-    padding: var(--spacing-xs);
-    border-radius: var(--border-radius);
-    transition: color var(--transition-speed) ease, background-color var(--transition-speed) ease;
-}
-
-.icon-btn:hover {
-    color: var(--primary-color);
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-/* Header */
+/* Main Header Layout */
 .main-header {
-    background-color: var(--dark-bg);
-    padding: var(--spacing-md) 0;
-    box-shadow: var(--shadow-md);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 10px 0;
 }
 
-.header-content {
+.header-top-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: var(--spacing-md);
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
-.logo {
+.main-logo-container {
+    flex-shrink: 0; /* Prevent logo from shrinking */
+}
+
+.main-logo {
+    max-height: 60px; /* Adjust as needed for your logo size */
+    width: auto;
+}
+
+/* Search Bar */
+.search-bar-container {
+    flex-grow: 1; /* Allows search bar to take available space */
     display: flex;
-    align-items: center;
+    margin: 0 20px; /* Space around search bar */
+    max-width: 500px; /* Limit max width */
 }
 
-.logo img {
-    height: 40px;
-    margin-right: var(--spacing-sm);
-}
-
-.logo h1 {
-    font-size: 1.8em;
-    color: var(--primary-color);
-    margin: 0;
-    white-space: nowrap; /* Evita que el texto del logo se rompa */
-}
-
-.header-actions {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
-}
-
-/* .search-input-group {
-    display: flex;
-    align-items: center;
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
-    overflow: hidden;
-    background-color: var(--secondary-color);
-    flex-grow: 1;
-    max-width: 400px;
-}
-
-.search-input-group input {
-    border: none;
-    background: none;
-    padding: var(--spacing-sm);
-    color: var(--text-color-dark);
-    flex-grow: 1;
+#search-input {
+    width: 100%;
+    padding: 8px 15px;
+    border: 1px solid #ccc;
+    border-radius: 20px 0 0 20px;
     outline: none;
+    font-size: 1rem;
 }
 
-.search-input-group input::placeholder {
-    color: var(--text-color-light);
-}
-
-.search-input-group button {
-    background-color: var(--secondary-color-dark);
-    color: var(--primary-color);
-    border: none;
-    padding: var(--spacing-sm) var(--spacing-md);
+#search-button {
+    background-color: #dc3545; /* Red color for search button */
+    color: white;
+    border: 1px solid #dc3545;
+    border-radius: 0 20px 20px 0;
+    padding: 8px 15px;
     cursor: pointer;
-    transition: background-color var(--transition-speed) ease;
+    transition: background-color 0.3s ease;
 }
 
-.search-input-group button:hover {
-    background-color: var(--primary-color-dark);
-    color: var(--dark-bg);
-} */
+#search-button:hover {
+    background-color: #c82333;
+}
 
+/* Header Icons Navigation */
+.header-icons-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 20px;
+}
 
-.cart-toggle {
+.header-icons-nav a {
+    color: #333;
+    font-size: 1.2rem;
     position: relative;
     display: flex;
     align-items: center;
+    gap: 5px;
+}
+
+.header-icons-nav a:hover {
+    color: #dc3545;
+    text-decoration: none;
 }
 
 .cart-count {
-    background-color: var(--primary-color);
-    color: var(--dark-bg);
-    font-size: 0.7em;
-    font-weight: bold;
+    background-color: #dc3545;
+    color: white;
     border-radius: 50%;
-    padding: 3px 7px;
+    padding: 2px 6px;
+    font-size: 0.8rem;
     position: absolute;
     top: -5px;
-    right: -5px;
-    min-width: 20px;
-    text-align: center;
+    right: -10px;
 }
 
-/* Main Navigation */
-.main-nav {
-    background-color: var(--secondary-color);
-    padding: var(--spacing-sm) 0;
-    box-shadow: var(--shadow-sm);
+/* Main Navigation (Categories) */
+.main-navigation {
+    background-color: #333;
+    padding: 10px 0;
 }
 
-.nav-list {
+.main-navigation ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
     display: flex;
-    justify-content: center;
-    gap: var(--spacing-xl);
+    justify-content: center; /* Center category buttons */
+    gap: 15px;
 }
 
-.nav-list a {
-    color: var(--text-color-dark);
-    font-weight: bold;
-    padding: var(--spacing-sm) 0;
-    position: relative;
-    transition: color var(--transition-speed) ease;
+.main-navigation button {
+    background: none;
+    border: none;
+    color: white;
+    padding: 8px 15px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border-radius: 5px;
 }
 
-.nav-list a::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background-color: var(--primary-color);
-    transition: width var(--transition-speed) ease-in-out;
+.main-navigation button:hover {
+    background-color: #555;
 }
 
-.nav-list a:hover {
-    color: var(--primary-color);
+/* Main Content Layout */
+main {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px;
 }
 
-.nav-list a:hover::after,
-.nav-list a.active::after {
-    width: 100%;
+section {
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
-/* Footer */
-.main-footer {
-    background-color: var(--dark-bg);
-    color: var(--text-color-light);
-    padding: var(--spacing-xl) 0;
+h2 {
+    color: #333;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+h2 .fas {
+    color: #dc3545; /* Icon color */
+}
+
+/* Product Grid (for "Todos los Productos" or filtered results) */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+/* Product Card Styling */
+.product-card {
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 15px;
     text-align: center;
-    margin-top: var(--spacing-xxl);
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Pushes button to bottom */
+    position: relative; /* For tags */
+}
+
+.product-card .product-image {
+    max-width: 100%;
+    height: 150px; /* Fixed height for consistent display */
+    object-fit: contain; /* Ensures image fits without cropping */
+    margin-bottom: 10px;
+}
+
+.product-card .product-name {
+    font-size: 1.1rem;
+    margin: 10px 0 5px;
+    height: 2.2em; /* Limit to two lines */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.1em;
+}
+
+.product-card .product-description {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 10px;
+    height: 3.6em; /* Limit to about three lines */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.2em;
+}
+
+.product-card .product-price {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #007bff;
+    margin-bottom: 15px;
+}
+
+.product-card .add-to-cart-btn {
+    background-color: #28a745; /* Green for add to cart */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+    width: 100%; /* Make button full width of card */
+    margin-top: auto; /* Push button to bottom */
+}
+
+.product-card .add-to-cart-btn:hover {
+    background-color: #218838;
+}
+
+/* Product Tags (New/Offer) */
+.product-offer-tag, .product-new-tag {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #dc3545; /* Red for offer */
+    color: white;
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    z-index: 10;
+}
+
+.product-new-tag {
+    background-color: #007bff; /* Blue for new */
+    right: auto;
+    left: 10px;
+}
+
+/* Footer Styles */
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 40px;
 }
 
 .footer-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--spacing-md);
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
-.footer-content p {
-    margin: 0;
+.footer-nav a {
+    color: white;
+    margin: 0 10px;
 }
 
-.social-media {
-    display: flex;
-    gap: var(--spacing-md);
-    margin-top: var(--spacing-sm);
+.footer-nav a:hover {
+    text-decoration: underline;
 }
 
-.social-media a {
-    font-size: 1.8em;
-    color: var(--text-color-light);
-}
-
-.social-media a:hover {
-    color: var(--primary-color);
-}
-
-/* Forms */
-.form-group {
-    margin-bottom: var(--spacing-md);
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: var(--spacing-xs);
-    color: var(--primary-color);
-    font-weight: bold;
-}
-
-.form-group input[type="text"],
-.form-group input[type="email"],
-.form-group input[type="tel"],
-.form-group input[type="date"],
-.form-group input[type="time"],
-.form-group textarea {
-    width: 100%;
-    padding: var(--spacing-sm);
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
-    background-color: var(--secondary-color);
-    color: var(--text-color-dark);
-    font-size: 1em;
-    transition: border-color var(--transition-speed) ease;
-}
-
-.form-group input:focus,
-.form-group textarea:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(255, 191, 0, 0.3);
-}
-
-.form-group textarea {
-    resize: vertical;
-}
-
-/* Bottom Navigation (Mobile) */
-.bottom-nav {
-    display: none; /* Se maneja en responsive.css para mobile */
-    position: fixed;
-    bottom: 0;
+/* Modal Styles (for Cart, Age Verification) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
     left: 0;
-    width: 100%;
-    background-color: var(--dark-bg);
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.4);
-    z-index: 900;
-    justify-content: space-around;
-    padding: var(--spacing-sm) 0;
-    border-top: 1px solid var(--border-color);
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
 }
 
-.bottom-nav .nav-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: var(--text-color-light);
-    font-size: 0.8em;
-    transition: color 0.3s ease, transform 0.3s ease;
-    padding: var(--spacing-xs);
-    position: relative; /* Para el contador del carrito */
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 30px;
+    border: 1px solid #888;
+    width: 80%; /* Could be responsive */
+    max-width: 600px;
+    border-radius: 10px;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
-.bottom-nav .nav-item i {
-    font-size: 1.4em;
-    margin-bottom: 3px;
-    color: var(--text-color-light);
-    transition: color 0.3s ease;
-}
-
-.bottom-nav .nav-item.active {
-    color: var(--primary-color); /* Icono activo más brillante */
-    transform: scale(1.1); /* Pequeño zoom en el icono activo */
-}
-
-.bottom-nav .nav-item.active i {
-    color: var(--primary-color);
-}
-
-/* Hover (para dispositivos con mouse, aunque es móvil-first) */
-.bottom-nav .nav-item:hover {
-    color: var(--accent-color); /* Un tono más claro en hover */
-}
-.bottom-nav .nav-item:hover i {
-    color: var(--accent-color);
-}
-
-/* Contador del carrito en el bottom-nav: Más prominente */
-.bottom-nav .nav-item .cart-count {
-    background-color: var(--danger-color); /* Rojo vibrante */
-    color: var(--white);
-    font-size: 0.75em; /* Un poco más grande */
-    padding: 2px 6px; /* Ajustar padding */
-    border-radius: 50%;
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
     position: absolute;
-    top: 0px; /* Ajustar posición para que se vea sobre el icono */
-    right: 5px; /* Ajustar posición */
-    min-width: 18px; /* Asegura un tamaño mínimo para el número 0-9 */
-    text-align: center;
-    transform: translate(50%, -50%); /* Ajustar posición final */
-    opacity: 0; /* Oculto por defecto */
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    top: 10px;
+    right: 20px;
 }
 
-.bottom-nav .nav-item .cart-count.visible {
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Toast Notification Styles */
+#toast-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1001;
+    display: flex;
+    flex-direction: column-reverse; /* New toasts appear above old ones */
+    gap: 10px;
+}
+
+.toast {
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    min-width: 200px;
+    text-align: center;
+}
+
+.toast.show {
     opacity: 1;
-    transform: translate(50%, -50%) scale(1);
+    transform: translateY(0);
 }
 
-/* Floating Card / Futuristic Look */
-.floating-card {
-    background-color: var(--secondary-color-dark);
-    border-radius: var(--border-radius);
-    padding: var(--spacing-lg);
-    box-shadow: var(--box-shadow-float); /* Nuevo efecto de flotabilidad */
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    position: relative; /* Para posicionar elementos internos flotantes */
-    overflow: hidden; /* Asegurar que los elementos internos no se desborden */
-}
-
-.floating-card:hover {
-    transform: translateY(-5px); /* Efecto de levitación sutil */
-    box-shadow: var(--box-shadow-float); /* Mantener la sombra en hover o intensificarla */
-}
-
-/* Estilos para la sección de contacto y soporte */
-.contact-grid {
-    display: grid;
-    grid-template-columns: 1fr; /* Por defecto una columna */
-    gap: var(--spacing-xl);
-    padding: var(--spacing-lg);
-}
-
-.contact-info-card h3, .support-options-card h3 {
-    color: var(--primary-color);
-    margin-bottom: var(--spacing-lg);
-    text-align: center;
-}
-
-.contact-info-card p {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    margin-bottom: var(--spacing-sm);
-    color: var(--text-color-light);
-}
-
-.contact-info-card i {
-    color: var(--primary-color);
-    font-size: 1.2em;
-}
-
-.support-options-card {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-md);
-    align-items: center;
-}
-
-/* MEDIA QUERIES para contact-grid */
-@media (min-width: 768px) {
-    .contact-grid {
-        grid-template-columns: repeat(2, 1fr); /* 2 columnas en tablet y desktop */
-    }
-}
+.toast.success { background-color: #28a745; }
+.toast.error { background-color: #dc3545; }
+.toast.info { background-color: #17a2b8; }
