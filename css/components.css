@@ -863,3 +863,132 @@
     max-height: 100%;
     object-fit: contain; /* Asegura que el logo se ajuste sin distorsionarse */
 }
+/* css/components.css */
+
+/* ... (tu código CSS existente) ... */
+
+/* UTILIDADES */
+.hidden {
+    display: none !important;
+}
+
+/* ESTILOS DEL MODAL DE VERIFICACIÓN DE EDAD */
+.age-verification-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9); /* Overlay de fallback si la imagen no carga */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000; /* Asegura que esté por encima de todo */
+    /* Fondo de imagen para el modal (ajusta la ruta si es necesario) */
+    background-image: url('../images/age-modal-bg.jpg'); /* **COLOCA TU IMAGEN AQUÍ** */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: opacity 0.3s ease-in-out; /* Transición para cuando el modal se oculta/muestra */
+}
+
+/* Overlay para la imagen de fondo (hace el texto más legible) */
+.age-verification-modal::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Oscurece la imagen de fondo */
+    z-index: -1; /* Detrás del contenido del modal */
+}
+
+.age-verification-content {
+    background-color: rgba(35, 39, 43, 0.95); /* Fondo oscuro semitransparente para el contenido */
+    padding: var(--spacing-xl);
+    border-radius: var(--border-radius-lg); /* Bordes más redondeados */
+    text-align: center;
+    box-shadow: var(--shadow-lg);
+    max-width: 500px; /* Ancho máximo del contenido del modal */
+    width: 90%; /* Ancho responsivo para móviles */
+    color: var(--text-color-dark); /* Color de texto claro */
+    position: relative;
+    z-index: 1; /* Asegura que el contenido esté sobre el overlay */
+}
+
+.age-verification-content h2 {
+    color: var(--primary-color); /* Color ámbar/dorado */
+    margin-bottom: var(--spacing-md);
+    font-size: 2.2em; /* Título un poco más grande */
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.age-verification-content p {
+    color: var(--text-color-light);
+    margin-bottom: var(--spacing-lg); /* Más espacio inferior */
+    font-size: 1.1em; /* Texto del cuerpo un poco más grande */
+    line-height: 1.6;
+}
+
+.age-verification-buttons {
+    display: flex;
+    flex-direction: column; /* Botones apilados en móviles */
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg); /* Espacio antes del texto de prohibición */
+}
+
+.age-verification-buttons .btn-primary,
+.age-verification-buttons .btn-secondary {
+    width: 100%; /* Botones de ancho completo en móviles */
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: 1.1em; /* Texto del botón más grande */
+    font-weight: bold;
+    border-radius: var(--border-radius);
+    text-transform: uppercase;
+    transition: background-color 0.2s ease; /* Transición suave al pasar el mouse */
+}
+
+/* Estilos específicos para los botones para que coincidan con el diseño */
+.age-verification-buttons #confirmAgeBtn {
+    background-color: #28a745; /* Verde para "Soy mayor" */
+    color: var(--white);
+    border: none;
+}
+
+.age-verification-buttons #confirmAgeBtn:hover {
+    background-color: #218838; /* Verde ligeramente más oscuro */
+}
+
+.age-verification-buttons #declineAgeBtn {
+    background-color: #dc3545; /* Rojo para "No soy mayor" */
+    color: var(--white);
+    border: none;
+}
+
+.age-verification-buttons #declineAgeBtn:hover {
+    background-color: #c82333; /* Rojo ligeramente más oscuro */
+}
+
+.prohibition-text {
+    font-size: 0.95em; /* Texto legal */
+    color: var(--text-color-light);
+    opacity: 0.9;
+    margin-top: var(--spacing-md);
+    font-weight: 500;
+}
+
+/* Responsive: botones lado a lado en pantallas más grandes */
+@media (min-width: 768px) {
+    .age-verification-buttons {
+        flex-direction: row;
+        justify-content: center;
+        gap: var(--spacing-lg);
+    }
+    .age-verification-buttons .btn-primary,
+    .age-verification-buttons .btn-secondary {
+        width: auto; /* Ancho ajustado al contenido */
+        min-width: 180px; /* Ancho mínimo para consistencia */
+    }
+}
