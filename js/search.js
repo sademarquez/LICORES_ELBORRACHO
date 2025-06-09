@@ -8,14 +8,16 @@ let searchModal;
 let searchInput;
 let searchButton;
 let searchResultsGrid;
+let closeSearchModalBtn; // Botón para cerrar el modal de búsqueda
 
 export function setupSearch() {
     searchModal = document.getElementById('searchModal');
     searchInput = document.getElementById('searchInput'); // Este es el input dentro del modal
     searchButton = document.getElementById('searchButton'); // Este es el botón dentro del modal
     searchResultsGrid = document.getElementById('searchResultsGrid'); // Contenedor para los resultados de búsqueda
+    closeSearchModalBtn = document.getElementById('closeSearchModalBtn'); // El botón de cerrar modal
 
-    if (!searchModal || !searchInput || !searchButton || !searchResultsGrid) {
+    if (!searchModal || !searchInput || !searchButton || !searchResultsGrid || !closeSearchModalBtn) {
         console.warn('search.js: Algunos elementos del modal de búsqueda no se encontraron. La funcionalidad de búsqueda podría estar limitada.');
         return;
     }
@@ -24,28 +26,26 @@ export function setupSearch() {
         const searchTerm = searchInput.value.toLowerCase().trim();
         let filteredProducts = [];
 
-        if (searchTerm.length === 0) {
-            searchResultsGrid.innerHTML = `<p class="no-results-message">Ingresa un término para buscar productos.</p>`;
+        if (searchTerm.length < 2) { // Requiere al menos 2 caracteres para buscar
+            searchResultsGrid.innerHTML = `<p class="no-results-message">Ingresa al menos 2 caracteres para buscar.</p>`;
             return;
         }
         
         filteredProducts = appState.products.filter(product =>
             product.name.toLowerCase().includes(searchTerm) ||
             product.brand.toLowerCase().includes(searchTerm) ||
-            (product.description && product.description.toLowerCase().includes(searchTerm))
+            (product.description && product.description.toLowerCase().includes(searchTerm)) ||
+            (product.category && product.category.toLowerCase().includes(searchTerm))
         );
 
         searchResultsGrid.innerHTML = ''; // Limpiar resultados anteriores
-
         if (filteredProducts.length === 0) {
             searchResultsGrid.innerHTML = `<p class="no-results-message">No se encontraron productos para "${searchTerm}".</p>`;
-            showToastNotification(`No se encontraron resultados para "${searchTerm}".`, 'info', 3000);
         } else {
             filteredProducts.forEach(product => {
-                const productCard = renderProductCard(product); // Usar la función de products.js
+                const productCard = renderProductCard(product);
                 searchResultsGrid.appendChild(productCard);
             });
-            showToastNotification(`Se encontraron ${filteredProducts.length} resultados para "${searchTerm}".`, 'success', 3000);
         }
     };
 
@@ -57,7 +57,9 @@ export function setupSearch() {
         }
     });
 
-    console.log('search.js: Módulo de búsqueda configurado.');
+    closeSearchModalBtn.addEventListener('click', () => toggleSearchModal(false));
+
+    // console.log('search.js: Módulo de búsqueda configurado.'); // ELIMINADO
 }
 
 /**
@@ -76,8 +78,7 @@ export function toggleSearchModal(open) {
 
         if (searchModal.classList.contains('open')) {
             searchInput.focus(); // Autofocus al abrir el modal
-            // Opcional: Limpiar resultados e input al abrir si no quieres mantener la búsqueda anterior
-            searchInput.value = '';
+            searchInput.value = ''; // Limpiar input al abrir
             searchResultsGrid.innerHTML = `<p class="no-results-message">Ingresa un término para buscar productos.</p>`;
         } else {
             // Limpiar al cerrar, aunque ya lo hacemos al abrir para mayor consistencia
