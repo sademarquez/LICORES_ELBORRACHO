@@ -1,11 +1,13 @@
 // js/main.js
 
-import { initCarousel } from './carousel.js';
-import { renderProducts, setupProductFilters, renderBrands } from './products.js';
+import { initCarousel } from './carousel.js'; // Para el carrusel principal de banners
+import { renderProducts, renderBrands } from './products.js'; // renderProducts se usará para búsqueda y categorías
 import { setupSearch, toggleSearchModal } from './search.js';
 import { initCart, updateCartCount, toggleCartSidebar } from './cart.js';
 import { setupSupport } from './support.js';
 import { showToastNotification } from './toast.js';
+import { initProductCarousel } from './product-carousel.js'; // Nuevo módulo para carruseles de productos
+import { setupLiquorCategories } from './liquor-categories.js'; // Nuevo módulo para la navegación de licores por categoría
 
 /**
  * appState: Objeto global para almacenar el estado de la aplicación.
@@ -40,7 +42,7 @@ async function loadInitialData() {
             phone: configData.contactPhone,
             address: configData.address
         };
-        console.log('main.js: Datos de configuración cargados.', appState.contactInfo);
+        console.log('main.js: Configuración cargada:', appState.contactInfo);
 
         // Cargar products.json
         const productsResponse = await fetch('products.json');
@@ -48,13 +50,11 @@ async function loadInitialData() {
             throw new Error(`Error HTTP! status: ${productsResponse.status} al cargar products.json`);
         }
         appState.products = await productsResponse.json();
-        console.log('main.js: Datos de productos cargados.', appState.products.length);
+        console.log('main.js: Productos cargados:', appState.products.length);
 
-        console.log('main.js: Carga de datos iniciales completada.');
     } catch (error) {
-        console.error('main.js: Error al cargar los datos iniciales:', error);
-        showToastNotification('Error al cargar datos. La aplicación podría no funcionar correctamente.', 'error');
-        throw error; // Re-lanza el error para que .then.catch en DOMContentLoaded lo maneje
+        console.error('main.js: Error al cargar datos iniciales:', error);
+        showToastNotification('Error al cargar datos iniciales de la aplicación.', 'error');
     }
 }
 
@@ -62,169 +62,181 @@ async function loadInitialData() {
  * Configura los event listeners para la interfaz de usuario.
  */
 function setupUIEventListeners() {
-    // Toggle para el menú de navegación principal en móviles
-    const menuToggle = document.querySelector('.menu-toggle');
+    // Manejo del menú hamburguesa en móviles
+    const menuToggle = document.getElementById('menuToggle');
     const mainNav = document.getElementById('mainNav');
     if (menuToggle && mainNav) {
         menuToggle.addEventListener('click', () => {
             mainNav.classList.toggle('active');
-            menuToggle.setAttribute('aria-expanded', mainNav.classList.contains('active') ? 'true' : 'false');
+            menuToggle.setAttribute('aria-expanded', mainNav.classList.contains('active'));
         });
     }
 
-    // Cerrar menú al hacer clic en un enlace (para móviles)
-    mainNav.querySelectorAll('a').forEach(link => {
+    // Cerrar menú móvil al hacer clic en un enlace
+    document.querySelectorAll('.main-nav .nav-list a').forEach(link => {
         link.addEventListener('click', () => {
-            if (mainNav.classList.contains('active')) {
+            if (mainNav && mainNav.classList.contains('active')) {
                 mainNav.classList.remove('active');
-                menuToggle.setAttribute('aria-expanded', 'false');
+                if (menuToggle) menuToggle.setAttribute('aria-expanded', 'false');
             }
         });
     });
 
-    // Abrir/Cerrar carrito desde el botón del header
-    const headerCartBtn = document.getElementById('headerCartBtn');
-    if (headerCartBtn) {
-        headerCartBtn.addEventListener('click', () => {
-            toggleCartSidebar(true);
-        });
-    }
-
-    // Abrir/Cerrar carrito desde el botón del bottom nav
-    const bottomNavCart = document.getElementById('bottomNavCart');
-    if (bottomNavCart) {
-        bottomNavCart.addEventListener('click', (e) => {
-            e.preventDefault(); // Evita que navegue a #
-            toggleCartSidebar(true);
-        });
-    }
-
-    // Abrir modal de búsqueda desde el header
+    // Control del modal de búsqueda (desde el header y bottom nav)
     const headerSearchBtn = document.getElementById('headerSearchBtn');
-    if (headerSearchBtn) {
-        headerSearchBtn.addEventListener('click', () => {
-            toggleSearchModal(true);
-        });
-    }
-
-    // Abrir modal de búsqueda desde el bottom nav
     const bottomNavSearch = document.getElementById('bottomNavSearch');
+    const closeSearchModalBtn = document.getElementById('closeSearchModal');
+
+    if (headerSearchBtn) {
+        headerSearchBtn.addEventListener('click', () => toggleSearchModal(true));
+    }
     if (bottomNavSearch) {
         bottomNavSearch.addEventListener('click', (e) => {
-            e.preventDefault(); // Evita que navegue a #
+            e.preventDefault(); // Evitar desplazamiento si el href es #
             toggleSearchModal(true);
         });
     }
-
-    // Cerrar modal de búsqueda
-    const closeSearchModalBtn = document.getElementById('closeSearchModalBtn');
     if (closeSearchModalBtn) {
-        closeSearchModalBtn.addEventListener('click', () => {
-            toggleSearchModal(false);
+        closeSearchModalBtn.addEventListener('click', () => toggleSearchModal(false));
+    }
+
+    // Control del sidebar del carrito (desde el header y bottom nav)
+    const headerCartBtn = document.getElementById('headerCartBtn');
+    const bottomNavCart = document.getElementById('bottomNavCart');
+
+    if (headerCartBtn) {
+        headerCartBtn.addEventListener('click', (e) => {
+            e.preventDefault(); // Evitar desplazamiento si el href es #
+            toggleCartSidebar();
+        });
+    }
+    if (bottomNavCart) {
+        bottomNavCart.addEventListener('click', (e) => {
+            e.preventDefault(); // Evitar desplazamiento si el href es #
+            toggleCartSidebar();
         });
     }
 
-    // Cerrar modales al hacer clic fuera (aplicado a modals con clase 'modal')
-    document.querySelectorAll('.modal').forEach(modal => {
-        modal.addEventListener('click', (event) => {
-            if (event.target === modal) {
-                modal.style.display = 'none';
-            }
-        });
-    });
-
-    // Cerrar modales con el botón de cerrar
-    document.querySelectorAll('.modal .close-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
+    // Cerrar modales de soporte al hacer clic en el botón de cerrar
+    document.querySelectorAll('.modal .close-btn').forEach(button => {
+        button.addEventListener('click', (e) => {
             e.target.closest('.modal').style.display = 'none';
         });
     });
+
+    // Cerrar modales al hacer clic fuera del contenido (excluyendo el de edad)
+    window.addEventListener('click', (event) => {
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach(modal => {
+            if (event.target === modal && modal.id !== 'ageVerificationModal') {
+                modal.classList.remove('open');
+                modal.style.display = 'none'; // Asegurarse de que se oculte
+            }
+        });
+        if (event.target === mainNav && mainNav.classList.contains('active') && window.innerWidth < 1024) {
+            mainNav.classList.remove('active');
+            if (menuToggle) menuToggle.setAttribute('aria-expanded', 'false');
+        }
+    });
+
+    console.log('main.js: Event listeners de UI configurados.');
 }
 
 /**
- * Configura el estado activo de la barra de navegación inferior en base al scroll.
+ * Configura el estado activo de la barra de navegación inferior (bottom-nav)
+ * basado en la sección visible en la ventana.
  */
 function setupBottomNavActiveState() {
     const navItems = document.querySelectorAll('.bottom-nav .nav-item');
-    const sections = document.querySelectorAll('main section[id]'); // Todas las secciones con ID
+
+    const observerOptions = {
+        root: null, // viewport
+        rootMargin: '0px',
+        threshold: 0.5 // 50% de la sección visible
+    };
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                const currentSectionId = entry.target.id;
+                const targetId = entry.target.id;
                 navItems.forEach(item => {
                     item.classList.remove('active');
-                    if (item.getAttribute('href') === `#${currentSectionId}`) {
+                    if (item.getAttribute('href') === `#${targetId}`) {
                         item.classList.add('active');
                     }
                 });
             }
         });
-    }, {
-        root: null, // viewport
-        rootMargin: '0px 0px -50% 0px', // Activar cuando la sección esté a mitad de la pantalla
-        threshold: 0 // Cuando al menos 1px de la sección esté visible
-    });
+    }, observerOptions);
 
-    sections.forEach(section => {
+    // Observar las secciones relevantes
+    document.querySelectorAll('main section').forEach(section => {
         observer.observe(section);
     });
 
-    // Manejo especial para el inicio/novedades si la página carga arriba del todo
-    // Esto asegura que "Inicio" esté activo al cargar si no hay scroll
-    window.addEventListener('load', () => {
-        const firstSection = document.getElementById('novedades');
-        if (firstSection && firstSection.getBoundingClientRect().top >= 0) {
-            navItems.forEach(item => {
-                item.classList.remove('active');
-                if (item.getAttribute('href') === '#novedades') {
-                    item.classList.add('active');
-                }
-            });
-        }
-    });
+    // Manejo para el inicio si no hay scroll
+    if (window.scrollY === 0) {
+        navItems.forEach(item => {
+            item.classList.remove('active');
+            if (item.getAttribute('href') === '#hero-section') {
+                item.classList.add('active');
+            }
+        });
+    }
+
+    // Esto es para los botones que abren modales/sidebars en el bottom-nav
+    // No deberían activar un scroll ni un 'active' de sección
+    // Ya se manejan sus clicks con toggleSearchModal y toggleCartSidebar
 }
 
 
-// Punto de entrada principal de la aplicación
+// Ejecución de la aplicación
 document.addEventListener('DOMContentLoaded', async () => {
-    // Paso 1: Inicializar el carrito antes de cargar productos para que el contador sea preciso
-    initCart();
-
-    // Paso 2: Cargar datos iniciales
     try {
-        await loadInitialData(); // Espera a que los datos se carguen
-        console.log('Aplicación EL BORRACHO inicializada correctamente.');
+        // Paso 1: Cargar datos iniciales
+        await loadInitialData();
 
-        // Paso 3: Inicializar el carrusel con los banners cargados
-        if (appState.banners && appState.banners.length > 0) {
-            initCarousel(appState.banners);
+        // Paso 2: Inicializar el carrusel principal de banners
+        initCarousel(appState.banners);
+
+        // Paso 3: Inicializar carrito (cargar desde localStorage y renderizar)
+        initCart();
+
+        // Paso 4: Renderizar marcas
+        renderBrands(appState.brands, '#brandGrid');
+
+        // Paso 5: Combinar y renderizar productos "Novedades" y "Ofertas" en un carrusel flotante
+        const featuredProducts = appState.products.filter(p => p.isNew || p.isOnOffer);
+        if (featuredProducts.length > 0) {
+            initProductCarousel(featuredProducts, '#featuredProductsCarouselTrack', '#featuredProductsPrev', '#featuredProductsNext');
+            console.log('main.js: Carrusel de Novedades y Ofertas inicializado.');
         } else {
-            console.warn('main.js: No hay datos de banners cargados para el carrusel.');
+            console.warn('main.js: No hay productos destacados (Novedades u Ofertas) para el carrusel.');
+            document.getElementById('featuredProductsCarouselTrack').innerHTML = '<p class="no-results-message">No hay productos destacados por ahora.</p>';
         }
 
-        // Paso 4: Renderizar secciones de productos
-        // Asegúrate de que los IDs de los contenedores coincidan con tu HTML
-        renderProducts(appState.products, '#newProductsGrid', { isNew: true, limit: 8 });
-        renderProducts(appState.products, '#offerProductsGrid', { isOnOffer: true, limit: 8 });
-        renderProducts(appState.products, '#beerProductsGrid', { category: 'Cerveza' });
-        renderProducts(appState.products, '#snackProductsGrid', { category: 'Snack' });
+        // Paso 6: Configurar la navegación de licores por categoría
+        const liquorCategoriesContainer = document.getElementById('liquorCategoryNav');
+        const liquorProductsCarouselTrack = document.getElementById('liquorProductsCarouselTrack');
+        const liquorProductsPrevBtn = document.getElementById('liquorProductsPrev');
+        const liquorProductsNextBtn = document.getElementById('liquorProductsNext');
 
+        if (liquorCategoriesContainer && liquorProductsCarouselTrack && liquorProductsPrevBtn && liquorProductsNextBtn) {
+            setupLiquorCategories(
+                appState.products.filter(p => p.category === 'Licor'), // Solo licores para esta sección
+                appState.products, // Se necesita el array completo para obtener todas las categorías
+                liquorCategoriesContainer,
+                liquorProductsCarouselTrack,
+                liquorProductsPrevBtn,
+                liquorProductsNextBtn
+            );
+            console.log('main.js: Navegación de categorías de licores inicializada.');
+        } else {
+            console.warn('main.js: Elementos para la sección de licores por categoría no encontrados.');
+        }
 
-        // Paso 5: Configurar filtros de productos (actualmente solo para la sección principal de licores)
-        // Se pasa appState.products y el selector del contenedor que contiene los filtros y el grid.
-        setupProductFilters(appState.products, '#licorBrandFilter', '#licorPriceFilter', '#licorProductSearch', '#allProductsGrid', 'Licor');
-
-
-        // Paso 6: Inicializar la funcionalidad de búsqueda
+        // Paso 7: Configurar la funcionalidad de búsqueda (modal)
         setupSearch();
-
-        // Paso 7: Renderizar marcas en el carrusel de marcas
-        if (appState.brands && appState.brands.length > 0) {
-            renderBrands(appState.brands, '#brandsCarouselTrack');
-        } else {
-            console.warn('main.js: No hay datos de marcas cargados para renderizar.');
-        }
 
         // Paso 8: Inicializar módulo de soporte con el número de WhatsApp desde config.json
         if (appState.contactInfo.phone) {
@@ -240,9 +252,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         setupBottomNavActiveState();
 
         // Actualizar información de contacto en el footer/contacto
-        document.getElementById('contactEmail').textContent = appState.contactInfo.email;
-        document.getElementById('contactPhone').textContent = appState.contactInfo.phone;
-        document.getElementById('contactAddress').textContent = appState.contactInfo.address;
+        const contactEmailElem = document.getElementById('contactEmail');
+        const contactPhoneElem = document.getElementById('contactPhone');
+        const contactAddressElem = document.getElementById('contactAddress');
+        
+        if (contactEmailElem) contactEmailElem.textContent = appState.contactInfo.email;
+        if (contactPhoneElem) contactPhoneElem.textContent = appState.contactInfo.phone;
+        if (contactAddressElem) contactAddressElem.textContent = appState.contactInfo.address;
         
         // Actualizar el enlace de WhatsApp en el footer si existe
         const footerWhatsappLink = document.querySelector('.social-media a[href*="whatsapp"]');
