@@ -1,72 +1,166 @@
-// products.js
+// js/products.js
 
-// Function to fetch products from products.json
-export async function fetchProducts() {
-    try {
-        const response = await fetch('products.json');
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const products = await response.json();
-        return products;
-    } catch (error) {
-        console.error('Error fetching products:', error);
-        return [];
+import { appState } from './main.js';
+import { showToastNotification } from './toast.js';
+import { addToCart } from './cart.js'; // Asegúrate de importar addToCart si se usa aquí
+
+/**
+ * Renderiza todos los productos en un contenedor de grid específico.
+ * Esta función es para la sección de "Todos los Productos".
+ * @param {Array<Object>} productsToRender - Array de productos a mostrar.
+ * @param {string} containerSelector - Selector CSS del contenedor donde se renderizarán los productos.
+ */
+export function renderAllProducts(productsToRender, containerSelector) {
+    const container = document.querySelector(containerSelector);
+    if (!container) {
+        console.error(`Contenedor no encontrado para renderizar todos los productos: ${containerSelector}`);
+        return;
     }
+
+    container.innerHTML = ''; // Limpiar el contenido anterior
+
+    if (productsToRender.length === 0) {
+        container.innerHTML = `<p style="text-align: center; grid-column: 1 / -1; color: var(--text-color-light);">No hay productos disponibles en esta sección.</p>`;
+        return;
+    }
+
+    productsToRender.forEach(product => {
+        const productCard = renderProductsCard(product); // Reutiliza la función para crear la tarjeta
+        container.appendChild(productCard);
+    });
 }
 
-// Function to render a single product card (reusable for lists and carousels)
-export function renderProductCard(product) {
+/**
+ * Crea y devuelve un elemento HTML de tarjeta de producto.
+ * Esto permite reutilizar la lógica de creación de tarjetas en diferentes lugares (grid, carrusel).
+ * @param {Object} product - Objeto con los datos del producto.
+ * @returns {HTMLElement} El elemento div de la tarjeta de producto.
+ */
+export function renderProductsCard(product) {
     const productCard = document.createElement('div');
-    productCard.classList.add('product-card'); // Common class for styling
-    productCard.dataset.productId = product.id; // Store product ID for cart/details
+    productCard.classList.add('product-card');
+    productCard.dataset.id = product.id;
 
-    // Optional: Add a class for carousel items if needed for specific styling
-    // productCard.classList.add('carousel-item-content');
+    let priceHtml = `<span class="product-price">$${product.price.toLocaleString('es-CO')}</span>`;
+    if (product.isOnOffer && product.offerPrice) {
+        priceHtml = `
+            <span class="product-price offer-price">$${product.offerPrice.toLocaleString('es-CO')}</span>
+            <span class="original-price">$${product.price.toLocaleString('es-CO')}</span>
+        `;
+    }
+
+    const badgesHtml = `
+        ${product.isNew ? '<span class="badge new">Nuevo</span>' : ''}
+        ${product.isOnOffer ? '<span class="badge offer">Oferta</span>' : ''}
+    `;
 
     productCard.innerHTML = `
-        <img src="${product.imageUrl}" alt="${product.name}" class="product-image">
-        <h3 class="product-name">${product.name}</h3>
-        <p class="product-description">${product.description}</p>
-        <p class="product-price">$${product.price.toLocaleString('es-CO')}</p>
-        ${product.isOnOffer ? '<span class="product-offer-tag">OFERTA</span>' : ''}
-        ${product.isNew ? '<span class="product-new-tag">NUEVO</span>' : ''}
-        <button class="add-to-cart-btn" data-product-id="${product.id}">Añadir al Carrito</button>
+        <div class="product-badges">${badgesHtml}</div>
+        <img src="${product.imageUrl}" alt="${product.name}" class="product-card-image" loading="lazy">
+        <h3>${product.name}</h3>
+        <p class="product-brand">${product.brand}</p>
+        <div class="product-rating">
+            ${'<i class="fas fa-star"></i>'.repeat(Math.floor(product.rating))}
+            ${product.rating % 1 !== 0 ? '<i class="fas fa-star-half-alt"></i>' : ''}
+            <span>(${product.rating})</span>
+        </div>
+        <p class="product-price-container">${priceHtml}</p>
+        <button class="add-to-cart-btn" data-product-id="${product.id}">Agregar al Carrito</button>
     `;
     return productCard;
 }
 
-// Function to render products into a given container (e.g., a list or a carousel)
-export function renderProductsInContainer(products, containerId) {
-    const container = document.getElementById(containerId);
-    if (!container) {
-        console.error('Product container not found:', containerId);
+
+/**
+ * Configura los filtros de productos y el campo de búsqueda para la sección de "Todos los Productos".
+ * Aplica los filtros y renderiza los productos en el grid especificado.
+ * @param {Array<Object>} productsData - Los productos completos para filtrar.
+ * @param {string} targetGridSelector - El selector del grid donde se mostrarán los productos filtrados.
+ */
+export function setupProductFilters(productsData, targetGridSelector) {
+    const brandFilter = document.getElementById('brandFilter');
+    const priceFilter = document.getElementById('priceFilter');
+    const productSearchInput = document.getElementById('productSearchInput');
+
+    if (!brandFilter || !priceFilter || !productSearchInput) {
+        console.warn('products.js: Elementos de filtro de productos no encontrados. La funcionalidad de filtro podría estar limitada.');
         return;
     }
-    container.innerHTML = ''; // Clear existing content
 
-    products.forEach(product => {
-        container.appendChild(renderProductCard(product));
+    // Llenar el filtro de marcas dinámicamente
+    const uniqueBrands = [...new Set(productsData.map(p => p.brand))].sort();
+    brandFilter.innerHTML = '<option value="">Todas las Marcas</option>';
+    uniqueBrands.forEach(brand => {
+        const option = document.createElement('option');
+        option.value = brand;
+        option.textContent = brand;
+        brandFilter.appendChild(option);
     });
+
+    const applyFilters = () => {
+        let filtered = [...productsData];
+
+        // Filtrar por búsqueda
+        const searchTerm = productSearchInput.value.toLowerCase().trim();
+        if (searchTerm) {
+            filtered = filtered.filter(product =>
+                product.name.toLowerCase().includes(searchTerm) ||
+                product.brand.toLowerCase().includes(searchTerm) ||
+                (product.description && product.description.toLowerCase().includes(searchTerm))
+            );
+        }
+
+        // Filtrar por marca
+        const selectedBrand = brandFilter.value;
+        if (selectedBrand) {
+            filtered = filtered.filter(product => product.brand === selectedBrand);
+        }
+
+        // Ordenar por precio
+        const sortOrder = priceFilter.value;
+        if (sortOrder === 'asc') {
+            filtered.sort((a, b) => (a.offerPrice || a.price) - (b.offerPrice || b.price));
+        } else if (sortOrder === 'desc') {
+            filtered.sort((a, b) => (b.offerPrice || b.price) - (a.offerPrice || a.price));
+        }
+
+        // Renderiza los productos filtrados en el contenedor objetivo
+        renderAllProducts(filtered, targetGridSelector);
+    };
+
+    brandFilter.addEventListener('change', applyFilters);
+    priceFilter.addEventListener('change', applyFilters);
+    productSearchInput.addEventListener('input', applyFilters);
+
+    // Ejecutar filtros al inicio para asegurar que el grid se renderice
+    applyFilters();
+    console.log('products.js: Filtros de productos configurados.');
 }
 
-// Function to get products by category
-export async function getProductsByCategory(category) {
-    const allProducts = await fetchProducts();
-    return allProducts.filter(product => product.category === category);
-}
+/**
+ * Función para renderizar marcas (como en el carrusel de marcas).
+ * @param {Array<Object>} brandsData - Array de objetos de marca.
+ * @param {string} containerSelector - Selector CSS del contenedor donde se renderizarán los logos.
+ */
+export function renderBrands(brandsData, containerSelector) {
+    const container = document.querySelector(containerSelector);
+    if (!container) {
+        console.error(`Contenedor de marcas no encontrado: ${containerSelector}`);
+        return;
+    }
 
-// Function to get new products
-export async function getNewProducts() {
-    const allProducts = await fetchProducts();
-    return allProducts.filter(product => product.isNew);
-}
+    container.innerHTML = ''; // Limpiar cualquier contenido existente
 
-// Function to get products on offer
-export async function getOfferProducts() {
-    const allProducts = await fetchProducts();
-    return allProducts.filter(product => product.isOnOffer);
-}
+    if (brandsData.length === 0) {
+        container.innerHTML = `<p style="text-align: center; grid-column: 1 / -1; color: var(--text-color-light);">No hay marcas disponibles.</p>`;
+        return;
+    }
 
-// You might also want a function to handle adding to cart click events here or in main.js
-// For now, assuming main.js handles it or it's handled in cart.js
+    brandsData.forEach(brand => {
+        const brandDiv = document.createElement('div');
+        brandDiv.classList.add('brand-logo');
+        brandDiv.innerHTML = `<img src="${brand.logoUrl}" alt="${brand.name} Logo" loading="lazy">`;
+        container.appendChild(brandDiv);
+    });
+    console.log('products.js: Marcas renderizadas.');
+}
