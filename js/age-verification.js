@@ -1,8 +1,7 @@
 // js/age-verification.js
 
-// Función exportada para ser llamada por main.js
-export function setupAgeVerification() {
-    console.log('age-verification.js: Inicializando verificación de edad...');
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('age-verification.js: DOM cargado. Inicializando verificación de edad...');
 
     const ageVerificationModal = document.getElementById('ageVerificationModal');
     const confirmAgeBtn = document.getElementById('confirmAgeBtn');
@@ -16,32 +15,33 @@ export function setupAgeVerification() {
     const ageVerified = localStorage.getItem('ageVerified');
 
     if (ageVerified === 'true') {
-        ageVerificationModal.style.display = 'none';
+        ageVerificationModal.classList.add('hidden'); // Usa la clase .hidden
         console.log('age-verification.js: Edad ya verificada. Ocultando modal.');
     } else {
-        ageVerificationModal.style.display = 'flex'; // Asegurarse de que sea visible
+        ageVerificationModal.classList.remove('hidden'); // Asegura que el modal sea visible
         console.log('age-verification.js: Edad no verificada. Mostrando modal.');
     }
 
     confirmAgeBtn.addEventListener('click', () => {
         console.log('age-verification.js: Botón "Soy Mayor de 18" clicado.');
-        ageVerificationModal.style.display = 'none';
+        ageVerificationModal.classList.add('hidden'); // Oculta el modal con la clase .hidden
         localStorage.setItem('ageVerified', 'true');
         console.log('age-verification.js: Edad verificada y guardada. Modal oculto.');
     });
 
     declineAgeBtn.addEventListener('click', () => {
-        console.log('age-verification.js: Botón "Soy Menor de Edad" clicado. Redirigiendo...');
-        window.location.href = 'https://www.google.com'; // Redirigir a Google si es menor de edad
+        console.log('age-verification.js: Botón "No soy mayor de 18" clicado. Redirigiendo...');
+        // Redirige a Google o a una página "segura" si no es mayor de edad.
+        window.location.href = 'https://www.google.com';
     });
 
-    // Evitar que el modal se cierre al hacer clic fuera:
-    // Esta lógica es importante para forzar al usuario a interactuar con los botones.
+    // Evita que el modal se cierre al hacer clic fuera, lo cual es importante para la verificación de edad.
     window.addEventListener('click', (event) => {
         if (event.target === ageVerificationModal) {
+            // No hacer nada, mantener el modal abierto si se hace clic en el fondo.
             console.log('age-verification.js: Clic en el fondo del modal de verificación de edad. No se cierra.');
         }
     });
 
-    console.log('age-verification.js: Verificación de edad configurada.');
-}
+    console.log('age-verification.js: Módulo de verificación de edad configurado.');
+});
