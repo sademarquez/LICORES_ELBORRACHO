@@ -1,6 +1,6 @@
 // js/age-verification.js
 
-export function initAgeVerification() {
+export function setupAgeVerification() {
     console.log('age-verification.js: Inicializando verificación de edad...');
 
     const ageVerificationModal = document.getElementById('ageVerificationModal');
@@ -16,25 +16,22 @@ export function initAgeVerification() {
 
     if (ageVerified === 'true') {
         ageVerificationModal.style.display = 'none';
-        document.body.style.overflow = ''; // Asegurarse de que el scroll del body esté habilitado
         console.log('age-verification.js: Edad ya verificada. Ocultando modal.');
     } else {
         ageVerificationModal.style.display = 'flex'; // Asegurarse de que sea visible
-        document.body.style.overflow = 'hidden'; // Bloquear scroll del body
         console.log('age-verification.js: Edad no verificada. Mostrando modal.');
     }
 
     confirmAgeBtn.addEventListener('click', () => {
         console.log('age-verification.js: Botón "Soy Mayor de 18" clicado.');
         ageVerificationModal.style.display = 'none';
-        document.body.style.overflow = ''; // Habilitar scroll del body
         localStorage.setItem('ageVerified', 'true');
         console.log('age-verification.js: Edad verificada y guardada. Modal oculto.');
     });
 
     declineAgeBtn.addEventListener('click', () => {
         console.log('age-verification.js: Botón "Soy Menor de Edad" clicado. Redirigiendo...');
-        window.location.href = 'https://www.google.com'; // Redirigir a otro sitio
+        window.location.href = 'https://www.google.com';
     });
 
     // Evitar que el modal se cierre al hacer clic fuera:
@@ -45,5 +42,5 @@ export function initAgeVerification() {
         }
     });
 
-    console.log('age-verification.js: Funcionalidad de verificación de edad configurada.');
+    console.log('age-verification.js: Módulo de verificación de edad configurado.');
 }
