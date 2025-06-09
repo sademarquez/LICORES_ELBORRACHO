@@ -12,29 +12,51 @@ let bottomCartCountElement; // Contador de la barra inferior
 let closeCartBtn;
 let checkoutWhatsappBtn;
 
-/**
- * Guarda el estado actual del carrito en localStorage.
- */
-function saveCart() {
-    try {
-        localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(appState.cart));
-    } catch (e) {
-        console.error('Error saving cart to localStorage:', e);
-        showToastNotification('Error al guardar el carrito. Por favor, inténtalo de nuevo.', 'error');
+export function initCart() {
+    cartSidebar = document.getElementById('cartSidebar');
+    cartItemsContainer = document.getElementById('cartItems');
+    cartTotalPriceElement = document.getElementById('cartTotalPrice');
+    cartCountElement = document.getElementById('cartCount'); // Del header
+    bottomCartCountElement = document.getElementById('bottomCartCount'); // Del bottom nav
+    closeCartBtn = document.getElementById('closeCartBtn');
+    checkoutWhatsappBtn = document.getElementById('checkoutWhatsappBtn');
+
+    // Cargar carrito desde localStorage
+    const storedCart = localStorage.getItem(CART_STORAGE_KEY);
+    if (storedCart) {
+        try {
+            appState.cart = JSON.parse(storedCart);
+        } catch (e) {
+            console.error('Error parsing cart from localStorage:', e);
+            appState.cart = []; // Resetear carrito si hay un error de parseo
+        }
+    } else {
+        appState.cart = [];
     }
+
+    renderCartItems(); // Renderiza los items cargados
+    updateCartCount(); // Actualiza los contadores
+
+    // Configurar el botón de WhatsApp
+    if (checkoutWhatsappBtn) {
+        checkoutWhatsappBtn.addEventListener('click', sendOrderViaWhatsApp);
+    }
+
+    console.log('cart.js: Módulo de carrito inicializado.');
 }
 
-/**
- * Renderiza los items del carrito en el sidebar.
- */
+export function saveCart() {
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(appState.cart));
+    console.log('cart.js: Carrito guardado en localStorage.');
+}
+
 export function renderCartItems() {
-    if (!cartItemsContainer || !cartTotalPriceElement) {
-        console.warn('cart.js: Elementos del carrito no encontrados para renderizar.');
+    if (!cartItemsContainer) {
+        console.warn('cart.js: Contenedor de items del carrito no encontrado.');
         return;
     }
 
-    cartItemsContainer.innerHTML = ''; // Limpiar el contenido actual del carrito
-    let totalPrice = 0;
+    cartItemsContainer.innerHTML = ''; // Limpiar antes de renderizar
 
     if (appState.cart.length === 0) {
         cartItemsContainer.innerHTML = '<p class="empty-cart-message">Tu carrito está vacío.</p>';
@@ -42,154 +64,136 @@ export function renderCartItems() {
         return;
     }
 
+    let total = 0;
     appState.cart.forEach(item => {
         const itemPrice = item.isOnOffer ? item.offerPrice : item.price;
         const subtotal = itemPrice * item.quantity;
-        totalPrice += subtotal;
+        total += subtotal;
 
         const cartItemElement = document.createElement('div');
         cartItemElement.classList.add('cart-item');
         cartItemElement.innerHTML = `
-            <img src="${item.imageUrl}" alt="${item.name}" class="cart-item-image">
-            <div class="cart-item-details">
-                <h4 class="cart-item-name">${item.name}</h4>
-                <p class="cart-item-price">$${itemPrice.toLocaleString('es-CO')}</p>
-                <div class="cart-item-quantity-controls">
-                    <button class="quantity-btn decrease-quantity" data-id="${item.id}" aria-label="Disminuir cantidad de ${item.name}">-</button>
-                    <span class="quantity-value">${item.quantity}</span>
-                    <button class="quantity-btn increase-quantity" data-id="${item.id}" aria-label="Aumentar cantidad de ${item.name}">+</button>
-                </div>
+            <img src="${item.imageUrl}" alt="${item.name}">
+            <div class="cart-item-info">
+                <h4>${item.name}</h4>
+                <p>$${itemPrice.toLocaleString('es-CO')}</p>
             </div>
-            <button class="remove-from-cart-btn" data-id="${item.id}" aria-label="Eliminar ${item.name} del carrito">
-                <i class="fas fa-trash-alt"></i>
-            </button>
+            <div class="cart-item-actions">
+                <button class="quantity-decrease" data-id="${item.id}">-</button>
+                <input type="number" value="${item.quantity}" min="1" data-id="${item.id}" readonly>
+                <button class="quantity-increase" data-id="${item.id}">+</button>
+                <button class="remove-item-btn" data-id="${item.id}">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </div>
         `;
         cartItemsContainer.appendChild(cartItemElement);
     });
 
-    cartTotalPriceElement.textContent = `$${totalPrice.toLocaleString('es-CO')}`;
+    cartTotalPriceElement.textContent = `$${total.toLocaleString('es-CO')}`;
 
-    // Añadir event listeners a los nuevos botones en el carrito
-    cartItemsContainer.querySelectorAll('.decrease-quantity').forEach(button => {
+    // Añadir event listeners después de que los elementos estén en el DOM
+    cartItemsContainer.querySelectorAll('.quantity-decrease').forEach(button => {
         button.addEventListener('click', (e) => {
-            const id = e.currentTarget.dataset.id;
+            const id = e.target.dataset.id;
             updateQuantity(id, -1);
         });
     });
 
-    cartItemsContainer.querySelectorAll('.increase-quantity').forEach(button => {
+    cartItemsContainer.querySelectorAll('.quantity-increase').forEach(button => {
         button.addEventListener('click', (e) => {
-            const id = e.currentTarget.dataset.id;
+            const id = e.target.dataset.id;
             updateQuantity(id, 1);
         });
     });
 
-    cartItemsContainer.querySelectorAll('.remove-from-cart-btn').forEach(button => {
+    cartItemsContainer.querySelectorAll('.remove-item-btn').forEach(button => {
         button.addEventListener('click', (e) => {
-            const id = e.currentTarget.dataset.id;
+            const id = e.target.dataset.id;
             removeFromCart(id);
         });
     });
+
+    console.log('cart.js: Ítems del carrito renderizados.');
 }
 
-/**
- * Actualiza los contadores de items en el carrito.
- */
 export function updateCartCount() {
-    const totalItems = appState.cart.reduce((sum, item) => sum + item.quantity, 0);
+    const count = appState.cart.reduce((sum, item) => sum + item.quantity, 0);
     if (cartCountElement) {
-        cartCountElement.textContent = totalItems.toString();
-        cartCountElement.style.display = totalItems > 0 ? 'flex' : 'none';
+        cartCountElement.textContent = count;
+        cartCountElement.style.display = count > 0 ? 'flex' : 'none'; // Mostrar/ocultar si es 0
     }
     if (bottomCartCountElement) {
-        bottomCartCountElement.textContent = totalItems.toString();
-        bottomCartCountElement.style.display = totalItems > 0 ? 'flex' : 'none';
+        bottomCartCountElement.textContent = count;
+        bottomCartCountElement.style.display = count > 0 ? 'flex' : 'none'; // Mostrar/ocultar si es 0
     }
+    console.log('cart.js: Contador del carrito actualizado a', count);
 }
 
-/**
- * Añade un producto al carrito o incrementa su cantidad si ya existe.
- * @param {string} productId - ID del producto a añadir.
- */
-export function addToCart(productId) {
+export function addToCart(productId, quantity = 1) {
     const product = appState.products.find(p => p.id === productId);
     if (!product) {
         showToastNotification('Producto no encontrado.', 'error');
+        console.error('cart.js: Producto no encontrado con ID:', productId);
         return;
     }
 
-    const existingCartItem = appState.cart.find(item => item.id === productId);
+    const cartItem = appState.cart.find(item => item.id === productId);
 
-    if (existingCartItem) {
-        existingCartItem.quantity++;
-        showToastNotification(`Cantidad de ${product.name} actualizada en el carrito.`, 'info');
+    if (cartItem) {
+        cartItem.quantity += quantity;
+        showToastNotification(`Se añadió otra unidad de ${product.name} al carrito.`, 'info');
     } else {
-        const itemToAdd = { ...product, quantity: 1 };
-        appState.cart.push(itemToAdd);
+        appState.cart.push({ ...product, quantity });
         showToastNotification(`${product.name} añadido al carrito.`, 'success');
     }
 
     saveCart();
     renderCartItems();
     updateCartCount();
+    console.log('cart.js: Producto añadido al carrito:', product.name);
 }
 
-/**
- * Elimina un producto del carrito.
- * @param {string} productId - ID del producto a eliminar.
- */
-function removeFromCart(productId) {
-    const initialLength = appState.cart.length;
-    appState.cart = appState.cart.filter(item => item.id !== productId);
-    if (appState.cart.length < initialLength) {
-        showToastNotification('Producto eliminado del carrito.', 'info');
+export function updateQuantity(productId, change) {
+    const cartItem = appState.cart.find(item => item.id === productId);
+
+    if (cartItem) {
+        cartItem.quantity += change;
+        if (cartItem.quantity <= 0) {
+            removeFromCart(productId);
+            return;
+        }
         saveCart();
         renderCartItems();
         updateCartCount();
-    } else {
-        showToastNotification('Error al eliminar el producto del carrito.', 'error');
+        showToastNotification(`Cantidad de ${cartItem.name} actualizada.`, 'info');
     }
 }
 
-/**
- * Actualiza la cantidad de un producto en el carrito.
- * @param {string} productId - ID del producto.
- * @param {number} change - Cantidad a añadir o restar (ej: 1 o -1).
- */
-function updateQuantity(productId, change) {
-    const item = appState.cart.find(i => i.id === productId);
-    if (item) {
-        item.quantity += change;
-        if (item.quantity <= 0) {
-            removeFromCart(productId);
-        } else {
-            saveCart();
-            renderCartItems();
-            updateCartCount();
-            showToastNotification(`Cantidad de ${item.name} actualizada a ${item.quantity}.`, 'info');
-        }
+export function removeFromCart(productId) {
+    const initialLength = appState.cart.length;
+    appState.cart = appState.cart.filter(item => item.id !== productId);
+    if (appState.cart.length < initialLength) {
+        showToastNotification('Producto eliminado del carrito.', 'error');
     }
+    saveCart();
+    renderCartItems();
+    updateCartCount();
+    console.log('cart.js: Producto eliminado del carrito con ID:', productId);
 }
 
-/**
- * Alterna la visibilidad del sidebar del carrito.
- * @param {boolean} [open] - Si se debe abrir (true) o cerrar (false) explícitamente. Si no se pasa, alterna.
- */
 export function toggleCartSidebar(open) {
     if (cartSidebar) {
         if (typeof open === 'boolean') {
             cartSidebar.classList.toggle('open', open);
         } else {
-            cartSidebar.classList.toggle('open');
+            cartSidebar.classList.toggle('open'); // Toggle si no se especifica 'open'
         }
-        document.body.classList.toggle('no-scroll', cartSidebar.classList.contains('open'));
+        console.log('cart.js: Sidebar del carrito toggleado. Abierto:', cartSidebar.classList.contains('open'));
     }
 }
 
-/**
- * Procesa el pedido y lo envía a WhatsApp.
- */
-function checkoutViaWhatsapp() {
+function sendOrderViaWhatsApp() {
     if (appState.cart.length === 0) {
         showToastNotification('Tu carrito está vacío. ¡Añade productos antes de finalizar tu pedido!', 'warning');
         return;
@@ -219,49 +223,9 @@ function checkoutViaWhatsapp() {
     window.open(whatsappUrl, '_blank');
 
     // Opcional: Limpiar el carrito después de enviar el pedido por WhatsApp
-    appState.cart = [];
-    saveCart();
-    renderCartItems();
-    updateCartCount();
-    showToastNotification('Tu pedido ha sido enviado a WhatsApp. Espera nuestra confirmación.', 'success');
-    toggleCartSidebar(false); // Cerrar sidebar después de enviar
-}
-
-/**
- * Inicializa el módulo del carrito.
- */
-export function initCart() {
-    cartSidebar = document.getElementById('cartSidebar');
-    cartItemsContainer = document.getElementById('cartItems');
-    cartTotalPriceElement = document.getElementById('cartTotalPrice');
-    cartCountElement = document.getElementById('cartCount'); // Del header
-    bottomCartCountElement = document.getElementById('bottomCartCount'); // Del bottom nav
-    closeCartBtn = document.getElementById('closeCartBtn');
-    checkoutWhatsappBtn = document.getElementById('checkoutWhatsappBtn');
-
-    // Cargar carrito desde localStorage
-    const storedCart = localStorage.getItem(CART_STORAGE_KEY);
-    if (storedCart) {
-        try {
-            appState.cart = JSON.parse(storedCart);
-        } catch (e) {
-            console.error('Error parsing cart from localStorage:', e);
-            appState.cart = []; // Resetear carrito si hay un error de parseo
-            showToastNotification('Error al cargar el carrito. Se ha reiniciado.', 'error');
-        }
-    } else {
-        appState.cart = [];
-    }
-
-    // Configurar el botón de WhatsApp
-    if (checkoutWhatsappBtn) {
-        checkoutWhatsappBtn.removeEventListener('click', checkoutViaWhatsapp); // Evitar duplicados
-        checkoutWhatsappBtn.addEventListener('click', checkoutViaWhatsapp);
-    }
-
-    // Renderizar y actualizar contadores al inicio
-    renderCartItems();
-    updateCartCount();
-
-    console.log('cart.js: Módulo de carrito inicializado.');
+    // appState.cart = [];
+    // saveCart();
+    // renderCartItems();
+    // updateCartCount();
+    // showToastNotification('Tu pedido ha sido enviado a WhatsApp. En breve nos pondremos en contacto.', 'success');
 }
