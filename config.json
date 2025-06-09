@@ -1,62 +1,56 @@
 {
-    "siteName": "EL BORRACHO",
-    "contactEmail": "pedidos@elborracho.com",
-    "contactPhone": "573109876543",
-    "address": "Popayán, Cauca, Colombia",
-    "banners": [
-        {
-            "id": "banner1",
-            "title": "¡Novedad! Licores Premium",
-            "description": "Descubre nuestra selección exclusiva de licores finos.",
-            "imageUrl": "images/banners/banner-licores-premium.jpg",
-            "link": "#licores",
-            "buttonText": "Ver Licores"
-        },
-        {
-            "id": "banner2",
-            "title": "Ofertas de Cervezas",
-            "description": "Las mejores marcas de cerveza con descuentos increíbles.",
-            "imageUrl": "images/banners/banner-cervezas.jpg",
-            "link": "#cervezas",
-            "buttonText": "Comprar Cervezas"
-        },
-        {
-            "id": "banner3",
-            "title": "Snacks para tus Bebidas",
-            "description": "Acompaña tus licores con nuestros deliciosos snacks y más.",
-            "imageUrl": "images/banners/banner-snacks.jpg",
-            "link": "#snacks",
-            "buttonText": "Explorar Snacks"
-        }
-    ],
-    "brands": [
-        {
-            "name": "Aguardiente Antioqueño",
-            "logoUrl": "images/icons/antioqueno-logo.svg"
-        },
-        {
-            "name": "Ron Viejo de Caldas",
-            "logoUrl": "images/icons/ron-caldas-logo.svg"
-        },
-        {
-            "name": "Buchanan's",
-            "logoUrl": "images/icons/buchanans-logo.svg"
-        },
-        {
-            "name": "Club Colombia",
-            "logoUrl": "images/icons/club-colombia-logo.svg"
-        },
-        {
-            "name": "Corona",
-            "logoUrl": "images/icons/corona-logo.svg"
-        },
-        {
-            "name": "Poker",
-            "logoUrl": "images/icons/poker-logo.svg"
-        },
-        {
-            "name": "Aguila",
-            "logoUrl": "images/icons/aguila-logo.svg"
-        }
-    ]
+  "apiBaseUrl": "https://api.elborracho.com",
+  "defaultCurrency": "COP",
+  "brands": [
+    {
+      "name": "Aguardiente Antioqueño",
+      "logoUrl": "images/brands/brand-logo-aguardiente.png",
+      "link": "#"
+    },
+    {
+      "name": "Cerveza Poker",
+      "logoUrl": "images/brands/brand-logo-poker.png",
+      "link": "#"
+    },
+    {
+      "name": "Old Parr",
+      "logoUrl": "images/brands/brand-logo-old-parr.png",
+      "link": "#"
+    },
+    {
+      "name": "Johnnie Walker",
+      "logoUrl": "images/brands/brand-logo-johnnie-walker.png",
+      "link": "#"
+    },
+    {
+      "name": "José Cuervo",
+      "logoUrl": "images/brands/brand-logo-jose-cuervo.png",
+      "link": "#"
+    },
+    {
+      "name": "Smirnoff",
+      "logoUrl": "images/brands/brand-logo-smirnoff.png",
+      "link": "#"
+    },
+    {
+      "name": "Margarita",
+      "logoUrl": "images/brands/brand-logo-margarita.png",
+      "link": "#"
+    },
+    {
+      "name": "Marlboro",
+      "logoUrl": "images/brands/brand-logo-marlboro.png",
+      "link": "#"
+    },
+    {
+      "name": "Coca-Cola",
+      "logoUrl": "images/brands/brand-logo-coca-cola.png",
+      "link": "#"
+    },
+    {
+      "name": "Postobón",
+      "logoUrl": "images/brands/brand-logo-postobon.png",
+      "link": "#"
+    }
+  ]
 }
