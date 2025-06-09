@@ -39,204 +39,188 @@ async function loadInitialData() {
             phone: configData.contactPhone,
             address: configData.address
         };
-        console.log('main.js: Datos de configuración cargados.');
+        console.log('main.js: Configuración cargada.', appState.contactInfo);
 
         // Cargar products.json
         const productsResponse = await fetch('products.json');
         if (!productsResponse.ok) {
             throw new Error(`Error HTTP! status: ${productsResponse.status} al cargar products.json`);
         }
-        appState.products = await productsResponse.json();
-        console.log('main.js: Datos de productos cargados. Total:', appState.products.length);
+        const productsData = await productsResponse.json();
+        appState.products = productsData || [];
+        console.log('main.js: Productos cargados.', appState.products.length, 'productos.');
 
     } catch (error) {
-        console.error('main.js: Error crítico al cargar los datos iniciales:', error);
-        showToastNotification('Error al cargar la información inicial de la tienda. Por favor, recarga la página.', 'error');
-        // Considerar deshabilitar funcionalidades si los datos críticos no cargan
+        console.error('main.js: Error al cargar datos iniciales:', error);
+        showToastNotification('Error al cargar la información de la tienda. Intenta recargar.', 'error');
     }
 }
 
 /**
- * Configura los event listeners para la interfaz de usuario general.
- * Esto incluye el toggle del menú móvil y los botones de la barra inferior.
+ * Configura los event listeners para la interfaz de usuario.
  */
 function setupUIEventListeners() {
-    // Menu toggle para móviles (botón hamburguesa)
-    const menuToggle = document.getElementById('menuToggle');
-    const mainNav = document.querySelector('.main-nav');
+    // Manejo de la barra de navegación inferior activa (scrollspy)
+    // No es necesario un event listener aquí, la función lo maneja sola al cargarse y al scroll.
+
+    // Configurar el botón de menú hamburguesa
+    const menuToggle = document.querySelector('.menu-toggle');
+    const mainNav = document.getElementById('mainNav');
+
     if (menuToggle && mainNav) {
         menuToggle.addEventListener('click', () => {
             mainNav.classList.toggle('active');
+            const isExpanded = mainNav.classList.contains('active');
+            menuToggle.setAttribute('aria-expanded', isExpanded);
+            document.body.classList.toggle('no-scroll', isExpanded); // Evitar scroll de fondo
+            console.log('main.js: Menú hamburguesa', isExpanded ? 'abierto' : 'cerrado');
         });
+
+        // CERRAR MENÚ AL HACER CLIC EN UN ENLACE DENTRO DEL MENÚ
+        const mainNavLinks = document.querySelectorAll('.main-nav .nav-list a');
+        mainNavLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (mainNav.classList.contains('active')) {
+                    mainNav.classList.remove('active'); // Cerrar el menú
+                    menuToggle.setAttribute('aria-expanded', 'false'); // Actualizar ARIA
+                    document.body.classList.remove('no-scroll'); // Habilitar scroll
+                    console.log('main.js: Enlace de menú clicado. Menú hamburguesa cerrado.');
+                }
+            });
+        });
+    } else {
+        console.warn('main.js: Elementos de navegación principal o menú hamburguesa no encontrados.');
     }
 
-    // Cerrar el menú si se hace clic fuera
-    document.addEventListener('click', (event) => {
-        if (mainNav && menuToggle && mainNav.classList.contains('active') && !mainNav.contains(event.target) && !menuToggle.contains(event.target)) {
-            mainNav.classList.remove('active');
-        }
-    });
 
-    // Abrir/cerrar modal de búsqueda desde el botón del header y bottom nav
-    const bottomNavSearch = document.getElementById('bottomNavSearch');
-    const headerSearchBtn = document.getElementById('headerSearchBtn');
-    const closeSearchModalBtn = document.getElementById('closeSearchModalBtn'); // Botón de cierre del modal
+    // Configurar toggles para modales (Carrito, Búsqueda, Soporte)
+    // Usar los IDs de los botones en el HEADER (Problema 3)
+    const headerCartToggle = document.getElementById('headerCartToggle');
+    const headerSearchToggle = document.getElementById('headerSearchToggle');
+    const supportToggle = document.getElementById('supportToggle'); // Si tienes un botón de soporte en el header/nav
 
-    if (bottomNavSearch) {
-        bottomNavSearch.addEventListener('click', (e) => {
-            e.preventDefault();
-            toggleSearchModal(true); // Abrir el modal de búsqueda
-        });
-    }
-    if (headerSearchBtn) {
-        headerSearchBtn.addEventListener('click', () => {
-            toggleSearchModal(true);
-        });
-    }
-    if (closeSearchModalBtn) {
-        closeSearchModalBtn.addEventListener('click', () => {
-            toggleSearchModal(false); // Cerrar el modal de búsqueda
-        });
-    }
-
-    // Abrir/cerrar sidebar del carrito desde el icono del header y bottom nav
-    const cartIcon = document.getElementById('cartIcon');
+    // Si los botones están en el bottom-nav, también se les puede añadir listeners
     const bottomNavCart = document.getElementById('bottomNavCart');
-    const closeCartBtn = document.getElementById('closeCartBtn'); // Botón de cierre del sidebar del carrito
+    const bottomNavSearch = document.getElementById('bottomNavSearch');
+    const bottomNavSupport = document.getElementById('bottomNavSupport');
 
-    if (cartIcon) {
-        cartIcon.addEventListener('click', (e) => {
-            e.preventDefault();
-            toggleCartSidebar(true);
-        });
-    }
-    if (bottomNavCart) {
-        bottomNavCart.addEventListener('click', (e) => {
-            e.preventDefault();
-            toggleCartSidebar(true);
-        });
-    }
-    if (closeCartBtn) {
-        closeCartBtn.addEventListener('click', () => {
-            toggleCartSidebar(false);
-        });
+
+    if (headerCartToggle) {
+        headerCartToggle.addEventListener('click', () => toggleCartSidebar());
+    } else if (bottomNavCart) {
+        bottomNavCart.addEventListener('click', () => toggleCartSidebar());
+    } else {
+        console.warn('main.js: Botón de toggle del carrito no encontrado.');
     }
 
-    console.log('main.js: Event listeners de UI configurados.');
+    if (headerSearchToggle) {
+        headerSearchToggle.addEventListener('click', () => toggleSearchModal());
+    } else if (bottomNavSearch) {
+        bottomNavSearch.addEventListener('click', () => toggleSearchModal());
+    } else {
+        console.warn('main.js: Botón de toggle de búsqueda no encontrado.');
+    }
+
+    // Listener para el botón de soporte si está en el header o bottomNav
+    if (bottomNavSupport) { // Asumiendo que el botón principal de soporte está en bottomNav
+        bottomNavSupport.addEventListener('click', () => {
+            // El modal de soporte se gestiona en support.js, aquí solo abrimos el modal principal si aplica
+            const supportModal = document.getElementById('supportModal'); // O el ID de tu modal principal de soporte
+            if (supportModal) {
+                supportModal.style.display = 'flex';
+                document.body.classList.add('no-scroll');
+            } else {
+                 console.warn('main.js: Modal de soporte principal no encontrado.');
+            }
+        });
+    }
+
+    // Configurar el botón de cierre para el modal de búsqueda
+    const closeSearchBtn = document.getElementById('closeSearchBtn');
+    if (closeSearchBtn) {
+        closeSearchBtn.addEventListener('click', () => toggleSearchModal(false));
+    } else {
+        console.warn('main.js: Botón de cerrar búsqueda no encontrado.');
+    }
+
+     // Cerrar modal de búsqueda al hacer clic fuera
+     const searchModal = document.getElementById('searchModal');
+     if (searchModal) {
+         searchModal.addEventListener('click', (event) => {
+             if (event.target === searchModal) {
+                 toggleSearchModal(false);
+             }
+         });
+     }
 }
 
 /**
- * Actualiza el estado activo en la navegación inferior basado en la posición del scroll.
- * Esto resalta la sección actual en la que el usuario se encuentra.
+ * Configura el estado activo de la barra de navegación inferior basado en la posición de scroll.
  */
 function setupBottomNavActiveState() {
-    const bottomNavItems = document.querySelectorAll('.bottom-nav .nav-item');
-    // IDs de las secciones que el bottom nav puede referenciar.
-    // Asegúrate de que estos IDs existen en tu index.html.
-    const sections = ['novedades', 'ofertas', 'licores', 'cervezas', 'snacks', 'otras-bebidas', 'marcas', 'soporte']; // Agregué 'ofertas'
+    const navItems = document.querySelectorAll('.bottom-nav .nav-item');
 
-    // Mapa de href a ID de sección si son diferentes
-    const navItemToSectionMap = {
-        '#novedades': 'novedades',
-        '#licores': 'licores',
-        '#cervezas': 'cervezas',
-        '#snacks': 'snacks', // Aunque no está en el nav directamente, es una sección.
-        '#otras-bebidas': 'otras-bebidas', // Aunque no está en el nav directamente, es una sección.
-        // bottomNavSearch y bottomNavCart no tienen un href directo a una sección,
-        // manejan modales, por lo que no se incluyen en el scroll-based active state.
-        '#soporte': 'soporte'
-    };
+    const sections = ['novedades', 'licores', 'cervezas', 'vinos', 'snacks', 'ofertas', 'marcas', 'soporte'].map(id => ({
+        id: id,
+        element: document.getElementById(id)
+    })).filter(item => item.element); // Filtra los que no existen
 
+    function updateActiveNav() {
+        let currentActiveId = null;
+        const scrollPosition = window.scrollY + window.innerHeight / 2; // Punto de referencia en el centro de la pantalla
 
-    window.addEventListener('scroll', () => {
-        let currentActiveSectionId = 'novedades'; // Default a 'novedades' si estamos arriba o no se encuentra ninguna sección
-
-        // Obtener la altura del viewport
-        const viewportHeight = window.innerHeight;
-        // Definir un offset para el punto de detección (ej. un tercio de la pantalla desde arriba)
-        const scrollDetectOffset = viewportHeight * 0.3; // 30% desde la parte superior
-
-        // Recorre las secciones de abajo hacia arriba para encontrar la que está más visible
-        // Esto ayuda a que secciones más abajo se activen correctamente
+        // Encontrar la sección más cercana al centro de la pantalla
         for (let i = sections.length - 1; i >= 0; i--) {
-            const sectionId = sections[i];
-            const section = document.getElementById(sectionId);
-
-            if (section) {
-                const sectionTop = section.offsetTop;
-                const sectionBottom = sectionTop + section.offsetHeight;
-
-                // Si el punto de detección de scroll está dentro de la sección actual
-                if (window.scrollY + scrollDetectOffset >= sectionTop && window.scrollY + scrollDetectOffset < sectionBottom) {
-                    currentActiveSectionId = sectionId;
-                    break; // Encontramos la sección más relevante, salimos
-                }
+            const section = sections[i];
+            if (section.element && section.element.offsetTop <= scrollPosition) {
+                currentActiveId = section.id;
+                break;
             }
         }
 
-        // Si el usuario está muy arriba en la página (antes de la primera sección visible),
-        // asegurar que "Novedades" esté activo.
-        const novedadesSection = document.getElementById('novedades');
-        if (novedadesSection && window.scrollY < (novedadesSection.offsetTop + novedadesSection.offsetHeight / 2)) {
-             currentActiveSectionId = 'novedades';
+        // Si no se encontró ninguna sección visible, por defecto 'novedades' o la primera
+        if (!currentActiveId && sections.length > 0) {
+            currentActiveId = sections[0].id;
         }
 
 
-        bottomNavItems.forEach(item => {
-            item.classList.remove('active');
-            // Obtener el href del ítem (ej. "#novedades")
-            const href = item.getAttribute('href');
-            // Mapear el href a su ID de sección correspondiente (si aplica)
-            const targetSectionId = navItemToSectionMap[href];
+        navItems.forEach(item => {
+            // El href del item es 'index.html#id' o '#id'. Necesitamos solo el 'id'
+            const hrefId = item.getAttribute('href').split('#')[1];
 
-            if (targetSectionId && targetSectionId === currentActiveSectionId) {
+            if (hrefId === currentActiveId) {
                 item.classList.add('active');
-            } else if (item.id === 'bottomNavSearch' || item.id === 'bottomNavCart') {
-                // Para los ítems de búsqueda y carrito que no tienen un href a una sección,
-                // asegúrate de que no se activen por scroll.
-                // Podrías añadir lógica aquí si quieres que se activen cuando sus modales están abiertos,
-                // pero eso requiere más estado global o listeners específicos.
+            } else {
+                item.classList.remove('active');
             }
         });
-    });
+    }
 
-    // Llama esto una vez al inicio para establecer el estado correcto al cargar la página
-    window.dispatchEvent(new Event('scroll'));
-
-    console.log('main.js: Estado activo de navegación inferior configurado.');
+    window.addEventListener('scroll', updateActiveNav);
+    window.addEventListener('resize', updateActiveNav); // Por si cambia el tamaño de la ventana
+    updateActiveNav(); // Ejecutar al cargar la página
+    console.log('main.js: Scrollspy de navegación inferior configurado.');
 }
 
 
-// Punto de entrada principal de la aplicación.
-// Se ejecuta cuando el DOM está completamente cargado.
+/**
+ * Inicializa la aplicación.
+ */
 document.addEventListener('DOMContentLoaded', async () => {
-    console.log('DOM completamente cargado. Inicializando la aplicación de EL BORRACHO...');
+    // Paso 1: Cargar datos iniciales
+    await loadInitialData(); // Asegura que los datos estén disponibles antes de inicializar módulos
 
-    // Paso 1: Cargar datos iniciales (CRÍTICO)
-    // Se debe esperar a que los datos estén cargados antes de renderizar cualquier cosa.
-    await loadInitialData();
-
-    // Paso 2: Inicializar carrito y actualizar su conteo
+    // Paso 2: Inicializar el carrito (debe ser de los primeros para que los contadores estén correctos)
     initCart();
-    updateCartCount();
 
-    // Paso 3: Inicializar carrusel de banners
+    // Paso 3: Inicializar el carrusel de banners
     if (appState.banners && appState.banners.length > 0) {
         initCarousel(appState.banners);
     } else {
-        console.warn('main.js: No hay datos de banners cargados para inicializar el carrusel.');
+        console.warn('main.js: No hay datos de banners cargados para el carrusel.');
     }
 
-    // Paso 4: Renderizar productos en las secciones correspondientes
-    // Asegúrate de que los IDs de los contenedores coincidan con tu HTML (por ejemplo, en index.html)
-    // El 'category' en options asegura que solo se rendericen los productos de esa categoría en ese grid.
-    renderProducts(appState.products, '#allProductsGrid', { category: 'Licor' }); // Sección principal de Licores
-    renderProducts(appState.products, '#allProductsGridCervezas', { category: 'Cerveza' });
-    renderProducts(appState.products, '#allProductsGridSnacks', { category: 'Snack' });
-    renderProducts(appState.products, '#allProductsGridOtrasBebidas', { category: 'Otra Bebida' });
-
-    // Renderizar productos en las secciones de Novedades y Ofertas
-    // Puedes ajustar el 'limit' para mostrar un número específico de productos.
+    // Paso 4: Renderizar productos en secciones específicas
     renderProducts(appState.products, '#newProductsGrid', { isNew: true, limit: 8 });
     renderProducts(appState.products, '#offerProductsGrid', { isOnOffer: true, limit: 8 });
 
