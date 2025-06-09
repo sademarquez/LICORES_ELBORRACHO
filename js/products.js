@@ -3,7 +3,20 @@
 import { appState } from './main.js';
 import { showToastNotification } from './toast.js';
 import { addToCart } from './cart.js';
+import { setupCategoryProductCarousel } from './category-products-carousel.js'; // Importar el nuevo módulo
 
+/**
+ * Renders products into a specified container.
+ * Simplified product card structure, no description.
+ * @param {Array<Object>} productsToRender - The array of product objects to display.
+ * @param {string} containerSelector - The CSS selector of the container element.
+ * @param {Object} options - Options for filtering and limiting products.
+ * @param {boolean} options.isNew - Filter by new products.
+ * @param {boolean} options.isOnOffer - Filter by products on offer.
+ * @param {string} options.category - Filter by a specific category.
+ * @param {number} options.limit - Limit the number of products.
+ * @param {boolean} options.isCategoryCarousel - Flag to indicate if rendering for a category carousel.
+ */
 export function renderProducts(productsToRender, containerSelector, options = {}) {
     const container = document.querySelector(containerSelector);
     if (!container) {
@@ -17,16 +30,15 @@ export function renderProducts(productsToRender, containerSelector, options = {}
     if (options.isNew) {
         filteredProducts = filteredProducts.filter(p => p.isNew);
     }
-    if (options.isOnOffer) { // Añadir filtro para ofertas
+    if (options.isOnOffer) {
         filteredProducts = filteredProducts.filter(p => p.isOnOffer);
     }
-    if (options.category) {
+    if (options.category && options.category !== 'Todos') { // 'Todos' es un filtro especial
         filteredProducts = filteredProducts.filter(p => p.category === options.category);
     }
     if (options.limit) {
         filteredProducts = filteredProducts.slice(0, options.limit);
     }
-
 
     container.innerHTML = ''; // Limpiar el contenido anterior
 
@@ -38,121 +50,109 @@ export function renderProducts(productsToRender, containerSelector, options = {}
     filteredProducts.forEach(product => {
         const productCard = document.createElement('div');
         productCard.classList.add('product-card');
-        productCard.dataset.id = product.id; // Añadir data-id para fácil referencia
+        productCard.dataset.id = product.id; // Almacena el ID del producto en el dataset
 
-        const isOnOffer = product.isOnOffer && product.offerPrice !== null;
-        const displayPrice = isOnOffer ? product.offerPrice : product.price;
-        const oldPriceHtml = isOnOffer ? `<span class="old-price">$${product.price.toLocaleString('es-CO')}</span>` : '';
+        // Determinar el precio a mostrar (oferta vs. normal)
+        const displayPrice = product.isOnOffer ? product.offerPrice : product.price;
+        const originalPriceHtml = product.isOnOffer ? `<span class="original-price">$${product.price.toLocaleString('es-CO')}</span>` : '';
+        const priceClass = product.isOnOffer ? 'price offer-price' : 'price';
 
+        // Determinar las etiquetas (Novedad, Oferta)
+        let labelsHtml = '';
+        if (product.isNew) {
+            labelsHtml += '<span class="product-label new">Novedad</span>';
+        }
+        if (product.isOnOffer) {
+            labelsHtml += '<span class="product-label offer">Oferta</span>';
+        }
+
+        // Estructura simplificada de la tarjeta de producto
         productCard.innerHTML = `
-            <div class="product-card-image">
-                <img src="${product.imageUrl}" alt="${product.name}" loading="lazy">
-            </div>
-            <div class="product-card-content">
-                <h3>${product.name}</h3>
-                <p class="brand">${product.brand}</p>
-                <p class="category">${product.category}</p>
-                <p class="price ${isOnOffer ? 'offer-price' : ''}">$${displayPrice.toLocaleString('es-CO')} ${oldPriceHtml}</p>
-            </div>
-            <div class="product-card-actions">
-                <button class="add-to-cart-btn" data-product-id="${product.id}" ${product.stock === 0 ? 'disabled' : ''}>
-                    ${product.stock === 0 ? 'Agotado' : 'Añadir al Carrito'}
-                </button>
-            </div>
+            ${labelsHtml}
+            <img src="${product.imageUrl}" alt="${product.name}" loading="lazy">
+            <h3>${product.name}</h3>
+            <p class="${priceClass}">$${displayPrice.toLocaleString('es-CO')}</p>
+            ${originalPriceHtml}
+            <button class="add-to-cart-btn btn-primary" data-product-id="${product.id}">
+                <i class="fas fa-cart-plus"></i> Añadir
+            </button>
         `;
 
-        // Añadir event listener al botón de añadir al carrito
+        // Añadir evento al botón "Añadir al carrito"
         const addToCartBtn = productCard.querySelector('.add-to-cart-btn');
         if (addToCartBtn) {
             addToCartBtn.addEventListener('click', (event) => {
-                const productId = event.target.dataset.productId;
+                const productId = event.currentTarget.dataset.productId;
                 const productToAdd = appState.products.find(p => p.id === productId);
                 if (productToAdd) {
                     addToCart(productToAdd);
                 } else {
-                    console.error('Producto no encontrado para añadir al carrito:', productId);
-                    showToastNotification('Error: Producto no disponible.', 'error');
+                    showToastNotification('Error: Producto no encontrado.', 'error');
                 }
             });
         }
-
         container.appendChild(productCard);
     });
+
+    console.log(`products.js: ${filteredProducts.length} productos renderizados en ${containerSelector}`);
 }
 
-// Función para configurar los filtros de productos
-export function setupProductFilters(productsData, targetGridSelector, options = {}) {
-    const categoryFilter = document.getElementById(options.targetCategoryFilterId || 'categoryFilter');
-    const priceFilter = document.getElementById(options.targetPriceFilterId || 'priceFilter');
-    const productSearchInput = document.getElementById(options.targetSearchInputId || 'allProductsSearchInput');
+/**
+ * Sets up filters and search functionality for product listing sections.
+ * This function will be deprecated or heavily modified for the new category buttons approach.
+ * For now, it will be refactored to handle category buttons.
+ */
+export function setupProductFilters() {
+    const categoryButtons = document.querySelectorAll('#licores .category-button');
+    const filteredProductsGrid = document.getElementById('filteredProductsGrid');
 
-    if (!document.querySelector(targetGridSelector)) {
-        console.warn(`Grid de productos objetivo no encontrado para filtros: ${targetGridSelector}`);
+    if (!categoryButtons.length || !filteredProductsGrid) {
+        console.warn('products.js: No se encontraron botones de categoría o el contenedor de productos filtrados. Los filtros de categoría no funcionarán.');
         return;
     }
 
-    // Populate categories filter
-    if (categoryFilter) {
-        const uniqueCategories = [...new Set(productsData.map(p => p.category))];
-        categoryFilter.innerHTML = '<option value="">Todas las Categorías</option>'; // Reset
-        uniqueCategories.sort().forEach(category => {
-            const option = document.createElement('option');
-            option.value = category;
-            option.textContent = category;
-            categoryFilter.appendChild(option);
-        });
-        // Si hay una categoría activa preseleccionada (ej. desde un clic en el menú), la aplicamos
-        if (appState.activeCategory) {
-            categoryFilter.value = appState.activeCategory;
-        }
-    } else {
-        console.warn('Filtro de categorías no encontrado.');
-    }
+    // Inicializar el carrusel de productos filtrados al cargar la página
+    // Renderiza la categoría "Todos" por defecto
+    renderProducts(appState.products, '#filteredProductsGrid', { category: 'Todos' });
+    setupCategoryProductCarousel(appState.products, '#filteredProductsCarousel', { itemsPerView: 2 });
 
-    const applyFilters = () => {
-        let filtered = [...productsData];
 
-        // Filter by category
-        if (categoryFilter && categoryFilter.value) {
-            filtered = filtered.filter(product => product.category === categoryFilter.value);
-            // Actualizar la categoría activa para mantenerla al refrescar filtros
-            appState.activeCategory = categoryFilter.value;
-        } else {
-            appState.activeCategory = null;
-        }
+    categoryButtons.forEach(button => {
+        button.addEventListener('click', (event) => {
+            const selectedCategory = event.target.dataset.category;
 
-        // Filter by search input
-        if (productSearchInput && productSearchInput.value) {
-            const searchTerm = productSearchInput.value.toLowerCase().trim();
-            filtered = filtered.filter(product =>
-                product.name.toLowerCase().includes(searchTerm) ||
-                product.brand.toLowerCase().includes(searchTerm) ||
-                (product.description && product.description.toLowerCase().includes(searchTerm))
-            );
-        }
+            // Remover clase 'active' de todos los botones
+            categoryButtons.forEach(btn => btn.classList.remove('active'));
+            // Añadir clase 'active' al botón clicado
+            event.target.classList.add('active');
 
-        // Sort by price
-        if (priceFilter && priceFilter.value) {
-            if (priceFilter.value === 'asc') {
-                filtered.sort((a, b) => (a.isOnOffer ? a.offerPrice : a.price) - (b.isOnOffer ? b.offerPrice : b.price));
-            } else if (priceFilter.value === 'desc') {
-                filtered.sort((a, b) => (b.isOnOffer ? b.offerPrice : b.price) - (a.isOnOffer ? a.offerPrice : a.price));
+            let productsToDisplay = [];
+            if (selectedCategory === 'Todos') {
+                productsToDisplay = appState.products;
+            } else {
+                productsToDisplay = appState.products.filter(p => p.category === selectedCategory);
             }
-        }
 
-        // Renderiza los productos filtrados en el contenedor objetivo
-        renderProducts(filtered, targetGridSelector, { category: categoryFilter ? categoryFilter.value : null }); // Asegura que se mantenga la categoría
-    };
+            // Renderizar los productos filtrados en el carrusel 2x2
+            renderProducts(productsToDisplay, '#filteredProductsGrid', { category: selectedCategory });
+            // Re-inicializar/actualizar el carrusel para la nueva categoría
+            // Resetear la posición del carrusel al cambiar de categoría
+            setupCategoryProductCarousel(productsToDisplay, '#filteredProductsCarousel', { itemsPerView: 2 });
+            
+            console.log(`products.js: Cambiando a categoría: ${selectedCategory}`);
+        });
+    });
 
-    if (categoryFilter) categoryFilter.addEventListener('change', applyFilters);
-    if (priceFilter) priceFilter.addEventListener('change', applyFilters);
-    if (productSearchInput) productSearchInput.addEventListener('input', applyFilters);
-
-    // Ejecutar filtros al inicio para asegurar que el grid se renderice con la categoría correcta
-    applyFilters();
+    console.log('products.js: Filtros de categoría configurados.');
 }
 
-// Función para renderizar marcas (como en el carrusel de marcas)
+
+/**
+ * Function to render brands (as in the brands section).
+ * Improved with more dynamic/futuristic styling.
+ * @param {Array<Object>} brandsData - Array of brand objects.
+ * @param {string} containerSelector - CSS selector for the container.
+ */
 export function renderBrands(brandsData, containerSelector) {
     const container = document.querySelector(containerSelector);
     if (!container) {
@@ -169,8 +169,10 @@ export function renderBrands(brandsData, containerSelector) {
 
     brandsData.forEach(brand => {
         const brandDiv = document.createElement('div');
-        brandDiv.classList.add('brand-logo');
+        brandDiv.classList.add('brand-logo'); // Clase para el estilo de flotabilidad
         brandDiv.innerHTML = `<img src="${brand.logoUrl}" alt="${brand.name} Logo" loading="lazy">`;
         container.appendChild(brandDiv);
     });
+
+    console.log(`products.js: ${brandsData.length} marcas renderizadas en ${containerSelector}.`);
 }
