@@ -11,16 +11,16 @@
 
     .main-nav {
         width: 100%;
-        display: none;
+        display: none; /* Ocultar por defecto para el menú hamburguesa */
         flex-direction: column;
-        background-color: var(--dark-bg);
+        background-color: var(--dark-bg); /* Usar el color oscuro del header */
         position: absolute;
         top: 100%;
         left: 0;
         box-shadow: var(--shadow-md);
         padding: var(--spacing-md);
         border-top: 1px solid var(--border-color);
-        z-index: 100;
+        z-index: 100; /* Asegurarse de que el menú está sobre otros elementos */
     }
 
     .main-nav.active {
@@ -35,109 +35,118 @@
     .main-nav .nav-list a {
         padding: var(--spacing-sm) 0;
         width: 100%;
-        color: var(--text-color-light);
+        color: var(--text-color-light); /* Color de texto para enlaces del menú móvil */
     }
     
     .main-nav .nav-list a::after {
-        background-color: var(--primary-color);
+        background-color: var(--primary-color); /* Asegurar color de subrayado en móvil */
     }
 
-    .utility-icons {
-        width: 100%;
-        justify-content: flex-end;
-    }
-
-    .menu-toggle {
-        display: block; /* Mostrar el botón de hamburguesa en mobile */
-    }
-
-    /* Ajustes para secciones en móvil */
-    .hero-section {
-        height: 300px; /* Altura más baja en móvil */
-    }
-
-    .carousel-title {
-        font-size: 2em;
-    }
-
-    .carousel-description {
-        font-size: 1em;
-    }
-
-    .carousel-btn {
-        width: 40px;
-        height: 40px;
-        font-size: 1.5em;
-        padding: var(--spacing-xs);
-    }
-
-    .product-filters {
-        flex-direction: column; /* Apilar filtros en móvil */
-        align-items: center;
-    }
-
-    .product-filters select,
-    .product-filters input {
-        width: 90%; /* Ancho completo para filtros en móvil */
-    }
-
-    /* Grid de productos en móvil - ajustar para una columna si es necesario */
-    .product-grid {
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Permitir 1 o 2 columnas */
-    }
-    .product-card {
-        width: 100%; /* Asegurar que la tarjeta ocupe el espacio completo si solo hay una columna */
-        max-width: 250px; /* Limitar el ancho máximo de la tarjeta en móvil */
-        margin: 0 auto; /* Centrar la tarjeta */
-    }
-
-    .brands-container {
-        justify-content: center;
+    .header-icons {
+        margin-left: auto; /* Empujar los íconos a la derecha */
+        display: flex; /* Asegurar que los íconos de búsqueda y carrito estén visibles */
         gap: var(--spacing-sm);
     }
 
-    .brand-logo {
-        width: 80px;
-        height: 50px;
-    }
-
-    .cart-sidebar {
-        width: 100%; /* Ancho completo en móvil */
-    }
-
-    .search-modal-content {
-        padding: var(--spacing-md);
+    .menu-toggle {
+        display: block; /* Mostrar botón de hamburguesa en móvil */
+        font-size: 1.8em; /* Tamaño de ícono más grande */
+        padding: var(--spacing-xs);
     }
 
     .bottom-nav {
-        display: flex; /* Mostrar la barra de navegación inferior en móvil */
+        display: flex; /* Mostrar la barra inferior en móvil */
+    }
+
+    .hero-section {
+        height: 280px; /* Altura más baja para el carrusel en móvil para dejar más espacio */
+    }
+
+    .carousel-btn {
+        /* Ajustar tamaño de botones del carrusel principal en móvil */
+        font-size: 1.2em;
+        padding: var(--spacing-xs);
+        width: 40px; /* Tamaño fijo para hacerlos más tocables */
+        height: 40px;
+    }
+
+    .carousel-dot {
+        width: 10px; /* Puntos más pequeños y tocables */
+        height: 10px;
+    }
+
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* 2-3 columnas en móviles */
+        gap: var(--spacing-sm); /* Menor espacio entre productos */
+    }
+
+    .product-card {
+        width: 100%; /* Asegurar que la tarjeta ocupe todo el ancho disponible en su columna */
+        margin-right: 0; /* Remover margen derecho si es un grid */
+    }
+
+    .product-filters {
+        flex-direction: column; /* Apilar filtros verticalmente */
+        gap: var(--spacing-md);
+    }
+
+    .product-filters select,
+    .product-filters input,
+    .product-filters button {
+        width: 100%; /* Que los controles de filtro ocupen el ancho completo */
+        padding: var(--spacing-sm);
+        font-size: 1em;
+    }
+
+    .search-modal-content {
+        width: 95%; /* Modal de búsqueda más grande en móvil */
+        height: 90%;
+        padding: var(--spacing-md);
+    }
+
+    .cart-sidebar {
+        width: 100%; /* Carrito ocupa todo el ancho en móvil */
+        right: 0;
+        top: 0;
+        bottom: 0;
+        height: 100%;
+        border-left: none; /* Sin borde lateral */
+        box-shadow: none; /* Sin sombra */
+    }
+
+    .modal-content {
+        width: 90%; /* Ajuste de ancho para modales en móvil */
+        padding: var(--spacing-md);
+    }
+
+    .support-options {
+        flex-direction: column; /* Apilar tarjetas de soporte */
+    }
+
+    .support-card {
+        width: 100%; /* Tarjetas de soporte al 100% de ancho */
     }
 }
 
 /* Tablet (768px a 1023px) */
 @media (min-width: 768px) and (max-width: 1023px) {
+    .container {
+        padding: 0 var(--spacing-lg);
+    }
+
     .header-content {
-        flex-wrap: nowrap; /* Evitar que los elementos se envuelvan */
         justify-content: space-between;
+        align-items: center;
+        flex-direction: row;
     }
 
     .main-nav {
-        display: flex; /* Mostrar navegación principal en tablet */
-        position: static;
-        background-color: transparent;
-        box-shadow: none;
-        padding: 0;
-        border-top: none;
-        flex-direction: row; /* Volver a disposición horizontal */
-    }
-
-    .main-nav .nav-list {
-        flex-direction: row;
-        gap: var(--spacing-md);
+        display: none; /* Ocultar por defecto, se maneja con el menú hamburguesa */
+        /* Puede que se quiera un menú diferente o un toggle distinto en tablet */
     }
 
     .menu-toggle {
-        display: none; /* Ocultar el menú hamburguesa en tablet */
+        display: block; /* Mostrar el menú hamburguesa en tablet */
     }
 
     .bottom-nav {
@@ -150,11 +159,6 @@
 
     .product-filters {
         flex-direction: row; /* Volver a disposición horizontal */
-    }
-
-    /* Grid de productos en tablet - más columnas */
-    .product-grid {
-        grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); /* 3-4 columnas en tablet */
     }
 
     .search-input-group input {
@@ -198,6 +202,10 @@
 
     .product-filters select,
     .product-filters input {
-        width: auto; /* Ancho automático para filtros en desktop */
+        width: auto; /* Volver a ancho automático */
+    }
+
+    .cart-sidebar {
+        width: 400px; /* Ancho fijo en desktop */
     }
 }
