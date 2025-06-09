@@ -55,28 +55,8 @@
             "logoUrl": "images/icons/poker-logo.svg"
         },
         {
-            "name": "Águila",
+            "name": "Aguila",
             "logoUrl": "images/icons/aguila-logo.svg"
-        },
-        {
-            "name": "Heineken",
-            "logoUrl": "images/icons/heineken-logo.svg"
-        },
-        {
-            "name": "Smirnoff",
-            "logoUrl": "images/icons/smirnoff-logo.svg"
-        },
-        {
-            "name": "José Cuervo",
-            "logoUrl": "images/icons/jose-cuervo-logo.svg"
-        },
-        {
-            "name": "Jägermeister",
-            "logoUrl": "images/icons/jagermeister-logo.svg"
-        },
-        {
-            "name": "Baileys",
-            "logoUrl": "images/icons/baileys-logo.svg"
         }
     ]
 }
