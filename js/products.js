@@ -1,110 +1,69 @@
-// js/products.js
+// products.js
 
-import { appState } from './main.js';
-import { showToastNotification } from './toast.js';
-import { addToCart } from './cart.js';
+// Función para cargar los productos desde products.json
+export async function fetchProducts() {
+    try {
+        const response = await fetch('products.json');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const products = await response.json();
+        return products;
+    } catch (error) {
+        console.error('Error fetching products:', error);
+        return [];
+    }
+}
 
-/**
- * Renderiza una lista de productos en un contenedor dado.
- * @param {Array<Object>} productsToRender - Array de objetos producto a renderizar.
- * @param {HTMLElement} containerElement - El elemento DOM donde se renderizarán los productos.
- * @param {Object} options - Opciones para filtrar y controlar la renderización (isNew, isOnOffer, category, limit).
- */
-export function renderProducts(productsToRender, containerElement, options = {}) {
-    if (!containerElement) {
-        console.error(`Contenedor no encontrado para renderizar productos.`);
+// Función para renderizar los productos en la página principal
+// (Asumiendo que tienes un contenedor para todos los productos)
+export function renderAllProducts(products, containerId = 'product-list-container') {
+    const container = document.getElementById(containerId);
+    if (!container) {
+        console.error('Product container not found:', containerId);
         return;
     }
+    container.innerHTML = ''; // Limpiar el contenedor antes de renderizar
 
-    let filteredProducts = [...productsToRender];
-
-    // Aplicar filtros iniciales basados en las opciones
-    if (options.isNew) {
-        filteredProducts = filteredProducts.filter(p => p.isNew);
-    }
-    if (options.isOnOffer) {
-        filteredProducts = filteredProducts.filter(p => p.isOnOffer);
-    }
-    if (options.category) {
-        filteredProducts = filteredProducts.filter(p => p.category === options.category);
-    }
-    if (options.limit) {
-        filteredProducts = filteredProducts.slice(0, options.limit);
-    }
-
-    containerElement.innerHTML = ''; // Limpiar el contenido anterior
-
-    if (filteredProducts.length === 0) {
-        containerElement.innerHTML = `<p class="no-results-message">No hay productos disponibles en esta sección.</p>`;
-        return;
-    }
-
-    filteredProducts.forEach(product => {
+    products.forEach(product => {
         const productCard = document.createElement('div');
-        productCard.classList.add('product-card');
-        productCard.dataset.id = product.id;
-
-        const priceDisplay = product.isOnOffer ?
-            `<span class="old-price">$${product.price.toLocaleString('es-CO')}</span> <span class="price">$${product.offerPrice.toLocaleString('es-CO')}</span>` :
-            `<span class="price">$${product.price.toLocaleString('es-CO')}</span>`;
-
-        const offerBadge = product.isOnOffer ? `<span class="offer-badge">Oferta</span>` : '';
-        const newBadge = product.isNew && !product.isOnOffer ? `<span class="offer-badge" style="background-color: var(--info-color);">Nuevo</span>` : ''; // Si es nuevo y no oferta
+        productCard.classList.add('product-card'); // Asegúrate de que esta clase exista en tu CSS
 
         productCard.innerHTML = `
-            ${offerBadge}
-            ${newBadge}
-            <div class="product-card-content">
-                <img src="${product.imageUrl}" alt="${product.name}" loading="lazy">
-                <h3>${product.name}</h3>
-                <p class="brand">${product.brand}</p>
-                <p>${product.description.substring(0, 50)}...</p>
-                <div class="price-container">
-                    ${priceDisplay}
-                </div>
-                <button class="add-to-cart-btn btn btn-primary" data-product-id="${product.id}">
-                    <i class="fas fa-cart-plus"></i> Añadir
-                </button>
-            </div>
+            <img src="${product.imageUrl}" alt="${product.name}">
+            <h3>${product.name}</h3>
+            <p>${product.description}</p>
+            <p class="price">$${product.price.toLocaleString('es-CO')}</p>
+            <button class="add-to-cart-btn" data-product-id="${product.id}">Añadir al Carrito</button>
         `;
-
-        productCard.querySelector('.add-to-cart-btn').addEventListener('click', (event) => {
-            const productId = event.currentTarget.dataset.productId;
-            const productToAdd = appState.products.find(p => p.id === productId);
-            if (productToAdd) {
-                addToCart(productToAdd);
-            } else {
-                showToastNotification('Producto no encontrado.', 'error');
-            }
-        });
-
-        containerElement.appendChild(productCard);
+        container.appendChild(productCard);
     });
 }
 
-/**
- * Renderiza los logos de las marcas en un contenedor.
- * @param {Array<Object>} brandsData - Array de objetos marca.
- * @param {string} containerSelector - Selector CSS del contenedor donde renderizar las marcas.
- */
-export function renderBrands(brandsData, containerSelector) {
-    const container = document.querySelector(containerSelector);
-    if (!container) {
-        console.error(`Contenedor de marcas no encontrado: ${containerSelector}`);
-        return;
-    }
-
-    container.innerHTML = ''; // Limpiar cualquier contenido existente
-
-    if (brandsData.length === 0) {
-        container.innerHTML = `<p style="text-align: center; grid-column: 1 / -1; color: var(--text-color-light);">No hay marcas disponibles.</p>`;
-        return;
-    }
-
-    brandsData.forEach(brand => {
-        const brandDiv = document.createElement('div');
-        brandDiv.classList.add('brand-logo');
-        brandDiv.innerHTML = `<img src="${brand.logoUrl}" alt="${brand.name} Logo" loading="lazy">`;
-        container.appendChild(brandDiv);
-    });
+// Función para obtener productos por categoría (ejemplo de uso)
+export async function getProductsByCategory(category) {
+    const allProducts = await fetchProducts();
+    return allProducts.filter(product => product.category === category);
 }
+
+// Funciones para obtener novedades y ofertas
+export async function getNewProducts() {
+    const allProducts = await fetchProducts();
+    return allProducts.filter(product => product.isNew);
+}
+
+export async function getOfferProducts() {
+    const allProducts = await fetchProducts();
+    return allProducts.filter(product => product.isOnOffer);
+}
+
+// Asegúrate de que las funciones de añadir al carrito estén correctamente enlazadas,
+// posiblemente en `main.js` o `cart.js`
+// Ejemplo:
+// document.addEventListener('click', (event) => {
+//     if (event.target.classList.contains('add-to-cart-btn')) {
+//         const productId = event.target.dataset.productId;
+//         // Llamar a la función de añadir al carrito desde cart.js
+//         addToCart(productId);
+//     }
+// });
