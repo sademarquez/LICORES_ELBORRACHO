@@ -37,188 +37,89 @@
         width: 100%;
         color: var(--text-color-light); /* Color de texto para enlaces del menú móvil */
     }
-    
+
     .main-nav .nav-list a::after {
         background-color: var(--primary-color); /* Asegurar color de subrayado en móvil */
     }
 
-    .menu-toggle {
-        display: block; /* Mostrar el menú hamburguesa en móvil */
-    }
-
-    .header-actions {
+    .header-icons {
+        margin-top: var(--spacing-sm);
         width: 100%;
-        justify-content: flex-end; /* Alinear acciones a la derecha en móvil */
-        gap: var(--spacing-md);
-        padding-top: var(--spacing-sm); /* Espacio superior para separar del logo */
-    }
-
-    .logo-link {
-        margin-bottom: var(--spacing-sm);
+        justify-content: flex-end; /* Alinea los iconos a la derecha en móvil */
     }
 
     .hero-section {
-        height: 300px; /* Altura más pequeña para el carrusel en móvil */
+        height: 250px; /* Altura reducida para pantallas pequeñas */
+        /* Consider using aspect-ratio if browser support is not an issue, or padding-bottom hack */
+        /* aspect-ratio: 16 / 9; */
     }
 
-    .carousel-content h2 {
-        font-size: 2em;
+    .carousel-nav-btn {
+        padding: var(--spacing-xs);
+        width: 30px;
+        height: 40px;
+        font-size: 0.8em;
     }
 
-    .carousel-content p {
-        font-size: 1em;
-    }
-
-    .carousel-button {
-        padding: var(--spacing-sm);
-        font-size: 1.2em;
-    }
-
-    .section-title {
-        font-size: 2em; /* Títulos de sección más pequeños en móvil */
-    }
-
-    /* Productos: 2 columnas, 2 filas en carrusel, y 2 columnas en grid principal */
-    .product-grid {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* 2 columnas en móvil */
-        gap: var(--spacing-md);
-    }
-
-    .product-grid-carousel {
-        grid-auto-columns: minmax(150px, 1fr); /* Ajusta el ancho de las columnas del carrusel */
-        grid-template-rows: repeat(2, minmax(auto, 1fr)); /* Mantiene 2 filas */
-        gap: var(--spacing-md);
-    }
-
-    .product-card {
-        padding: var(--spacing-sm); /* Menos padding en tarjetas */
-    }
-
-    .product-image-container {
-        width: 100px;
-        height: 100px;
-    }
-
-    .product-name {
-        font-size: 1em;
-    }
-
-    .product-brand {
-        font-size: 0.85em;
-    }
-
-    .product-price {
-        font-size: 1.1em;
-    }
-
-    .add-to-cart-btn {
-        font-size: 0.9em;
-        padding: var(--spacing-sm);
-    }
-
+    /* Product filters on mobile */
     .product-filters {
-        flex-direction: column; /* Apilar filtros verticalmente */
-        align-items: stretch; /* Estirar los elementos al 100% de ancho */
-    }
-
-    .product-filters .search-input-group,
-    .product-filters .filter-group {
-        width: 100%;
+        flex-direction: column;
+        gap: var(--spacing-sm);
     }
 
     .product-filters select,
-    .product-filters input[type="text"] {
-        width: 100%; /* Ocupar todo el ancho disponible */
-        max-width: none; /* Eliminar el max-width */
-    }
-    
-    .category-filters {
-        flex-direction: row; /* Mantener horizontal para scroll */
-        overflow-x: auto; /* Scroll horizontal en móviles para categorías */
-        justify-content: flex-start; /* Alinear al inicio para el scroll */
-        padding: var(--spacing-sm);
-        margin-bottom: var(--spacing-md);
+    .product-filters input {
+        width: 100%; /* Hacen que ocupen todo el ancho disponible */
+        max-width: none; /* Elimina el max-width para móviles */
+        box-sizing: border-box; /* Asegura que padding y borde se incluyan en el ancho */
     }
 
-    .category-filters::-webkit-scrollbar {
-        display: none; /* Ocultar scrollbar */
-    }
-
-    .category-button {
-        flex-shrink: 0; /* Evitar que los botones se encojan */
-        font-size: 0.9em;
-        padding: var(--spacing-xs) var(--spacing-md);
-    }
-
-    .brands-carousel-track {
-        gap: var(--spacing-md); /* Menos espacio entre logos */
-    }
-
-    .brand-logo {
-        width: 100px; /* Logos más pequeños en móvil */
-        height: 70px;
-    }
-
-    .brands-carousel-button {
-        padding: var(--spacing-xs);
-        font-size: 1em;
-    }
-
-    .testimonial-grid {
-        grid-template-columns: 1fr; /* Una columna en móvil */
-    }
-
-    .support-contact-info {
+    .search-modal .search-input-group {
         flex-direction: column;
-        gap: var(--spacing-lg);
+        gap: var(--spacing-sm);
     }
 
+    .search-modal .search-input-group input,
+    .search-modal .search-input-group button {
+        width: 100%;
+    }
+
+    .cart-sidebar {
+        width: 100%; /* Ocupa todo el ancho en móvil */
+        right: -100%; /* Oculto completamente a la derecha */
+    }
+
+    .cart-sidebar.open {
+        right: 0;
+    }
+
+    /* Support section alignment */
     .support-options {
         flex-direction: column;
     }
 
     .support-card {
-        max-width: 100%;
+        width: 100%;
     }
 
-    .footer-grid {
-        grid-template-columns: 1fr; /* Una columna en footer */
-        text-align: center;
+    /* Specific to product carousels for mobile */
+    .product-carousel-slide {
+        grid-template-columns: repeat(2, 1fr); /* Maintains 2 columns on mobile */
+        grid-template-rows: repeat(2, auto);
+        gap: var(--spacing-sm); /* Slightly smaller gap on mobile */
     }
 
-    .footer-section {
-        text-align: center; /* Centrar texto en secciones del footer */
+    .product-carousel-container .carousel-nav-btn {
+        width: 30px;
+        height: 50px;
+        padding: var(--spacing-xs);
+        font-size: 0.8em;
     }
 
-    .footer-section ul {
-        padding-left: 0;
-    }
-
-    .social-icons,
-    .payment-methods {
-        justify-content: center;
-    }
-
-    /* Modales */
-    .modal-content {
-        padding: var(--spacing-lg);
-    }
-
-    .search-modal-content .product-grid {
-        max-height: 300px; /* Altura de resultados más pequeña */
-    }
-
-    /* Cart Sidebar */
-    .cart-sidebar {
-        width: 100%; /* Ocupa todo el ancho en móvil */
-        right: 0;
-        left: 0;
-    }
-
-    /* Bottom Nav Bar */
-    .bottom-nav {
-        display: flex; /* Mostrar en móvil */
-        height: 60px; /* Altura fija para la barra inferior */
+    /* Ensure product-grid (for search results) is also responsive on mobile */
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); /* Smaller cards on mobile */
+        gap: var(--spacing-sm);
     }
 }
 
@@ -228,95 +129,34 @@
         padding: 0 var(--spacing-lg);
     }
 
-    .main-nav {
-        display: flex; /* Mostrar navegación principal en tablet */
-        position: static;
-        background-color: transparent;
-        box-shadow: none;
-        padding: 0;
-        border-top: none;
-        width: auto;
-    }
-
-    .main-nav .nav-list {
+    .header-content {
         flex-direction: row;
-        gap: var(--spacing-md);
+        align-items: center;
+        justify-content: space-between;
     }
 
-    .main-nav .nav-list a {
-        padding: 0;
+    .main-nav {
+        display: none; /* Mantener oculto para tablet, se usa el bottom-nav o hamburger */
     }
 
     .menu-toggle {
-        display: none; /* Ocultar menú hamburguesa */
-    }
-
-    .header-actions {
-        width: auto;
-        justify-content: flex-end;
+        display: block; /* Asegurar que el menú hamburguesa se muestre en tablet */
     }
 
     .hero-section {
-        height: 380px; /* Altura media para el carrusel en tablet */
+        height: 350px; /* Altura media para tablet */
     }
 
-    .carousel-content h2 {
-        font-size: 2.5em;
-    }
-
-    .carousel-content p {
-        font-size: 1.1em;
-    }
-
-    .section-title {
-        font-size: 2.2em;
-    }
-
-    /* Productos: 3 columnas en grid principal, 2x2 en carrusel */
     .product-grid {
         grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* 3-4 columnas en tablet */
     }
 
-    .product-grid-carousel {
-        grid-auto-columns: minmax(160px, 1fr); /* Ancho de cada columna para el carrusel en tablet */
-        grid-template-rows: repeat(2, minmax(auto, 1fr)); /* Mantiene 2 filas */
-        gap: var(--spacing-md);
+    .bottom-nav {
+        display: flex; /* Asegurar que la barra inferior esté visible en tablet */
     }
 
-    .product-filters {
-        flex-direction: row; /* Mantener filtros en línea en tablet */
-        justify-content: center;
-        gap: var(--spacing-md);
-    }
-
-    .product-filters .search-input-group {
-        flex-grow: 1;
-        max-width: 300px;
-    }
-
-    .product-filters .filter-group {
-        width: auto;
-    }
-
-    .category-filters {
-        padding: var(--spacing-md);
-        margin-bottom: var(--spacing-xl);
-    }
-
-    .brands-carousel-track {
-        gap: var(--spacing-xl);
-    }
-
-    .testimonial-grid {
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* 2-3 columnas en tablet */
-    }
-
-    .support-options {
-        flex-direction: row;
-    }
-
-    .footer-grid {
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Más columnas en footer */
+    .cart-sidebar {
+        width: 350px; /* Ancho fijo en tablet */
     }
 
     .footer-section {
@@ -336,13 +176,10 @@
         width: auto;
     }
 
-    .cart-sidebar {
-        width: 350px; /* Ancho fijo en tablet */
-    }
-
-    .bottom-nav {
-        display: flex; /* Mantener la barra inferior en tablets */
-        height: 60px;
+    /* Specific to product carousels for tablet */
+    .product-carousel-slide {
+        grid-template-columns: repeat(2, 1fr); /* Still 2 columns on tablet for product carousel */
+        grid-template-rows: repeat(2, auto);
     }
 }
 
@@ -352,13 +189,30 @@
         padding: 0 var(--spacing-xl);
     }
 
-    .product-grid {
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* 4-5 columnas en desktop */
-    }
-
+    /* Ensure desktop styles override tablet/mobile styles for main navigation */
     .main-nav {
         display: flex; /* Asegurar que la navegación principal esté visible en desktop */
+        position: static;
+        flex-direction: row;
+        background-color: transparent;
+        box-shadow: none;
+        padding: 0;
+        border-top: none;
+        z-index: auto;
+        width: auto;
     }
+
+    .main-nav .nav-list {
+        flex-direction: row;
+        gap: var(--spacing-lg);
+    }
+
+    .main-nav .nav-list a {
+        padding: 0;
+        width: auto;
+        color: var(--text-color-dark); /* Color de texto para enlaces del menú desktop */
+    }
+
 
     .menu-toggle {
         display: none; /* Asegurar que el menú hamburguesa no se muestre en desktop */
@@ -372,8 +226,20 @@
         height: 450px; /* Altura original del carrusel en desktop */
     }
 
+    /* Product filters select and input widths */
     .product-filters select,
     .product-filters input {
-        max-width: 250px; /* Ancho consistente para los filtros */
+        max-width: 250px; /* Ancho máximo para campos de filtro en desktop */
+    }
+
+    /* Specific to product carousels for desktop */
+    .product-carousel-slide {
+        grid-template-columns: repeat(2, 1fr); /* Still 2 columns on desktop for product carousel */
+        grid-template-rows: repeat(2, auto);
+    }
+
+    /* Ensure product-grid (for search results) is also responsive on desktop */
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* 4-5 columnas en desktop */
     }
 }
