@@ -42,165 +42,216 @@
         background-color: var(--primary-color); /* Asegurar color de subrayado en móvil */
     }
 
+    .menu-toggle {
+        display: block; /* Mostrar el botón de menú en móviles */
+    }
+
     .header-actions {
-        width: 100%;
-        justify-content: space-between;
+        width: 100%; /* Asegurar que los botones de acción ocupen el ancho completo */
+        justify-content: flex-end; /* Alinear a la derecha */
     }
 
-    .search-bar {
-        flex-grow: 1; /* Ocupa el espacio disponible */
-        width: auto;
+    /* Ajustes específicos para secciones en móvil */
+    .section-title {
+        font-size: 1.8em;
     }
 
-    .search-bar input {
-        width: auto; /* Permite que el input se ajuste */
-    }
-
-    .product-grid {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* 2 columnas en móvil */
-    }
-
-    .product-card-image {
-        height: 150px; /* Altura más pequeña para imágenes en móvil */
-    }
-
+    /* Ajustes para el carrusel principal en móvil */
     .hero-section {
-        height: 300px; /* Altura del carrusel en móvil */
+        height: 300px;
     }
 
-    .slide-content h2 {
+    .carousel-slide .slide-content h2 {
         font-size: 2em;
     }
 
-    .slide-content p {
+    .carousel-slide .slide-content p {
         font-size: 0.9em;
     }
 
     .carousel-btn {
+        width: 30px;
+        height: 30px;
+        font-size: 1.2em;
+        padding: var(--spacing-xs);
+    }
+
+    /* Carruseles de productos (Novedades, Ofertas, Licores) */
+    .category-products-carousel-container {
+        padding: 0 var(--spacing-sm); /* Menos padding en los lados para móvil */
+    }
+
+    .carousel-track-category .product-card {
+        width: calc(50% - (var(--spacing-md) / 2)); /* 2 columnas en móvil con gap */
+        /* Para el carrusel 2x2, el tamaño se mantiene */
+    }
+
+    .product-card {
         padding: var(--spacing-sm);
-        font-size: 1.5em;
     }
 
-    .section-container {
-        padding: var(--spacing-lg) 0;
+    .product-card h3 {
+        font-size: 1em;
     }
 
-    h2 {
-        font-size: 2em;
-        margin-bottom: var(--spacing-lg);
+    .product-card .price {
+        font-size: 1.1em;
     }
 
-    .category-header h3 {
-        font-size: 1.5em;
+    .product-card img {
+        height: 120px; /* Reducir altura de imagen en móvil */
     }
 
-    .category-carousel .product-card {
-        width: 180px; /* Ancho fijo para tarjetas en carrusel de categorías en móvil */
+    /* Marcas */
+    .brands-grid {
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); /* Más columnas pero más pequeñas */
+        gap: var(--spacing-sm);
     }
 
     .brand-logo {
-        height: 80px; /* Menor altura para logos en móvil */
+        height: 80px;
+        max-width: 100px;
+        padding: var(--spacing-sm);
     }
 
-    .product-filters {
+    .brand-logo img {
+        max-height: 50px;
+    }
+
+    /* Botones de categoría */
+    .category-buttons-container {
+        gap: var(--spacing-xs);
+        padding: var(--spacing-sm) 0;
+    }
+
+    .category-button {
+        padding: var(--spacing-xs) var(--spacing-sm);
+        font-size: 0.85em;
+    }
+
+    /* Contacto y Soporte */
+    .contact-info-card, .contact-form-card, .support-card {
+        flex: 1 1 100%; /* Una columna en móvil */
+        min-width: unset; /* Reiniciar min-width */
+        padding: var(--spacing-lg);
+    }
+
+    .contact-content, .support-cards {
+        gap: var(--spacing-lg);
+    }
+
+    /* Footer */
+    .footer-nav-list {
         flex-direction: column;
-        align-items: center;
+        gap: var(--spacing-sm);
     }
 
-    .product-filters input,
-    .product-filters select {
-        max-width: 90%; /* Ajustar ancho en móvil */
-    }
-
-    .contact-info, .support-options {
-        min-width: unset; /* Anula el min-width */
-        max-width: 100%;
-    }
-
-    .social-media {
-        justify-content: center;
-    }
-
-    .cart-sidebar {
-        width: 100%; /* El carrito ocupa todo el ancho en móvil */
-    }
-
+    /* Modales */
     .modal-content {
-        width: 95%; /* Modales casi de ancho completo */
-        padding: var(--spacing-md);
+        padding: var(--spacing-lg);
+        width: 95%; /* Más ancho para que quepa bien en pantallas pequeñas */
+    }
+
+    .search-results-grid {
+        max-height: 300px;
+        padding: var(--spacing-sm);
     }
 
     .search-input-group {
         flex-direction: column;
+        gap: var(--spacing-sm);
     }
 
     .search-input-group input {
         width: 100%;
+        max-width: unset;
     }
 
     .search-input-group button {
         width: 100%;
     }
+
+    .cart-sidebar {
+        width: 280px; /* Ancho más pequeño para el carrito en móvil */
+    }
 }
 
 /* Tablet (768px a 1023px) */
 @media (min-width: 768px) and (max-width: 1023px) {
-    .header-content {
-        flex-wrap: nowrap; /* Evita que los elementos se envuelvan */
+    .container {
+        padding: 0 var(--spacing-lg);
     }
-    
+
+    .header-content {
+        flex-wrap: nowrap; /* Evitar que el header se rompa en varias líneas */
+    }
+
     .main-nav {
-        display: flex;
+        display: flex; /* Mostrar navegación principal */
         position: static;
         background-color: transparent;
         box-shadow: none;
         padding: 0;
         border-top: none;
-        z-index: auto;
-    }
-
-    .menu-toggle {
-        display: none; /* Ocultar el menú hamburguesa en tablet */
+        width: auto;
     }
 
     .main-nav .nav-list {
-        flex-direction: row;
+        flex-direction: row; /* Volver a la disposición horizontal */
         gap: var(--spacing-md);
-        margin-left: auto; /* Empuja la navegación a la derecha */
     }
 
-    .search-bar {
-        width: 250px; /* Un poco más grande en tablet */
+    .main-nav .nav-list a {
+        padding: 0;
     }
 
-    .product-grid {
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* 3-4 columnas en tablet */
+    .menu-toggle {
+        display: none; /* Ocultar el menú hamburguesa */
     }
 
+    /* Ajustes para el carrusel principal en tablet */
     .hero-section {
-        height: 380px;
+        height: 350px;
     }
 
-    .slide-content h2 {
+    .carousel-slide .slide-content h2 {
         font-size: 2.5em;
     }
 
-    .slide-content p {
-        font-size: 1em;
+    .carousel-slide .slide-content p {
+        font-size: 1.1em;
     }
 
-    .bottom-nav {
-        display: flex; /* Asegura que la barra inferior esté visible en tablet */
-        /* Puede que quieras ocultarla en tablet si la navegación principal es suficiente */
+    /* Carruseles de productos (Novedades, Ofertas, Licores) */
+    .carousel-track-category .product-card {
+        width: calc(33.33% - (var(--spacing-md) * 2 / 3)); /* 3 columnas en tablet */
+    }
+    
+    /* Para el carrusel de licores 2x2, ajustamos el grid */
+    .category-filter-carousel .carousel-track-category .product-card {
+        width: calc(50% - (var(--spacing-md) / 2)); /* Mantener 2 columnas en carrusel 2x2 para tablet */
     }
 
-    .category-carousel .product-card {
-        width: 220px; /* Ancho para tarjetas en carrusel de categorías en tablet */
+    .product-card img {
+        height: 140px;
     }
 
-    .product-filters input,
-    .product-filters select {
-        max-width: 200px; /* Ajustar ancho en tablet */
+    /* Marcas */
+    .brands-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
+
+    .brand-logo {
+        height: 90px;
+    }
+
+    .brand-logo img {
+        max-height: 60px;
+    }
+
+    /* Contacto y Soporte */
+    .contact-info-card, .contact-form-card, .support-card {
+        flex: 1 1 calc(50% - var(--spacing-xl)); /* 2 columnas */
     }
 
     .search-input-group input {
@@ -242,9 +293,31 @@
         height: 450px; /* Altura original del carrusel en desktop */
     }
 
-    .product-filters select,
-    .product-filters input {
-        max-width: 250px; /* Ajustar ancho en desktop */
+    /* Carruseles de productos (Novedades, Ofertas) */
+    .carousel-track-category .product-card {
+        width: calc(25% - (var(--spacing-md) * 3 / 4)); /* 4 columnas en desktop */
+        /* Asegurar que las tarjetas dentro del carrusel ocupen menos espacio horizontal */
+    }
+
+    /* Carrusel 2x2 para la sección de Licores por categoría */
+    .category-filter-carousel .carousel-track-category .product-card {
+        width: calc(50% - (var(--spacing-md) / 2)); /* 2 columnas en escritorio para el 2x2 */
+        /* Esto hace que cada slide del carrusel 2x2 contenga 2 productos */
+        /* y el scroll sea por 2 productos. */
+    }
+
+
+    /* Marcas */
+    .brands-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Más grandes en desktop */
+    }
+
+    .brand-logo {
+        height: 100px;
+    }
+
+    .brand-logo img {
+        max-height: 70px;
     }
 
     .search-results-grid {
@@ -252,6 +325,13 @@
     }
 
     .cart-sidebar {
-        width: 400px; /* Ancho del sidebar en desktop */
+        width: 400px; /* Ancho más grande para el carrito en desktop */
     }
+}
+
+/* Ajustes de accesibilidad (Focus States) */
+:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+    border-radius: var(--border-radius);
 }
