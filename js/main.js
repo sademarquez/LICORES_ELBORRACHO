@@ -28,7 +28,7 @@ export const appState = {
  */
 async function loadInitialData() {
     try {
-        console.log('main.js: Iniciando carga de datos iniciales...');
+        // console.log('main.js: Iniciando carga de datos iniciales...'); // ELIMINADO
         
         // Cargar config.json
         const configResponse = await fetch('config.json');
@@ -47,7 +47,7 @@ async function loadInitialData() {
         }
         appState.products = await productsResponse.json();
 
-        console.log('main.js: Datos iniciales cargados exitosamente.');
+        // console.log('main.js: Datos iniciales cargados exitosamente.'); // ELIMINADO
     } catch (error) {
         console.error('main.js: Error al cargar datos iniciales:', error);
         showToastNotification('Error al cargar datos esenciales. Por favor, recarga la página.', 'error');
@@ -68,7 +68,25 @@ function setupUIEventListeners() {
         });
     }
 
-    // Manejar el botón de búsqueda de la barra inferior
+    // Manejar el botón de búsqueda del header
+    const headerSearchBtn = document.getElementById('headerSearchBtn');
+    if (headerSearchBtn) {
+        headerSearchBtn.addEventListener('click', (event) => {
+            event.preventDefault();
+            toggleSearchModal(true); // Abrir el modal de búsqueda
+        });
+    }
+
+    // Manejar el botón de carrito del header
+    const headerCartBtn = document.getElementById('headerCartBtn');
+    if (headerCartBtn) {
+        headerCartBtn.addEventListener('click', (event) => {
+            event.preventDefault();
+            toggleCartSidebar(true); // Abrir la barra lateral del carrito
+        });
+    }
+
+    // Manejar el botón de búsqueda de la barra inferior (si existe)
     const bottomNavSearchBtn = document.getElementById('bottomNavSearch');
     if (bottomNavSearchBtn) {
         bottomNavSearchBtn.addEventListener('click', (event) => {
@@ -77,7 +95,7 @@ function setupUIEventListeners() {
         });
     }
 
-    // Manejar el botón de carrito de la barra inferior
+    // Manejar el botón de carrito de la barra inferior (si existe)
     const bottomNavCartBtn = document.getElementById('bottomNavCart');
     if (bottomNavCartBtn) {
         bottomNavCartBtn.addEventListener('click', (event) => {
@@ -92,10 +110,12 @@ function setupUIEventListeners() {
  */
 function setupBottomNavActiveState() {
     const navItems = document.querySelectorAll('.bottom-nav .nav-item');
-    const currentHash = window.location.hash || '#novedades-ofertas-carousel'; // Default a la sección principal
+    // Si no hay hash, o si el hash es solo '#', por defecto al primer elemento (Inicio)
+    const currentHash = window.location.hash && window.location.hash !== '#' ? window.location.hash : '#hero-carousel'; 
 
     navItems.forEach(item => {
         item.classList.remove('active');
+        // Usar item.getAttribute('href') para comparar con el hash actual
         if (item.getAttribute('href') === currentHash) {
             item.classList.add('active');
         }
@@ -103,7 +123,7 @@ function setupBottomNavActiveState() {
 
     // Añadir listener para actualizar el estado activo al cambiar el hash
     window.addEventListener('hashchange', () => {
-        const newHash = window.location.hash || '#novedades-ofertas-carousel';
+        const newHash = window.location.hash && window.location.hash !== '#' ? window.location.hash : '#hero-carousel';
         navItems.forEach(item => {
             item.classList.remove('active');
             if (item.getAttribute('href') === newHash) {
@@ -122,15 +142,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Solo continuar con la carga de la aplicación si la edad ya fue verificada
     // o si el modal de verificación de edad no existe/no es requerido.
     // Asumimos que initAgeVerification maneja la lógica de ocultar/redirigir.
-    // Si el modal está visible, el usuario debe interactuar con él.
     const ageVerificationModal = document.getElementById('ageVerificationModal');
     if (ageVerificationModal && window.getComputedStyle(ageVerificationModal).display !== 'none') {
-        // Si el modal está visible, la lógica de la aplicación se pausará hasta que el usuario interactúe.
-        // No cargamos más contenido hasta que initAgeVerification lo permita.
-        console.log('main.js: Esperando verificación de edad para continuar la carga de la aplicación.');
-        // Puedes añadir un listener aquí si initAgeVerification dispara un evento al confirmar la edad
-        // para reanudar la carga, o confiar en que el usuario no procederá si no ha verificado.
-        // Por simplicidad, el resto del código se ejecuta solo si el modal ya no está visible (ej. en recargas).
+        // Si el modal está visible, la lógica de la aplicación se pausa hasta que el usuario interactúe.
+        // Se espera que initAgeVerification maneje la redirección o cierre del modal.
+        // console.log('main.js: Esperando verificación de edad para continuar la carga de la aplicación.'); // ELIMINADO
         return; 
     }
 
@@ -139,8 +155,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         await loadInitialData();
 
         // Paso 3: Inicializar el carrusel principal (banners)
-        // Asegúrate de que el carrusel principal tenga un contenedor en el HTML con id="carouselTrack"
-        // y que `appState.banners` esté poblado.
         initCarousel(appState.banners);
 
         // Paso 4: Inicializar el módulo del carrito
@@ -151,23 +165,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         renderProducts(appState.products, '#allProductsGrid');
         
         // Paso 6: Configurar filtros para la cuadrícula principal de productos
-        // CORRECCIÓN: 'containerId' no está definido, debe ser el selector CSS del grid.
         setupProductFilters(appState.products, '#allProductsGrid');
 
-        // Paso 7: Inicializar carruseles de productos por categoría y continuo
-        // Carrusel de Novedades y Ofertas (ejemplo con productos filtrados)
-        setupCategoryProductCarousel(appState.products.filter(p => p.isNew || p.isOnOffer), '#novedades-ofertas-carousel-section');
-        setupCategoryProductCarousel(appState.products.filter(p => p.category === 'Licor'), '#licores-premium-carousel-section');
-        setupCategoryProductCarousel(appState.products.filter(p => p.category === 'Cerveza'), '#cervezas-carousel-section');
-        setupCategoryProductCarousel(appState.products.filter(p => p.category === 'Snacks'), '#snacks-carousel-section');
+        // Paso 7: Inicializar carrusel de productos por categoría
+        // El carrusel de categorías se inicializa con todos los productos
+        // y la lógica de filtrado está dentro de setupCategoryProductCarousel
+        setupCategoryProductCarousel(appState.products, '#categoryProductsSection');
 
-        // Carrusel continuo (ejemplo con los productos más vendidos o destacados)
-        // Asegúrate de que 'continuousCarouselTrack' sea el ID del track en el HTML
-        initContinuousProductCarousel(appState.products.slice(0, 10), 'continuousCarouselTrack', 'Productos Destacados');
-
-
-        // Paso 8: Renderizar marcas
-        renderBrands(appState.brands, '#brandLogos');
+        // Paso 8: Inicializar carrusel continuo de marcas
+        initContinuousProductCarousel(appState.brands, 'continuousCarouselTrack', 'Cinturón de Marcas');
 
         // Paso 9: Configurar la funcionalidad de búsqueda
         setupSearch();
@@ -186,22 +192,25 @@ document.addEventListener('DOMContentLoaded', async () => {
         setupBottomNavActiveState();
 
         // Actualizar información de contacto en el footer/contacto
-        document.getElementById('contactEmail').textContent = appState.contactInfo.email;
-        document.getElementById('contactPhone').textContent = appState.contactInfo.phone;
-        document.getElementById('contactAddress').textContent = appState.contactInfo.address;
+        document.getElementById('contactEmail').textContent = appState.contactInfo.email || 'N/A';
+        document.getElementById('contactPhone').textContent = appState.contactInfo.phone || 'N/A';
+        document.getElementById('contactAddress').textContent = appState.contactInfo.address || 'N/A';
+        
+        // También actualizar el footer, si tiene IDs diferentes
+        document.getElementById('footerEmail').textContent = appState.contactInfo.email || 'N/A';
+        document.getElementById('footerPhone').textContent = appState.contactInfo.phone || 'N/A';
+        document.getElementById('footerAddress').textContent = appState.contactInfo.address || 'N/A';
+
 
         const footerWhatsappLink = document.querySelector('.social-media a[href*="whatsapp"]');
         if (footerWhatsappLink && appState.contactInfo.phone) {
             footerWhatsappLink.href = `https://wa.me/${appState.contactInfo.phone}`;
         }
 
-        console.log('main.js: Aplicación inicializada completamente.');
+        // console.log('main.js: Aplicación inicializada completamente.'); // ELIMINADO
 
     } catch (error) {
         console.error('main.js: No se pudieron cargar los productos o la aplicación no se renderizó completamente.', error);
         showToastNotification('Error crítico al iniciar la aplicación. Por favor, recarga la página.', 'error');
-        // Si hay un error crítico, podrías ocultar el cuerpo y mostrar un mensaje
-        // document.body.style.display = 'none';
-        // document.getElementById('error-message').style.display = 'block';
     }
 });
