@@ -24,19 +24,20 @@ export function setupSearch() {
         const searchTerm = searchInput.value.toLowerCase().trim();
         let filteredProducts = [];
 
-        if (searchTerm.length > 0) { // Solo busca si hay un término
-            filteredProducts = appState.products.filter(product =>
-                product.name.toLowerCase().includes(searchTerm) ||
-                product.brand.toLowerCase().includes(searchTerm) ||
-                product.description.toLowerCase().includes(searchTerm)
-            );
-        }
-
-        // Limpiar contenido anterior y mostrar mensaje apropiado
         if (searchTerm.length === 0) {
             searchResultsGrid.innerHTML = `<p class="no-results-message">Ingresa un término para buscar productos.</p>`;
-        } else if (filteredProducts.length === 0) {
-            searchResultsGrid.innerHTML = `<p class="no-results-message">No se encontraron productos para "${searchTerm}".</p>`;
+            return;
+        }
+        
+        filteredProducts = appState.products.filter(product =>
+            product.name.toLowerCase().includes(searchTerm) ||
+            product.brand.toLowerCase().includes(searchTerm) ||
+            (product.description && product.description.toLowerCase().includes(searchTerm))
+        );
+        
+
+        if (filteredProducts.length === 0) {
+            searchResultsGrid.innerHTML = `<p class="no-results-message">No se encontraron resultados para "${searchTerm}".</p>`;
         } else {
             // Reutiliza renderProducts para mostrar los resultados de búsqueda
             // Pasa null para las opciones de categoría/oferta/novedad para que renderProducts no los filtre adicionalmente
@@ -59,8 +60,10 @@ export function toggleSearchModal(open) {
     if (searchModal) {
         if (typeof open === 'boolean') {
             searchModal.classList.toggle('open', open);
+            searchModal.style.display = open ? 'flex' : 'none'; // Controlar display con JS para asegurar el centering
         } else {
             searchModal.classList.toggle('open'); // Toggle si no se especifica 'open'
+            searchModal.style.display = searchModal.classList.contains('open') ? 'flex' : 'none';
         }
 
         if (searchModal.classList.contains('open')) {
