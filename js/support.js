@@ -13,6 +13,17 @@ export function setupSupport() {
     const faultReportForm = document.getElementById('faultReportForm');
     const appointmentForm = document.getElementById('appointmentForm');
 
+    // Botones para cerrar los modales
+    const closeModalButtons = document.querySelectorAll('.close-modal-btn');
+    closeModalButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            if (button.closest('.modal')) {
+                button.closest('.modal').style.display = 'none';
+            }
+        });
+    });
+
+
     // Abrir modales
     if (reportFaultBtn && faultReportModal) {
         reportFaultBtn.addEventListener('click', () => {
@@ -22,6 +33,16 @@ export function setupSupport() {
     if (bookAppointmentBtn && appointmentModal) {
         bookAppointmentBtn.addEventListener('click', () => {
             appointmentModal.style.display = 'flex'; // Usar flex para centrar
+            // Pre-llenar fecha y hora actual como sugerencia
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0'); // Meses son 0-index
+            const day = String(today.getDate()).padStart(2, '0');
+            const hours = String(today.getHours()).padStart(2, '0');
+            const minutes = String(today.getMinutes()).padStart(2, '0');
+
+            document.getElementById('appointmentDate').value = `${year}-${month}-${day}`;
+            document.getElementById('appointmentTime').value = `${hours}:${minutes}`;
         });
     }
 
@@ -38,24 +59,24 @@ export function setupSupport() {
             }
 
             const name = document.getElementById('faultName').value;
-            const phone = document.getElementById('faultPhone').value;
+            const email = document.getElementById('faultEmail').value;
             const description = document.getElementById('faultDescription').value;
 
-            if (!name || !phone || !description) {
-                showToastNotification('Por favor, completa todos los campos para reportar un problema.', 'error');
+            if (!name || !email || !description) {
+                showToastNotification('Por favor, completa todos los campos para enviar tu reporte.', 'error');
                 return;
             }
 
-            let message = `¡Hola EL BORRACHO!%0AReporte de Problema:%0A%0A`;
+            let message = `¡Hola EL BORRACHO!%0AReporte de un Problema:%0A%0A`;
             message += `*Nombre:* ${name}%0A`;
-            message += `*Teléfono:* ${phone}%0A`;
-            message += `*Descripción del Problema:* ${description}%0A%0A`;
-            message += `Por favor, revisa mi reporte y contáctame. ¡Gracias!`;
+            message += `*Email:* ${email}%0A`;
+            message += `*Problema:* ${description}%0A%0A`;
+            message += `Esperamos tu pronta respuesta. ¡Gracias!`;
 
             const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
             window.open(whatsappUrl, '_blank');
 
-            showToastNotification('Reporte enviado a WhatsApp. Te contactaremos pronto.', 'success');
+            showToastNotification('Reporte de problema enviado a WhatsApp. Te contactaremos pronto.', 'success');
             faultReportModal.style.display = 'none'; // Cerrar modal
             faultReportForm.reset(); // Limpiar formulario
         });
@@ -68,7 +89,7 @@ export function setupSupport() {
 
             const whatsappNumber = appState.contactInfo.phone;
             if (!whatsappNumber) {
-                showToastNotification('Número de WhatsApp no configurado. No se puede agendar el pedido.', 'error');
+                showToastNotification('Número de WhatsApp no configurado. No se puede enviar el pedido.', 'error');
                 console.error('WhatsApp number is not configured in appState.contactInfo.phone');
                 return;
             }
@@ -101,5 +122,5 @@ export function setupSupport() {
         });
     }
 
-    console.log('support.js: Módulo de soporte configurado.');
+    // console.log('support.js: Módulo de soporte configurado.'); // ELIMINADO
 }
