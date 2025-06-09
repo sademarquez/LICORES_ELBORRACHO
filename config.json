@@ -9,7 +9,7 @@
             "title": "¡Novedad! Licores Premium",
             "description": "Descubre nuestra selección exclusiva de licores finos.",
             "imageUrl": "images/banners/banner-licores-premium.jpg",
-            "link": "#licores",
+            "link": "#productos-destacados",
             "buttonText": "Ver Licores"
         },
         {
@@ -17,7 +17,7 @@
             "title": "Ofertas de Cervezas",
             "description": "Las mejores marcas de cerveza con descuentos increíbles.",
             "imageUrl": "images/banners/banner-cervezas.jpg",
-            "link": "#cervezas",
+            "link": "#productos-destacados",
             "buttonText": "Comprar Cervezas"
         },
         {
@@ -25,42 +25,21 @@
             "title": "Snacks para tus Bebidas",
             "description": "Acompaña tus licores con nuestros deliciosos snacks y más.",
             "imageUrl": "images/banners/banner-snacks.jpg",
-            "link": "#snacks",
+            "link": "#productos-destacados",
             "buttonText": "Explorar Snacks"
+        },
+        {
+            "id": "banner4",
+            "title": "Celebra con Nosotros",
+            "description": "Todo lo que necesitas para tu fiesta al mejor precio.",
+            "imageUrl": "images/banners/banner-celebracion.jpg",
+            "link": "#productos-destacados",
+            "buttonText": "Organizar Evento"
         }
     ],
-    "brands": [
-        {
-            "name": "Aguardiente Antioqueño",
-            "logoUrl": "images/icons/antioqueno-logo.svg"
-        },
-        {
-            "name": "Ron Viejo de Caldas",
-            "logoUrl": "images/icons/ron-caldas-logo.svg"
-        },
-        {
-            "name": "Buchanan's",
-            "logoUrl": "images/icons/buchanans-logo.svg"
-        },
-        {
-            "name": "Club Colombia",
-            "logoUrl": "images/icons/club-colombia-logo.svg"
-        },
-        {
-            "name": "Corona",
-            "logoUrl": "images/icons/corona-logo.svg"
-        },
-        {
-            "name": "Poker",
-            "logoUrl": "images/icons/poker-logo.svg"
-        },
-        {
-            "name": "Aguardiente caucano",
-            "logoUrl": "images/icons/aguardientec-logo.svg"
-        }
-    ],
-    "socialMedia": {
-        "facebook": "https://facebook.com/elborracho",
-        "instagram": "https://instagram.com/elborracho"
+    "contactInfo": {
+        "email": "pedidos@elborracho.com",
+        "phone": "573109876543",
+        "address": "Popayán, Cauca, Colombia"
     }
 }
