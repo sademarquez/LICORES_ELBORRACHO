@@ -62,7 +62,7 @@
         "category": "Cerveza",
         "description": "La cerveza mexicana más famosa, ligera y refrescante, ideal con una rodaja de limón. Botella de 355ml.",
         "price": 6000,
-        "imageUrl": "images/products/corona-extra.png",
+        "imageUrl": "images/products/corona_extra.png",
         "isOnOffer": false,
         "offerPrice": null,
         "isNew": false,
