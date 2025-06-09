@@ -42,89 +42,111 @@
         background-color: var(--primary-color); /* Asegurar color de subrayado en móvil */
     }
 
-    .header-icons {
-        margin-left: auto; /* Empujar los íconos a la derecha */
-        display: flex; /* Asegurar que los íconos de búsqueda y carrito estén visibles */
-        gap: var(--spacing-sm);
+    .menu-toggle {
+        display: block; /* Mostrar el menú hamburguesa en móvil */
     }
 
-    .menu-toggle {
-        display: block; /* Mostrar botón de hamburguesa en móvil */
-        font-size: 1.8em; /* Tamaño de ícono más grande */
+    .header-icons {
+        margin-left: auto; /* Empuja los íconos a la derecha */
+    }
+
+    .hero-section {
+        height: 300px; /* Altura más pequeña para el carrusel en móviles */
+    }
+
+    .carousel-title {
+        font-size: 2em;
+    }
+
+    .carousel-description {
+        font-size: 1em;
+    }
+
+    .carousel-button {
+        font-size: 0.9em;
+        padding: var(--spacing-xs) var(--spacing-md);
+    }
+
+    .carousel-btn {
         padding: var(--spacing-xs);
+        font-size: 1.2em;
+    }
+
+    .carousel-dots {
+        bottom: var(--spacing-sm);
+    }
+
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Más pequeñas en móvil */
+    }
+
+    .product-card {
+        padding: var(--spacing-xs);
+    }
+
+    .product-image {
+        max-height: 120px;
+    }
+
+    .product-name {
+        font-size: 0.9em;
+    }
+
+    .product-price {
+        font-size: 1em;
+    }
+
+    .product-filters {
+        flex-direction: column; /* Filtros apilados en móvil */
+        align-items: stretch;
+    }
+
+    .filter-group {
+        width: 100%;
+        min-width: unset;
+    }
+
+    .main-footer .footer-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .footer-section {
+        min-width: unset;
+    }
+
+    .footer-section h3 {
+        text-align: center;
+    }
+
+    .footer-section ul {
+        padding: 0;
+    }
+    
+    .footer-section ul li {
+        text-align: center;
+    }
+
+    .social-media {
+        display: flex;
+        justify-content: center;
+        gap: var(--spacing-md);
+    }
+
+    .social-icon {
+        margin: 0; /* Eliminar margen extra si ya hay gap */
     }
 
     .bottom-nav {
         display: flex; /* Mostrar la barra inferior en móvil */
     }
 
-    .hero-section {
-        height: 280px; /* Altura más baja para el carrusel en móvil para dejar más espacio */
-    }
-
-    .carousel-btn {
-        /* Ajustar tamaño de botones del carrusel principal en móvil */
-        font-size: 1.2em;
-        padding: var(--spacing-xs);
-        width: 40px; /* Tamaño fijo para hacerlos más tocables */
-        height: 40px;
-    }
-
-    .carousel-dot {
-        width: 10px; /* Puntos más pequeños y tocables */
-        height: 10px;
-    }
-
-    .product-grid {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* 2-3 columnas en móviles */
-        gap: var(--spacing-sm); /* Menor espacio entre productos */
-    }
-
-    .product-card {
-        width: 100%; /* Asegurar que la tarjeta ocupe todo el ancho disponible en su columna */
-        margin-right: 0; /* Remover margen derecho si es un grid */
-    }
-
-    .product-filters {
-        flex-direction: column; /* Apilar filtros verticalmente */
-        gap: var(--spacing-md);
-    }
-
-    .product-filters select,
-    .product-filters input,
-    .product-filters button {
-        width: 100%; /* Que los controles de filtro ocupen el ancho completo */
-        padding: var(--spacing-sm);
-        font-size: 1em;
-    }
-
-    .search-modal-content {
-        width: 95%; /* Modal de búsqueda más grande en móvil */
-        height: 90%;
-        padding: var(--spacing-md);
-    }
-
     .cart-sidebar {
-        width: 100%; /* Carrito ocupa todo el ancho en móvil */
-        right: 0;
-        top: 0;
-        bottom: 0;
-        height: 100%;
-        border-left: none; /* Sin borde lateral */
-        box-shadow: none; /* Sin sombra */
+        width: 100%; /* Ocupa todo el ancho en móvil */
     }
 
-    .modal-content {
-        width: 90%; /* Ajuste de ancho para modales en móvil */
-        padding: var(--spacing-md);
-    }
-
-    .support-options {
-        flex-direction: column; /* Apilar tarjetas de soporte */
-    }
-
-    .support-card {
-        width: 100%; /* Tarjetas de soporte al 100% de ancho */
+    .age-verification-buttons {
+        flex-direction: column; /* Botones apilados en móvil */
     }
 }
 
@@ -134,19 +156,12 @@
         padding: 0 var(--spacing-lg);
     }
 
-    .header-content {
-        justify-content: space-between;
-        align-items: center;
-        flex-direction: row;
-    }
-
     .main-nav {
-        display: none; /* Ocultar por defecto, se maneja con el menú hamburguesa */
-        /* Puede que se quiera un menú diferente o un toggle distinto en tablet */
+        display: flex; /* Asegurar que la navegación principal esté visible */
     }
 
     .menu-toggle {
-        display: block; /* Mostrar el menú hamburguesa en tablet */
+        display: none;
     }
 
     .bottom-nav {
@@ -157,8 +172,21 @@
         height: 350px; /* Altura intermedia del carrusel en tablet */
     }
 
+    .carousel-title {
+        font-size: 2.2em;
+    }
+
+    .carousel-description {
+        font-size: 1.1em;
+    }
+
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* 3-4 columnas en tablet */
+    }
+
     .product-filters {
         flex-direction: row; /* Volver a disposición horizontal */
+        justify-content: center;
     }
 
     .search-input-group input {
@@ -171,6 +199,16 @@
 
     .cart-sidebar {
         width: 350px; /* Ancho fijo en tablet */
+    }
+
+    .age-verification-buttons {
+        flex-direction: row; /* Botones en fila en tablet */
+        justify-content: center;
+    }
+
+    .age-verification-buttons .btn-primary,
+    .age-verification-buttons .btn-secondary {
+        width: auto; /* Ancho automático para no estirarse */
     }
 }
 
@@ -202,10 +240,28 @@
 
     .product-filters select,
     .product-filters input {
-        width: auto; /* Volver a ancho automático */
+        width: 200px; /* Ancho fijo para selectores en desktop */
     }
 
-    .cart-sidebar {
-        width: 400px; /* Ancho fijo en desktop */
+    .footer-section {
+        text-align: left; /* Alineado a la izquierda en desktop */
+    }
+
+    .footer-section h3 {
+        text-align: left;
+    }
+
+    .social-media {
+        justify-content: flex-start;
+    }
+
+    .age-verification-buttons {
+        flex-direction: row; /* Botones en fila en desktop */
+        justify-content: center;
+    }
+
+    .age-verification-buttons .btn-primary,
+    .age-verification-buttons .btn-secondary {
+        width: auto;
     }
 }
