@@ -5,28 +5,28 @@
     "address": "Popayán, Cauca, Colombia",
     "banners": [
         {
-            "id": "banner-ofertas-premium",
-            "title": "¡Ofertas Premium para Ti!",
-            "description": "Descubre nuestros licores selectos con descuentos exclusivos.",
+            "id": "banner1",
+            "title": "¡Novedad! Licores Premium",
+            "description": "Descubre nuestra selección exclusiva de licores finos.",
             "imageUrl": "images/banners/banner-licores-premium.jpg",
-            "link": "#products-grid-section",
-            "buttonText": "Ver Ofertas"
+            "link": "#licores",
+            "buttonText": "Ver Licores"
         },
         {
-            "id": "banner-novedades-cervezas",
-            "title": "¡Nuevas Cervezas Artesanales!",
-            "description": "Explora nuestra creciente colección de cervezas únicas.",
+            "id": "banner2",
+            "title": "Ofertas de Cervezas",
+            "description": "Las mejores marcas de cerveza con descuentos increíbles.",
             "imageUrl": "images/banners/banner-cervezas.jpg",
-            "link": "#products-grid-section",
-            "buttonText": "Explorar Novedades"
+            "link": "#cervezas",
+            "buttonText": "Comprar Cervezas"
         },
         {
-            "id": "banner-snacks-promocion",
-            "title": "Snacks & Bebidas: La Combinación Perfecta",
-            "description": "Acompaña tus bebidas favoritas con nuestros deliciosos snacks.",
+            "id": "banner3",
+            "title": "Snacks para tus Bebidas",
+            "description": "Acompaña tus licores con nuestros deliciosos snacks y más.",
             "imageUrl": "images/banners/banner-snacks.jpg",
-            "link": "#products-grid-section",
-            "buttonText": "Comprar Ahora"
+            "link": "#snacks",
+            "buttonText": "Explorar Snacks"
         }
     ],
     "brands": [
@@ -55,12 +55,12 @@
             "logoUrl": "images/icons/poker-logo.svg"
         },
         {
-            "name": "Red Bull",
-            "logoUrl": "images/icons/redbull-logo.svg"
+            "name": "Coca-Cola",
+            "logoUrl": "images/icons/cocacola-logo.svg"
         },
         {
-            "name": "Pielroja",
-            "logoUrl": "images/icons/pielroja-logo.svg"
+            "name": "Marlboro",
+            "logoUrl": "images/icons/marlboro-logo.svg"
         }
     ]
 }
