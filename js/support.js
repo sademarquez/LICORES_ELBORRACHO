@@ -20,60 +20,65 @@ export function setupSupport(phone) {
     // Abrir modales
     if (reportFaultBtn && faultReportModal) {
         reportFaultBtn.addEventListener('click', () => {
-            faultReportModal.style.display = 'flex'; // Usar flex para centrar
+            faultReportModal.classList.add('open'); // Usar clase 'open' para modal
+            document.body.style.overflow = 'hidden'; // Bloquear scroll del body
         });
     }
     if (bookAppointmentBtn && appointmentModal) {
         bookAppointmentBtn.addEventListener('click', () => {
-            appointmentModal.style.display = 'flex'; // Usar flex para centrar
+            appointmentModal.classList.add('open'); // Usar clase 'open' para modal
+            document.body.style.overflow = 'hidden'; // Bloquear scroll del body
         });
     }
 
     // Cerrar modales (revisado para ser más robusto)
     document.querySelectorAll('.modal .close-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
-            e.target.closest('.modal').style.display = 'none';
+            e.target.closest('.modal').classList.remove('open');
+            document.body.style.overflow = ''; // Habilitar scroll del body
         });
     });
 
     // Cerrar modales al hacer clic fuera
     window.addEventListener('click', (event) => {
         if (event.target === faultReportModal) {
-            faultReportModal.style.display = 'none';
+            faultReportModal.classList.remove('open');
+            document.body.style.overflow = '';
         }
         if (event.target === appointmentModal) {
-            appointmentModal.style.display = 'none';
+            appointmentModal.classList.remove('open');
+            document.body.style.overflow = '';
         }
     });
 
-    // Enviar formulario de consulta por WhatsApp
+    // Enviar reporte de problema por WhatsApp
     if (faultReportForm) {
         faultReportForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            sendFaultReportToWhatsApp();
+            sendFaultReport();
         });
     }
 
-    // Enviar formulario de agendamiento por WhatsApp
+    // Agendar pedido/entrega por WhatsApp
     if (appointmentForm) {
         appointmentForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            sendAppointmentRequestToWhatsApp();
+            sendAppointmentRequest();
         });
     }
+
     console.log('support.js: Módulo de soporte configurado.');
 }
 
-function sendFaultReportToWhatsApp() {
+function sendFaultReport() {
     if (!whatsappNumber) {
-        showToastNotification('Número de WhatsApp no configurado. No se puede enviar la consulta.', 'error');
+        showToastNotification('Número de WhatsApp no configurado. No se puede enviar el reporte.', 'error');
         console.error('WhatsApp number is not configured in appState.contactInfo.phone');
         return;
     }
 
     const name = document.getElementById('faultName').value;
     const email = document.getElementById('faultEmail').value;
-    const orderNumber = document.getElementById('faultOrderNumber').value;
     const description = document.getElementById('faultDescription').value;
 
     if (!name || !description) {
@@ -81,25 +86,24 @@ function sendFaultReportToWhatsApp() {
         return;
     }
 
-    let message = `¡Hola EL BORRACHO!%0AMi nombre es *${name}*.%0A%0A`;
-    if (orderNumber) {
-        message += `Mi número de pedido es: *${orderNumber}*%0A`;
-    }
+    let message = `¡Hola EL BORRACHO!%0AReporte de un Problema:%0A%0A`;
+    message += `*Nombre:* ${name}%0A`;
     if (email) {
-        message += `Mi correo electrónico: ${email}%0A`;
+        message += `*Correo:* ${email}%0A`;
     }
-    message += `*Consulta:* ${description}%0A%0A`;
-    message += `Agradezco su pronta respuesta.`;
+    message += `*Descripción del Problema:* ${description}%0A%0A`;
+    message += `Por favor, atiende este reporte lo antes posible. ¡Gracias!`;
 
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
 
-    showToastNotification('Tu consulta ha sido enviada. Pronto nos contactaremos contigo.', 'success');
+    showToastNotification('Reporte enviado a WhatsApp. Gracias por tu feedback.', 'success');
     document.getElementById('faultReportForm').reset();
-    document.getElementById('faultReportModal').style.display = 'none';
+    document.getElementById('faultReportModal').classList.remove('open');
+    document.body.style.overflow = ''; // Restaurar scroll
 }
 
-function sendAppointmentRequestToWhatsApp() {
+function sendAppointmentRequest() {
     if (!whatsappNumber) {
         showToastNotification('Número de WhatsApp no configurado. No se puede agendar el pedido.', 'error');
         console.error('WhatsApp number is not configured in appState.contactInfo.phone');
@@ -130,5 +134,6 @@ function sendAppointmentRequestToWhatsApp() {
 
     showToastNotification('Solicitud de pedido/entrega enviada a WhatsApp. Espera nuestra confirmación.', 'success');
     document.getElementById('appointmentForm').reset();
-    document.getElementById('appointmentModal').style.display = 'none';
+    document.getElementById('appointmentModal').classList.remove('open');
+    document.body.style.overflow = ''; // Restaurar scroll
 }
