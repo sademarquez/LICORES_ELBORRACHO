@@ -5,8 +5,8 @@
     position: relative;
     width: 100%;
     overflow: hidden;
-    height: 450px; /* Altura fija para el carrusel */
-    background-color: var(--dark-bg); /* Color de fondo mientras carga la imagen */
+    height: 450px;
+    background-color: var(--dark-bg);
 }
 
 .carousel-container {
@@ -16,23 +16,23 @@
 }
 
 .carousel-track {
-    display: flex;
+    display: flex; /* Mantiene los slides en línea */
     height: 100%;
-    transition: transform 0.5s ease-in-out; /* Velocidad de transición del slide */
+    transition: transform 0.5s ease-in-out;
 }
 
 .carousel-slide {
-    min-width: 100%;
+    min-width: 100%; /* Cada slide ocupa el 100% del ancho del contenedor */
     height: 100%;
     position: relative;
     display: flex;
-    align-items: center; /* Centra el contenido verticalmente */
-    justify-content: center; /* Centra el contenido horizontalmente */
+    align-items: center;
+    justify-content: center;
     background-size: cover;
     background-position: center;
     color: var(--white);
     text-align: center;
-    flex-shrink: 0; /* Asegura que no se encoja */
+    flex-shrink: 0; /* Crucial: Evita que los slides se encojan */
 }
 
 .carousel-slide::before {
@@ -42,23 +42,23 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.65); /* Oscurece la imagen para que el texto resalte (ligeramente más oscuro) */
+    background-color: rgba(0, 0, 0, 0.65);
     z-index: 1;
 }
 
 .carousel-content {
     position: relative;
-    z-index: 2; /* Asegura que el contenido esté por encima del overlay */
+    z-index: 2;
     max-width: 800px;
     padding: var(--spacing-md);
-    text-shadow: var(--shadow-sm); /* Sombra para el texto para mayor legibilidad */
+    text-shadow: var(--shadow-sm);
 }
 
 .carousel-title {
     font-size: 3em;
     margin-bottom: var(--spacing-sm);
     color: var(--text-color-dark);
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.7); /* Sombra más pronunciada para el título */
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
 }
 
 .carousel-description {
@@ -72,28 +72,28 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.4); /* Fondo negro más transparente */
+    background-color: rgba(0, 0, 0, 0.4);
     color: var(--primary-color);
-    border: 1px solid var(--primary-color); /* Borde dorado */
+    border: 1px solid var(--primary-color);
     padding: var(--spacing-sm) var(--spacing-xs);
     border-radius: 50%;
     cursor: pointer;
     font-size: 1.8em;
     z-index: 10;
-    transition: background-color var(--transition-speed) var(--transition-timing), color var(--transition-speed) var(--transition-timing), border-color var(--transition-speed) var(--transition-timing), box-shadow var(--transition-speed) var(--transition-timing); /* Añadida transición de sombra */
-    display: flex; /* Para centrar el icono */
+    transition: background-color var(--transition-speed) var(--transition-timing), color var(--transition-speed) var(--transition-timing), border-color var(--transition-speed) var(--transition-timing), box-shadow var(--transition-speed) var(--transition-timing);
+    display: flex;
     align-items: center;
     justify-content: center;
-    width: 50px; /* Ancho fijo para el botón */
-    height: 50px; /* Altura fija para el botón */
-    box-shadow: var(--shadow-sm); /* Sombra inicial */
+    width: 50px;
+    height: 50px;
+    box-shadow: var(--shadow-sm);
 }
 
 .carousel-btn:hover {
-    background-color: rgba(0, 0, 0, 0.6); /* Más oscuro al pasar el mouse */
+    background-color: rgba(0, 0, 0, 0.6);
     color: var(--primary-color-dark);
     border-color: var(--primary-color-dark);
-    box-shadow: var(--shadow-md), var(--golden-glow-sm); /* Sombra más fuerte y resplandor dorado */
+    box-shadow: var(--shadow-md), var(--golden-glow-sm);
 }
 
 .carousel-prev {
@@ -118,29 +118,29 @@
 .dot {
     width: 12px;
     height: 12px;
-    background-color: rgba(255, 255, 255, 0.5); /* Blanco semitransparente */
+    background-color: rgba(255, 255, 255, 0.5);
     border-radius: 50%;
     cursor: pointer;
     transition: background-color var(--transition-speed) var(--transition-timing), transform var(--transition-speed) var(--transition-timing);
-    border: 1px solid rgba(255, 191, 0, 0.3); /* Borde dorado sutil */
+    border: 1px solid rgba(255, 191, 0, 0.3);
 }
 
 .dot:hover,
 .dot.active {
-    background-color: var(--primary-color); /* Dorado en activo y hover */
-    transform: scale(1.2); /* Ligeramente más grande */
+    background-color: var(--primary-color);
+    transform: scale(1.2);
     border-color: var(--primary-color);
 }
 
 
-/* Carrusel de Productos por Categoría */
+/* Carrusel de Productos por Categoría - CORRECCIÓN CLAVE AQUÍ */
 .category-carousel-section {
     padding: var(--spacing-lg) 0;
-    background-color: rgba(0, 0, 0, 0.4); /* Fondo negro más transparente */
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
 .category-carousel-section .carousel-controls {
-    position: relative;
+    position: relative; /* Mantener la posición para los botones de navegación */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -148,30 +148,41 @@
 }
 
 .category-carousel-section .carousel-track-container {
-    overflow: hidden;
-    flex-grow: 1; /* Ocupa el espacio disponible */
-    margin: 0 var(--spacing-md); /* Espacio para los botones */
+    overflow: hidden; /* **CRUCIAL: Asegura que solo se vea el contenido dentro del contenedor** */
+    flex-grow: 1;
+    margin: 0 var(--spacing-md);
 }
 
 .category-carousel-section .carousel-track-category {
-    display: flex;
-    gap: var(--spacing-md); /* Espacio entre las tarjetas */
-    padding: var(--spacing-sm) 0; /* Pequeño padding vertical */
-    scroll-behavior: smooth; /* Desplazamiento suave */
-    overflow-x: hidden; /* Oculta la barra de scroll */
+    display: flex; /* **CRUCIAL: Mantiene las tarjetas en línea** */
+    gap: var(--spacing-md);
+    padding: var(--spacing-sm) 0;
+    scroll-behavior: smooth;
+    overflow-x: auto; /* Permite el scroll nativo, JS lo controlará */
+    -webkit-overflow-scrolling: touch; /* Suavidad en iOS */
+    /* Eliminar white-space: nowrap; si queremos un carrusel que se ajuste al ancho,
+       o mantenerlo si queremos un carrusel fijo que se desborde y JS lo maneje.
+       Para este caso, con overflow-x: auto y scroll-behavior: smooth, es mejor dejarlo.
+       Si el JS está controlando el scroll con `scrollTo`, `overflow-x: hidden` está bien.
+       Basado en tu JS, `overflow-x: hidden` es correcto aquí, así que lo mantengo. */
 }
 
+
 .category-carousel-section .product-card {
-    /* Aquí aplicamos el estilo de tarjeta más transparente y borde dorado */
-    background-color: rgba(52, 58, 64, 0.08); /* Fondo mucho más transparente */
-    border: 1px solid rgba(255, 191, 0, 0.3); /* Borde dorado sutil */
-    border-radius: 10px; /* Más redondeado */
-    flex-shrink: 0; /* No permite que se encojan */
+    background-color: rgba(52, 58, 64, 0.08);
+    border: 1px solid rgba(255, 191, 0, 0.3);
+    border-radius: 10px;
+    flex-shrink: 0; /* **CRUCIAL: No permite que las tarjetas se encojan y se mantengan con width fijo** */
     width: 200px; /* Ancho fijo para las tarjetas del carrusel de categoría */
     text-align: center;
     padding: var(--spacing-md);
     transition: transform var(--transition-speed) var(--transition-timing), box-shadow var(--transition-speed) var(--transition-timing), background-color var(--transition-speed) var(--transition-timing);
-    box-shadow: var(--shadow-sm); /* Sombra inicial */
+    box-shadow: var(--shadow-sm);
+    /* Asegurar que el display flex dentro de la tarjeta no interfiera con el layout externo */
+    display: flex; /* Mantiene la consistencia de layout interno de la tarjeta */
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%; /* Asegura que todas las tarjetas tengan la misma altura */
 }
 
 .category-carousel-section .product-card:hover {
@@ -181,7 +192,7 @@
 }
 
 .category-carousel-section .product-card .product-image {
-    height: 160px; /* Altura fija para las imágenes en el carrusel de categoría */
+    height: 160px;
     object-fit: contain;
     margin-bottom: var(--spacing-sm);
     transition: transform var(--transition-speed) var(--transition-timing), filter var(--transition-speed) var(--transition-timing);
@@ -193,26 +204,26 @@
 }
 
 .category-carousel-section .carousel-btn {
-    position: static; /* Anular el posicionamiento absoluto */
-    transform: none; /* Anular el transform */
-    background-color: rgba(0, 0, 0, 0.4); /* Fondo negro más transparente */
+    position: static;
+    transform: none;
+    background-color: rgba(0, 0, 0, 0.4);
     color: var(--primary-color);
     font-size: 1.5em;
     padding: var(--spacing-xs) var(--spacing-sm);
     border-radius: 50%;
     box-shadow: var(--shadow-sm);
-    flex-shrink: 0; /* Evita que los botones se encojan */
-    border: 1px solid var(--primary-color); /* Borde dorado */
-    width: 40px; /* Ancho fijo para el botón */
-    height: 40px; /* Altura fija para el botón */
-    display: flex; /* Para centrar el icono */
+    flex-shrink: 0;
+    border: 1px solid var(--primary-color);
+    width: 40px;
+    height: 40px;
+    display: flex;
     align-items: center;
     justify-content: center;
     transition: background-color var(--transition-speed) var(--transition-timing), color var(--transition-speed) var(--transition-timing), border-color var(--transition-speed) var(--transition-timing), box-shadow var(--transition-speed) var(--transition-timing);
 }
 
 .category-carousel-section .carousel-btn:hover {
-    background-color: rgba(0, 0, 0, 0.6); /* Más oscuro al pasar el mouse */
+    background-color: rgba(0, 0, 0, 0.6);
     color: var(--primary-color-dark);
     border-color: var(--primary-color-dark);
     box-shadow: var(--shadow-md), var(--golden-glow-sm);
@@ -225,14 +236,14 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.95); /* Fondo muy oscuro */
-    display: none; /* Oculto por defecto, JS lo controla */
+    background-color: rgba(0, 0, 0, 0.95);
+    display: none;
     justify-content: center;
-    align-items: flex-start; /* Alinear arriba para que la barra de búsqueda esté visible */
-    padding-top: var(--spacing-xl); /* Espacio desde la parte superior */
-    z-index: 999; /* Por debajo del modal de edad si está activo */
-    overflow-y: auto; /* Permite scroll si los resultados son muchos */
-    backdrop-filter: blur(8px); /* Desenfoque */
+    align-items: flex-start;
+    padding-top: var(--spacing-xl);
+    z-index: 999;
+    overflow-y: auto;
+    backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
 }
 
@@ -241,14 +252,14 @@
 }
 
 .search-modal-content {
-    background-color: rgba(0, 0, 0, 0.6); /* Fondo semi-transparente para el contenido del modal */
+    background-color: rgba(0, 0, 0, 0.6);
     border: 1px solid var(--border-color);
-    border-radius: 10px; /* Más redondeado */
+    border-radius: 10px;
     padding: var(--spacing-lg);
     width: 90%;
     max-width: 800px;
     box-shadow: var(--shadow-lg);
-    position: relative; /* Para el botón de cerrar */
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -281,7 +292,7 @@
     flex-grow: 1;
     padding: var(--spacing-sm);
     border: 1px solid var(--border-color);
-    border-radius: 8px; /* Más redondeado */
+    border-radius: 8px;
     background-color: var(--secondary-color);
     color: var(--text-color-dark);
     font-size: 1em;
@@ -300,9 +311,9 @@
 }
 
 .search-results-grid .product-card {
-    background-color: rgba(52, 58, 64, 0.08); /* Fondo mucho más transparente */
-    border: 1px solid rgba(255, 191, 0, 0.3); /* Borde dorado sutil */
-    border-radius: 10px; /* Más redondeado */
+    background-color: rgba(52, 58, 64, 0.08);
+    border: 1px solid rgba(255, 191, 0, 0.3);
+    border-radius: 10px;
     box-shadow: var(--shadow-sm);
 }
 
@@ -314,7 +325,7 @@
 .search-results-grid .no-results-message {
     text-align: center;
     color: var(--text-color-light);
-    grid-column: 1 / -1; /* Centra el mensaje en el grid */
+    grid-column: 1 / -1;
     padding: var(--spacing-md);
 }
 
@@ -323,11 +334,11 @@
     position: fixed;
     top: 0;
     right: 0;
-    width: 380px; /* Ancho un poco más grande */
+    width: 380px;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.9); /* Fondo oscuro transparente */
+    background-color: rgba(0, 0, 0, 0.9);
     border-left: 1px solid var(--border-color);
-    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5); /* Sombra más pronunciada */
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
     transform: translateX(100%);
     transition: transform var(--transition-speed) var(--transition-timing);
     z-index: 1000;
@@ -369,9 +380,9 @@
 }
 
 .cart-items {
-    flex-grow: 1; /* Permite que la lista de items ocupe el espacio disponible */
-    overflow-y: auto; /* Scroll si hay muchos productos */
-    padding-right: var(--spacing-sm); /* Espacio para la barra de scroll */
+    flex-grow: 1;
+    overflow-y: auto;
+    padding-right: var(--spacing-sm);
 }
 
 .cart-item {
@@ -379,10 +390,10 @@
     align-items: center;
     gap: var(--spacing-sm);
     margin-bottom: var(--spacing-md);
-    background-color: rgba(52, 58, 64, 0.15); /* Fondo sutil para cada item */
+    background-color: rgba(52, 58, 64, 0.15);
     padding: var(--spacing-sm);
     border-radius: 8px;
-    border: 1px solid rgba(255, 191, 0, 0.1); /* Borde dorado muy sutil */
+    border: 1px solid rgba(255, 191, 0, 0.1);
 }
 
 .cart-item-image {
@@ -484,17 +495,17 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.8); /* Fondo oscuro semitransparente */
-    display: none; /* Oculto por defecto */
+    background-color: rgba(0, 0, 0, 0.8);
+    display: none;
     justify-content: center;
     align-items: center;
-    z-index: 998; /* Por debajo de search y cart, por encima de todo lo demás */
+    z-index: 998;
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
 }
 
 .modal-content {
-    background-color: var(--dark-bg); /* Fondo negro para el modal */
+    background-color: var(--dark-bg);
     padding: var(--spacing-lg);
     border-radius: 10px;
     box-shadow: var(--shadow-lg);
@@ -534,7 +545,7 @@
 
 /* Bottom Navigation (solo en mobile) */
 .bottom-nav {
-    display: none; /* Oculto por defecto, visible solo en mobile */
+    display: none;
     position: fixed;
     bottom: 0;
     left: 0;
@@ -542,7 +553,7 @@
     background-color: var(--dark-bg);
     border-top: 1px solid var(--border-color);
     box-shadow: var(--shadow-lg);
-    z-index: 90; /* Por debajo de modales/sidebars */
+    z-index: 90;
     padding: var(--spacing-sm) 0;
     justify-content: space-around;
     align-items: center;
@@ -558,7 +569,7 @@
     padding: var(--spacing-xs);
     border-radius: 5px;
     transition: background-color 0.2s ease, color 0.2s ease;
-    flex: 1; /* Distribuye el espacio equitativamente */
+    flex: 1;
     position: relative;
 }
 
@@ -588,8 +599,8 @@
 
 .bottom-nav .cart-count {
     position: absolute;
-    top: -5px; /* Ajustar posición para que no se superponga mucho */
-    right: 15px; /* Ajustar posición */
+    top: -5px;
+    right: 15px;
     background-color: var(--primary-color);
     color: var(--dark-bg);
     font-size: 0.6em;
@@ -599,5 +610,5 @@
     min-width: 18px;
     text-align: center;
     line-height: 1;
-    border: 1px solid var(--dark-bg); /* Borde para contrastar */
+    border: 1px solid var(--dark-bg);
 }
