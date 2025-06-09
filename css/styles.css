@@ -486,51 +486,9 @@ img {
     margin-right: var(--spacing-xs);
 }
 
-/* Sección de Marcas */
-.brands-section {
-    padding: var(--spacing-xl) 0;
-    background-color: var(--dark-bg);
-    border-bottom: 1px solid var(--border-color);
-    overflow: hidden; /* Oculta el desbordamiento del carrusel continuo */
-}
-
-.brands-logo-container {
-    display: flex; /* CRUCIAL: Mantiene los logos en una fila */
-    animation: scroll-left 40s linear infinite; /* Animación para el scroll continuo de logos */
-    white-space: nowrap; /* Evita que los logos se envuelvan - ESTA ES CLAVE */
-    justify-content: flex-start; /* Asegura que los ítems se alineen al inicio */
-    align-items: center; /* Centra verticalmente los logos si tienen diferentes alturas */
-}
-
-.brands-logo-container:hover {
-    animation-play-state: paused; /* Pausa la animación al pasar el ratón */
-}
-
-.brand-logo {
-    flex-shrink: 0; /* Evita que los logos se encojan - ESTA ES CLAVE */
-    width: 120px; /* Ancho fijo para cada logo */
-    height: 80px; /* Altura fija */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 var(--spacing-md);
-}
-
-.brand-logo img {
-    max-height: 100%;
-    max-width: 100%;
-    object-fit: contain; /* Ajusta el logo sin recortar */
-    filter: grayscale(100%) brightness(150%); /* Logos en gris claro */
-    opacity: 0.7;
-    transition: filter 0.3s ease, opacity 0.3s ease;
-}
-
-.brand-logo img:hover {
-    filter: grayscale(0%) brightness(100%); /* Color al pasar el ratón */
-    opacity: 1;
-}
-
 /* Carrusel de Productos Continuo (por ejemplo, Novedades y Ofertas) */
+/* NOTA: Estas clases se usan para un carrusel que se mueve automáticamente. */
+/* Asegúrate de que los productos se dupliquen en el JS para la animación infinita. */
 .continuous-carousel-section {
     padding: var(--spacing-xl) 0;
     background-color: var(--light-bg);
@@ -539,7 +497,7 @@ img {
 }
 
 .continuous-carousel-track-container {
-    overflow: hidden;
+    overflow: hidden; /* Asegura que el contenido desbordante no sea visible */
 }
 
 .continuous-carousel-track {
@@ -557,8 +515,6 @@ img {
     min-width: 250px; /* Asegura que tengan un ancho fijo */
     flex-shrink: 0; /* No permite que se encojan */
     margin-right: var(--spacing-md); /* Espacio entre tarjetas */
-    display: inline-block; /* Necesario para white-space: nowrap */
-    vertical-align: top; /* Asegura que las tarjetas se alineen correctamente */
     background-color: var(--secondary-color); /* Fondo para las tarjetas */
     border: 1px solid var(--border-color);
     box-shadow: var(--shadow-sm);
@@ -586,6 +542,7 @@ img {
 }
 
 /* Carrusel de Productos por Categoría (con flechas de navegación) */
+/* NOTA: Estas clases se usan para un carrusel con navegación manual. */
 .category-carousel-section {
     padding: var(--spacing-xl) 0;
     background-color: var(--dark-bg);
@@ -928,6 +885,17 @@ img {
 
 .footer-section ul li a:hover {
     color: var(--primary-color);
+}
+
+.social-media a {
+    color: var(--text-color-light);
+    font-size: 1.5em;
+    transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.social-media a:hover {
+    color: var(--primary-color);
+    transform: translateY(-3px);
 }
 
 .footer-bottom {
