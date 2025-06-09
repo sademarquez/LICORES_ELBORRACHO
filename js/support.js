@@ -3,9 +3,7 @@
 import { appState } from './main.js'; // Para acceder a contactInfo
 import { showToastNotification } from './toast.js';
 
-// let whatsappNumber = ''; // Ya no es necesario, se obtiene directamente de appState.contactInfo.phone
-
-export function setupSupport() { // No necesitas pasar el número aquí, se obtiene de appState
+export function setupSupport() {
     const reportFaultBtn = document.getElementById('reportFaultBtn');
     const bookAppointmentBtn = document.getElementById('bookAppointmentBtn');
 
@@ -15,65 +13,85 @@ export function setupSupport() { // No necesitas pasar el número aquí, se obti
     const faultReportForm = document.getElementById('faultReportForm');
     const appointmentForm = document.getElementById('appointmentForm');
 
-    // Abrir modales
+    // Comprobación de que los elementos existen antes de añadir listeners
     if (reportFaultBtn && faultReportModal) {
         reportFaultBtn.addEventListener('click', () => {
             faultReportModal.style.display = 'flex'; // Usar flex para centrar
-            faultReportModal.classList.add('open');
         });
     } else {
-        console.warn('support.js: Botón o modal de reporte de falla no encontrados.');
+        console.warn('support.js: Botón o modal de reporte de fallas no encontrado.');
     }
 
     if (bookAppointmentBtn && appointmentModal) {
         bookAppointmentBtn.addEventListener('click', () => {
             appointmentModal.style.display = 'flex'; // Usar flex para centrar
-            appointmentModal.classList.add('open');
         });
     } else {
-        console.warn('support.js: Botón o modal de agendar cita no encontrados.');
+        console.warn('support.js: Botón o modal de agendamiento no encontrado.');
     }
 
-    // Manejar envío de formulario de reporte de problemas
+    // Manejar el envío del formulario de reporte de fallas
     if (faultReportForm) {
         faultReportForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            // Lógica para enviar el reporte (aquí podrías integrar una API o servicio de email)
-            const name = document.getElementById('faultName').value;
-            const email = document.getElementById('faultEmail').value;
-            const description = document.getElementById('faultDescription').value;
-
-            console.log('Reporte de Falla:', { name, email, description });
-
-            // Simulación de envío
-            showToastNotification('Reporte enviado con éxito. Gracias por tu feedback.', 'success');
-            faultReportForm.reset();
-            if (faultReportModal) {
-                faultReportModal.classList.remove('open');
-                faultReportModal.style.display = 'none';
-            }
+            sendFaultReport();
         });
     } else {
-        console.warn('support.js: Formulario de reporte de falla no encontrado.');
+        console.warn('support.js: Formulario de reporte de fallas no encontrado.');
     }
 
-    // Manejar envío de formulario de agendar pedido/entrega (vía WhatsApp)
+    // Manejar el envío del formulario de agendamiento
     if (appointmentForm) {
         appointmentForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            sendAppointmentViaWhatsapp();
+            sendAppointmentRequest();
         });
     } else {
-        console.warn('support.js: Formulario de agendar pedido/entrega no encontrado.');
+        console.warn('support.js: Formulario de agendamiento no encontrado.');
     }
 
     console.log('support.js: Módulo de soporte configurado.');
 }
 
+
 /**
- * Envía los detalles de la cita/pedido a través de WhatsApp.
+ * Envía el reporte de falla a través de WhatsApp.
  */
-function sendAppointmentViaWhatsapp() {
+function sendFaultReport() {
+    const whatsappNumber = appState.contactInfo.phone;
+    if (!whatsappNumber) {
+        showToastNotification('Número de WhatsApp no configurado. No se puede enviar el reporte.', 'error');
+        console.error('WhatsApp number is not configured in appState.contactInfo.phone');
+        return;
+    }
+
+    const name = document.getElementById('faultName').value;
+    const phone = document.getElementById('faultPhone').value;
+    const faultDescription = document.getElementById('faultDescription').value;
+
+    if (!name || !phone || !faultDescription) {
+        showToastNotification('Por favor, completa todos los campos para reportar la falla.', 'error');
+        return;
+    }
+
+    let message = `¡Hola EL BORRACHO!%0AReporte de Falla/Problema:%0A%0A`;
+    message += `*Nombre:* ${name}%0A`;
+    message += `*Teléfono:* ${phone}%0A`;
+    message += `*Descripción del Problema:* ${faultDescription}%0A%0A`;
+    message += `Por favor, ayúdame con esto. ¡Gracias!`;
+
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+
+    showToastNotification('Reporte de falla enviado a WhatsApp. Te contactaremos pronto.', 'success');
+    document.getElementById('faultReportForm').reset();
+    document.getElementById('faultReportModal').style.display = 'none'; // Cerrar modal
+}
+
+/**
+ * Envía la solicitud de agendamiento a través de WhatsApp.
+ */
+function sendAppointmentRequest() {
     const whatsappNumber = appState.contactInfo.phone;
     if (!whatsappNumber) {
         showToastNotification('Número de WhatsApp no configurado. No se puede agendar el pedido.', 'error');
@@ -105,6 +123,5 @@ function sendAppointmentViaWhatsapp() {
 
     showToastNotification('Solicitud de pedido/entrega enviada a WhatsApp. Espera nuestra confirmación.', 'success');
     document.getElementById('appointmentForm').reset();
-    document.getElementById('appointmentModal').classList.remove('open');
-    document.getElementById('appointmentModal').style.display = 'none';
+    document.getElementById('appointmentModal').style.display = 'none'; // Cerrar modal
 }
