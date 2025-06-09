@@ -329,7 +329,7 @@ img {
     border-radius: 2px;
 }
 
-/* Cuadrícula de productos */
+/* Cuadrícula de productos (para listas generales de productos) */
 .product-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Columnas responsivas */
@@ -337,7 +337,7 @@ img {
     justify-content: center;
 }
 
-/* Tarjeta de producto */
+/* Tarjeta de producto (estilos base compartidos) */
 .product-card {
     background-color: var(--secondary-color);
     border: 1px solid var(--border-color);
@@ -351,7 +351,7 @@ img {
     align-items: center;
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     position: relative;
-    overflow: hidden; /* Asegura que la sombra interna no se desborde */
+    overflow: hidden; /* Asegura que el pseudo-elemento no se desborde de la tarjeta */
 }
 
 .product-card:hover {
@@ -364,16 +364,32 @@ img {
     height: 180px; /* Altura fija para consistencia */
     object-fit: contain; /* Asegura que la imagen se ajuste sin recortar */
     margin-bottom: var(--spacing-sm);
-    position: relative; /* Necesario para la sombra interior */
+    position: relative; /* CRUCIAL para los pseudo-elementos */
     z-index: 2; /* Asegura que la imagen esté sobre el "halo" */
-    
-    /* === MODIFICACIÓN PARA PRODUCTOS SIN FONDO === */
-    box-shadow: inset 0 0 30px 10px rgba(255, 191, 0, 0.2); /* Un ligero brillo ámbar desde el interior */
-    transition: box-shadow 0.3s ease-in-out;
 }
 
-.product-card:hover .product-image {
-    box-shadow: inset 0 0 45px 15px rgba(255, 191, 0, 0.4); /* Más brillo al pasar el ratón */
+/* Pseudo-elemento para el "Halo" detrás de la imagen del producto */
+.product-card .product-image::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 90%; /* Ajusta el tamaño del halo como porcentaje del contenedor del pseudo-elemento */
+    height: 90%; /* Misma altura */
+    max-width: 150px; /* Ancho máximo para que no sea excesivo en imágenes grandes */
+    max-height: 150px; /* Altura máxima */
+    background: radial-gradient(circle, rgba(255, 191, 0, 0.4) 0%, transparent 70%); /* Ámbar semi-transparente */
+    transform: translate(-50%, -50%); /* Centra el pseudo-elemento */
+    border-radius: 50%; /* Hace que sea un círculo */
+    z-index: 1; /* Detrás de la imagen pero dentro de su contenedor .product-image */
+    opacity: 0; /* Oculto por defecto */
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out; /* Transición suave */
+    pointer-events: none; /* Asegura que no interfiera con clics en la imagen */
+}
+
+.product-card:hover .product-image::after {
+    opacity: 1; /* Muestra el halo al pasar el ratón */
+    transform: translate(-50%, -50%) scale(1.05); /* Ligeramente más grande y visible */
 }
 
 .product-card .product-info {
@@ -382,7 +398,7 @@ img {
     flex-direction: column;
     justify-content: space-between;
     width: 100%;
-    position: relative; /* Asegura que el texto y botón estén sobre el halo */
+    position: relative; /* Asegura que el texto y el botón estén sobre el halo */
     z-index: 3;
 }
 
@@ -501,6 +517,48 @@ img {
     width: 100%;
 }
 
+
+/* Carrusel Continuo (¡Novedades y Ofertas Especiales!) - SECCIÓN CRÍTICA */
+.continuous-carousel-section {
+    padding: var(--spacing-xl) 0;
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--light-bg);
+}
+
+.continuous-carousel-container {
+    width: 100%;
+    overflow: hidden; /* Esto es esencial para ocultar elementos fuera del viewport */
+    padding: var(--spacing-md) 0;
+}
+
+.continuous-carousel-track {
+    display: flex; /* CRUCIAL: Mantiene los elementos en una fila */
+    animation: scroll-left 1.5s linear infinite; /* Velocidad ajustada a 1.5s como pediste */
+    white-space: nowrap; /* Asegura que los elementos flex no salten de línea */
+    /* Este transform inicial no es necesario si la animación maneja la posición */
+    /* transform: translateX(0); */
+}
+
+.continuous-carousel-track:hover {
+    animation-play-state: paused; /* Pausa la animación al pasar el ratón */
+}
+
+/* Las tarjetas dentro del carrusel continuo necesitan estilos específicos para no encogerse */
+.continuous-carousel-track .product-card {
+    min-width: 250px; /* Ancho fijo para cada tarjeta en el carrusel continuo */
+    flex-shrink: 0; /* IMPORANTE: Evita que las tarjetas se encojan */
+    margin-right: var(--spacing-md); /* Espacio entre tarjetas */
+    /* Asegúrate de que no haya un display: inline-block aquí, ya que el padre es flex */
+    /* Elimina vertical-align si lo tenías */
+}
+
+.continuous-carousel-track .product-card .product-image {
+    height: 160px; /* Altura fija para las imágenes en el carrusel continuo */
+    object-fit: contain; /* Ajusta la imagen sin recortarla */
+    padding: var(--spacing-sm); /* Un poco de padding para la imagen */
+}
+
+
 /* Sección de Marcas */
 .brands-section {
     padding: var(--spacing-xl) 0;
@@ -538,9 +596,12 @@ img {
 }
 
 /* Keyframes para la animación de scroll */
+/* El valor -50% es porque duplicamos el contenido, así que el track es el doble de largo.
+   Al moverlo un 50%, esencialmente movemos el ancho total de los elementos originales,
+   lo que crea el bucle perfecto. */
 @keyframes scroll-left {
     0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); } /* Se mueve el 50% porque el contenido se duplica */
+    100% { transform: translateX(-50%); }
 }
 
 
