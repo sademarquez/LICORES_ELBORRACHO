@@ -35,10 +35,12 @@ export function setupSearch() {
             (product.description && product.description.toLowerCase().includes(searchTerm))
         );
 
-        if (filteredProducts.length > 0) {
-           renderProducts(filteredProducts, searchResultsGrid); // Usar renderProducts para mostrar resultados
+        if (filteredProducts.length === 0) {
+            searchResultsGrid.innerHTML = `<p class="no-results-message">No se encontraron productos que coincidan con "${searchTerm}".</p>`;
+            showToastNotification(`No se encontraron resultados para "${searchTerm}".`, 'info');
         } else {
-            searchResultsGrid.innerHTML = `<p class="no-results-message">No se encontraron productos para "${searchTerm}".</p>`;
+            // Reutilizar renderProducts del módulo products.js para mostrar los resultados
+            renderProducts(filteredProducts, '#searchResultsGrid');
         }
     };
 
@@ -53,10 +55,6 @@ export function setupSearch() {
     console.log('search.js: Módulo de búsqueda configurado.');
 }
 
-/**
- * Abre o cierra el modal de búsqueda.
- * @param {boolean} [open] - true para abrir, false para cerrar. Si no se especifica, toggles.
- */
 export function toggleSearchModal(open) {
     if (searchModal) {
         if (typeof open === 'boolean') {
@@ -69,10 +67,11 @@ export function toggleSearchModal(open) {
 
         if (searchModal.classList.contains('open')) {
             searchInput.focus(); // Autofocus al abrir el modal
-            searchInput.value = ''; // Limpiar input al abrir
-            searchResultsGrid.innerHTML = `<p class="no-results-message">Ingresa un término para buscar productos.</p>`; // Limpiar resultados
+            // Opcional: Limpiar resultados e input al abrir si no quieres mantener la búsqueda anterior
+            searchInput.value = '';
+            searchResultsGrid.innerHTML = `<p class="no-results-message">Ingresa un término para buscar productos.</p>`;
         } else {
-            // Limpiar al cerrar también para consistencia
+            // Limpiar al cerrar, aunque ya lo hacemos al abrir para mayor consistencia
             searchInput.value = '';
             searchResultsGrid.innerHTML = `<p class="no-results-message">Ingresa un término para buscar productos.</p>`;
         }
