@@ -1,6 +1,6 @@
 // products.js
 
-// Función para cargar los productos desde products.json
+// Function to fetch products from products.json
 export async function fetchProducts() {
     try {
         const response = await fetch('products.json');
@@ -15,55 +15,58 @@ export async function fetchProducts() {
     }
 }
 
-// Función para renderizar los productos en la página principal
-// (Asumiendo que tienes un contenedor para todos los productos)
-export function renderAllProducts(products, containerId = 'product-list-container') {
+// Function to render a single product card (reusable for lists and carousels)
+export function renderProductCard(product) {
+    const productCard = document.createElement('div');
+    productCard.classList.add('product-card'); // Common class for styling
+    productCard.dataset.productId = product.id; // Store product ID for cart/details
+
+    // Optional: Add a class for carousel items if needed for specific styling
+    // productCard.classList.add('carousel-item-content');
+
+    productCard.innerHTML = `
+        <img src="${product.imageUrl}" alt="${product.name}" class="product-image">
+        <h3 class="product-name">${product.name}</h3>
+        <p class="product-description">${product.description}</p>
+        <p class="product-price">$${product.price.toLocaleString('es-CO')}</p>
+        ${product.isOnOffer ? '<span class="product-offer-tag">OFERTA</span>' : ''}
+        ${product.isNew ? '<span class="product-new-tag">NUEVO</span>' : ''}
+        <button class="add-to-cart-btn" data-product-id="${product.id}">Añadir al Carrito</button>
+    `;
+    return productCard;
+}
+
+// Function to render products into a given container (e.g., a list or a carousel)
+export function renderProductsInContainer(products, containerId) {
     const container = document.getElementById(containerId);
     if (!container) {
         console.error('Product container not found:', containerId);
         return;
     }
-    container.innerHTML = ''; // Limpiar el contenedor antes de renderizar
+    container.innerHTML = ''; // Clear existing content
 
     products.forEach(product => {
-        const productCard = document.createElement('div');
-        productCard.classList.add('product-card'); // Asegúrate de que esta clase exista en tu CSS
-
-        productCard.innerHTML = `
-            <img src="${product.imageUrl}" alt="${product.name}">
-            <h3>${product.name}</h3>
-            <p>${product.description}</p>
-            <p class="price">$${product.price.toLocaleString('es-CO')}</p>
-            <button class="add-to-cart-btn" data-product-id="${product.id}">Añadir al Carrito</button>
-        `;
-        container.appendChild(productCard);
+        container.appendChild(renderProductCard(product));
     });
 }
 
-// Función para obtener productos por categoría (ejemplo de uso)
+// Function to get products by category
 export async function getProductsByCategory(category) {
     const allProducts = await fetchProducts();
     return allProducts.filter(product => product.category === category);
 }
 
-// Funciones para obtener novedades y ofertas
+// Function to get new products
 export async function getNewProducts() {
     const allProducts = await fetchProducts();
     return allProducts.filter(product => product.isNew);
 }
 
+// Function to get products on offer
 export async function getOfferProducts() {
     const allProducts = await fetchProducts();
     return allProducts.filter(product => product.isOnOffer);
 }
 
-// Asegúrate de que las funciones de añadir al carrito estén correctamente enlazadas,
-// posiblemente en `main.js` o `cart.js`
-// Ejemplo:
-// document.addEventListener('click', (event) => {
-//     if (event.target.classList.contains('add-to-cart-btn')) {
-//         const productId = event.target.dataset.productId;
-//         // Llamar a la función de añadir al carrito desde cart.js
-//         addToCart(productId);
-//     }
-// });
+// You might also want a function to handle adding to cart click events here or in main.js
+// For now, assuming main.js handles it or it's handled in cart.js
