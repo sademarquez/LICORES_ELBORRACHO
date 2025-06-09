@@ -1,6 +1,6 @@
 // js/age-verification.js
 
-export function initAgeVerification() {
+document.addEventListener('DOMContentLoaded', () => {
     console.log('age-verification.js: DOM cargado. Inicializando verificación de edad...');
 
     const ageVerificationModal = document.getElementById('ageVerificationModal');
@@ -43,4 +43,4 @@ export function initAgeVerification() {
     });
 
     console.log('age-verification.js: Verificación de edad configurada.');
-}
+});
