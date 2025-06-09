@@ -566,7 +566,9 @@ img {
 .brands-logo-container {
     display: flex; /* CRUCIAL: Mantiene los logos en una fila */
     animation: scroll-left 40s linear infinite; /* Animación para el scroll continuo de logos */
-    white-space: nowrap; /* Evita que los logos se envuelvan */
+    white-space: nowrap; /* Evita que los logos se envuelvan - ESTA ES CLAVE */
+    justify-content: flex-start; /* Asegura que los ítems se alineen al inicio */
+    align-items: center; /* Centra verticalmente los logos si tienen diferentes alturas */
 }
 
 .brands-logo-container:hover {
@@ -574,7 +576,7 @@ img {
 }
 
 .brand-logo {
-    flex-shrink: 0; /* Evita que los logos se encojan */
+    flex-shrink: 0; /* Evita que los logos se encojan - ESTA ES CLAVE */
     width: 120px; /* Ancho fijo para cada logo */
     height: 80px; /* Altura fija */
     display: flex;
@@ -583,22 +585,7 @@ img {
     margin: 0 var(--spacing-md);
 }
 
-.brand-logo img {
-    max-height: 100%;
-    max-width: 100%;
-    object-fit: contain;
-    filter: grayscale(100%) opacity(70%); /* Logos en escala de grises y semi-transparentes */
-    transition: filter var(--transition-speed);
-}
-
-.brand-logo img:hover {
-    filter: grayscale(0%) opacity(100%); /* Color al pasar el ratón */
-}
-
 /* Keyframes para la animación de scroll */
-/* El valor -50% es porque duplicamos el contenido (en JS), así que el track es el doble de largo.
-   Al moverlo un 50%, esencialmente movemos el ancho total de los elementos originales,
-   lo que crea el bucle perfecto. */
 @keyframes scroll-left {
     0% { transform: translateX(0); }
     100% { transform: translateX(-50%); }
