@@ -11,16 +11,16 @@
 
     .main-nav {
         width: 100%;
-        display: none; /* Ocultar por defecto para el menú hamburguesa */
+        display: none;
         flex-direction: column;
-        background-color: var(--dark-bg); /* Usar el color oscuro del header */
+        background-color: var(--dark-bg);
         position: absolute;
         top: 100%;
         left: 0;
         box-shadow: var(--shadow-md);
         padding: var(--spacing-md);
         border-top: 1px solid var(--border-color);
-        z-index: 100; /* Asegurarse de que el menú está sobre otros elementos */
+        z-index: 100;
     }
 
     .main-nav.active {
@@ -35,23 +35,25 @@
     .main-nav .nav-list a {
         padding: var(--spacing-sm) 0;
         width: 100%;
-        color: var(--text-color-light); /* Color de texto para enlaces del menú móvil */
+        color: var(--text-color-light);
     }
     
     .main-nav .nav-list a::after {
-        background-color: var(--primary-color); /* Asegurar color de subrayado en móvil */
+        background-color: var(--primary-color);
+    }
+
+    .utility-icons {
+        width: 100%;
+        justify-content: flex-end;
     }
 
     .menu-toggle {
-        display: block; /* Mostrar el menú hamburguesa en móvil */
+        display: block; /* Mostrar el botón de hamburguesa en mobile */
     }
 
-    .header-icons {
-        margin-left: auto; /* Empuja los íconos a la derecha */
-    }
-
+    /* Ajustes para secciones en móvil */
     .hero-section {
-        height: 300px; /* Altura más pequeña para el carrusel en móviles */
+        height: 300px; /* Altura más baja en móvil */
     }
 
     .carousel-title {
@@ -62,106 +64,80 @@
         font-size: 1em;
     }
 
-    .carousel-button {
-        font-size: 0.9em;
-        padding: var(--spacing-xs) var(--spacing-md);
-    }
-
     .carousel-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.5em;
         padding: var(--spacing-xs);
-        font-size: 1.2em;
-    }
-
-    .carousel-dots {
-        bottom: var(--spacing-sm);
-    }
-
-    .product-grid {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Más pequeñas en móvil */
-    }
-
-    .product-card {
-        padding: var(--spacing-xs);
-    }
-
-    .product-image {
-        max-height: 120px;
-    }
-
-    .product-name {
-        font-size: 0.9em;
-    }
-
-    .product-price {
-        font-size: 1em;
     }
 
     .product-filters {
-        flex-direction: column; /* Filtros apilados en móvil */
-        align-items: stretch;
+        flex-direction: column; /* Apilar filtros en móvil */
+        align-items: center;
     }
 
-    .filter-group {
-        width: 100%;
-        min-width: unset;
+    .product-filters select,
+    .product-filters input {
+        width: 90%; /* Ancho completo para filtros en móvil */
     }
 
-    .main-footer .footer-content {
-        flex-direction: column;
-        text-align: center;
+    /* Grid de productos en móvil - ajustar para una columna si es necesario */
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Permitir 1 o 2 columnas */
+    }
+    .product-card {
+        width: 100%; /* Asegurar que la tarjeta ocupe el espacio completo si solo hay una columna */
+        max-width: 250px; /* Limitar el ancho máximo de la tarjeta en móvil */
+        margin: 0 auto; /* Centrar la tarjeta */
     }
 
-    .footer-section {
-        min-width: unset;
-    }
-
-    .footer-section h3 {
-        text-align: center;
-    }
-
-    .footer-section ul {
-        padding: 0;
-    }
-    
-    .footer-section ul li {
-        text-align: center;
-    }
-
-    .social-media {
-        display: flex;
+    .brands-container {
         justify-content: center;
-        gap: var(--spacing-md);
+        gap: var(--spacing-sm);
     }
 
-    .social-icon {
-        margin: 0; /* Eliminar margen extra si ya hay gap */
-    }
-
-    .bottom-nav {
-        display: flex; /* Mostrar la barra inferior en móvil */
+    .brand-logo {
+        width: 80px;
+        height: 50px;
     }
 
     .cart-sidebar {
-        width: 100%; /* Ocupa todo el ancho en móvil */
+        width: 100%; /* Ancho completo en móvil */
     }
 
-    .age-verification-buttons {
-        flex-direction: column; /* Botones apilados en móvil */
+    .search-modal-content {
+        padding: var(--spacing-md);
+    }
+
+    .bottom-nav {
+        display: flex; /* Mostrar la barra de navegación inferior en móvil */
     }
 }
 
 /* Tablet (768px a 1023px) */
 @media (min-width: 768px) and (max-width: 1023px) {
-    .container {
-        padding: 0 var(--spacing-lg);
+    .header-content {
+        flex-wrap: nowrap; /* Evitar que los elementos se envuelvan */
+        justify-content: space-between;
     }
 
     .main-nav {
-        display: flex; /* Asegurar que la navegación principal esté visible */
+        display: flex; /* Mostrar navegación principal en tablet */
+        position: static;
+        background-color: transparent;
+        box-shadow: none;
+        padding: 0;
+        border-top: none;
+        flex-direction: row; /* Volver a disposición horizontal */
+    }
+
+    .main-nav .nav-list {
+        flex-direction: row;
+        gap: var(--spacing-md);
     }
 
     .menu-toggle {
-        display: none;
+        display: none; /* Ocultar el menú hamburguesa en tablet */
     }
 
     .bottom-nav {
@@ -172,21 +148,13 @@
         height: 350px; /* Altura intermedia del carrusel en tablet */
     }
 
-    .carousel-title {
-        font-size: 2.2em;
-    }
-
-    .carousel-description {
-        font-size: 1.1em;
-    }
-
-    .product-grid {
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* 3-4 columnas en tablet */
-    }
-
     .product-filters {
         flex-direction: row; /* Volver a disposición horizontal */
-        justify-content: center;
+    }
+
+    /* Grid de productos en tablet - más columnas */
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); /* 3-4 columnas en tablet */
     }
 
     .search-input-group input {
@@ -199,16 +167,6 @@
 
     .cart-sidebar {
         width: 350px; /* Ancho fijo en tablet */
-    }
-
-    .age-verification-buttons {
-        flex-direction: row; /* Botones en fila en tablet */
-        justify-content: center;
-    }
-
-    .age-verification-buttons .btn-primary,
-    .age-verification-buttons .btn-secondary {
-        width: auto; /* Ancho automático para no estirarse */
     }
 }
 
@@ -240,28 +198,6 @@
 
     .product-filters select,
     .product-filters input {
-        width: 200px; /* Ancho fijo para selectores en desktop */
-    }
-
-    .footer-section {
-        text-align: left; /* Alineado a la izquierda en desktop */
-    }
-
-    .footer-section h3 {
-        text-align: left;
-    }
-
-    .social-media {
-        justify-content: flex-start;
-    }
-
-    .age-verification-buttons {
-        flex-direction: row; /* Botones en fila en desktop */
-        justify-content: center;
-    }
-
-    .age-verification-buttons .btn-primary,
-    .age-verification-buttons .btn-secondary {
-        width: auto;
+        width: auto; /* Ancho automático para filtros en desktop */
     }
 }
