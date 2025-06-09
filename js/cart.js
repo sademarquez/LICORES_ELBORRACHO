@@ -33,44 +33,146 @@ export function initCart() {
             appState.cart = JSON.parse(storedCart);
         } catch (e) {
             console.error('Error parsing cart from localStorage:', e);
-            appState.cart = []; // Resetear carrito si hay un error de parseo
-            showToastNotification('Error al recuperar el carrito. Se ha vaciado.', 'error');
+            appState.cart = []; // Resetear carrito si hay un error de parsing
         }
-    } else {
-        appState.cart = [];
     }
 
-    renderCartItems(); // Renderiza los items cargados
-    updateCartCount(); // Actualiza los contadores
+    renderCart(); // Renderizar el carrito al inicializar
 
     // Event Listeners
     closeCartBtn.addEventListener('click', () => toggleCartSidebar(false));
-    checkoutWhatsappBtn.addEventListener('click', sendOrderViaWhatsApp);
+    checkoutWhatsappBtn.addEventListener('click', sendOrderToWhatsApp);
 
     // Delegación de eventos para botones de cantidad y eliminar
     cartItemsContainer.addEventListener('click', (event) => {
         const target = event.target;
-        const productId = target.closest('.cart-item')?.dataset.productId;
-
-        if (!productId) return;
-
         if (target.classList.contains('increase-quantity-btn')) {
-            updateQuantity(productId, 1);
+            const productId = target.closest('.cart-item').dataset.productId;
+            changeQuantity(productId, 1);
         } else if (target.classList.contains('decrease-quantity-btn')) {
-            updateQuantity(productId, -1);
+            const productId = target.closest('.cart-item').dataset.productId;
+            changeQuantity(productId, -1);
         } else if (target.classList.contains('remove-item-btn')) {
+            const productId = target.closest('.cart-item').dataset.productId;
             removeFromCart(productId);
         }
     });
 
-    console.log('cart.js: Módulo de carrito inicializado.');
+    // console.log('cart.js: Módulo de carrito inicializado.'); // ELIMINADO
 }
 
 /**
- * Guarda el carrito en localStorage.
+ * Añade un producto al carrito o incrementa su cantidad.
+ * @param {Object} product - El objeto producto a añadir.
+ */
+export function addToCart(product) {
+    const existingItem = appState.cart.find(item => item.id === product.id);
+
+    if (existingItem) {
+        existingItem.quantity++;
+    } else {
+        appState.cart.push({ ...product, quantity: 1 });
+    }
+
+    saveCart();
+    renderCart();
+    showToastNotification(`"${product.name}" añadido al carrito.`, 'success');
+}
+
+/**
+ * Elimina un producto del carrito.
+ * @param {string} productId - El ID del producto a eliminar.
+ */
+function removeFromCart(productId) {
+    const initialCartLength = appState.cart.length;
+    appState.cart = appState.cart.filter(item => item.id !== productId);
+    if (appState.cart.length < initialCartLength) {
+        saveCart();
+        renderCart();
+        showToastNotification('Producto eliminado del carrito.', 'info');
+    }
+}
+
+/**
+ * Cambia la cantidad de un producto en el carrito.
+ * @param {string} productId - El ID del producto.
+ * @param {number} delta - La cantidad a añadir o restar (ej. 1, -1).
+ */
+function changeQuantity(productId, delta) {
+    const item = appState.cart.find(item => item.id === productId);
+
+    if (item) {
+        item.quantity += delta;
+        if (item.quantity <= 0) {
+            removeFromCart(productId); // Eliminar si la cantidad llega a 0 o menos
+        } else {
+            saveCart();
+            renderCart();
+        }
+    }
+}
+
+/**
+ * Guarda el estado actual del carrito en localStorage.
  */
 function saveCart() {
     localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(appState.cart));
+}
+
+/**
+ * Renderiza los elementos del carrito en la barra lateral.
+ */
+function renderCart() {
+    cartItemsContainer.innerHTML = '';
+    let totalPrice = 0;
+    let totalItems = 0;
+
+    if (appState.cart.length === 0) {
+        cartItemsContainer.innerHTML = '<p class="empty-cart-message">Tu carrito está vacío.</p>';
+        cartTotalPriceElement.textContent = '$0';
+    } else {
+        appState.cart.forEach(item => {
+            const itemPrice = item.isOnOffer && item.offerPrice !== null ? item.offerPrice : item.price;
+            const itemTotal = itemPrice * item.quantity;
+            totalPrice += itemTotal;
+            totalItems += item.quantity;
+
+            const cartItemElement = document.createElement('div');
+            cartItemElement.classList.add('cart-item');
+            cartItemElement.dataset.productId = item.id;
+            cartItemElement.innerHTML = `
+                <img src="${item.imageUrl}" alt="${item.name}" class="cart-item-image">
+                <div class="cart-item-details">
+                    <h4>${item.name}</h4>
+                    <p>$${itemPrice.toLocaleString('es-CO')} x ${item.quantity}</p>
+                </div>
+                <div class="cart-item-actions">
+                    <button class="decrease-quantity-btn">-</button>
+                    <span class="item-quantity">${item.quantity}</span>
+                    <button class="increase-quantity-btn">+</button>
+                    <button class="remove-item-btn"><i class="fas fa-trash-alt"></i></button>
+                </div>
+            `;
+            cartItemsContainer.appendChild(cartItemElement);
+        });
+        cartTotalPriceElement.textContent = `$${totalPrice.toLocaleString('es-CO')}`;
+    }
+    updateCartCount(totalItems); // Actualizar los contadores del header y bottom nav
+}
+
+/**
+ * Actualiza el número de productos en el icono del carrito.
+ * @param {number} count - El número total de productos en el carrito.
+ */
+export function updateCartCount(count) {
+    if (cartCountElement) {
+        cartCountElement.textContent = count.toString();
+        cartCountElement.style.display = count > 0 ? 'flex' : 'none'; // Mostrar/ocultar burbuja
+    }
+    if (bottomCartCountElement) {
+        bottomCartCountElement.textContent = count.toString();
+        bottomCartCountElement.style.display = count > 0 ? 'flex' : 'none'; // Mostrar/ocultar burbuja
+    }
 }
 
 /**
@@ -78,148 +180,19 @@ function saveCart() {
  * @param {boolean} open - true para abrir, false para cerrar. Si se omite, alterna.
  */
 export function toggleCartSidebar(open) {
-    if (!cartSidebar) return;
-
-    if (typeof open === 'boolean') {
-        cartSidebar.classList.toggle('open', open);
-    } else {
-        cartSidebar.classList.toggle('open');
-    }
-}
-
-/**
- * Añade un producto al carrito.
- * @param {Object} product - El objeto producto a añadir.
- */
-export function addToCart(product) {
-    if (!product || !product.id) {
-        console.error('addToCart: Producto inválido recibido.', product);
-        showToastNotification('No se pudo añadir el producto. Intenta de nuevo.', 'error');
-        return;
-    }
-
-    const existingItem = appState.cart.find(item => item.id === product.id);
-
-    if (existingItem) {
-        existingItem.quantity++;
-        showToastNotification(`"${product.name}" (x${existingItem.quantity}) actualizado en el carrito.`, 'info');
-    } else {
-        appState.cart.push({ ...product, quantity: 1 });
-        showToastNotification(`"${product.name}" añadido al carrito.`, 'success');
-    }
-    saveCart();
-    renderCartItems();
-    updateCartCount();
-}
-
-/**
- * Actualiza la cantidad de un producto en el carrito.
- * @param {string} productId - ID del producto.
- * @param {number} change - Cantidad a añadir o restar (-1 para restar, 1 para sumar).
- */
-function updateQuantity(productId, change) {
-    const itemIndex = appState.cart.findIndex(item => item.id === productId);
-
-    if (itemIndex > -1) {
-        appState.cart[itemIndex].quantity += change;
-
-        if (appState.cart[itemIndex].quantity <= 0) {
-            removeFromCart(productId); // Eliminar si la cantidad llega a 0 o menos
-            return;
+    if (cartSidebar) {
+        if (typeof open === 'boolean') {
+            cartSidebar.classList.toggle('open', open);
+        } else {
+            cartSidebar.classList.toggle('open');
         }
-        saveCart();
-        renderCartItems();
-        updateCartCount();
     }
 }
 
 /**
- * Elimina un producto del carrito.
- * @param {string} productId - ID del producto a eliminar.
+ * Envía el pedido a través de WhatsApp.
  */
-function removeFromCart(productId) {
-    const initialLength = appState.cart.length;
-    appState.cart = appState.cart.filter(item => item.id !== productId);
-
-    if (appState.cart.length < initialLength) {
-        showToastNotification('Producto eliminado del carrito.', 'success');
-    }
-    saveCart();
-    renderCartItems();
-    updateCartCount();
-}
-
-/**
- * Renderiza los items actuales del carrito en la interfaz.
- */
-function renderCartItems() {
-    if (!cartItemsContainer || !cartTotalPriceElement) return;
-
-    cartItemsContainer.innerHTML = ''; // Limpiar items existentes
-    let totalPrice = 0;
-
-    if (appState.cart.length === 0) {
-        cartItemsContainer.innerHTML = '<p class="empty-cart-message">Tu carrito está vacío.</p>';
-        cartTotalPriceElement.textContent = '$0';
-        return;
-    }
-
-    appState.cart.forEach(item => {
-        const itemPrice = item.isOnOffer && item.offerPrice !== null ? item.offerPrice : item.price;
-        const itemTotal = itemPrice * item.quantity;
-        totalPrice += itemTotal;
-
-        const cartItemElement = document.createElement('div');
-        cartItemElement.classList.add('cart-item');
-        cartItemElement.dataset.productId = item.id;
-
-        cartItemElement.innerHTML = `
-            <img src="${item.imageUrl}" alt="${item.name}" class="cart-item-image">
-            <div class="cart-item-info">
-                <h4>${item.name}</h4>
-                <span class="cart-item-price">$${itemPrice.toLocaleString('es-CO')} c/u</span>
-            </div>
-            <div class="cart-item-actions">
-                <div class="quantity-control">
-                    <button class="decrease-quantity-btn" aria-label="Disminuir cantidad">-</button>
-                    <span>${item.quantity}</span>
-                    <button class="increase-quantity-btn" aria-label="Aumentar cantidad">+</button>
-                </div>
-                <button class="remove-item-btn" aria-label="Eliminar item">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </div>
-        `;
-        cartItemsContainer.appendChild(cartItemElement);
-    });
-
-    cartTotalPriceElement.textContent = `$${totalPrice.toLocaleString('es-CO')}`;
-}
-
-/**
- * Actualiza el número total de items en los contadores del carrito.
- */
-export function updateCartCount() {
-    if (!cartCountElement || !bottomCartCountElement) return;
-
-    const totalCount = appState.cart.reduce((sum, item) => sum + item.quantity, 0);
-    cartCountElement.textContent = totalCount.toString();
-    bottomCartCountElement.textContent = totalCount.toString();
-
-    // Mostrar/ocultar el contador si es 0
-    if (totalCount === 0) {
-        cartCountElement.style.display = 'none';
-        bottomCartCountElement.style.display = 'none';
-    } else {
-        cartCountElement.style.display = 'block';
-        bottomCartCountElement.style.display = 'block';
-    }
-}
-
-/**
- * Envía el pedido actual del carrito a través de WhatsApp.
- */
-function sendOrderViaWhatsApp() {
+function sendOrderToWhatsApp() {
     if (appState.cart.length === 0) {
         showToastNotification('Tu carrito está vacío. ¡Añade productos antes de finalizar tu pedido!', 'warning');
         return;
@@ -250,9 +223,8 @@ function sendOrderViaWhatsApp() {
 
     showToastNotification('Tu pedido ha sido enviado a WhatsApp. Te contactaremos pronto.', 'success', 5000);
 
-    // Opcional: Limpiar el carrito después de enviar el pedido por WhatsApp
-    appState.cart = [];
-    saveCart();
-    renderCartItems();
-    updateCartCount();
+    // Opcional: Limpiar el carrito después de enviar el pedido
+    // appState.cart = [];
+    // saveCart();
+    // renderCart();
 }
