@@ -1,198 +1,234 @@
-[
-    {
-        "id": "aguardiente-caucano-verde",
-        "name": "Aguardiente caucano tapa verde",
-        "brand": "Aguardiente caucano",
-        "category": "Licor",
-        "description": "El sabor tradicional del cauca, ideal para cualquier celebración. Botella de 750ml.",
-        "price": 45000,
-        "imageUrl": "images/products/aguardientec.png",
-        "isOnOffer": false,
-        "offerPrice": null,
-        "isNew": true,
-        "stock": 100,
-        "rating": 4.5
-    },
-    {
-        "id": "ron-viejo-caldas-8-anos",
-        "name": "Ron Viejo de Caldas 8 Años",
-        "brand": "Ron Viejo de Caldas",
-        "category": "Licor",
-        "description": "Ron añejo premium con 8 años de maduración, suave y con carácter. Botella de 750ml.",
-        "price": 75000,
-        "imageUrl": "images/products/ron.png",
-        "isOnOffer": true,
-        "offerPrice": 68000,
-        "isNew": false,
-        "stock": 70,
-        "rating": 4.7
-    },
-    {
-        "id": "whisky-buchanans-12-anos",
-        "name": "Whisky Buchanan's Deluxe 12 Años",
-        "brand": "Buchanan's",
-        "category": "Licor",
-        "description": "El whisky escocés blend de 12 años, suave y complejo. Botella de 750ml.",
-        "price": 180000,
-        "imageUrl": "images/products/buchanans.png",
-        "isOnOffer": false,
-        "offerPrice": null,
-        "isNew": false,
-        "stock": 50,
-        "rating": 4.8
-    },
-    {
-        "id": "cerveza-club-colombia-dorada",
-        "name": "Cerveza Club Colombia Dorada",
-        "brand": "Club Colombia",
-        "category": "Bebida",
-        "description": "Cerveza tipo Lager dorada, con sabor suave y refrescante. Pack de 6 unidades.",
-        "price": 15000,
-        "imageUrl": "images/products/clubcolombia.png",
-        "isOnOffer": false,
-        "offerPrice": null,
-        "isNew": true,
-        "stock": 200,
-        "rating": 4.3
-    },
-    {
-        "id": "cerveza-corona",
-        "name": "Cerveza Corona Extra",
-        "brand": "Corona",
-        "category": "Bebida",
-        "description": "Cerveza mexicana icónica, ideal para disfrutar con una rodaja de limón. Botella de 330ml.",
-        "price": 5000,
-        "imageUrl": "images/products/corona.png",
-        "isOnOffer": false,
-        "offerPrice": null,
-        "isNew": false,
-        "stock": 150,
-        "rating": 4.4
-    },
-    {
-        "id": "cerveza-aguila-light",
-        "name": "Cerveza Águila Light",
-        "brand": "Águila",
-        "category": "Bebida",
-        "description": "La cerveza ligera de Colombia, perfecta para refrescar. Lata de 330ml.",
-        "price": 3500,
-        "imageUrl": "images/products/aguilalight.png",
-        "isOnOffer": false,
-        "offerPrice": null,
-        "isNew": false,
-        "stock": 300,
-        "rating": 4.0
-    },
-    {
-        "id": "tequila-jose-cuervo-reposado",
-        "name": "Tequila José Cuervo Reposado",
-        "brand": "José Cuervo",
-        "category": "Licor",
-        "description": "Tequila reposado de agave azul, suave y con notas de roble. Botella de 700ml.",
-        "price": 90000,
-        "imageUrl": "images/products/tequila.png",
-        "isOnOffer": false,
-        "offerPrice": null,
-        "isNew": false,
-        "stock": 80,
-        "rating": 4.6
-    },
-    {
-        "id": "ginebra-bombay-sapphire",
-        "name": "Ginebra Bombay Sapphire",
-        "brand": "Bombay Sapphire",
-        "category": "Licor",
-        "description": "Ginebra premium con diez botánicos exóticos. Botella de 750ml.",
-        "price": 120000,
-        "imageUrl": "images/products/ginebra.png",
-        "isOnOffer": false,
-        "offerPrice": null,
-        "isNew": false,
-        "stock": 60,
-        "rating": 4.7
-    },
-    {
-        "id": "snack-papas-margarita-limon",
-        "name": "Papas Margarita Limón",
-        "brand": "Margarita",
-        "category": "Snack",
-        "description": "Deliciosas papas fritas con un toque de limón.",
-        "price": 3000,
-        "imageUrl": "images/products/papas.png",
-        "isOnOffer": false,
-        "offerPrice": null,
-        "isNew": true,
-        "stock": 150,
-        "rating": 4.1
-    },
-    {
-        "id": "snack-mani-la-especial-salado",
-        "name": "Maní La Especial Salado",
-        "brand": "La Especial",
-        "category": "Snack",
-        "description": "Maní tostado y salado, el acompañamiento perfecto.",
-        "price": 2500,
-        "imageUrl": "images/products/mani.png",
-        "isOnOffer": true,
-        "offerPrice": 2000,
-        "isNew": false,
-        "stock": 200,
-        "rating": 4.2
-    },
-    {
-        "id": "cigarrillos-luky-strike",
-        "name": "cigarrillos luky",
-        "brand": "Margarita",
-        "category": "cigarrillos",
-        "description": "10 unidades",
-        "price": 4000,
-        "imageUrl": "images/products/luky.png",
-        "isOnOffer": false,
-        "offerPrice": null,
-        "isNew": true,
-        "stock": 300,
-        "rating": 4.0
-    },
-    {
-        "id": "cigarrillos-pielroja",
-        "name": "pielroja",
-        "brand": "La Especial",
-        "category": "cigarrillos",
-        "description": "18 unidades",
-        "price": 5000,
-        "imageUrl": "images/products/pielroja.png",
-        "isOnOffer": false,
-        "offerPrice": null,
-        "isNew": false,
-        "stock": 250,
-        "rating": 4.1
-    },
-    {
-        "id": "gaseosa-coca-cola",
-        "name": "Gaseosa Coca-Cola",
-        "brand": "Coca-Cola",
-        "category": "Bebida",
-        "description": "Refrescante gaseosa Coca-Cola, botella de 1.5 litros.",
-        "price": 5000,
-        "imageUrl": "images/products/coca-cola.png",
-        "isOnOffer": false,
-        "offerPrice": null,
-        "isNew": false,
-        "stock": 180,
-        "rating": 4.5
-    },
-    {
-        "id": "agua-cristal",
-        "name": "Agua Cristal",
-        "brand": "Cristal",
-        "category": "Bebida",
-        "description": "Agua purificada, ideal para hidratarse. Botella de 600ml.",
-        "price": 2000,
-        "imageUrl": "images/products/agua-cristal.png",
-        "isOnOffer": false,
-        "offerPrice": null,
-        "isNew": false,
-        "stock": 400,
-        "rating": 4.0
+// js/products.js
+
+import { appState } from './main.js';
+import { showToastNotification } from './toast.js';
+import { addToCart } from './cart.js';
+
+export function renderProducts(productsToRender, containerSelector, options = {}) {
+    const container = document.querySelector(containerSelector);
+    if (!container) {
+        console.error(`Contenedor no encontrado para renderizar productos: ${containerSelector}`);
+        return;
     }
-]
+
+    let filteredProducts = [...productsToRender];
+
+    // Aplicar filtros iniciales basados en las opciones
+    // Combina productos nuevos y en oferta si la opción es true para el grid principal de novedades
+    if (options.isNewAndOffer) {
+        filteredProducts = filteredProducts.filter(p => p.isNew || p.isOnOffer);
+    } else {
+        if (options.isNew) {
+            filteredProducts = filteredProducts.filter(p => p.isNew);
+        }
+        if (options.isOnOffer) {
+            filteredProducts = filteredProducts.filter(p => p.isOnOffer);
+        }
+    }
+
+    if (options.category) {
+        filteredProducts = filteredProducts.filter(p => p.category === options.category);
+    }
+    if (options.limit) {
+        filteredProducts = filteredProducts.slice(0, options.limit);
+    }
+
+    container.innerHTML = '';
+
+    if (filteredProducts.length === 0) {
+        container.innerHTML = `<p style="text-align: center; grid-column: 1 / -1; color: var(--text-color-light);">No hay productos disponibles en esta sección.</p>`;
+        return;
+    }
+
+    filteredProducts.forEach(product => {
+        const productCard = document.createElement('div');
+        productCard.classList.add('product-card');
+        productCard.dataset.id = product.id;
+
+        const displayPrice = product.isOnOffer ? product.offerPrice : product.price;
+        const oldPriceHtml = product.isOnOffer ? `<span class="old-price">$${product.price.toLocaleString('es-CO')}</span>` : '';
+
+        productCard.innerHTML = `
+            <img src="${product.imageUrl}" alt="${product.name}">
+            <div class="product-info">
+                <h3>${product.name}</h3>
+                <p class="product-brand">${product.brand}</p>
+                <p class="product-description">${product.description}</p>
+                <div class="product-price">
+                    ${oldPriceHtml}
+                    <span class="current-price">$${displayPrice.toLocaleString('es-CO')}</span>
+                </div>
+                <div class="product-rating">
+                    ${'★'.repeat(Math.floor(product.rating))}${'☆'.repeat(5 - Math.floor(product.rating))}
+                    <span>(${product.rating})</span>
+                </div>
+                ${product.isNew ? '<span class="product-badge new">Nuevo</span>' : ''}
+                ${product.isOnOffer ? '<span class="product-badge offer">Oferta</span>' : ''}
+                <button class="btn-primary add-to-cart-btn" data-id="${product.id}" aria-label="Añadir ${product.name} al carrito">
+                    <i class="fas fa-shopping-cart"></i> Añadir
+                </button>
+            </div>
+        `;
+        container.appendChild(productCard);
+    });
+
+    // Añadir event listeners para los botones "Añadir al Carrito"
+    container.querySelectorAll('.add-to-cart-btn').forEach(button => {
+        button.addEventListener('click', (event) => {
+            const productId = event.currentTarget.dataset.id;
+            const productToAdd = appState.products.find(p => p.id === productId);
+            if (productToAdd) {
+                addToCart(productToAdd);
+            }
+        });
+    });
+}
+
+/**
+ * Configura los filtros para una sección de productos específica.
+ * @param {Array<Object>} allProducts - El array completo de productos.
+ * @param {string} brandFilterSelector - Selector del elemento select para filtrar por marca.
+ * @param {string} priceFilterSelector - Selector del elemento select para filtrar por precio.
+ * @param {string} productSearchInputSelector - Selector del input para buscar productos.
+ * @param {string} targetGridSelector - Selector del contenedor donde se renderizarán los productos filtrados.
+ * @param {string} categoryToFilter - La categoría específica para filtrar en esta sección (ej. 'Licor', 'Cerveza', etc.).
+ */
+export function setupProductFilters(allProducts, brandFilterSelector, priceFilterSelector, productSearchInputSelector, targetGridSelector, categoryToFilter) {
+    const brandFilter = document.querySelector(brandFilterSelector);
+    const priceFilter = document.querySelector(priceFilterSelector);
+    const productSearchInput = document.querySelector(productSearchInputSelector);
+
+    // Asegúrate de que todos los elementos existan
+    if (!brandFilter || !priceFilter || !productSearchInput || !document.querySelector(targetGridSelector)) {
+        console.warn(`setupProductFilters: Algunos elementos de filtro o contenedor no se encontraron para la categoría "${categoryToFilter}". Saltando la configuración de filtros.`);
+        return;
+    }
+
+    // Populate brand filter options
+    const brands = [...new Set(allProducts
+        .filter(p => p.category === categoryToFilter)
+        .map(p => p.brand))];
+    brandFilter.innerHTML = '<option value="">Todas</option>' + brands.map(brand => `<option value="${brand}">${brand}</option>`).join('');
+
+    const applyFilters = () => {
+        let filtered = allProducts.filter(p => p.category === categoryToFilter);
+
+        // Filtrar por marca
+        const selectedBrand = brandFilter.value;
+        if (selectedBrand) {
+            filtered = filtered.filter(p => p.brand === selectedBrand);
+        }
+
+        // Filtrar por término de búsqueda
+        const searchTerm = productSearchInput.value.toLowerCase().trim();
+        if (searchTerm) {
+            filtered = filtered.filter(product =>
+                product.name.toLowerCase().includes(searchTerm) ||
+                product.brand.toLowerCase().includes(searchTerm) ||
+                product.description.toLowerCase().includes(searchTerm)
+            );
+        }
+
+        // Ordenar por precio
+        const priceOrder = priceFilter.value;
+        if (priceOrder === 'asc') {
+            filtered.sort((a, b) => (a.isOnOffer ? a.offerPrice : a.price) - (b.isOnOffer ? b.offerPrice : b.price));
+        } else if (priceOrder === 'desc') {
+            filtered.sort((a, b) => (b.isOnOffer ? b.offerPrice : b.price) - (a.isOnOffer ? a.offerPrice : a.price));
+        }
+
+        renderProducts(filtered, targetGridSelector);
+    };
+
+    brandFilter.addEventListener('change', applyFilters);
+    priceFilter.addEventListener('change', applyFilters);
+    productSearchInput.addEventListener('input', applyFilters);
+
+    // Ejecutar filtros al inicio para asegurar que el grid se renderice con la categoría correcta
+    applyFilters();
+}
+
+/**
+ * Renderiza un carrusel de productos horizontalmente, ideal para categorías específicas.
+ * Este carrusel es para "swipe" en móviles y no usa dots ni botones de navegación explícitos.
+ * @param {Array<Object>} productsToRender - Los productos a mostrar.
+ * @param {string} containerSelector - El selector del div que será el track del carrusel (ej. '#cervezasCarousel').
+ * @param {string} categoryToFilter - La categoría de productos a filtrar.
+ */
+export function renderProductCarouselSection(allProducts, containerSelector, categoryToFilter) {
+    const container = document.querySelector(containerSelector);
+    if (!container) {
+        console.error(`Contenedor de carrusel de productos no encontrado: ${containerSelector}`);
+        return;
+    }
+
+    const filteredProducts = allProducts.filter(p => p.category === categoryToFilter);
+
+    container.innerHTML = ''; // Limpiar cualquier contenido existente
+
+    if (filteredProducts.length === 0) {
+        container.innerHTML = `<p style="text-align: center; width: 100%; color: var(--text-color-light);">No hay productos de ${categoryToFilter} disponibles.</p>`;
+        return;
+    }
+
+    filteredProducts.forEach(product => {
+        const productCard = document.createElement('div');
+        productCard.classList.add('product-card'); // Reutiliza el estilo de product-card
+        productCard.dataset.id = product.id;
+
+        const displayPrice = product.isOnOffer ? product.offerPrice : product.price;
+        const oldPriceHtml = product.isOnOffer ? `<span class="old-price">$${product.price.toLocaleString('es-CO')}</span>` : '';
+
+        productCard.innerHTML = `
+            <img src="${product.imageUrl}" alt="${product.name}">
+            <div class="product-info">
+                <h3>${product.name}</h3>
+                <p class="product-brand">${product.brand}</p>
+                <div class="product-price">
+                    ${oldPriceHtml}
+                    <span class="current-price">$${displayPrice.toLocaleString('es-CO')}</span>
+                </div>
+                ${product.isOnOffer ? '<span class="product-badge offer">Oferta</span>' : ''}
+                <button class="btn-primary add-to-cart-btn" data-id="${product.id}" aria-label="Añadir ${product.name} al carrito">
+                    <i class="fas fa-shopping-cart"></i> Añadir
+                </button>
+            </div>
+        `;
+        container.appendChild(productCard);
+    });
+
+    // Añadir event listeners para los botones "Añadir al Carrito"
+    container.querySelectorAll('.add-to-cart-btn').forEach(button => {
+        button.addEventListener('click', (event) => {
+            const productId = event.currentTarget.dataset.id;
+            const productToAdd = appState.products.find(p => p.id === productId);
+            if (productToAdd) {
+                addToCart(productToAdd);
+            }
+        });
+    });
+}
+
+
+// Función para renderizar marcas (como en el carrusel de marcas)
+export function renderBrands(brandsData, containerSelector) {
+    const container = document.querySelector(containerSelector);
+    if (!container) {
+        console.error(`Contenedor de marcas no encontrado: ${containerSelector}`);
+        return;
+    }
+
+    container.innerHTML = ''; // Limpiar cualquier contenido existente
+
+    if (brandsData.length === 0) {
+        container.innerHTML = `<p style="text-align: center; grid-column: 1 / -1; color: var(--text-color-light);">No hay marcas disponibles.</p>`;
+        return;
+    }
+
+    brandsData.forEach(brand => {
+        const brandDiv = document.createElement('div');
+        brandDiv.classList.add('brand-logo');
+        brandDiv.innerHTML = `<img src="${brand.logoUrl}" alt="${brand.name} Logo">`;
+        container.appendChild(brandDiv);
+    });
+}
