@@ -39,83 +39,59 @@ export function initCarousel(bannersData) {
             carouselTrack.appendChild(slideElement);
             slides.push(slideElement);
 
-            const dotElement = createDotElement(index);
+            const dotElement = document.createElement('span');
+            dotElement.classList.add('carousel-dot');
+            dotElement.setAttribute('role', 'button');
+            dotElement.setAttribute('aria-label', `Ir al slide ${index + 1}`);
+            dotElement.addEventListener('click', () => {
+                showSlide(index);
+                resetAutoSlide(); // Reiniciar el auto-avance después de interacción manual
+            });
             carouselDotsContainer.appendChild(dotElement);
             dots.push(dotElement);
         });
 
-        // Configurar event listeners para los botones de navegación
         carouselPrevBtn.addEventListener('click', () => {
             showSlide(currentSlide - 1);
-            resetAutoSlide();
+            resetAutoSlide(); // Reiniciar el auto-avance después de interacción manual
         });
 
         carouselNextBtn.addEventListener('click', () => {
             showSlide(currentSlide + 1);
-            resetAutoSlide();
+            resetAutoSlide(); // Reiniciar el auto-avance después de interacción manual
         });
 
-        // Configurar event listeners para los dots
-        dots.forEach((dot, index) => {
-            dot.addEventListener('click', () => {
-                showSlide(index);
-                resetAutoSlide();
-            });
-        });
+        showSlide(currentSlide); // Mostrar el primer slide
+        startAutoSlide(); // Iniciar el auto-avance
 
-        showSlide(currentSlide); // Muestra el primer slide al inicio
-        startAutoSlide(); // Inicia el auto-avance
-        console.log('carousel.js: Carrusel inicializado con', totalSlides, 'banners.');
-
+        console.log('carousel.js: Carrusel inicializado con éxito.');
     } else {
-        console.warn('carousel.js: No hay banners para inicializar el carrusel.');
-        // Mostrar un mensaje o un slide de placeholder si no hay banners
-        carouselTrack.innerHTML = `<div class="carousel-slide" style="background-color: var(--secondary-color-dark);">
-                                     <div class="carousel-content">
-                                         <h2>¡Bienvenido a EL BORRACHO!</h2>
-                                         <p>Explora nuestras ofertas y productos.</p>
-                                         <a href="#novedades" class="btn-primary">Ver Novedades</a>
-                                     </div>
-                                 </div>`;
-        carouselTrack.style.transform = 'translateX(0%)';
+        console.warn('carousel.js: No se encontraron datos de banners para inicializar el carrusel.');
+        carouselTrack.innerHTML = '<p style="text-align:center; padding:50px;">No hay banners disponibles.</p>';
     }
 }
 
 /**
- * Crea un elemento de slide para el carrusel.
- * @param {Object} banner - Objeto con datos del banner (imageUrl, title, description, link, buttonText).
+ * Crea un elemento de slide HTML para el carrusel.
+ * @param {Object} banner - Objeto con los datos del banner (imageUrl, title, description, link, buttonText).
  * @returns {HTMLElement} El elemento div del slide.
  */
 function createSlideElement(banner) {
     const slide = document.createElement('div');
     slide.classList.add('carousel-slide');
     slide.style.backgroundImage = `url(${banner.imageUrl})`;
-    slide.setAttribute('role', 'group');
-    slide.setAttribute('aria-label', `Slide ${banner.id}`);
+    slide.setAttribute('aria-hidden', 'true');
+    slide.setAttribute('tabindex', '-1');
 
-    slide.innerHTML = `
-        <div class="carousel-content">
+    const content = `
+        <div class="carousel-slide-content">
             <h2>${banner.title}</h2>
             <p>${banner.description}</p>
-            ${banner.link ? `<a href="${banner.link}" class="btn-primary">${banner.buttonText || 'Ver más'}</a>` : ''}
+            <a href="${banner.link}" class="btn btn-primary">${banner.buttonText}</a>
         </div>
     `;
+    slide.innerHTML = content;
     return slide;
-}
-
-/**
- * Crea un elemento de dot para la navegación del carrusel.
- * @param {number} index - El índice del dot.
- * @returns {HTMLElement} El elemento span del dot.
- */
-function createDotElement(index) {
-    const dot = document.createElement('span');
-    dot.classList.add('carousel-dot');
-    dot.setAttribute('role', 'button');
-    dot.setAttribute('aria-controls', 'carouselTrack');
-    dot.setAttribute('aria-label', `Ir a slide ${index + 1}`);
-    dot.setAttribute('tabindex', '0'); // Hacer los dots enfocables
-    return dot;
 }
 
 /**
@@ -123,11 +99,12 @@ function createDotElement(index) {
  * @param {number} index - El índice del slide a mostrar.
  */
 function showSlide(index) {
-    if (totalSlides === 0) return; // No hacer nada si no hay slides
+    if (totalSlides === 0) return;
 
-    currentSlide = (index + totalSlides) % totalSlides; // Permite navegación circular
-    const offset = -currentSlide * 100;
-    carouselTrack.style.transform = `translateX(${offset}%)`;
+    // Manejar el bucle del carrusel
+    currentSlide = (index + totalSlides) % totalSlides;
+
+    carouselTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
     updateCarousel();
 }
 
