@@ -24,6 +24,20 @@ export function renderProductCard(product) {
         `;
     }
 
+    // Generar estrellas de rating
+    let ratingStars = '';
+    const fullStars = Math.floor(product.rating);
+    const hasHalfStar = product.rating % 1 !== 0;
+    for (let i = 0; i < fullStars; i++) {
+        ratingStars += '<i class="fas fa-star"></i>';
+    }
+    if (hasHalfStar) {
+        ratingStars += '<i class="fas fa-star-half-alt"></i>';
+    }
+    for (let i = 0; i < (5 - Math.ceil(product.rating)); i++) {
+        ratingStars += '<i class="far fa-star"></i>'; // Estrellas vacías
+    }
+
     productCard.innerHTML = `
         <img src="${product.imageUrl}" alt="${product.name}" class="product-image" loading="lazy">
         <div class="product-info">
@@ -33,22 +47,19 @@ export function renderProductCard(product) {
                 ${priceHtml}
             </div>
             <div class="product-rating">
-                ${'⭐'.repeat(Math.floor(product.rating))}
-                <span>(${product.rating.toFixed(1)})</span>
+                ${ratingStars} (${product.rating})
             </div>
-            <button class="btn-primary add-to-cart-btn" data-product-id="${product.id}" aria-label="Añadir ${product.name} al carrito">
-                Añadir al Carrito
+            <button class="btn-primary add-to-cart-btn" data-product-id="${product.id}">
+                <i class="fas fa-cart-plus"></i> Añadir al carrito
             </button>
         </div>
-        ${product.isNew ? '<span class="product-badge new-badge">Nuevo</span>' : ''}
-        ${product.isOnOffer ? '<span class="product-badge offer-badge">Oferta</span>' : ''}
     `;
 
-    // Añadir event listener al botón de añadir al carrito
+    // Event listener para el botón "Añadir al carrito"
     const addToCartBtn = productCard.querySelector('.add-to-cart-btn');
     if (addToCartBtn) {
         addToCartBtn.addEventListener('click', () => {
-            addToCart(product); // Llama a la función addToCart del módulo cart.js
+            addToCart(product);
             showToastNotification(`"${product.name}" añadido al carrito.`, 'success');
         });
     }
@@ -56,151 +67,78 @@ export function renderProductCard(product) {
     return productCard;
 }
 
-
 /**
  * Renderiza una lista de productos en un contenedor específico.
- * @param {Array<Object>} productsToRender - Array de objetos producto.
+ * @param {Array<Object>} productsData - Array de objetos producto a renderizar.
  * @param {string} containerSelector - Selector CSS del contenedor donde se renderizarán los productos.
- * @param {Object} options - Opciones de filtrado y límite inicial.
- * @param {string} [options.category] - Filtra por categoría.
- * @param {boolean} [options.isNew] - Filtra por productos nuevos.
- * @param {boolean} [options.isOnOffer] - Filtra por productos en oferta.
- * @param {number} [options.limit] - Limita el número de productos mostrados.
  */
-export function renderProducts(productsToRender, containerSelector, options = {}) {
+export function renderProducts(productsData, containerSelector) {
     const container = document.querySelector(containerSelector);
     if (!container) {
-        console.error(`Contenedor no encontrado para renderizar productos: ${containerSelector}`);
-        return;
-    }
-
-    let filteredProducts = [...productsToRender];
-
-    // Aplicar filtros iniciales basados en las opciones
-    if (options.isNew) {
-        filteredProducts = filteredProducts.filter(p => p.isNew);
-    }
-    if (options.isOnOffer) { // Añadir filtro para ofertas
-        filteredProducts = filteredProducts.filter(p => p.isOnOffer);
-    }
-    if (options.category) {
-        filteredProducts = filteredProducts.filter(p => p.category === options.category);
-    }
-    if (options.limit) {
-        filteredProducts = filteredProducts.slice(0, options.limit);
-    }
-
-
-    container.innerHTML = ''; // Limpiar el contenido anterior
-
-    if (filteredProducts.length === 0) {
-        container.innerHTML = `<p class="no-results-message">No hay productos disponibles en esta sección.</p>`;
-        return;
-    }
-
-    filteredProducts.forEach(product => {
-        const productCard = renderProductCard(product);
-        container.appendChild(productCard);
-    });
-}
-
-/**
- * Configura los filtros para una sección de productos específica.
- * @param {string} targetGridSelector - Selector CSS de la grilla de productos a filtrar.
- * @param {string} categoryToFilter - La categoría principal de esta sección de la grilla.
- */
-export function setupProductFilters(targetGridSelector, categoryToFilter) {
-    const containerId = targetGridSelector.replace('#', '').replace('ProductGrid', ''); // Ej: 'licores'
-    const brandFilter = document.getElementById(`${containerId}BrandFilter`);
-    const priceFilter = document.getElementById(`${containerId}PriceFilter`);
-    const productSearchInput = document.getElementById(`${containerId}SearchInput`);
-
-    if (!brandFilter || !priceFilter || !productSearchInput) {
-        console.warn(`products.js: Elementos de filtro no encontrados para la sección ${containerId}.`);
-        return;
-    }
-
-    // Llenar el filtro de marcas dinámicamente
-    const brandsForCategory = [...new Set(
-        appState.products
-            .filter(p => p.category === categoryToFilter)
-            .map(p => p.brand)
-            .sort() // Ordenar alfabéticamente
-    )];
-
-    brandFilter.innerHTML = '<option value="">Todas las marcas</option>';
-    brandsForCategory.forEach(brand => {
-        const option = document.createElement('option');
-        option.value = brand;
-        option.textContent = brand;
-        brandFilter.appendChild(option);
-    });
-
-
-    const applyFilters = () => {
-        let filtered = appState.products.filter(p => p.category === categoryToFilter);
-
-        // Filtrar por marca
-        const selectedBrand = brandFilter.value;
-        if (selectedBrand) {
-            filtered = filtered.filter(p => p.brand === selectedBrand);
-        }
-
-        // Filtrar por texto de búsqueda
-        const searchTerm = productSearchInput.value.toLowerCase().trim();
-        if (searchTerm) {
-            filtered = filtered.filter(p =>
-                p.name.toLowerCase().includes(searchTerm) ||
-                p.brand.toLowerCase().includes(searchTerm) ||
-                (p.description && p.description.toLowerCase().includes(searchTerm))
-            );
-        }
-
-        // Ordenar por precio
-        const sortOrder = priceFilter.value;
-        if (sortOrder === 'asc') {
-            filtered.sort((a, b) => (a.offerPrice || a.price) - (b.offerPrice || b.price));
-        } else if (sortOrder === 'desc') {
-            filtered.sort((a, b) => (b.offerPrice || b.price) - (a.offerPrice || a.price));
-        }
-
-        // Renderiza los productos filtrados en el contenedor objetivo
-        renderProducts(filtered, targetGridSelector, { category: categoryToFilter }); // Asegura que se mantenga la categoría
-    };
-
-    brandFilter.addEventListener('change', applyFilters);
-    priceFilter.addEventListener('change', applyFilters);
-    productSearchInput.addEventListener('input', applyFilters);
-
-    // Ejecutar filtros al inicio para asegurar que el grid se renderice con la categoría correcta
-    applyFilters();
-    console.log(`products.js: Filtros configurados para la sección ${containerId}.`);
-}
-
-/**
- * Renderiza los logos de las marcas en un contenedor específico.
- * @param {Array<Object>} brandsData - Array de objetos de marca.
- * @param {string} containerSelector - Selector CSS del contenedor donde se renderizarán los logos.
- */
-export function renderBrands(brandsData, containerSelector) {
-    const container = document.querySelector(containerSelector);
-    if (!container) {
-        console.error(`Contenedor de marcas no encontrado: ${containerSelector}`);
+        console.error(`products.js: Contenedor de productos no encontrado: ${containerSelector}`);
         return;
     }
 
     container.innerHTML = ''; // Limpiar cualquier contenido existente
 
-    if (brandsData.length === 0) {
-        container.innerHTML = `<p style="text-align: center; grid-column: 1 / -1; color: var(--text-color-light);">No hay marcas disponibles.</p>`;
+    if (productsData.length === 0) {
+        container.innerHTML = `<p class="no-results-message">No se encontraron productos que coincidan con la búsqueda.</p>`;
         return;
     }
 
-    brandsData.forEach(brand => {
-        const brandDiv = document.createElement('div');
-        brandDiv.classList.add('brand-logo');
-        brandDiv.innerHTML = `<img src="${brand.logoUrl}" alt="${brand.name} Logo" loading="lazy">`;
-        container.appendChild(brandDiv);
+    productsData.forEach(product => {
+        const productCard = renderProductCard(product);
+        container.appendChild(productCard);
     });
-    console.log(`products.js: Marcas renderizadas en ${containerSelector}.`);
+    console.log(`products.js: ${productsData.length} productos renderizados en ${containerSelector}.`);
+}
+
+/**
+ * Configura los filtros de productos para una sección específica.
+ * @param {string} containerId - El ID del contenedor principal de la sección de productos (ej. '#productGrid').
+ * @param {Array<Object>} allProducts - Todos los productos disponibles para filtrar.
+ */
+export function setupProductFilters(containerId, allProducts) {
+    const categoryFilter = document.getElementById('categoryFilter');
+    const priceFilter = document.getElementById('priceFilter');
+    const priceValueSpan = document.getElementById('priceValue');
+    const productGrid = document.querySelector(containerId); // Usar el ID del contenedor para renderizar
+
+    if (!categoryFilter || !priceFilter || !priceValueSpan || !productGrid) {
+        console.warn(`products.js: Elementos de filtro o contenedor de productos no encontrados para ${containerId}. Los filtros no funcionarán.`);
+        return;
+    }
+
+    // Inicializar el valor del rango de precio y su visualización
+    priceValueSpan.textContent = `$${parseInt(priceFilter.value).toLocaleString('es-CO')}`;
+
+    priceFilter.addEventListener('input', () => {
+        priceValueSpan.textContent = `$${parseInt(priceFilter.value).toLocaleString('es-CO')}`;
+        applyFilters();
+    });
+
+    function applyFilters() {
+        const selectedCategory = categoryFilter.value;
+        const maxPrice = parseFloat(priceFilter.value);
+
+        let filteredProducts = allProducts.filter(product => {
+            const productPrice = product.isOnOffer && product.offerPrice !== null ? product.offerPrice : product.price;
+
+            const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
+            const matchesPrice = productPrice <= maxPrice;
+
+            return matchesCategory && matchesPrice;
+        });
+
+        // Vuelve a renderizar el grid con los productos filtrados
+        renderProducts(filteredProducts, containerId);
+    }
+
+    // Event listeners para los cambios de filtro
+    categoryFilter.addEventListener('change', applyFilters);
+    priceFilter.addEventListener('change', applyFilters);
+
+    // Ejecutar filtros al inicio para asegurar que el grid se renderice con la categoría correcta
+    applyFilters();
+    console.log(`products.js: Filtros configurados para la sección ${containerId}.`);
 }
