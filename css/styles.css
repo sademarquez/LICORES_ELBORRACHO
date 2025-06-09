@@ -13,8 +13,8 @@
     --text-color-dark: #FFFFFF; /* Texto blanco para contraste en fondos oscuros */
     --text-color-light: #CED4DA; /* Texto gris claro para descripciones, etc. */
     --white: #ffffff;
-    --light-bg: #212529; /* Fondo oscuro muy sutil */
-    --dark-bg: #000000; /* Fondo negro profundo para headers, footers (Ahora totalmente negro) */
+    --light-bg: rgba(0, 0, 0, 0.4); /* Fondo oscuro muy sutil (Ahora negro más transparente) */
+    --dark-bg: #000000; /* Fondo negro profundo para headers, footers (Totalmente negro) */
     --border-color: #495057; /* Color de borde oscuro */
     --success-color: #28a745; /* Verde para mensajes de éxito */
     --danger-color: #dc3545; /* Rojo para errores o eliminación */
@@ -147,7 +147,7 @@ p {
     padding: var(--spacing-sm);
     border: 1px solid var(--border-color);
     border-radius: 5px;
-    background-color: var(--light-bg);
+    background-color: var(--secondary-color); /* Usar secondary-color para inputs para consistencia */
     color: var(--text-color-light);
     font-size: 1em;
 }
@@ -270,7 +270,7 @@ p {
 /* Sección de Producto General y Filtros */
 .product-section {
     padding: var(--spacing-lg) 0;
-    background-color: var(--light-bg);
+    background-color: rgba(0, 0, 0, 0.4); /* Fondo más transparente */
     flex-grow: 1; /* Permite que ocupe el espacio disponible */
 }
 
@@ -342,7 +342,7 @@ p {
 
 /* Tarjeta de Producto */
 .product-card {
-    background-color: rgba(52, 58, 64, 0.2); /* Fondo transparente para las tarjetas */
+    background-color: rgba(52, 58, 64, 0.08); /* Fondo mucho más transparente (de 0.2 a 0.08) */
     border: 1px solid var(--border-color);
     border-radius: 8px;
     padding: var(--spacing-md);
@@ -420,7 +420,7 @@ p {
 /* Sección de Marcas (Carrusel) */
 .brands-section {
     padding: var(--spacing-lg) 0;
-    background-color: var(--dark-bg);
+    background-color: var(--dark-bg); /* Sigue siendo totalmente negro */
     text-align: center;
 }
 
@@ -592,7 +592,7 @@ p {
 /* Carrusel Continuo de Productos */
 .continuous-carousel-section {
     padding: var(--spacing-lg) 0;
-    background-color: var(--light-bg);
+    background-color: rgba(0, 0, 0, 0.4); /* Fondo más transparente */
 }
 
 .continuous-carousel-section .section-title {
@@ -616,7 +616,7 @@ p {
 }
 
 .continuous-carousel-track .product-card {
-    background-color: rgba(52, 58, 64, 0.2); /* Fondo transparente para las tarjetas */
+    background-color: rgba(52, 58, 64, 0.08); /* Fondo mucho más transparente */
     width: 200px; /* Ancho fijo para las tarjetas del carrusel continuo */
     flex-shrink: 0; /* No permite que se encojan */
     margin-right: var(--spacing-md); /* Espacio entre tarjetas */
