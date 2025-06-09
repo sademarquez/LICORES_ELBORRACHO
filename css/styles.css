@@ -21,120 +21,124 @@
     --info-color: #17a2b8; /* Azul para información */
 
     /* Fuentes */
-    --font-primary: 'Arial', sans-serif; /* Puedes usar 'Montserrat', 'Roboto', 'Open Sans' si las importas */
-    --font-heading: 'Georgia', serif; /* O 'Playfair Display', 'Merriweather' */
+    --font-family-primary: 'Montserrat', sans-serif;
+    --font-family-secondary: 'Open Sans', sans-serif;
 
     /* Espaciado */
-    --spacing-xs: 5px;
-    --spacing-sm: 10px;
-    --spacing-md: 20px;
-    --spacing-lg: 30px;
-    --spacing-xl: 40px;
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    --spacing-xxl: 48px;
 
-    /* Bordes y Sombras */
+    /* Sombras */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    --shadow-md: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+    --shadow-inset: inset 0 2px 4px rgba(0, 0, 0, 0.6); /* Sombra interna para un efecto de profundidad */
+
+    /* Bordes */
     --border-radius: 8px;
-    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
-    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.2);
-    --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.3);
+    --border-radius-lg: 12px;
 
     /* Transiciones */
     --transition-speed: 0.3s;
+    --transition-easing: ease-in-out;
 }
 
-/* Reset y Estilos Generales */
+/* Base */
 * {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
 }
 
 body {
-    font-family: var(--font-primary);
+    font-family: var(--font-family-primary);
+    background-color: var(--dark-bg);
+    color: var(--text-color-light);
     line-height: 1.6;
-    color: var(--text-color-dark);
-    background-color: var(--light-bg);
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh; /* Asegura que el footer se quede abajo */
-}
-
-main {
-    flex-grow: 1; /* Permite que el contenido principal ocupe el espacio restante */
+    overflow-x: hidden; /* Evita el scroll horizontal no deseado */
 }
 
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 var(--spacing-md);
-    width: 100%;
+    padding: 0 var(--spacing-md); /* Espaciado lateral por defecto */
 }
 
 a {
     color: var(--primary-color);
     text-decoration: none;
-    transition: color var(--transition-speed) ease;
+    transition: color var(--transition-speed) var(--transition-easing);
 }
 
 a:hover {
     color: var(--accent-color);
 }
 
-h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-heading);
-    color: var(--primary-color);
-    margin-bottom: var(--spacing-md);
-    text-align: center;
+img {
+    max-width: 100%;
+    height: auto;
 }
 
-h2 {
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-color-dark);
+    margin-bottom: var(--spacing-md);
+    font-family: var(--font-family-primary);
+}
+
+.section-title {
+    text-align: center;
     font-size: 2.5em;
-    margin-top: var(--spacing-lg);
     margin-bottom: var(--spacing-xl);
+    color: var(--primary-color);
     position: relative;
     padding-bottom: var(--spacing-sm);
 }
 
-h2::after {
+.section-title::after {
     content: '';
     position: absolute;
     left: 50%;
-    transform: translateX(-50%);
     bottom: 0;
+    transform: translateX(-50%);
     width: 80px;
-    height: 3px;
-    background-color: var(--primary-color);
+    height: 4px;
+    background-color: var(--accent-color);
     border-radius: 2px;
 }
 
-img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-}
-
-/* Botones Generales */
+/* Botones */
 .btn-primary, .btn-secondary {
     display: inline-block;
     padding: var(--spacing-sm) var(--spacing-md);
     border-radius: var(--border-radius);
     font-weight: bold;
-    text-align: center;
     cursor: pointer;
+    text-align: center;
+    transition: all var(--transition-speed) var(--transition-easing);
     border: none;
-    transition: all var(--transition-speed) ease;
+    font-family: var(--font-family-primary);
     font-size: 1em;
 }
 
 .btn-primary {
     background-color: var(--primary-color);
-    color: var(--secondary-color-dark); /* Color oscuro para el texto del botón primario */
+    color: var(--dark-bg);
+    box-shadow: var(--shadow-sm);
 }
 
 .btn-primary:hover {
     background-color: var(--primary-color-dark);
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
 }
 
 .btn-secondary {
@@ -145,68 +149,72 @@ img {
 
 .btn-secondary:hover {
     background-color: var(--primary-color);
-    color: var(--secondary-color-dark);
-    box-shadow: var(--shadow-sm);
+    color: var(--dark-bg);
+    transform: translateY(-2px);
 }
-
-.btn-icon {
-    background: none;
-    border: none;
-    color: var(--primary-color);
-    font-size: 1.2em;
-    cursor: pointer;
-    transition: color var(--transition-speed) ease;
-}
-
-.btn-icon:hover {
-    color: var(--accent-color);
-}
-
-.btn-link {
-    color: var(--primary-color);
-    text-decoration: none;
-    font-weight: bold;
-    transition: color var(--transition-speed) ease;
-}
-
-.btn-link:hover {
-    color: var(--accent-color);
-}
-
-.btn-full-width {
-    width: 100%;
-    display: block; /* Asegura que ocupe todo el ancho */
-    margin-top: var(--spacing-md);
-}
-
-.btn-container {
-    text-align: center;
-    margin-top: var(--spacing-lg);
-    margin-bottom: var(--spacing-lg);
-}
-
 
 /* Header */
 .main-header {
     background-color: var(--dark-bg);
     padding: var(--spacing-md) 0;
-    border-bottom: 1px solid var(--border-color);
+    box-shadow: var(--shadow-md);
     position: sticky;
     top: 0;
+    left: 0;
+    width: 100%;
     z-index: 1000;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .header-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: var(--spacing-md);
-    flex-wrap: wrap; /* Permite que los elementos se envuelvan en pantallas pequeñas */
+    flex-wrap: wrap;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    color: var(--white);
+    font-size: 1.5em;
+    font-weight: bold;
 }
 
 .logo img {
-    height: 50px; /* Tamaño del logo */
-    filter: brightness(1.2); /* Un poco más de brillo para que resalte */
+    height: 40px;
+    width: auto;
+}
+
+.main-nav .nav-list {
+    display: flex;
+    list-style: none;
+    gap: var(--spacing-lg);
+}
+
+.main-nav .nav-list a {
+    color: var(--text-color-light);
+    font-weight: bold;
+    position: relative;
+    padding-bottom: 5px; /* Espacio para el subrayado */
+}
+
+.main-nav .nav-list a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 3px;
+    background-color: var(--primary-color);
+    transition: width var(--transition-speed) var(--transition-easing);
+    border-radius: 2px;
+}
+
+.main-nav .nav-list a:hover::after,
+.main-nav .nav-list a.active::after {
+    width: 100%;
 }
 
 .header-actions {
@@ -215,548 +223,410 @@ img {
     gap: var(--spacing-md);
 }
 
-.search-bar {
-    display: flex;
-    border-radius: var(--border-radius);
-    overflow: hidden;
+.cart-button {
     background-color: var(--secondary-color);
-}
-
-.search-bar input {
+    color: var(--white);
     border: none;
-    padding: var(--spacing-sm);
-    background-color: transparent;
-    color: var(--text-color-dark);
-    outline: none;
-    width: 200px; /* Ancho predeterminado para la barra de búsqueda del header */
-}
-
-.search-bar button {
-    padding: var(--spacing-sm) var(--spacing-md);
-    background-color: var(--primary-color);
-    color: var(--secondary-color-dark);
-    border: none;
-    cursor: pointer;
-    transition: background-color var(--transition-speed) ease;
-}
-
-.search-bar button:hover {
-    background-color: var(--primary-color-dark);
-}
-
-.cart-icon {
-    position: relative;
-    font-size: 1.5em;
-    color: var(--primary-color);
-    cursor: pointer;
-    padding: var(--spacing-xs);
     border-radius: var(--border-radius);
-    transition: background-color var(--transition-speed) ease;
+    padding: var(--spacing-sm) var(--spacing-md);
+    cursor: pointer;
+    font-size: 1em;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    position: relative;
+    transition: background-color var(--transition-speed) var(--transition-easing), transform var(--transition-speed) var(--transition-easing);
 }
 
-.cart-icon:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+.cart-button:hover {
+    background-color: var(--secondary-color-dark);
+    transform: translateY(-2px);
 }
 
-.cart-count {
+.cart-button .cart-count {
     background-color: var(--danger-color);
     color: var(--white);
-    font-size: 0.7em;
-    padding: 2px 6px;
+    font-size: 0.75em;
+    padding: 2px 7px;
     border-radius: 50%;
     position: absolute;
     top: -5px;
     right: -5px;
-    min-width: 18px;
+    min-width: 20px;
     text-align: center;
 }
 
 .menu-toggle {
-    display: none; /* Ocultar por defecto, se muestra en móvil */
-    font-size: 1.5em;
+    display: none; /* Ocultar por defecto en desktop */
     background: none;
     border: none;
-    color: var(--primary-color);
+    color: var(--white);
+    font-size: 1.5em;
     cursor: pointer;
-    padding: var(--spacing-xs);
-    border-radius: var(--border-radius);
-    transition: background-color var(--transition-speed) ease;
 }
 
-.menu-toggle:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+/* Main Content Sections */
+main section {
+    padding: var(--spacing-xxl) 0;
+    background-color: var(--light-bg); /* Fondo sutil para las secciones */
+    margin-bottom: var(--spacing-md); /* Espacio entre secciones */
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md); /* Sombra para dar efecto flotante */
+    position: relative; /* Para posibles elementos posicionados */
+    overflow: hidden; /* Asegura que el contenido del carrusel no se desborde */
 }
 
-/* Main Navigation */
-.main-nav .nav-list {
-    display: flex;
-    list-style: none;
-    gap: var(--spacing-lg);
-    margin-top: var(--spacing-sm);
-}
-
-.main-nav .nav-link {
-    color: var(--text-color-light);
-    font-weight: bold;
-    padding: var(--spacing-xs) 0;
-    position: relative;
-}
-
-.main-nav .nav-link::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 0;
-    height: 2px;
-    background-color: var(--primary-color);
-    transition: width var(--transition-speed) ease;
-}
-
-.main-nav .nav-link:hover::after,
-.main-nav .nav-link.active::after {
-    width: 100%;
-}
-
-/* Dropdown Menu */
-.dropdown {
-    position: relative;
-}
-
-.dropdown-toggle {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.dropdown-menu {
-    position: absolute;
-    top: 100%;
-    left: 0;
+/* Sección HERO (Carrusel principal) - Ver components.css para estilos detallados */
+.hero-section {
+    padding: 0; /* Eliminar padding para que el carrusel ocupe todo el ancho */
+    margin-bottom: var(--spacing-lg); /* Espacio después del carrusel */
+    box-shadow: none; /* No queremos sombra aquí, ya que el carrusel tiene sus propios estilos */
     background-color: var(--dark-bg);
-    list-style: none;
-    padding: var(--spacing-sm) 0;
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow-md);
-    min-width: 180px;
-    display: none; /* Oculto por defecto */
-    z-index: 10; /* Asegura que esté sobre otros elementos */
-    opacity: 0;
-    transform: translateY(10px);
-    transition: opacity var(--transition-speed) ease, transform var(--transition-speed) ease;
+    border-radius: 0; /* No border-radius para el hero */
 }
 
-.dropdown:hover .dropdown-menu {
-    display: block; /* Muestra el menú al pasar el ratón */
-    opacity: 1;
-    transform: translateY(0);
+/* Productos (General) */
+.products-section {
+    padding: var(--spacing-xxl) var(--spacing-md);
+    background-color: var(--secondary-color); /* Fondo más oscuro para secciones de productos */
 }
 
-.dropdown-menu li a {
-    display: block;
-    padding: var(--spacing-xs) var(--spacing-md);
-    color: var(--text-color-light);
-    transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
-}
-
-.dropdown-menu li a:hover {
-    background-color: var(--secondary-color);
-    color: var(--primary-color);
-}
-
-/* Section general styles */
-.section-container {
-    padding: var(--spacing-xl) 0;
-}
-
-.bg-dark-alt {
-    background-color: var(--secondary-color-dark);
-}
-
-/* Product Grid */
-.product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive grid */
-    gap: var(--spacing-md);
-    margin-top: var(--spacing-md);
-}
-
+/* Estilos para el nuevo diseño de tarjetas de producto flotantes */
 .product-card {
-    background-color: var(--secondary-color);
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow-sm);
+    background-color: var(--light-bg); /* Fondo de la tarjeta */
+    border-radius: var(--border-radius-lg);
     overflow: hidden;
-    text-align: center;
+    box-shadow: var(--shadow-md); /* Sombra para efecto flotante */
+    transition: transform var(--transition-speed) var(--transition-easing), box-shadow var(--transition-speed) var(--transition-easing);
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
-    height: 100%; /* Asegura que todas las tarjetas tengan la misma altura */
+    align-items: center;
+    text-align: center;
+    padding: var(--spacing-md);
+    position: relative;
+    border: 1px solid var(--border-color); /* Borde sutil */
 }
 
 .product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-md);
+    transform: translateY(-5px) scale(1.02); /* Efecto de "levantamiento" y ligero zoom */
+    box-shadow: var(--shadow-lg); /* Sombra más grande en hover */
+    border-color: var(--primary-color); /* Borde de color en hover */
 }
 
-.product-card-image {
-    width: 100%;
-    height: 180px; /* Altura fija para las imágenes */
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: var(--dark-bg); /* Fondo para imágenes transparentes */
+.product-card img {
+    max-width: 100%; /* Asegura que la imagen no se desborde */
+    height: 150px; /* Altura fija para uniformidad */
+    object-fit: contain; /* Asegura que la imagen completa sea visible */
+    margin-bottom: var(--spacing-md);
+    transition: transform 0.2s ease-in-out; /* Transición para la imagen */
 }
 
-.product-card-image img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain; /* Asegura que la imagen se ajuste sin recortar */
+.product-card:hover img {
+    transform: scale(1.05); /* Ligerísimo zoom en la imagen al hover */
 }
 
-.product-card-content {
-    padding: var(--spacing-sm);
-    flex-grow: 1; /* Permite que el contenido se expanda */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.product-card-content h3 {
+.product-card h3 {
     font-size: 1.2em;
-    margin-bottom: var(--spacing-xs);
-    color: var(--text-color-dark);
-    text-align: center;
-    flex-grow: 1; /* Permite que el título se expanda */
-}
-
-.product-card-content p.price {
-    font-size: 1.4em;
-    font-weight: bold;
     color: var(--primary-color);
-    margin-bottom: var(--spacing-xs);
+    margin-bottom: var(--spacing-sm);
+    flex-grow: 1; /* Permite que el título ocupe espacio y empuje el precio hacia abajo */
 }
 
-.product-card-content p.price.offer-price {
-    color: var(--danger-color);
-}
-
-.product-card-content p.old-price {
-    text-decoration: line-through;
-    color: var(--text-color-light);
-    font-size: 0.9em;
-    margin-left: var(--spacing-xs);
-}
-
-.product-card-actions {
-    margin-top: var(--spacing-sm);
-    padding: 0 var(--spacing-sm) var(--spacing-sm);
-}
-
-.product-card .add-to-cart-btn {
-    background-color: var(--primary-color);
-    color: var(--secondary-color-dark);
-    border: none;
-    padding: var(--spacing-sm) var(--spacing-md);
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    transition: background-color var(--transition-speed) ease;
-    width: 100%;
+.product-card .price {
+    font-size: 1.3em;
     font-weight: bold;
-}
-
-.product-card .add-to-cart-btn:hover {
-    background-color: var(--primary-color-dark);
-}
-
-.product-card .add-to-cart-btn:disabled {
-    background-color: var(--border-color);
-    cursor: not-allowed;
-    color: var(--text-color-light);
-}
-
-/* Category Carousel Specifics */
-.category-carousel-wrapper {
-    margin-bottom: var(--spacing-xl);
-}
-
-.category-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    color: var(--accent-color);
     margin-bottom: var(--spacing-md);
 }
 
-.category-header h3 {
-    margin: 0;
-    text-align: left;
-    font-size: 1.8em;
-    color: var(--text-color-dark);
+.product-card .price.offer-price {
+    color: var(--danger-color);
 }
 
-.category-header h3::after {
-    display: none; /* No underline for category titles */
+.product-card .original-price {
+    text-decoration: line-through;
+    color: var(--text-color-light);
+    font-size: 0.9em;
+    margin-left: var(--spacing-sm);
 }
 
-.category-carousel {
-    position: relative;
-    overflow: hidden; /* Oculta el contenido fuera del track */
+.product-card .add-to-cart-btn {
+    width: 100%;
+    padding: var(--spacing-sm);
+    font-size: 1em;
+    border-radius: var(--border-radius);
 }
 
-.carousel-track-category {
+/* Etiquetas de producto (Novedad/Oferta) */
+.product-label {
+    position: absolute;
+    top: var(--spacing-xs);
+    right: var(--spacing-xs);
+    background-color: var(--primary-color);
+    color: var(--dark-bg);
+    padding: 3px 8px;
+    border-radius: var(--border-radius-sm);
+    font-size: 0.75em;
+    font-weight: bold;
+    z-index: 10;
+}
+
+.product-label.offer {
+    background-color: var(--danger-color);
+}
+
+/* Product Grids (para carruseles y búsqueda) */
+.product-grid {
     display: grid;
-    grid-auto-flow: column; /* Organiza los elementos en una sola fila */
-    grid-auto-columns: minmax(200px, 1fr); /* Permite que los elementos se ajusten */
-    gap: var(--spacing-md);
-    overflow-x: scroll; /* Permite el scroll horizontal manual */
-    scroll-snap-type: x mandatory; /* Para un scroll suave entre ítems */
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Por defecto 1-2 columnas en móvil */
+    gap: var(--spacing-md); /* Espacio entre tarjetas */
+    justify-content: center;
+    padding: var(--spacing-md) 0;
+    overflow-x: hidden; /* Esto es para los carruseles que lo controlan con JS */
+}
+
+/* Secciones de Carrusel Dinámico (Novedades y Ofertas) */
+.dynamic-carousel-section {
+    padding: var(--spacing-xxl) 0;
+    margin-top: var(--spacing-xl);
+    background-color: var(--light-bg);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md);
+    position: relative;
+}
+
+.category-products-carousel-container {
+    position: relative;
+    overflow: hidden; /* Oculta el scrollbar nativo */
+    padding: 0 var(--spacing-lg); /* Padding para botones de navegación */
+}
+
+/* Modificar el track del carrusel para que sea un flexbox horizontal */
+.carousel-track-category {
+    display: flex;
+    overflow-x: scroll; /* Permite el desplazamiento horizontal */
+    scroll-snap-type: x mandatory; /* Para un scroll más suave y por items */
     -webkit-overflow-scrolling: touch; /* Mejora el scroll en iOS */
-    scrollbar-width: none; /* Oculta la barra de desplazamiento para Firefox */
-    padding-bottom: var(--spacing-sm); /* Espacio para la barra de desplazamiento si aparece */
+    scrollbar-width: none; /* Oculta el scrollbar en Firefox */
+    gap: var(--spacing-md); /* Espacio entre los productos */
+    padding-bottom: var(--spacing-md); /* Espacio si aparece scrollbar */
 }
 
 .carousel-track-category::-webkit-scrollbar {
-    display: none; /* Oculta la barra de desplazamiento para WebKit */
+    display: none; /* Oculta el scrollbar en Chrome/Safari */
 }
 
-.category-carousel .product-card {
-    scroll-snap-align: start; /* Alinea los ítems al inicio al hacer scroll */
+.carousel-track-category .product-card {
     flex-shrink: 0; /* Evita que las tarjetas se encojan */
-    width: 250px; /* Ancho fijo para las tarjetas en el carrusel, ajustar según necesidad */
-    /* Puedes usar minmax(200px, 1fr) si prefieres flexibilidad y que sea responsive por ancho */
+    width: calc(50% - (var(--spacing-md) / 2)); /* 2 columnas en móvil */
+    scroll-snap-align: start; /* Alinea al inicio del slide */
 }
 
-.carousel-arrow-btn {
+
+/* Botones de navegación para carruseles de categoría */
+.category-carousel-btn {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     background-color: rgba(0, 0, 0, 0.6);
-    color: var(--white);
+    color: var(--primary-color);
     border: none;
-    padding: var(--spacing-sm) var(--spacing-md);
-    cursor: pointer;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
     font-size: 1.5em;
-    border-radius: var(--border-radius);
-    z-index: 5;
-    transition: background-color var(--transition-speed) ease;
+    cursor: pointer;
+    z-index: 50;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.8;
 }
 
-.carousel-arrow-btn:hover {
+.category-carousel-btn:hover {
     background-color: rgba(0, 0, 0, 0.8);
+    color: var(--accent-color);
+    transform: translateY(-50%) scale(1.1);
+    opacity: 1;
 }
 
-.category-prev-btn {
+.category-carousel-btn.category-prev-btn {
     left: var(--spacing-xs);
 }
 
-.category-next-btn {
+.category-carousel-btn.category-next-btn {
     right: var(--spacing-xs);
 }
 
+/* Estilo para las tarjetas en carruseles (asegurar el tamaño) */
+.carousel-track-category .product-card {
+    scroll-snap-align: start;
+    width: calc(50% - var(--spacing-sm)); /* Para 2 columnas con gap en móviles */
+}
 
-/* Brands Grid */
-.brand-grid {
+
+/* Sección de Marcas */
+.brands-section {
+    padding: var(--spacing-xxl) var(--spacing-md);
+    background-color: var(--secondary-color-dark); /* Fondo más oscuro para destacar */
+}
+
+.brands-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: var(--spacing-md);
-    justify-items: center;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* Logos más pequeños */
+    gap: var(--spacing-lg);
+    justify-items: center; /* Centra los logos en sus celdas */
     align-items: center;
-    margin-top: var(--spacing-md);
 }
 
 .brand-logo {
-    background-color: var(--secondary-color);
     padding: var(--spacing-md);
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow-sm);
-    display: flex;
-    justify-content: center;
+    background-color: var(--light-bg);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-sm); /* Sombra suave para flotabilidad */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, background-color 0.3s ease-in-out;
+    cursor: pointer;
+    display: flex; /* Para centrar la imagen dentro */
     align-items: center;
-    height: 100px; /* Altura fija para los logos */
-    transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
-}
-
-.brand-logo:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-md);
+    justify-content: center;
+    height: 100px; /* Altura fija para uniformidad */
+    width: 100%; /* Ocupa el ancho disponible */
+    max-width: 150px; /* Máximo ancho del logo card */
 }
 
 .brand-logo img {
-    max-width: 90%;
-    max-height: 90%;
-    object-fit: contain;
-    filter: brightness(1.1); /* Hacer los logos un poco más visibles si son oscuros */
+    max-height: 70px; /* Tamaño máximo del logo dentro de la tarjeta */
+    width: auto;
+    filter: grayscale(100%); /* Desaturar logos por defecto */
+    opacity: 0.7;
+    transition: filter 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
 
-/* Product Filters */
-.product-filters {
+.brand-logo:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: var(--shadow-md); /* Sombra más pronunciada al flotar */
+    background-color: var(--primary-color-dark); /* Fondo de color en hover */
+}
+
+.brand-logo:hover img {
+    filter: grayscale(0%); /* Color al pasar el mouse */
+    opacity: 1;
+}
+
+/* Sección de Licores (Nueva estructura con botones de categoría y carrusel 2x2) */
+.category-buttons-container {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--spacing-md);
     justify-content: center;
-    margin-bottom: var(--spacing-lg);
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-xl);
+    padding: var(--spacing-md) 0;
+    border-bottom: 1px solid var(--border-color);
 }
 
-.product-filters input,
-.product-filters select {
-    padding: var(--spacing-sm);
-    border-radius: var(--border-radius);
-    border: 1px solid var(--border-color);
-    background-color: var(--secondary-color);
-    color: var(--text-color-dark);
-    outline: none;
-    font-size: 1em;
-    max-width: 300px;
-    width: 100%;
-}
-
-.product-filters input::placeholder {
+.category-button {
+    background-color: var(--secondary-color-dark);
     color: var(--text-color-light);
+    border: 1px solid var(--border-color);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    white-space: nowrap; /* Evita que el texto del botón se rompa */
 }
 
-.product-filters select option {
+.category-button:hover {
+    background-color: var(--primary-color);
+    color: var(--dark-bg);
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+.category-button.active {
+    background-color: var(--primary-color);
+    color: var(--dark-bg);
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+/* Carrusel 2x2 para la sección de Licores por categoría */
+.category-filter-carousel {
+    padding: var(--spacing-md) 0; /* Remover padding lateral, el carrusel se encarga */
+    border-radius: var(--border-radius-lg);
     background-color: var(--secondary-color);
-    color: var(--text-color-dark);
+    box-shadow: var(--shadow-md);
 }
 
+.category-filter-carousel .carousel-track-category {
+    /* Los estilos de .carousel-track-category ya manejan el flex y scroll */
+    padding: var(--spacing-sm) var(--spacing-lg); /* Padding para los lados */
+}
 
-/* Support Section */
-.support-content {
+.category-filter-carousel .carousel-track-category .product-card {
+    /* Tamaño para el 2x2 en pantallas grandes */
+    width: calc(50% - (var(--spacing-md) / 2)); /* 2 columnas en móvil */
+}
+
+/* Contacto y Soporte */
+.contact-section, .support-section {
+    padding: var(--spacing-xxl) var(--spacing-md);
+    background-color: var(--light-bg);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md);
+    margin-top: var(--spacing-xl); /* Espacio entre secciones principales */
+}
+
+.contact-content {
     display: flex;
     flex-wrap: wrap;
     gap: var(--spacing-xl);
     justify-content: center;
-    margin-top: var(--spacing-lg);
 }
 
-.contact-info, .support-options {
-    background-color: var(--secondary-color);
-    padding: var(--spacing-lg);
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow-sm);
-    flex: 1;
-    min-width: 300px;
-    max-width: 500px;
-    text-align: left;
+.contact-info-card, .contact-form-card, .support-card {
+    background-color: var(--secondary-color-dark);
+    padding: var(--spacing-xl);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-sm); /* Efecto flotante */
+    flex: 1 1 calc(50% - var(--spacing-xl)); /* 2 columnas en desktop, 1 en móvil */
+    min-width: 300px; /* Ancho mínimo para que no se aprieten */
+    border: 1px solid var(--border-color);
 }
 
-.contact-info h3, .support-options h3 {
+.contact-info-card h3, .contact-form-card h3, .support-card h3 {
     color: var(--primary-color);
     margin-bottom: var(--spacing-md);
-    text-align: left;
-    font-size: 1.8em;
 }
 
-.contact-info h3::after, .support-options h3::after {
-    display: none;
-}
-
-.contact-info p {
-    color: var(--text-color-light);
+.contact-info-card p {
     margin-bottom: var(--spacing-sm);
     display: flex;
     align-items: center;
-    gap: var(--spacing-xs);
+    gap: var(--spacing-sm);
 }
 
 .social-media {
-    margin-top: var(--spacing-md);
+    margin-top: var(--spacing-lg);
     display: flex;
     gap: var(--spacing-md);
 }
 
 .social-media a {
-    font-size: 2em;
+    font-size: 1.8em;
     color: var(--primary-color);
-    transition: color var(--transition-speed) ease;
+    transition: transform var(--transition-speed) ease-in-out, color var(--transition-speed) ease-in-out;
 }
 
 .social-media a:hover {
     color: var(--accent-color);
+    transform: translateY(-3px) scale(1.1);
 }
 
-.support-options .btn-primary,
-.support-options .btn-secondary {
-    margin-top: var(--spacing-sm);
-    width: 100%;
-}
-
-/* Footer */
-.main-footer {
-    background-color: var(--dark-bg);
-    color: var(--text-color-light);
-    text-align: center;
-    padding: var(--spacing-md) 0;
-    border-top: 1px solid var(--border-color);
-    margin-top: var(--spacing-xl);
-}
-
-/* Modals */
-.modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 2000;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity var(--transition-speed) ease, visibility var(--transition-speed) ease;
-}
-
-.modal.open {
-    opacity: 1;
-    visibility: visible;
-}
-
-.modal-content {
-    background-color: var(--light-bg);
-    padding: var(--spacing-lg);
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow-lg);
-    position: relative;
-    max-width: 600px;
-    width: 90%;
-    color: var(--text-color-light);
-    transform: translateY(-20px);
-    transition: transform var(--transition-speed) ease;
-}
-
-.modal.open .modal-content {
-    transform: translateY(0);
-}
-
-.modal-content h2 {
-    color: var(--primary-color);
-    margin-bottom: var(--spacing-md);
-    font-size: 2em;
-    text-align: center;
-}
-
-.modal-content h2::after {
-    display: none;
-}
-
-.modal-content .close-btn {
-    position: absolute;
-    top: var(--spacing-sm);
-    right: var(--spacing-md);
-    font-size: 1.8em;
-    color: var(--text-color-light);
-    cursor: pointer;
-    transition: color var(--transition-speed) ease;
-}
-
-.modal-content .close-btn:hover {
-    color: var(--danger-color);
-}
-
-/* Forms in Modals */
+/* Formularios */
 .form-group {
     margin-bottom: var(--spacing-md);
 }
@@ -768,362 +638,143 @@ img {
     font-weight: bold;
 }
 
-.form-group input[type="text"],
-.form-group input[type="email"],
-.form-group input[type="tel"],
-.form-group input[type="date"],
-.form-group input[type="time"],
+.form-group input,
 .form-group textarea {
     width: 100%;
     padding: var(--spacing-sm);
-    border-radius: var(--border-radius);
     border: 1px solid var(--border-color);
-    background-color: var(--secondary-color);
-    color: var(--text-color-dark);
-    outline: none;
+    border-radius: var(--border-radius);
+    background-color: var(--dark-bg);
+    color: var(--text-color-light);
+    font-family: var(--font-family-secondary);
     font-size: 1em;
 }
 
-.form-group textarea {
-    resize: vertical;
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(var(--primary-color), 0.3);
 }
 
-.modal-content .btn-primary {
-    margin-top: var(--spacing-sm);
+.contact-form .btn-primary, .modal-form .btn-primary {
     width: 100%;
-}
-
-/* Search Modal Specific */
-.search-modal-content {
-    max-width: 800px;
-}
-
-.search-input-group {
-    display: flex;
-    gap: var(--spacing-sm);
-    margin-bottom: var(--spacing-md);
-}
-
-.search-input-group input {
-    flex-grow: 1;
-}
-
-.search-results-grid {
-    min-height: 200px;
-    background-color: var(--dark-bg);
-    padding: var(--spacing-md);
-    border-radius: var(--border-radius);
-    overflow-y: auto;
-    max-height: 50vh; /* Para evitar que sea demasiado larga */
-}
-
-.search-results-grid .no-results-message {
-    text-align: center;
-    color: var(--text-color-light);
-    font-style: italic;
-    padding: var(--spacing-lg);
-}
-
-/* Cart Sidebar */
-.cart-sidebar {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 380px; /* Ancho del sidebar */
-    height: 100%;
-    background-color: var(--light-bg);
-    box-shadow: -4px 0 10px rgba(0, 0, 0, 0.4);
-    z-index: 3000;
-    display: flex;
-    flex-direction: column;
-    transform: translateX(100%); /* Oculto por defecto */
-    transition: transform var(--transition-speed) ease-in-out;
-}
-
-.cart-sidebar.open {
-    transform: translateX(0); /* Visible */
-}
-
-.sidebar-header {
-    background-color: var(--dark-bg);
-    padding: var(--spacing-md);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.sidebar-header h3 {
-    color: var(--primary-color);
-    margin: 0;
-    font-size: 1.8em;
-}
-
-.sidebar-header h3::after {
-    display: none;
-}
-
-.sidebar-header .close-btn {
-    position: static; /* Anula la posición absoluta del modal */
-    font-size: 1.8em;
-    color: var(--text-color-light);
-}
-
-.sidebar-content {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
     padding: var(--spacing-md);
 }
 
-.cart-items-container {
-    flex-grow: 1;
-    overflow-y: auto;
-    margin-bottom: var(--spacing-md);
-}
-
-.cart-item {
+/* Soporte */
+.support-cards {
     display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
-    padding: var(--spacing-sm) 0;
-    border-bottom: 1px dashed var(--border-color);
-}
-
-.cart-item:last-child {
-    border-bottom: none;
-}
-
-.cart-item-image {
-    width: 80px;
-    height: 80px;
-    background-color: var(--secondary-color-dark);
-    border-radius: var(--border-radius);
-    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-xl);
     justify-content: center;
-    align-items: center;
-    overflow: hidden;
 }
 
-.cart-item-image img {
-    max-width: 90%;
-    max-height: 90%;
-    object-fit: contain;
-}
-
-.cart-item-details {
-    flex-grow: 1;
-}
-
-.cart-item-details h4 {
-    margin: 0;
-    color: var(--text-color-dark);
-    font-size: 1.1em;
-    text-align: left;
-}
-
-.cart-item-details p {
-    margin: var(--spacing-xs) 0;
-    color: var(--text-color-light);
-    font-size: 0.9em;
-}
-
-.cart-item-details .item-price {
-    font-weight: bold;
-    color: var(--primary-color);
-}
-
-.cart-item-actions {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-xs);
-}
-
-.cart-item-actions button {
-    background-color: var(--secondary-color-dark);
-    color: var(--white);
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
-    width: 30px;
-    height: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    transition: background-color var(--transition-speed) ease;
-}
-
-.cart-item-actions button:hover {
-    background-color: var(--primary-color);
-    color: var(--secondary-color-dark);
-}
-
-.cart-item-actions .quantity {
-    color: var(--text-color-dark);
-    font-weight: bold;
-    min-width: 25px;
+.support-card {
     text-align: center;
-}
-
-.remove-from-cart-btn {
-    background-color: var(--danger-color) !important; /* !important para anular estilos del botón genérico */
-    color: var(--white) !important;
-    border: none !important;
-    margin-left: var(--spacing-sm);
-    font-size: 0.8em;
-    padding: 5px 8px;
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    transition: background-color var(--transition-speed) ease;
-}
-
-.remove-from-cart-btn:hover {
-    background-color: #bb2d3b !important;
-}
-
-.cart-summary {
-    border-top: 1px solid var(--border-color);
-    padding-top: var(--spacing-md);
-    text-align: right;
-}
-
-.cart-summary p {
-    font-size: 1.4em;
-    font-weight: bold;
-    color: var(--primary-color);
-    margin-bottom: var(--spacing-md);
-}
-
-/* Toast Notifications */
-#toast-container {
-    position: fixed;
-    bottom: var(--spacing-lg);
-    right: var(--spacing-lg);
-    z-index: 4000;
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-sm);
-    pointer-events: none; /* Permite clics a través del contenedor */
-}
-
-.toast {
-    background-color: var(--info-color);
-    color: var(--white);
-    padding: var(--spacing-md);
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow-md);
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
-    min-width: 250px;
-    max-width: 350px;
-    text-align: center;
-    pointer-events: auto; /* Permite la interacción con el toast individual */
-}
-
-.toast.show {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.toast.hide {
-    opacity: 0;
-    transform: translateY(20px);
-}
-
-.toast-success {
-    background-color: var(--success-color);
-}
-
-.toast-error {
-    background-color: var(--danger-color);
-}
-
-.toast-warning {
-    background-color: var(--primary-color-dark); /* Color más oscuro para advertencias */
-}
-
-.toast-info {
-    background-color: var(--info-color);
-}
-
-
-/* Age Verification Modal */
-.age-verification-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.9);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 10000; /* Asegura que esté por encima de todo */
-}
-
-.age-verification-content {
-    background-color: var(--secondary-color-dark);
     padding: var(--spacing-xl);
-    border-radius: var(--border-radius);
-    text-align: center;
-    box-shadow: var(--shadow-lg);
-    max-width: 450px;
-    width: 90%;
 }
 
-.age-verification-content h2 {
-    color: var(--primary-color);
-    margin-bottom: var(--spacing-md);
-    font-size: 2em;
-}
-
-.age-verification-content p {
-    color: var(--text-color-light);
+.support-card p {
     margin-bottom: var(--spacing-lg);
 }
 
-.age-verification-buttons {
+/* Footer (Info) */
+.main-footer {
+    background-color: var(--dark-bg);
+    color: var(--text-color-light);
+    padding: var(--spacing-xxl) 0 var(--spacing-md); /* Más padding superior */
+    text-align: center;
+    border-top: 1px solid var(--border-color);
+    margin-top: var(--spacing-xl); /* Espacio antes del footer */
+}
+
+.footer-content {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-lg);
+}
+
+.footer-nav-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
 }
 
-/* Hide Utility */
-.hidden {
-    display: none !important;
+.footer-nav-list a {
+    color: var(--text-color-light);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius);
+    transition: background-color 0.3s ease;
 }
 
+.footer-nav-list a:hover {
+    background-color: var(--secondary-color-dark);
+    color: var(--primary-color);
+}
 
-/* Bottom Navigation (Mobile Only) */
+.footer-social-media {
+    margin-top: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    gap: var(--spacing-lg);
+    justify-content: center;
+}
+
+.footer-social-media a {
+    font-size: 2em;
+    color: var(--primary-color);
+    transition: transform var(--transition-speed) ease-in-out, color var(--transition-speed) ease-in-out;
+}
+
+.footer-social-media a:hover {
+    color: var(--accent-color);
+    transform: translateY(-3px) scale(1.1);
+}
+
+.footer-info p {
+    margin-bottom: var(--spacing-sm);
+    color: var(--text-color-light);
+}
+
+/* Toast Notifications - Ver components.css */
+
+/* Age Verification Modal - Ver components.css */
+
+/* Search Modal - Ver components.css */
+
+/* Cart Sidebar - Ver components.css */
+
+/* Bottom Navigation */
 .bottom-nav {
-    position: sticky;
+    position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
     background-color: var(--dark-bg);
-    border-top: 1px solid var(--border-color);
     display: flex;
     justify-content: space-around;
-    align-items: center;
     padding: var(--spacing-sm) 0;
     box-shadow: var(--shadow-lg);
-    z-index: 999; /* Debajo de los modales, pero sobre el contenido */
+    z-index: 9000; /* Por encima de todo, menos el modal de verificación */
+    border-top: 1px solid var(--border-color);
 }
 
 .bottom-nav .nav-item {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     color: var(--text-color-light);
-    text-decoration: none;
-    flex: 1; /* Distribuye el espacio uniformemente */
-    padding: var(--spacing-xs) 0;
-    position: relative;
     font-size: 0.8em;
-    transition: color 0.3s ease, transform 0.3s ease;
+    text-decoration: none;
+    padding: var(--spacing-xs);
+    flex-grow: 1; /* Distribuye el espacio uniformemente */
+    position: relative;
+    transition: all 0.2s ease-in-out;
 }
 
 .bottom-nav .nav-item i {
@@ -1160,11 +811,26 @@ img {
     position: absolute;
     top: 0px; /* Ajustar posición para que se vea sobre el icono */
     right: 5px; /* Ajustar posición */
-    min-width: 18px;
+    min-width: 18px; /* Asegurar que sea circular */
     text-align: center;
-    transform: translateX(50%); /* Ajustar para centrarlo visualmente sobre el icono */
+    transform: translate(50%, -50%); /* Ajustar para centrarlo relativo al borde superior derecho del icono */
+}
+
+/* Estilos para el campo de búsqueda dentro del modal */
+.search-input-group {
     display: flex;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
     align-items: center;
     justify-content: center;
-    height: 18px;
+}
+
+.search-input-group input {
+    flex-grow: 1;
+    max-width: 400px;
+}
+
+.search-input-group button {
+    padding: var(--spacing-sm) var(--spacing-md);
+    min-width: 100px;
 }
