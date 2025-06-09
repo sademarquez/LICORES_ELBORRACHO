@@ -4,29 +4,34 @@
 /* Estilos para dispositivos pequeños (hasta 767px) */
 @media (max-width: 767px) {
     .header-content {
-        flex-direction: row; /* CAMBIO: Ahora los elementos se alinearán horizontalmente */
-        justify-content: space-between; /* NUEVO: Empuja el primer elemento a la izquierda y el último a la derecha */
-        align-items: center; /* NUEVO: Centra los elementos verticalmente */
-        gap: 0; /* Reinicia el gap si lo tenías para el modo columna, o ajústalo si necesitas espacio entre el logo y los elementos de navegación*/
-        width: 100%; /* Asegúrate de que ocupe todo el ancho disponible */
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0;
+        width: 100%;
+    }
+
+    /* Mostrar el botón de menú móvil */
+    #mobileMenuToggle {
+        display: block; /* Visible en pantallas pequeñas */
     }
 
     .main-nav {
         width: 100%;
-        display: none; /* Ocultar por defecto para el menú hamburguesa */
+        display: none; /* Permanece oculto por defecto, se mostrará con JavaScript */
         flex-direction: column;
         background-color: var(--white);
         position: absolute;
-        top: 100%;
+        top: 100%; /* Justo debajo del encabezado */
         left: 0;
         box-shadow: var(--shadow-md);
         padding: var(--spacing-md);
         border-top: 1px solid var(--border-color);
-        z-index: 100; /* Asegurarse de que el menú está sobre otros elementos */
+        z-index: 100;
     }
 
     .main-nav.active {
-        display: flex;
+        display: flex; /* Mostrar cuando se le añade la clase 'active' */
     }
 
     .main-nav .nav-list {
@@ -37,27 +42,25 @@
     .main-nav .nav-list a {
         padding: var(--spacing-sm) 0;
         width: 100%;
-        color: var(--text-color-dark); /* Color de texto para enlaces del menú móvil */
+        color: var(--text-color-dark);
     }
     
     .main-nav .nav-list a::after {
-        background-color: var(--primary-color); /* Asegurar color de subrayado en móvil */
+        background-color: var(--primary-color);
     }
 
     .header-actions {
-        /* Asegúrate de que los íconos de búsqueda y carrito dentro de .header-actions estén en línea */
         display: flex;
-        gap: var(--spacing-md); /* Espacio entre el botón de búsqueda y el carrito */
-        width: auto; /* Permite que el ancho se ajuste al contenido */
+        gap: var(--spacing-md); /* Espacio entre el botón de menú, búsqueda y carrito */
+        width: auto;
     }
 
-    /* Opcional: Ajusta el padding del contenedor del header si los elementos se pegan mucho a los bordes */
     .main-header .container {
-        padding: var(--spacing-sm) var(--spacing-md); /* Ejemplo: un poco más de padding horizontal */
+        padding: var(--spacing-sm) var(--spacing-md);
     }
 
     .hero-section {
-        height: 300px; /* Ajuste para pantallas más pequeñas */
+        height: 300px;
     }
 
     .carousel-caption {
@@ -80,7 +83,7 @@
     }
 
     .product-grid {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* 2 columnas en móvil */
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
         gap: var(--spacing-md);
     }
 
@@ -125,7 +128,6 @@
         max-height: 50px;
     }
 
-    /* Contacto y Soporte */
     .contact-info-section,
     .support-section {
         padding: var(--spacing-xl) var(--spacing-md);
@@ -161,10 +163,9 @@
         padding: var(--spacing-sm);
     }
 
-    /* Carrito */
     .cart-sidebar {
-        width: 100%; /* Ocupa todo el ancho en móvil */
-        right: -100%; /* Asegura que esté completamente fuera de pantalla */
+        width: 100%;
+        right: -100%;
     }
 
     .cart-sidebar.open {
@@ -196,7 +197,7 @@
     }
 
     .bottom-nav {
-        display: flex; /* Asegura que la barra inferior esté visible en móvil */
+        display: flex;
     }
 }
 
@@ -207,14 +208,19 @@
     }
 
     .header-content {
-        flex-direction: row; /* Asegura que esté en fila en tablets */
-        justify-content: space-between; /* Espacio entre logo, nav y acciones */
-        align-items: center; /* Centrado vertical */
-        gap: var(--spacing-md); /* Espacio entre elementos principales */
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: var(--spacing-md);
+    }
+
+    /* Ocultar el botón de menú móvil en tablets */
+    #mobileMenuToggle {
+        display: none;
     }
 
     .main-nav {
-        display: flex; /* Mostrar navegación normal en tablets */
+        display: flex;
         position: static;
         box-shadow: none;
         border-top: none;
@@ -226,7 +232,6 @@
         flex-direction: row;
     }
 
-    /* Ocultar la barra inferior en tablets */
     .bottom-nav {
         display: none;
     }
@@ -245,7 +250,7 @@
 
     .product-filters select,
     .product-filters input {
-        max-width: 200px; /* Un poco más de espacio en tablet */
+        max-width: 200px;
     }
 
     .brands-carousel {
@@ -260,19 +265,24 @@
     }
 
     .product-grid {
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* 4-5 columnas en desktop */
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     }
 
     .main-nav {
-        display: flex; /* Asegurar que la navegación principal esté visible en desktop */
+        display: flex;
     }
     
+    /* Ocultar el botón de menú móvil en desktop */
+    #mobileMenuToggle {
+        display: none;
+    }
+
     .bottom-nav {
-        display: none; /* Asegura que la barra inferior esté oculta en desktop */
+        display: none;
     }
 
     .hero-section {
-        height: 450px; /* Altura original para desktop */
+        height: 450px;
     }
 
     .carousel-caption h2 {
@@ -284,8 +294,8 @@
     }
 
     .product-filters {
-        flex-direction: row; /* Vuelve a la disposición horizontal en desktop */
-        justify-content: flex-end; /* Alinea los filtros a la derecha */
+        flex-direction: row;
+        justify-content: flex-end;
         gap: var(--spacing-lg);
     }
 
