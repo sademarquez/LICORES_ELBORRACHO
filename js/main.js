@@ -30,17 +30,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.warn('No hay datos de banners para inicializar el carrusel.');
     }
 
-    // NUEVO: Funcionalidad para el botón del menú móvil
-    const mobileMenuToggle = document.getElementById('mobileMenuToggle');
-    const mainNav = document.querySelector('.main-nav');
-
-    if (mobileMenuToggle && mainNav) {
-        mobileMenuToggle.addEventListener('click', () => {
-            mainNav.classList.toggle('active'); // Alterna la clase 'active' para mostrar/ocultar el menú
-        });
-    }
-
-
     // Renderiza productos en las nuevas secciones de licores, cervezas, snacks, etc.
     // Pasa appState.products directamente a renderProducts
     renderProducts(appState.products, '#allProductsGrid', { category: 'Licor' }); // Principal de Licores
