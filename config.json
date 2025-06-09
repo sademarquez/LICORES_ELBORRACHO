@@ -55,6 +55,10 @@
             "logoUrl": "images/icons/poker-logo.svg"
         },
         {
+            "name": "Aguardiente Nariño",
+            "logoUrl": "images/icons/aguardiente-nariño-logo.svg"
+        },
+        {
             "name": "Coca-Cola",
             "logoUrl": "images/icons/coca-cola-logo.svg"
         }
