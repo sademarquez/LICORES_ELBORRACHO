@@ -13,8 +13,8 @@
     --text-color-dark: #FFFFFF; /* Texto blanco para contraste en fondos oscuros */
     --text-color-light: #CED4DA; /* Texto gris claro para descripciones, etc. */
     --white: #ffffff;
-    --light-bg: #212529; /* Fondo oscuro muy sutil */
-    --dark-bg: #000000; /* Fondo negro profundo para headers, footers (Ahora totalmente negro) */
+    --light-bg: rgba(0, 0, 0, 0.4); /* Fondo oscuro muy sutil (Ahora negro más transparente) */
+    --dark-bg: #000000; /* Fondo negro profundo para headers, footers (Totalmente negro) */
     --border-color: #495057; /* Color de borde oscuro */
     --success-color: #28a745; /* Verde para mensajes de éxito */
     --danger-color: #dc3545; /* Rojo para errores o eliminación */
@@ -27,13 +27,16 @@
     --spacing-lg: 30px;
     --spacing-xl: 40px;
 
-    /* Sombras */
-    --shadow-sm: 0 2px 5px rgba(0, 0, 0, 0.2);
-    --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.3);
-    --shadow-lg: 0 8px 20px rgba(0, 0, 0, 0.4);
+    /* Sombras (más suaves y difusas) */
+    --shadow-sm: 0 4px 8px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 8px 16px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.5);
+    --golden-glow-sm: 0 0 8px rgba(255, 191, 0, 0.6);
+    --golden-glow-md: 0 0 15px rgba(255, 191, 0, 0.8);
+
 
     /* Transiciones */
-    --transition-speed: 0.3s;
+    --transition-speed: 0.4s;
     --transition-timing: ease-in-out;
 }
 
@@ -53,7 +56,7 @@ body {
     -moz-osx-font-smoothing: grayscale;
     display: flex;
     flex-direction: column;
-    min-height: 100vh; /* Asegura que el footer se quede abajo */
+    min-height: 100vh;
 }
 
 .container {
@@ -86,23 +89,25 @@ p {
     margin-bottom: var(--spacing-sm);
 }
 
-/* Botones */
+/* Botones (más suaves y modernos) */
 .btn-primary {
     background-color: var(--primary-color);
-    color: var(--dark-bg); /* Texto oscuro para el botón primario */
+    color: var(--dark-bg);
     padding: var(--spacing-sm) var(--spacing-md);
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 1em;
     font-weight: bold;
-    transition: background-color var(--transition-speed) var(--transition-timing);
+    transition: background-color var(--transition-speed) var(--transition-timing), box-shadow var(--transition-speed) var(--transition-timing);
     display: inline-block;
     text-align: center;
+    box-shadow: var(--shadow-sm);
 }
 
 .btn-primary:hover {
     background-color: var(--primary-color-dark);
+    box-shadow: var(--shadow-md), var(--golden-glow-sm);
 }
 
 .btn-secondary {
@@ -110,18 +115,20 @@ p {
     color: var(--text-color-dark);
     padding: var(--spacing-sm) var(--spacing-md);
     border: 1px solid var(--border-color);
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 1em;
     font-weight: bold;
-    transition: background-color var(--transition-speed) var(--transition-timing), border-color var(--transition-speed) var(--transition-timing);
+    transition: background-color var(--transition-speed) var(--transition-timing), border-color var(--transition-speed) var(--transition-timing), box-shadow var(--transition-speed) var(--transition-timing);
     display: inline-block;
     text-align: center;
+    box-shadow: var(--shadow-sm);
 }
 
 .btn-secondary:hover {
     background-color: var(--secondary-color-dark);
-    border-color: var(--primary-color); /* Pequeño acento en hover */
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-md), var(--golden-glow-sm);
 }
 
 /* Formularios */
@@ -146,10 +153,11 @@ p {
     width: 100%;
     padding: var(--spacing-sm);
     border: 1px solid var(--border-color);
-    border-radius: 5px;
-    background-color: var(--light-bg);
+    border-radius: 8px;
+    background-color: var(--secondary-color);
     color: var(--text-color-light);
     font-size: 1em;
+    transition: border-color var(--transition-speed) var(--transition-timing), box-shadow var(--transition-speed) var(--transition-timing);
 }
 
 .form-group input:focus,
@@ -157,7 +165,7 @@ p {
 .form-group select:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(255, 191, 0, 0.3);
+    box-shadow: 0 0 0 3px rgba(255, 191, 0, 0.4);
 }
 
 .form-group textarea {
@@ -181,7 +189,7 @@ p {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap; /* Permite que los elementos se envuelvan en pantallas pequeñas */
+    flex-wrap: wrap;
 }
 
 .logo {
@@ -263,15 +271,15 @@ p {
 }
 
 .menu-toggle {
-    display: none; /* Ocultar por defecto en desktop */
+    display: none;
     font-size: 1.5em;
 }
 
 /* Sección de Producto General y Filtros */
 .product-section {
     padding: var(--spacing-lg) 0;
-    background-color: var(--light-bg);
-    flex-grow: 1; /* Permite que ocupe el espacio disponible */
+    background-color: rgba(0, 0, 0, 0.4);
+    flex-grow: 1;
 }
 
 .section-title {
@@ -300,74 +308,85 @@ p {
     justify-content: center;
     gap: var(--spacing-md);
     margin-bottom: var(--spacing-lg);
-    flex-wrap: wrap; /* Asegura que los filtros se envuelvan */
+    flex-wrap: wrap;
 }
 
 .product-filters select,
 .product-filters input {
     padding: var(--spacing-sm);
     border: 1px solid var(--border-color);
-    border-radius: 5px;
+    border-radius: 8px;
     background-color: var(--secondary-color);
     color: var(--text-color-light);
     font-size: 0.95em;
-    appearance: none; /* Elimina estilos nativos del select */
+    appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
     background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23CED4DA%22%20d%3D%22M287%2C197.4L159.9%2C68.9c-4.4-4.4-11.5-4.4-15.9%2C0L5.4%2C197.4c-4.4%2C4.4-4.4%2C11.5%2C0%2C15.9s11.5%2C4.4%2C15.9%2C0l130.4-129.5L271.1%2C213.3c4.4%2C4.4%2C11.5%2C4.4%2C15.9%2C0S291.4%2C201.8%2C287%2C197.4z%22%2F%3E%3C%2Fsvg%3E');
     background-repeat: no-repeat;
     background-position: right 10px top 50%;
     background-size: 12px;
-    padding-right: 30px; /* Espacio para la flecha personalizada */
+    padding-right: 30px;
+    transition: border-color var(--transition-speed) var(--transition-timing), box-shadow var(--transition-speed) var(--transition-timing);
 }
 
 .product-filters input[type="text"] {
-    background-image: none; /* Eliminar la flecha de los inputs de texto */
+    background-image: none;
     padding-right: var(--spacing-sm);
 }
 
 .product-filters select:focus,
 .product-filters input:focus {
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(255, 191, 0, 0.3);
+    box-shadow: 0 0 0 3px rgba(255, 191, 0, 0.4);
 }
 
-/* Grid de Productos */
+/* Grid de Productos - CORRECCIÓN CLAVE AQUÍ */
 .product-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Columnas responsivas */
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Asegura que las columnas se rendericen */
     gap: var(--spacing-md);
-    justify-content: center; /* Centra los elementos si no llenan una fila completa */
+    justify-content: center;
 }
 
-/* Tarjeta de Producto */
+/* Tarjeta de Producto - CORRECCIÓN CLAVE AQUÍ */
 .product-card {
-    background-color: rgba(52, 58, 64, 0.2); /* Fondo transparente para las tarjetas */
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
+    background-color: rgba(52, 58, 64, 0.08); /* Fondo más transparente */
+    border: 1px solid rgba(255, 191, 0, 0.3); /* Borde dorado sutil */
+    border-radius: 10px;
     padding: var(--spacing-md);
     text-align: center;
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    transition: transform var(--transition-speed) var(--transition-timing), box-shadow var(--transition-speed) var(--transition-timing), background-color var(--transition-speed) var(--transition-timing);
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Empuja el botón al final */
-    height: 100%; /* Asegura que todas las tarjetas tengan la misma altura en el grid */
+    justify-content: space-between;
+    height: 100%;
+    box-shadow: var(--shadow-sm);
+    /* Asegurar que las tarjetas no impidan el layout de grid si se usan fuera del grid */
+    min-width: 0; /* Permite que la tarjeta se encoja dentro del grid si es necesario */
 }
 
 .product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-md);
+    transform: translateY(-5px) scale(1.02);
+    background-color: rgba(52, 58, 64, 0.15);
+    box-shadow: var(--shadow-md), var(--golden-glow-sm);
 }
 
 .product-image {
     max-width: 100%;
-    height: 180px; /* Altura fija para las imágenes */
-    object-fit: contain; /* Asegura que la imagen completa sea visible */
+    height: 180px;
+    object-fit: contain;
     margin-bottom: var(--spacing-sm);
+    transition: transform var(--transition-speed) var(--transition-timing), filter var(--transition-speed) var(--transition-timing);
+}
+
+.product-card:hover .product-image {
+    transform: scale(1.05);
+    filter: brightness(1.2) saturate(1.1);
 }
 
 .product-info {
-    flex-grow: 1; /* Permite que la información crezca y empuje el precio/botón hacia abajo */
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -387,7 +406,7 @@ p {
 }
 
 .product-price-container {
-    margin-top: auto; /* Empuja el precio y botón al final */
+    margin-top: auto;
     margin-bottom: var(--spacing-sm);
 }
 
@@ -395,7 +414,7 @@ p {
     font-size: 1.2em;
     color: var(--primary-color);
     font-weight: bold;
-    display: block; /* Para asegurar que ocupe su propia línea */
+    display: block;
 }
 
 .product-old-price {
@@ -407,14 +426,14 @@ p {
 
 .product-offer-price {
     font-size: 1.3em;
-    color: var(--danger-color); /* Rojo para ofertas destacadas */
+    color: var(--danger-color);
     font-weight: bold;
 }
 
 .product-card .add-to-cart-btn {
     width: 100%;
     padding: var(--spacing-sm) var(--spacing-md);
-    margin-top: var(--spacing-sm); /* Espacio entre precio y botón */
+    margin-top: var(--spacing-sm);
 }
 
 /* Sección de Marcas (Carrusel) */
@@ -439,26 +458,30 @@ p {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: var(--secondary-color);
-    border-radius: 5px;
-    transition: transform 0.2s ease-in-out;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    transition: transform var(--transition-speed) var(--transition-timing), box-shadow var(--transition-speed) var(--transition-timing), background-color var(--transition-speed) var(--transition-timing);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid rgba(255, 191, 0, 0.2);
 }
 
 .brand-logo:hover {
     transform: scale(1.05);
+    background-color: rgba(0, 0, 0, 0.5);
+    box-shadow: var(--shadow-md), var(--golden-glow-sm);
 }
 
 .brand-logo img {
     max-width: 80%;
     max-height: 80%;
     object-fit: contain;
-    filter: grayscale(100%); /* Logos en blanco y negro */
+    filter: grayscale(100%);
     opacity: 0.7;
     transition: filter 0.2s ease-in-out, opacity 0.2s ease-in-out;
 }
 
 .brand-logo:hover img {
-    filter: grayscale(0%); /* Color al pasar el mouse */
+    filter: grayscale(0%);
     opacity: 1;
 }
 
@@ -501,13 +524,13 @@ p {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.9); /* Fondo oscuro semitransparente */
+    background-color: rgba(0, 0, 0, 0.95);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    backdrop-filter: blur(5px); /* Efecto de desenfoque */
-    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 .age-verification-content {
@@ -546,7 +569,7 @@ p {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-sm);
-    pointer-events: none; /* Permite clics a través del contenedor */
+    pointer-events: none;
 }
 
 .toast {
@@ -560,7 +583,7 @@ p {
     transition: opacity 0.3s ease-out, transform 0.3s ease-out;
     min-width: 250px;
     max-width: 350px;
-    pointer-events: auto; /* Permite interacción con el toast si es necesario */
+    pointer-events: auto;
 }
 
 .toast.show {
@@ -582,17 +605,17 @@ p {
 }
 
 .toast-warning {
-    border-left: 5px solid var(--primary-color); /* Usar primary para warning */
+    border-left: 5px solid var(--primary-color);
 }
 
 .toast-error {
     border-left: 5px solid var(--danger-color);
 }
 
-/* Carrusel Continuo de Productos */
+/* Carrusel Continuo de Productos - CORRECCIÓN CLAVE AQUÍ */
 .continuous-carousel-section {
     padding: var(--spacing-lg) 0;
-    background-color: var(--light-bg);
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
 .continuous-carousel-section .section-title {
@@ -600,48 +623,57 @@ p {
 }
 
 .continuous-carousel-container {
-    overflow: hidden; /* Oculta el contenido extra para la animación */
+    overflow: hidden; /* Asegura que la animación se vea correctamente */
     width: 100%;
+    position: relative; /* Asegura el contexto para los elementos internos */
 }
 
 .continuous-carousel-track {
-    display: flex;
-    white-space: nowrap; /* Asegura que las tarjetas estén en una sola línea */
+    display: flex; /* Mantiene los elementos en línea */
+    white-space: nowrap; /* Impide que los elementos se envuelvan */
     animation: scroll-left linear infinite;
-    animation-duration: 40s; /* Duración base, ajustada por JS */
+    animation-duration: 40s;
+    /* Eliminar cualquier width o flex-basis que pueda interferir con el layout */
 }
 
 .continuous-carousel-track:hover {
-    animation-play-state: paused; /* Pausa la animación al pasar el mouse */
+    animation-play-state: paused;
 }
 
 .continuous-carousel-track .product-card {
-    background-color: rgba(52, 58, 64, 0.2); /* Fondo transparente para las tarjetas */
-    width: 200px; /* Ancho fijo para las tarjetas del carrusel continuo */
-    flex-shrink: 0; /* No permite que se encojan */
+    background-color: rgba(52, 58, 64, 0.08);
+    border: 1px solid rgba(255, 191, 0, 0.3);
+    border-radius: 10px;
+    width: 200px; /* **CRUCIAL: Definir un ancho fijo para las tarjetas** */
+    flex-shrink: 0; /* Asegura que no se encojan */
     margin-right: var(--spacing-md); /* Espacio entre tarjetas */
-    display: inline-block; /* Necesario para white-space: nowrap */
+    text-align: center;
+    padding: var(--spacing-md);
+    transition: transform var(--transition-speed) var(--transition-timing), box-shadow var(--transition-speed) var(--transition-timing), background-color var(--transition-speed) var(--transition-timing);
+    display: inline-block; /* NECESARIO para que `white-space: nowrap` y `margin-right` funcionen bien en animaciones */
     vertical-align: top; /* Asegura que las tarjetas se alineen correctamente */
-    border: 1px solid var(--border-color);
     box-shadow: var(--shadow-sm);
-    transition: transform 0.2s ease-in-out;
 }
 
 .continuous-carousel-track .product-card:hover {
-    transform: translateY(-5px); /* Efecto hover sutil */
+    transform: translateY(-5px) scale(1.02);
+    background-color: rgba(52, 58, 64, 0.15);
+    box-shadow: var(--shadow-md), var(--golden-glow-sm);
 }
 
-/* Ajusta el tamaño de las imágenes dentro de las tarjetas del carrusel si es necesario */
 .continuous-carousel-track .product-card .product-image {
-    height: 160px; /* Altura fija para las imágenes en el carrusel continuo */
-    object-fit: contain; /* Ajusta la imagen sin recortarla */
-    padding: var(--spacing-sm); /* Un poco de padding para la imagen */
+    height: 160px;
+    object-fit: contain;
+    padding: var(--spacing-sm);
+    transition: transform var(--transition-speed) var(--transition-timing), filter var(--transition-speed) var(--transition-timing);
+}
+
+.continuous-carousel-track .product-card:hover .product-image {
+    transform: scale(1.05);
+    filter: brightness(1.2) saturate(1.1);
 }
 
 /* Keyframes para la animación de scroll */
-/* El valor -50% es porque duplicamos el contenido, así que el track es el doble de largo.
-   Al moverlo un 50%, esencialmente movemos el ancho total de los elementos originales,
-   lo que crea el bucle perfecto. */
 @keyframes scroll-left {
     0% { transform: translateX(0%); }
     100% { transform: translateX(-50%); }
