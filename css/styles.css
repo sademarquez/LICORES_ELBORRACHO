@@ -27,13 +27,16 @@
     --spacing-lg: 30px;
     --spacing-xl: 40px;
 
-    /* Sombras */
-    --shadow-sm: 0 2px 5px rgba(0, 0, 0, 0.2);
-    --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.3);
-    --shadow-lg: 0 8px 20px rgba(0, 0, 0, 0.4);
+    /* Sombras (más suaves y difusas) */
+    --shadow-sm: 0 4px 8px rgba(0, 0, 0, 0.3); /* Ajustado */
+    --shadow-md: 0 8px 16px rgba(0, 0, 0, 0.4); /* Ajustado */
+    --shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.5); /* Ajustado */
+    --golden-glow-sm: 0 0 8px rgba(255, 191, 0, 0.6); /* Nuevo: Resplandor dorado pequeño */
+    --golden-glow-md: 0 0 15px rgba(255, 191, 0, 0.8); /* Nuevo: Resplandor dorado medio */
+
 
     /* Transiciones */
-    --transition-speed: 0.3s;
+    --transition-speed: 0.4s; /* Ligeramente más lento para suavidad */
     --transition-timing: ease-in-out;
 }
 
@@ -86,23 +89,25 @@ p {
     margin-bottom: var(--spacing-sm);
 }
 
-/* Botones */
+/* Botones (más suaves y modernos) */
 .btn-primary {
     background-color: var(--primary-color);
     color: var(--dark-bg); /* Texto oscuro para el botón primario */
     padding: var(--spacing-sm) var(--spacing-md);
     border: none;
-    border-radius: 5px;
+    border-radius: 8px; /* Más redondeado */
     cursor: pointer;
     font-size: 1em;
     font-weight: bold;
-    transition: background-color var(--transition-speed) var(--transition-timing);
+    transition: background-color var(--transition-speed) var(--transition-timing), box-shadow var(--transition-speed) var(--transition-timing); /* Añadida transición de sombra */
     display: inline-block;
     text-align: center;
+    box-shadow: var(--shadow-sm); /* Sombra inicial */
 }
 
 .btn-primary:hover {
     background-color: var(--primary-color-dark);
+    box-shadow: var(--shadow-md), var(--golden-glow-sm); /* Sombra más fuerte y resplandor dorado */
 }
 
 .btn-secondary {
@@ -110,18 +115,20 @@ p {
     color: var(--text-color-dark);
     padding: var(--spacing-sm) var(--spacing-md);
     border: 1px solid var(--border-color);
-    border-radius: 5px;
+    border-radius: 8px; /* Más redondeado */
     cursor: pointer;
     font-size: 1em;
     font-weight: bold;
-    transition: background-color var(--transition-speed) var(--transition-timing), border-color var(--transition-speed) var(--transition-timing);
+    transition: background-color var(--transition-speed) var(--transition-timing), border-color var(--transition-speed) var(--transition-timing), box-shadow var(--transition-speed) var(--transition-timing); /* Añadida transición de sombra */
     display: inline-block;
     text-align: center;
+    box-shadow: var(--shadow-sm); /* Sombra inicial */
 }
 
 .btn-secondary:hover {
     background-color: var(--secondary-color-dark);
     border-color: var(--primary-color); /* Pequeño acento en hover */
+    box-shadow: var(--shadow-md), var(--golden-glow-sm); /* Sombra más fuerte y resplandor dorado */
 }
 
 /* Formularios */
@@ -146,10 +153,11 @@ p {
     width: 100%;
     padding: var(--spacing-sm);
     border: 1px solid var(--border-color);
-    border-radius: 5px;
+    border-radius: 8px; /* Más redondeado */
     background-color: var(--secondary-color); /* Usar secondary-color para inputs para consistencia */
     color: var(--text-color-light);
     font-size: 1em;
+    transition: border-color var(--transition-speed) var(--transition-timing), box-shadow var(--transition-speed) var(--transition-timing); /* Añadida transición de sombra */
 }
 
 .form-group input:focus,
@@ -157,7 +165,7 @@ p {
 .form-group select:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(255, 191, 0, 0.3);
+    box-shadow: 0 0 0 3px rgba(255, 191, 0, 0.4); /* Resplandor dorado en focus */
 }
 
 .form-group textarea {
@@ -307,7 +315,7 @@ p {
 .product-filters input {
     padding: var(--spacing-sm);
     border: 1px solid var(--border-color);
-    border-radius: 5px;
+    border-radius: 8px; /* Más redondeado */
     background-color: var(--secondary-color);
     color: var(--text-color-light);
     font-size: 0.95em;
@@ -319,6 +327,7 @@ p {
     background-position: right 10px top 50%;
     background-size: 12px;
     padding-right: 30px; /* Espacio para la flecha personalizada */
+    transition: border-color var(--transition-speed) var(--transition-timing), box-shadow var(--transition-speed) var(--transition-timing); /* Añadida transición de sombra */
 }
 
 .product-filters input[type="text"] {
@@ -329,7 +338,7 @@ p {
 .product-filters select:focus,
 .product-filters input:focus {
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(255, 191, 0, 0.3);
+    box-shadow: 0 0 0 3px rgba(255, 191, 0, 0.4); /* Resplandor dorado en focus */
 }
 
 /* Grid de Productos */
@@ -342,21 +351,23 @@ p {
 
 /* Tarjeta de Producto */
 .product-card {
-    background-color: rgba(52, 58, 64, 0.08); /* Fondo mucho más transparente (de 0.2 a 0.08) */
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
+    background-color: rgba(52, 58, 64, 0.08); /* Fondo mucho más transparente */
+    border: 1px solid rgba(255, 191, 0, 0.3); /* Borde dorado sutil */
+    border-radius: 10px; /* Más redondeado */
     padding: var(--spacing-md);
     text-align: center;
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    transition: transform var(--transition-speed) var(--transition-timing), box-shadow var(--transition-speed) var(--transition-timing), background-color var(--transition-speed) var(--transition-timing); /* Transición de background */
     display: flex;
     flex-direction: column;
     justify-content: space-between; /* Empuja el botón al final */
     height: 100%; /* Asegura que todas las tarjetas tengan la misma altura en el grid */
+    box-shadow: var(--shadow-sm); /* Sombra inicial */
 }
 
 .product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-md);
+    transform: translateY(-5px) scale(1.02); /* Ligera elevación y crecimiento */
+    background-color: rgba(52, 58, 64, 0.15); /* Ligeramente menos transparente en hover */
+    box-shadow: var(--shadow-md), var(--golden-glow-sm); /* Sombra más fuerte y resplandor dorado */
 }
 
 .product-image {
@@ -364,6 +375,13 @@ p {
     height: 180px; /* Altura fija para las imágenes */
     object-fit: contain; /* Asegura que la imagen completa sea visible */
     margin-bottom: var(--spacing-sm);
+    transition: transform var(--transition-speed) var(--transition-timing), filter var(--transition-speed) var(--transition-timing); /* Transición para efectos de imagen */
+}
+
+.product-card:hover .product-image {
+    /* Efecto para "iluminar la botella" o hacerla resaltar */
+    transform: scale(1.05);
+    filter: brightness(1.2) saturate(1.1); /* Hace la imagen un poco más brillante y saturada */
 }
 
 .product-info {
@@ -439,13 +457,17 @@ p {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: var(--secondary-color);
-    border-radius: 5px;
-    transition: transform 0.2s ease-in-out;
+    background-color: rgba(0, 0, 0, 0.3); /* Cambiado de secondary-color a negro más transparente */
+    border-radius: 8px; /* Más redondeado */
+    transition: transform var(--transition-speed) var(--transition-timing), box-shadow var(--transition-speed) var(--transition-timing), background-color var(--transition-speed) var(--transition-timing); /* Transiciones añadidas */
+    box-shadow: var(--shadow-sm); /* Sombra inicial */
+    border: 1px solid rgba(255, 191, 0, 0.2); /* Borde dorado sutil */
 }
 
 .brand-logo:hover {
     transform: scale(1.05);
+    background-color: rgba(0, 0, 0, 0.5); /* Menos transparente en hover */
+    box-shadow: var(--shadow-md), var(--golden-glow-sm); /* Sombra más fuerte y resplandor dorado */
 }
 
 .brand-logo img {
@@ -501,19 +523,19 @@ p {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.9); /* Fondo oscuro semitransparente */
+    background-color: rgba(0, 0, 0, 0.95); /* Fondo aún más oscuro */
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    backdrop-filter: blur(5px); /* Efecto de desenfoque */
-    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(8px); /* Más desenfoque */
+    -webkit-backdrop-filter: blur(8px);
 }
 
 .age-verification-content {
     background-color: var(--secondary-color);
     padding: var(--spacing-lg);
-    border-radius: 10px;
+    border-radius: 10px; /* Más redondeado */
     text-align: center;
     box-shadow: var(--shadow-lg);
     max-width: 400px;
@@ -622,13 +644,15 @@ p {
     margin-right: var(--spacing-md); /* Espacio entre tarjetas */
     display: inline-block; /* Necesario para white-space: nowrap */
     vertical-align: top; /* Asegura que las tarjetas se alineen correctamente */
-    border: 1px solid var(--border-color);
+    border: 1px solid rgba(255, 191, 0, 0.3); /* Borde dorado sutil */
     box-shadow: var(--shadow-sm);
-    transition: transform 0.2s ease-in-out;
+    transition: transform var(--transition-speed) var(--transition-timing), box-shadow var(--transition-speed) var(--transition-timing), background-color var(--transition-speed) var(--transition-timing);
 }
 
 .continuous-carousel-track .product-card:hover {
-    transform: translateY(-5px); /* Efecto hover sutil */
+    transform: translateY(-5px) scale(1.02); /* Efecto hover sutil */
+    background-color: rgba(52, 58, 64, 0.15); /* Ligeramente menos transparente en hover */
+    box-shadow: var(--shadow-md), var(--golden-glow-sm); /* Sombra más fuerte y resplandor dorado */
 }
 
 /* Ajusta el tamaño de las imágenes dentro de las tarjetas del carrusel si es necesario */
@@ -636,6 +660,12 @@ p {
     height: 160px; /* Altura fija para las imágenes en el carrusel continuo */
     object-fit: contain; /* Ajusta la imagen sin recortarla */
     padding: var(--spacing-sm); /* Un poco de padding para la imagen */
+    transition: transform var(--transition-speed) var(--transition-timing), filter var(--transition-speed) var(--transition-timing);
+}
+
+.continuous-carousel-track .product-card:hover .product-image {
+    transform: scale(1.05);
+    filter: brightness(1.2) saturate(1.1);
 }
 
 /* Keyframes para la animación de scroll */
