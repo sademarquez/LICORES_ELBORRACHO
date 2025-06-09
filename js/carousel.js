@@ -1,163 +1,117 @@
-// js/carousel.js
-
-let currentSlide = 0;
-let autoSlideInterval;
-const slideDuration = 2300; // Duración de cada slide en milisegundos
-
-let carouselTrack;
-let carouselDotsContainer;
-let slides = [];
-let dots = [];
-let totalSlides = 0; // Para mantener el conteo de slides
+// carousel.js
 
 /**
- * Inicializa el carrusel con los datos de banners proporcionados.
- * @param {Array<Object>} bannersData - Un array de objetos con información de los banners.
+ * Initializes a simple automatic carousel.
+ * @param {HTMLElement} carouselElement - The DOM element of the carousel container.
+ * @param {number} slideDuration - The time in milliseconds each slide is displayed.
+ * @param {boolean} loopContent - If true, duplicates content to create a seamless loop (for continuous scroll).
+ * @param {boolean} isProductCarousel - If true, adds specific product carousel classes for styling.
  */
-export function initCarousel(bannersData) {
-    carouselTrack = document.getElementById('carouselTrack');
-    const carouselPrevBtn = document.getElementById('carouselPrev');
-    const carouselNextBtn = document.getElementById('carouselNext');
-    carouselDotsContainer = document.getElementById('carouselDots');
-
-    if (!carouselTrack || !carouselDotsContainer || !carouselPrevBtn || !carouselNextBtn) {
-        console.warn('carousel.js: Elementos del carrusel no encontrados. Inicialización abortada.');
+export function initializeCarousel(carouselElement, slideDuration = 3000, loopContent = false, isProductCarousel = false) {
+    if (!carouselElement) {
+        console.warn('Carousel element not found for initialization.');
         return;
     }
 
-    // Limpiar contenido previo para evitar duplicados si se llama varias veces
-    carouselTrack.innerHTML = '';
-    carouselDotsContainer.innerHTML = '';
-    slides = []; // Resetear array de slides
-    dots = [];   // Resetear array de dots
-    currentSlide = 0; // Resetear slide actual
+    const carouselInner = document.createElement('div');
+    carouselInner.classList.add('carousel-inner');
+    carouselElement.appendChild(carouselInner);
 
-    if (bannersData && bannersData.length > 0) {
-        totalSlides = bannersData.length;
-        bannersData.forEach((banner, index) => {
-            const slideElement = createSlideElement(banner);
-            carouselTrack.appendChild(slideElement);
-            slides.push(slideElement);
+    // Collect initial items and move them to carouselInner
+    const initialItems = Array.from(carouselElement.children).filter(child => !child.classList.contains('carousel-inner'));
+    initialItems.forEach(item => carouselInner.appendChild(item));
 
-            const dotElement = document.createElement('span');
-            dotElement.classList.add('carousel-dot');
-            dotElement.setAttribute('role', 'button');
-            dotElement.setAttribute('aria-label', `Ir al slide ${index + 1}`);
-            dotElement.addEventListener('click', () => {
-                showSlide(index);
-                resetAutoSlide(); // Reiniciar el auto-avance después de interacción manual
-            });
-            carouselDotsContainer.appendChild(dotElement);
-            dots.push(dotElement);
-        });
 
-        carouselPrevBtn.addEventListener('click', () => {
-            showSlide(currentSlide - 1);
-            resetAutoSlide(); // Reiniciar el auto-avance después de interacción manual
-        });
-
-        carouselNextBtn.addEventListener('click', () => {
-            showSlide(currentSlide + 1);
-            resetAutoSlide(); // Reiniciar el auto-avance después de interacción manual
-        });
-
-        showSlide(currentSlide); // Mostrar el primer slide
-        startAutoSlide(); // Iniciar el auto-avance
-
-        console.log('carousel.js: Carrusel inicializado con éxito.');
-    } else {
-        console.warn('carousel.js: No se encontraron datos de banners para inicializar el carrusel.');
-        carouselTrack.innerHTML = '<p style="text-align:center; padding:50px;">No hay banners disponibles.</p>';
+    let carouselItems = Array.from(carouselInner.children);
+    if (carouselItems.length === 0) {
+        console.warn('No carousel items found in the provided element.');
+        return;
     }
-}
 
-/**
- * Crea un elemento de slide HTML para el carrusel.
- * @param {Object} banner - Objeto con los datos del banner (imageUrl, title, description, link, buttonText).
- * @returns {HTMLElement} El elemento div del slide.
- */
-function createSlideElement(banner) {
-    const slide = document.createElement('div');
-    slide.classList.add('carousel-slide');
-    slide.style.backgroundImage = `url(${banner.imageUrl})`;
-    slide.setAttribute('aria-hidden', 'true');
-    slide.setAttribute('tabindex', '-1');
+    // Add classes for product carousels
+    if (isProductCarousel) {
+        carouselElement.classList.add('product-carousel-container');
+        carouselItems.forEach(item => {
+            item.classList.add('product-carousel-item');
+        });
+    } else {
+        carouselElement.classList.add('standard-carousel-container'); // For general carousels like banners
+    }
 
-    const content = `
-        <div class="carousel-slide-content">
-            <h2>${banner.title}</h2>
-            <p>${banner.description}</p>
-            <a href="${banner.link}" class="btn btn-primary">${banner.buttonText}</a>
-        </div>
-    `;
-    slide.innerHTML = content;
-    return slide;
-}
 
-/**
- * Muestra un slide específico del carrusel.
- * @param {number} index - El índice del slide a mostrar.
- */
-function showSlide(index) {
-    if (totalSlides === 0) return;
+    let currentIndex = 0;
+    let intervalId;
 
-    // Manejar el bucle del carrusel
-    currentSlide = (index + totalSlides) % totalSlides;
+    // Helper to get the correct number of visible items for dynamic width carousels
+    const getVisibleItemsCount = () => {
+        if (!isProductCarousel) return 1; // Standard carousels show one at a time
+        const containerWidth = carouselElement.clientWidth;
+        const itemWidth = carouselItems[0] ? carouselItems[0].offsetWidth : 0;
+        return itemWidth > 0 ? Math.floor(containerWidth / itemWidth) : 1;
+    };
 
-    carouselTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
-    updateCarousel();
-}
+    function updateCarouselPosition() {
+        const visibleItems = getVisibleItemsCount();
+        const itemWidth = carouselItems[0] ? carouselItems[0].offsetWidth : 0;
+        const offset = -currentIndex * itemWidth;
+        carouselInner.style.transform = `translateX(${offset}px)`;
+    }
 
-/**
- * Actualiza las clases 'active' y los atributos de accesibilidad de slides y dots.
- */
-function updateCarousel() {
-    slides.forEach((slide, index) => {
-        if (index === currentSlide) {
-            slide.classList.add('active');
-            slide.setAttribute('aria-hidden', 'false');
-            slide.setAttribute('tabindex', '0');
-        } else {
-            slide.classList.remove('active');
-            slide.setAttribute('aria-hidden', 'true');
-            slide.setAttribute('tabindex', '-1');
+    function showSlide(index) {
+        currentIndex = index;
+        if (currentIndex >= carouselItems.length) {
+            currentIndex = 0;
+        } else if (currentIndex < 0) {
+            currentIndex = carouselItems.length - 1;
         }
+        updateCarouselPosition();
+    }
+
+    function nextSlide() {
+        currentIndex = (currentIndex + 1) % carouselItems.length;
+        showSlide(currentIndex);
+    }
+
+    // Initialize the first slide
+    showSlide(currentIndex);
+
+    // Set up automatic sliding
+    intervalId = setInterval(nextSlide, slideDuration);
+
+    // Optional: Add navigation arrows (only if needed)
+    // const prevButton = document.createElement('button');
+    // prevButton.textContent = '<';
+    // prevButton.classList.add('carousel-control', 'prev');
+    // carouselElement.appendChild(prevButton);
+    //
+    // const nextButton = document.createElement('button');
+    // nextButton.textContent = '>';
+    // nextButton.classList.add('carousel-control', 'next');
+    // carouselElement.appendChild(nextButton);
+    //
+    // prevButton.addEventListener('click', () => {
+    //     clearInterval(intervalId); // Stop auto-slide on manual interaction
+    //     currentIndex = (currentIndex - 1 + carouselItems.length) % carouselItems.length;
+    //     showSlide(currentIndex);
+    //     intervalId = setInterval(nextSlide, slideDuration); // Restart auto-slide
+    // });
+    //
+    // nextButton.addEventListener('click', () => {
+    //     clearInterval(intervalId); // Stop auto-slide on manual interaction
+    //     nextSlide();
+    //     intervalId = setInterval(nextSlide, slideDuration); // Restart auto-slide
+    // });
+
+    // Handle window resize for responsive carousels
+    window.addEventListener('resize', () => {
+        updateCarouselPosition();
     });
 
-    dots.forEach((dot, index) => {
-        if (index === currentSlide) {
-            dot.classList.add('active');
-            dot.setAttribute('aria-selected', 'true');
-            dot.setAttribute('tabindex', '0');
-        } else {
-            dot.classList.remove('active');
-            dot.setAttribute('aria-selected', 'false');
-            dot.setAttribute('tabindex', '-1');
-        }
-    });
-}
-
-/**
- * Inicia el temporizador para el auto-avance del carrusel.
- */
-function startAutoSlide() {
-    stopAutoSlide(); // Asegura que solo un intervalo esté activo
-    autoSlideInterval = setInterval(() => {
-        showSlide(currentSlide + 1);
-    }, slideDuration);
-}
-
-/**
- * Detiene el temporizador del auto-avance del carrusel.
- */
-function stopAutoSlide() {
-    clearInterval(autoSlideInterval);
-}
-
-/**
- * Reinicia el temporizador del auto-avance (llamado después de interacción del usuario).
- */
-function resetAutoSlide() {
-    stopAutoSlide();
-    startAutoSlide();
+    // Function to add items to the carousel (useful if content is loaded dynamically)
+    // This is important for new products and offers being loaded
+    carouselElement.addItems = (newItems) => {
+        newItems.forEach(item => carouselInner.appendChild(item));
+        carouselItems = Array.from(carouselInner.children);
+        showSlide(currentIndex); // Re-adjust position
+    };
 }
