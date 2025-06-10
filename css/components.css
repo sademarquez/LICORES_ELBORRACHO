@@ -1,792 +1,527 @@
 /* css/components.css */
 
-/* --- Hero Section y Carrusel Principal (Ajustes de Estilo) --- */
-/* Ya están en styles.css, aquí solo si hubiera overrides muy específicos */
-
-
-/* --- Mobile Nav (Menú Inferior Móvil Futurista) --- */
-.mobile-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: var(--glass-dark); /* Fondo de glassmorphism oscuro */
-    backdrop-filter: blur(30px); /* Desenfoque intenso */
-    border-top: 1px solid rgba(255, 215, 0, 0.2); /* Borde superior dorado sutil */
-    padding: 1rem 0 calc(1rem + env(safe-area-inset-bottom)); /* Espaciado adaptable para iPhone X */
-    z-index: var(--z-elevated); /* Por encima del contenido principal, pero debajo de modales */
-    transform: translateY(100%); /* Oculto inicialmente, animado por JS */
-    animation: slideUpNav 0.8s ease-out 0.5s forwards; /* Animación de entrada */
-    display: flex; /* Asegura el layout flex de los items */
-}
-
-@keyframes slideUpNav {
-    to { transform: translateY(0); } /* Se desliza hacia arriba */
-}
-
-.nav-container {
-    display: flex;
-    justify-content: space-around; /* Distribuye los items uniformemente */
-    align-items: center;
-    max-width: 500px; /* Ancho máximo para legibilidad en pantallas grandes */
-    margin: 0 auto;
-    padding: 0 var(--space-sm); /* Espaciado responsivo a los lados */
-}
-
-.nav-item {
+/* Hero Section y Carrusel Principal */
+.hero-section {
     position: relative;
+    width: 100%;
+    overflow: hidden;
+    height: 450px; /* Altura fija para el carrusel */
+    background-color: transparent; /* Ahora transparente para el fondo 3D */
+    border-radius: var(--border-radius-lg); /* Bordes redondeados */
+    box-shadow: var(--shadow-xl); /* Sombra sutil */
+    margin-bottom: var(--spacing-xl); /* Espacio debajo del carrusel */
+}
+
+.carousel-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.carousel-track {
+    display: flex;
+    height: 100%;
+    transition: transform 0.5s ease-in-out; /* Velocidad de transición del slide */
+}
+
+.carousel-slide {
+    min-width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    align-items: center; /* Centra el contenido verticalmente */
+    justify-content: center; /* Centra el contenido horizontalmente */
+    background-size: cover;
+    background-position: center;
+    color: var(--white);
+    text-align: center;
+    flex-shrink: 0; /* Asegura que no se encoja */
+    border-radius: var(--border-radius-lg); /* Bordes redondeados */
+    overflow: hidden; /* Asegura que la imagen de fondo respete el radio */
+}
+
+.carousel-slide::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Oscurece la imagen para que el texto resalte */
+    z-index: 1;
+}
+
+.carousel-content {
+    position: relative;
+    z-index: 2;
+    padding: var(--spacing-lg);
+    max-width: 800px;
+}
+
+.carousel-content h2 {
+    font-size: 2.8rem;
+    font-weight: bold;
+    margin-bottom: var(--spacing-md);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+    color: var(--primary-color);
+}
+
+.carousel-content p {
+    font-size: 1.2rem;
+    margin-bottom: var(--spacing-lg);
+    color: var(--text-color-dark);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: var(--white);
+    border: none;
+    padding: var(--spacing-sm) var(--spacing-md);
+    cursor: pointer;
+    font-size: 1.5rem;
+    z-index: 10;
+    border-radius: var(--border-radius);
+    transition: background-color var(--transition-speed);
+}
+
+.carousel-btn:hover {
+    background-color: var(--primary-color);
+    color: var(--secondary-color-dark);
+}
+
+.carousel-btn.prev {
+    left: var(--spacing-md);
+}
+
+.carousel-btn.next {
+    right: var(--spacing-md);
+}
+
+.carousel-dots {
+    position: absolute;
+    bottom: var(--spacing-md);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: var(--spacing-sm);
+    z-index: 10;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: background-color var(--transition-speed), transform var(--transition-speed);
+}
+
+.dot.active {
+    background-color: var(--primary-color);
+    transform: scale(1.2);
+}
+
+/* Header Styles */
+.main-header {
+    background-color: var(--dark-bg);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.main-header .logo-container .site-name {
+    font-family: var(--font-family-primary);
+}
+
+.main-nav .nav-list a {
+    position: relative;
+    color: var(--text-color-dark);
+    font-weight: 500;
+    padding: var(--spacing-xs) 0;
+    transition: color var(--transition-speed);
+}
+
+.main-nav .nav-list a:hover {
+    color: var(--primary-color);
+}
+
+/* Underline effect for nav links */
+.main-nav .nav-list a::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--primary-color);
+    transition: width var(--transition-speed) var(--transition-timing);
+}
+
+.main-nav .nav-list a:hover::after,
+.main-nav .nav-list a.active::after {
+    width: 100%;
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-color-dark);
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Search Modal */
+.search-modal {
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.search-modal-content {
+    background-color: var(--secondary-color-dark);
+}
+
+.search-input-container {
+    position: relative;
+}
+
+.search-input-container input {
+    padding-right: 40px; /* Espacio para el ícono de búsqueda */
+}
+
+.search-input-container button {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 8px 12px;
+    border-radius: var(--border-radius);
+    background-color: var(--primary-color);
+    color: var(--secondary-color-dark);
+    border: none;
+    cursor: pointer;
+    transition: background-color var(--transition-speed);
+}
+
+.search-input-container button:hover {
+    background-color: var(--primary-color-dark);
+}
+
+.no-results-message {
+    padding: var(--spacing-lg);
+    color: var(--text-color-light);
+    font-style: italic;
+}
+
+/* Cart Sidebar (Modal de Carrito) */
+.cart-sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 350px; /* Ancho del sidebar */
+    height: 100%;
+    background-color: var(--secondary-color-dark);
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+    transform: translateX(100%); /* Oculto por defecto */
+    transition: transform 0.4s ease-in-out;
+    z-index: 1000;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 0.25rem; /* Espaciado pequeño entre icono y texto */
-    padding: 0.5rem;
-    border-radius: 15px; /* Bordes redondeados */
-    color: rgba(255, 215, 0, 0.6); /* Color dorado semitransparente */
-    text-decoration: none;
-    transition: all var(--transition-smooth); /* Transición suave en hover/active */
-    cursor: pointer;
-    font-size: 0.8rem; /* Tamaño de fuente para el texto */
-    font-weight: 600;
+    border-left: 1px solid var(--border-color);
 }
 
-.nav-icon {
-    position: relative;
+.cart-sidebar.open {
+    transform: translateX(0); /* Visible */
+}
+
+.cart-header {
+    padding: var(--spacing-md) var(--spacing-lg);
+    background-color: var(--dark-bg);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--primary-color);
+}
+
+.cart-header .close-btn {
+    background: none;
+    border: none;
+    color: var(--text-color-light);
+    font-size: 2rem;
+    cursor: pointer;
+    transition: color var(--transition-speed);
+}
+
+.cart-header .close-btn:hover {
+    color: var(--danger-color);
+}
+
+.cart-items {
+    flex-grow: 1; /* Permite que la lista de ítems ocupe el espacio disponible */
+    overflow-y: auto;
+    padding: var(--spacing-lg);
+    color: var(--text-color-light);
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: var(--spacing-md);
+}
+
+.cart-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.cart-item img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+}
+
+.cart-item-details {
+    flex-grow: 1;
+}
+
+.cart-item-details h4 {
+    margin: 0;
+    font-size: 1rem;
+    color: var(--text-color-dark);
+}
+
+.cart-item-details .price {
+    font-size: 0.9rem;
+    color: var(--accent-color);
+    margin-top: 2px;
+}
+
+.cart-item-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.cart-item-controls button {
+    background-color: var(--secondary-color);
+    border: 1px solid var(--border-color);
+    color: var(--text-color-dark);
     width: 28px;
     height: 28px;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all var(--transition-smooth);
-}
-
-.nav-icon img {
-    width: 100%;
-    height: 100%;
-    filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.2)); /* Sombra sutil */
-}
-
-.nav-item:hover,
-.nav-item.active {
-    color: var(--accent-gold); /* Color dorado brillante en hover/active */
-    transform: translateY(-5px); /* Pequeño levantamiento */
-}
-
-.nav-item.active .nav-icon img {
-    filter: drop-shadow(0 0 10px var(--accent-gold)); /* Resplandor intenso en icono activo */
-}
-
-/* Contador de carrito en el menú inferior */
-.cart-mobile-icon .cart-count {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    background-color: var(--danger-color);
-    color: var(--white);
-    font-size: 0.7em;
-    padding: 2px 5px;
-    border-radius: 50%;
-    min-width: 18px;
-    text-align: center;
-    line-height: 1;
-    font-weight: bold;
-    box-shadow: var(--soft-glow);
-}
-
-/* --- Age Verification Modal (Premium) --- */
-/* NOTA: El CSS de age-verification.js en la guía premium ya viene para ser creado dinámicamente por JS.
-   Si tenías un modal HTML preexistente para verificación, sus estilos aquí deben ser reemplazados. */
-
-.age-verification-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: var(--z-modal); /* Asegura que esté por encima de todo */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    backdrop-filter: blur(10px); /* Desenfoque sutil */
-    opacity: 0; /* Oculto inicialmente, animado por JS */
-    transition: opacity 1s ease-out; /* Transición de aparición */
-}
-
-.age-verification-modal.show {
-    opacity: 1;
-}
-
-.verification-backdrop {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, 
-      rgba(0,0,0,0.9) 0%, 
-      rgba(13,13,13,0.95) 50%, 
-      rgba(0,0,0,0.9) 100%);
-    animation: backdropFade 2s ease-out; /* Animación de fondo */
-}
-
-@keyframes backdropFade {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-.verification-container {
-    position: relative;
-    max-width: 600px;
-    width: 90%;
-    background: var(--glass-dark); /* Fondo oscuro con glassmorphism */
-    backdrop-filter: blur(30px); /* Desenfoque intenso */
-    border-radius: 30px;
-    border: 2px solid rgba(255, 215, 0, 0.3); /* Borde dorado */
-    padding: 3rem;
-    text-align: center;
-    box-shadow: 
-      var(--intense-glow), /* Resplandor dorado */
-      0 0 100px rgba(255, 215, 0, 0.2); /* Sombra más grande */
-    transform-style: preserve-3d; /* Para efectos 3D internos */
-    opacity: 0; /* Controlado por GSAP */
-    transform: scale(0.5); /* Controlado por GSAP */
-}
-
-.verification-logo {
-    position: relative;
-    margin-bottom: 2rem;
-}
-
-.verification-logo img {
-    height: 80px;
-    filter: drop-shadow(0 0 20px var(--accent-gold)); /* Sombra brillante para el logo */
-    animation: logoFloat 4s ease-in-out infinite; /* Animación de flotar */
-}
-
-@keyframes logoFloat {
-    0%, 100% { transform: translateY(0px) scale(1); }
-    50% { transform: translateY(-10px) scale(1.05); }
-}
-
-.verification-title {
-    font-size: clamp(2rem, 8vw, 4rem);
-    font-weight: 800;
-    background: var(--gold-metallic); /* Texto con degradado metálico */
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 2rem;
-    line-height: 1.2;
-}
-
-.legal-notice {
-    background: rgba(255, 215, 0, 0.1);
-    border: 1px solid rgba(255, 215, 0, 0.3);
-    border-radius: 15px;
-    padding: 1.5rem;
-    margin-bottom: 2rem;
-    color: var(--gold-light);
-}
-
-.notice-icon {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    animation: pulse 2s infinite; /* Animación de pulso para el icono de advertencia */
-}
-
-@keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-}
-
-.age-question {
-    color: var(--gold-light);
-}
-
-.age-question h2 {
-    font-size: clamp(1.5rem, 4vw, 2rem);
-    margin-bottom: var(--space-md);
-}
-
-.verification-buttons {
-    display: flex;
-    gap: 1rem;
-    flex-direction: column; /* Por defecto en columna para móvil */
-    margin-bottom: 2rem;
-}
-
-.btn-verify {
-    position: relative;
-    padding: 1rem 2rem;
-    border: 2px solid transparent;
-    border-radius: 15px;
-    background: var(--glass-medium); /* Fondo con glassmorphism */
-    color: white;
-    font-size: 1.1rem;
-    font-weight: 600;
+    border-radius: var(--border-radius);
     cursor: pointer;
-    overflow: hidden;
-    transition: all var(--transition-smooth); /* Transición suave */
-    transform-style: preserve-3d;
+    transition: background-color var(--transition-speed);
 }
 
-.btn-adult {
-    background: linear-gradient(45deg, rgba(34, 139, 34, 0.3), rgba(0, 100, 0, 0.3)); /* Verde oscuro */
-    border-color: rgba(34, 139, 34, 0.5);
+.cart-item-controls button:hover {
+    background-color: var(--primary-color);
+    color: var(--secondary-color-dark);
 }
 
-.btn-adult:hover {
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 10px 30px rgba(34, 139, 34, 0.4);
-    background: linear-gradient(45deg, rgba(34, 139, 34, 0.5), rgba(0, 100, 0, 0.5));
-}
-
-.btn-minor {
-    background: linear-gradient(45deg, rgba(139, 69, 19, 0.3), rgba(160, 82, 45, 0.3)); /* Naranja/marrón */
-    border-color: rgba(139, 69, 19, 0.5);
-}
-
-.btn-minor:hover {
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 10px 30px rgba(139, 69, 19, 0.4);
-    background: linear-gradient(45deg, rgba(139, 69, 19, 0.5), rgba(160, 82, 45, 0.5));
-}
-
-/* Efecto Ripple en botones */
-.btn-ripple {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.3);
-    transform: translate(-50%, -50%);
-    transition: width 0.6s, height 0.6s;
-    pointer-events: none; /* No debe capturar eventos */
-}
-
-.btn-verify:active .btn-ripple {
-    width: 300px;
-    height: 300px;
-}
-
-.verification-footer {
-    color: var(--gold-light);
-    font-size: 0.85rem;
-    margin-top: 1rem;
-}
-
-@media (min-width: 768px) {
-    .verification-buttons {
-        flex-direction: row; /* En fila para desktop */
-    }
-}
-
-/* --- Loading Screen Épico --- */
-/* NOTA: El CSS de LoadingExperience en la guía premium ya viene para ser creado dinámicamente por JS. */
-
-.premium-loader {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: var(--z-notification); /* Muy alto para estar sobre todo */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: var(--primary-black); /* Fondo negro para el loader */
-    opacity: 1;
-    transition: opacity 1s ease-out, transform 1s ease-out; /* Transición de salida */
-}
-
-.loader-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    z-index: -1; /* Detrás del contenido del loader */
-}
-
-.loader-background .liquid-animation {
-    content: ''; /* Usamos el mismo efecto de liquid background, pero como un elemento propio para el loader */
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(45deg, var(--deep-black), var(--primary-black), #1a1a1a);
-}
-
-.loader-background .liquid-animation::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 200%;
-    height: 200%;
-    background: 
-        radial-gradient(circle at 20% 80%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(255, 215, 0, 0.08) 0%, transparent 50%),
-        radial-gradient(circle at 40% 40%, rgba(255, 215, 0, 0.05) 0%, transparent 50%);
-    animation: liquidMove 20s ease-in-out infinite; /* Reutilizamos la animación */
-}
-
-/* Canvas para partículas en el loader */
-#particleCanvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 0; /* Detrás del logo y texto */
-}
-
-.loader-content {
-    position: relative;
-    z-index: 1; /* Por encima del background animado */
-    text-align: center;
-    color: var(--gold-light);
-    padding: var(--space-md);
-}
-
-.logo-container {
-    position: relative;
-    margin-bottom: var(--space-md);
-}
-
-.loader-logo {
-    height: 100px;
-    filter: drop-shadow(0 0 25px var(--accent-gold));
-    animation: pulseLogo 3s ease-in-out infinite alternate;
-}
-
-@keyframes pulseLogo {
-    0% { transform: scale(1); opacity: 1; }
-    100% { transform: scale(1.05); opacity: 0.9; }
-}
-
-.logo-orbit {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    border: 2px dashed rgba(255, 215, 0, 0.3);
-    animation: rotateOrbit 10s linear infinite;
-}
-
-@keyframes rotateOrbit {
-    from { transform: translate(-50%, -50%) rotate(0deg); }
-    to { transform: translate(-50%, -50%) rotate(360deg); }
-}
-
-.loading-text h2 {
-    font-family: var(--font-family-secondary);
-    font-size: clamp(1.5rem, 4vw, 2.5rem);
-    background: var(--gold-metallic);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: var(--space-sm);
-}
-
-.progress-container {
-    width: 80%;
-    max-width: 400px;
-    background: var(--glass-light);
-    border-radius: 10px;
-    height: 15px;
-    overflow: hidden;
-    margin: 0 auto var(--space-sm);
-    border: 1px solid rgba(255, 215, 0, 0.3);
-    position: relative;
-}
-
-.progress-bar {
-    position: relative;
-    width: 100%;
-    height: 100%;
-}
-
-.progress-fill {
-    height: 100%;
-    width: 0%; /* Controlado por JS */
-    background: var(--gold-metallic);
-    border-radius: 10px;
-    transition: width 0.4s ease-in-out;
-    position: relative;
-    overflow: hidden;
-}
-
-.progress-fill::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 200%;
-    height: 100%;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.3),
-        transparent
-    );
-    animation: progressShine 2s infinite linear;
-}
-
-@keyframes progressShine {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
-}
-
-.progress-glow {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
-    border-radius: 10px;
-    opacity: 0.6;
-    animation: progressGlowPulse 1.5s infinite alternate;
-}
-
-@keyframes progressGlowPulse {
-    0% { transform: scale(1); opacity: 0.6; }
-    100% { transform: scale(1.02); opacity: 0.8; }
-}
-
-.progress-percentage {
-    color: var(--accent-gold);
+.cart-item-controls .item-quantity {
+    padding: 0 8px;
+    font-size: 1rem;
     font-weight: bold;
+    color: var(--text-color-dark);
 }
 
-.loading-details {
-    font-size: 0.9rem;
-    color: var(--gold-light);
-    margin-top: var(--space-sm);
-}
-
-
-/* --- Tarjetas Producto 3D Ultra Premium --- */
-.product-card-3d {
-    position: relative;
-    width: 100%; /* El ancho se definirá por el grid */
-    aspect-ratio: 1 / 1.4; /* Relación de aspecto para las tarjetas de producto (ej. 1:1.4 para productos más alargados) */
-    perspective: 1000px; /* Perspectiva para el efecto 3D */
+.remove-item-btn {
+    background: none;
+    border: none;
+    color: var(--danger-color);
+    font-size: 1.5rem;
     cursor: pointer;
-    transform-style: preserve-3d;
-    transition: all var(--transition-smooth); /* Transición para el hover de la tarjeta */
-    margin-bottom: var(--space-md); /* Espaciado con el grid */
+    margin-left: var(--spacing-sm);
+    transition: color var(--transition-speed);
 }
 
-.product-card-inner {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    transform-style: preserve-3d; /* Para el contenido interno */
-    transition: transform var(--transition-smooth);
-    border-radius: var(--border-radius); /* Bordes redondeados */
-    background: var(--glass-light); /* Fondo con glassmorphism claro */
-    backdrop-filter: blur(20px); /* Desenfoque */
-    border: 1px solid rgba(255, 215, 0, 0.2); /* Borde dorado sutil */
-    overflow: hidden; /* Para contener el brillo holográfico */
+.remove-item-btn:hover {
+    color: #ff0000;
+    transform: scale(1.1);
+}
+
+.cart-summary {
+    padding: var(--spacing-lg);
+    background-color: var(--dark-bg);
+    border-top: 1px solid var(--border-color);
+    text-align: right;
+}
+
+.cart-total {
     display: flex;
-    flex-direction: column;
     justify-content: space-between;
-    padding: var(--space-sm);
-    box-shadow: var(--shadow-md);
-}
-
-.product-card-3d:hover .product-card-inner {
-    transform: rotateY(15deg) rotateX(10deg) translateZ(50px); /* Rotación 3D y levantamiento */
-    box-shadow: 
-        var(--intense-glow), /* Resplandor intenso */
-        0 20px 40px rgba(0, 0, 0, 0.5); /* Sombra más grande */
-}
-
-/* Efecto holográfico */
-.product-card-inner::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%; /* Inicia fuera del contenedor */
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 215, 0, 0.4), /* Banda dorada */
-        transparent
-    );
-    transition: left var(--transition-fast); /* Animación de deslizamiento */
-    z-index: 1; /* Por encima del contenido de la tarjeta */
-}
-
-.product-card-3d:hover .product-card-inner::before {
-    left: 100%; /* Se desliza a través de la tarjeta */
-}
-
-/* Reflejo en el fondo (simulación de superficie brillante) */
-.product-card-3d::after {
-    content: '';
-    position: absolute;
-    top: 100%; /* Empieza justo debajo de la tarjeta */
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: var(--deep-black); /* Fondo oscuro para el reflejo */
-    transform: rotateX(180deg); /* Voltear para simular reflejo */
-    opacity: 0.1; /* Muy sutil */
-    filter: blur(2px); /* Desenfoque del reflejo */
-    mask: linear-gradient(to bottom, black 0%, transparent 100%); /* Desvanecer el reflejo */
-    pointer-events: none;
-    z-index: -1;
-}
-
-/* Contenido dentro de la tarjeta de producto (usando estilos de styles.css) */
-.product-card-inner .product-image {
-    height: 160px; /* Ajustar altura para la relación de aspecto */
-    object-fit: contain;
-    padding: var(--space-sm);
-    transition: transform var(--transition-fast);
-}
-
-.product-card-3d:hover .product-image {
-    transform: scale(1.05) translateZ(20px); /* Un pequeño zoom y levantamiento en 3D */
-}
-
-.product-card-inner .product-info {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: var(--space-xs) 0;
-}
-
-.product-card-inner .product-name {
-    font-size: 1.1rem; /* Ajuste para espacio */
-    color: var(--accent-gold); /* Color dorado para el nombre */
-    text-shadow: none; /* Eliminar sombra extra para nombres pequeños */
-}
-
-.product-card-inner .product-brand {
-    font-size: 0.85rem;
-    color: var(--gold-light);
-}
-
-.product-card-inner .product-price-container {
-    display: flex;
-    justify-content: center;
-    align-items: baseline;
-    gap: 5px;
-    margin-top: auto;
-}
-
-.product-card-inner .product-price {
     font-size: 1.2rem;
-    color: var(--gold-light);
+    font-weight: bold;
+    color: var(--text-color-dark);
+    margin-bottom: var(--spacing-md);
 }
 
-.product-card-inner .product-offer-price {
-    font-size: 1.2rem;
-    color: var(--accent-gold);
-}
-
-.product-card-inner .product-old-price {
-    font-size: 0.9rem;
-    color: rgba(255, 215, 0, 0.5);
-}
-
-.product-card-inner .add-to-cart-btn {
-    margin-top: var(--space-sm);
-    background: var(--accent-gold);
-    color: var(--primary-black);
-    padding: 0.7rem 1.2rem;
-    font-size: 0.9rem;
-    border-radius: 8px;
-    box-shadow: var(--soft-glow);
-}
-
-.product-card-inner .add-to-cart-btn:hover {
-    background: var(--gold-dark);
-    box-shadow: var(--intense-glow);
-    transform: translateY(-2px) translateZ(10px); /* Efecto 3D al botón */
-}
-
-
-/* --- Navegación Categorial Inmersiva --- */
-.category-navigator {
-    position: relative;
-    display: flex;
-    flex-wrap: wrap; /* Para responsividad */
+/* Age Verification Modal */
+.age-verification-modal {
+    display: flex; /* Asegura que el modal esté centrado */
     justify-content: center;
-    gap: var(--space-md);
-    padding: var(--space-md);
-    background: var(--glass-ultra); /* Fondo con glassmorphism sutil */
-    backdrop-filter: blur(30px); /* Desenfoque intenso */
-    border-radius: 25px;
-    overflow: hidden; /* Para el efecto de onda */
-    margin: var(--space-md) auto; /* Centrar y añadir margen */
-    max-width: 90%;
-    box-shadow: var(--shadow-md);
-}
-
-.category-tab {
-    position: relative;
-    padding: 15px 30px;
-    background: transparent;
-    border: 2px solid transparent;
-    border-radius: 20px;
-    color: var(--gold-light);
-    font-weight: 600;
-    cursor: pointer;
-    transition: all var(--transition-elastic); /* Transición elástica */
-    transform-style: preserve-3d;
-    overflow: hidden; /* Para el brillo interno */
-}
-
-.category-tab::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    background: var(--gold-metallic); /* Brillo metálico */
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition: all var(--transition-smooth);
-    z-index: -1; /* Detrás del texto */
-}
-
-.category-tab:hover::before,
-.category-tab.active::before {
-    width: 120%;
-    height: 200%; /* Expansión del brillo */
-}
-
-.category-tab:hover,
-.category-tab.active {
-    transform: translateY(-5px) scale(1.05);
-    color: var(--primary-black); /* Texto oscuro cuando está activo */
-    text-shadow: none;
-    box-shadow: var(--neon-gold); /* Resplandor de neón */
-}
-
-/* Efecto de onda al cambiar categoría (se añade a categoryProductTrack) */
-/* Este estilo se aplica al contenedor del carrusel de productos, no a los tabs directamente */
-.category-wave {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background: var(--gold-metallic);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform var(--transition-smooth);
-}
-
-.category-tab.active ~ .category-wave { /* Este selector es complejo y no se aplica directamente */
-    /* La animación de onda se controlará mejor en JS al cambiar la categoría */
-    /* Este CSS podría usarse si el .category-wave fuera un elemento hermano del tab */
-    /* Por ahora, es un concepto a implementar dinámicamente o de forma diferente */
-}
-
-/* --- Carrusel de Marcas Galáctico --- */
-.brands-galaxy {
-    position: relative;
-    height: 200px; /* Altura del contenedor del carrusel */
-    overflow: hidden;
-    /* Crea un efecto de desvanecimiento en los bordes */
-    mask: linear-gradient(90deg, transparent, black 20%, black 80%, transparent);
-    margin-top: var(--space-md);
-    box-shadow: var(--shadow-lg);
-    border-radius: 20px;
-    background: var(--glass-dark); /* Fondo con glassmorphism */
-    backdrop-filter: blur(20px);
-}
-
-.brands-orbit {
-    display: flex;
-    animation: galacticRotation 60s linear infinite; /* Animación de rotación */
-    width: max-content; /* Asegura que el contenido sea tan ancho como sus elementos */
-    padding: var(--space-sm) 0; /* Un poco de padding vertical */
-}
-
-.brand-planet {
-    flex-shrink: 0; /* Evita que los elementos se encojan */
-    width: 150px;
-    height: 150px;
-    margin: 0 50px; /* Espacio entre planetas */
-    border-radius: 50%;
-    background: var(--glass-medium); /* Fondo de cristal para cada "planeta" */
-    backdrop-filter: blur(15px);
-    display: flex;
     align-items: center;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.95); /* Fondo muy oscuro */
+    z-index: 3000; /* Siempre encima de todo */
+}
+
+.age-verification-content {
+    background-color: var(--secondary-color-dark);
+    color: var(--text-color-dark);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-lg);
+    text-align: center;
+    max-width: 450px;
+    width: 90%;
+    border: 1px solid var(--border-color);
+}
+
+.age-verification-content h2 {
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-md);
+    font-size: 2rem;
+}
+
+.age-verification-content p {
+    margin-bottom: var(--spacing-lg);
+    font-size: 1rem;
+    color: var(--text-color-light);
+}
+
+.age-verification-buttons .btn-primary,
+.age-verification-buttons .btn-secondary {
+    flex: 1; /* Ocupa el espacio disponible */
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: 1rem;
+}
+
+/* Footer Section */
+.footer-section {
+    background-color: var(--secondary-color);
+    color: var(--text-color-light);
+    padding: var(--spacing-xl) var(--spacing-md);
+    margin-top: var(--spacing-xl);
+    border-top: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+}
+
+.footer-section h3 {
+    color: var(--primary-color);
+    font-weight: 700;
+    margin-bottom: var(--spacing-md);
+}
+
+.footer-section p {
+    font-size: 0.95rem;
+    margin-bottom: var(--spacing-sm);
+    line-height: 1.5;
+}
+
+.footer-section .social-media {
+    display: flex;
     justify-content: center;
-    position: relative;
-    overflow: hidden;
-    transform-style: preserve-3d; /* Para efectos 3D internos */
-    box-shadow: var(--soft-glow);
-    border: 1px solid rgba(255, 215, 0, 0.2);
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-md);
 }
 
-.brand-planet::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: conic-gradient( /* Efecto de brillo cónico */
-        from 0deg,
-        transparent,
-        rgba(255, 215, 0, 0.1),
-        transparent
-    );
-    animation: planetRotation 8s linear infinite; /* Rotación del brillo */
-    z-index: 1; /* Sobre el fondo del planeta */
+.footer-section .social-media a {
+    color: var(--text-color-light);
+    transition: color var(--transition-speed);
 }
 
-@keyframes galacticRotation {
-    from { transform: translateX(0); }
-    to { transform: translateX(-100%); } /* Mueve el track a la izquierda */
+.footer-section .social-media a:hover {
+    color: var(--primary-color);
 }
 
-@keyframes planetRotation {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+/* Ajustes para los enlaces de redes sociales en el footer para usar las imágenes */
+.footer-section .social-media img {
+    height: 32px; /* Tamaño de los íconos */
+    width: 32px;
+    transition: transform var(--transition-speed);
 }
 
-.brand-logo { /* Contenido interno del planeta, el logo en sí */
-    position: relative;
-    z-index: 2; /* Sobre el brillo cónico */
-    filter: drop-shadow(0 0 10px var(--accent-gold)); /* Sombra brillante para el logo */
-    transition: all var(--transition-smooth);
-    max-width: 80%; /* Asegura que el logo quepa */
-    max-height: 80%;
-    object-fit: contain;
+.footer-section .social-media img:hover {
+    transform: scale(1.1);
 }
 
-.brand-planet:hover .brand-logo {
-    transform: scale(1.2) rotateY(360deg); /* Zoom y giro 3D en hover */
+/* FAQ Section */
+.faq-item {
+    background-color: var(--light-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    transition: background-color var(--transition-speed);
 }
 
-/* Ajustes de responsive.css para la nueva nav */
-@media (max-width: 767px) {
-    .mobile-nav {
-        display: flex; /* Asegura que el menú móvil esté visible */
-    }
+.faq-item:hover {
+    background-color: rgba(0, 0, 0, 0.6);
 }
-@media (min-width: 768px) {
-    .mobile-nav {
-        display: none; /* Oculta el menú móvil en desktop */
-    }
+
+.faq-item h4 {
+    margin: 0;
+    padding: 0;
+    font-size: 1.15rem;
+    cursor: pointer;
+    color: var(--primary-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.faq-item h4::after {
+    content: '+';
+    font-size: 1.5rem;
+    transition: transform var(--transition-speed);
+}
+
+.faq-item h4.active::after {
+    content: '-';
+    transform: rotate(180deg);
+}
+
+.faq-item p {
+    margin-top: var(--spacing-sm);
+    color: var(--text-color-light);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* Promociones destacadas en la sección de inicio */
+.promotion-highlight {
+    background-color: var(--secondary-color-dark);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md);
+    text-align: center;
+    border: 1px solid var(--border-color);
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.promotion-highlight:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.promotion-highlight h3 {
+    color: var(--accent-color);
 }
