@@ -1,7 +1,7 @@
 // js/main.js
 
 import { initCarousel } from './carousel.js';
-import { renderProducts, setupProductFilters, renderBrands } from './products.js';
+import { renderProducts, setupProductFilters } from './products.js'; // Eliminar renderBrands si no se usa directamente aquí
 import { setupSearch, toggleSearchModal } from './search.js';
 import { initCart, updateCartCount, toggleCartSidebar } from './cart.js';
 import { setupSupport } from './support.js';
@@ -28,8 +28,8 @@ export const appState = {
  */
 async function loadInitialData() {
     try {
-        // console.log('main.js: Iniciando carga de datos iniciales...'); // ELIMINADO
-        
+        console.log('main.js: Iniciando carga de datos iniciales...');
+
         // Cargar config.json
         const configResponse = await fetch('config.json');
         if (!configResponse.ok) {
@@ -39,178 +39,228 @@ async function loadInitialData() {
         appState.banners = configData.banners || [];
         appState.brands = configData.brands || [];
         appState.contactInfo = configData.contactInfo || {};
-
+        console.log('main.js: config.json cargado. Banners:', appState.banners.length, 'Brands:', appState.brands.length, 'Contact Info:', appState.contactInfo);
+        
         // Cargar products.json
         const productsResponse = await fetch('products.json');
         if (!productsResponse.ok) {
             throw new Error(`Error HTTP! status: ${productsResponse.status} al cargar products.json`);
         }
         appState.products = await productsResponse.json();
+        console.log('main.js: products.json cargado. Productos:', appState.products.length);
 
-        // console.log('main.js: Datos iniciales cargados exitosamente.'); // ELIMINADO
+        console.log('main.js: Datos iniciales cargados completamente.');
     } catch (error) {
         console.error('main.js: Error al cargar datos iniciales:', error);
-        showToastNotification('Error al cargar datos esenciales. Por favor, recarga la página.', 'error');
-        throw error; // Re-lanza el error para que el bloque catch principal lo capture
+        showToastNotification('Error al cargar la información principal.', 'error');
     }
 }
 
 /**
- * Configura los event listeners para la interfaz de usuario.
+ * Configura los manejadores de eventos generales de la UI.
  */
 function setupUIEventListeners() {
-    // Manejar el botón de menú hamburguesa
+    // Manejar el botón de hamburguesa para el menú móvil
     const menuToggle = document.getElementById('menuToggle');
-    const mainNav = document.getElementById('mainNav');
+    const mainNav = document.querySelector('.main-nav');
     if (menuToggle && mainNav) {
         menuToggle.addEventListener('click', () => {
             mainNav.classList.toggle('active');
+            menuToggle.querySelector('i').classList.toggle('fa-bars');
+            menuToggle.querySelector('i').classList.toggle('fa-times');
         });
+
+        // Cerrar el menú al hacer clic en un enlace (solo en móvil)
+        mainNav.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 767) { // Solo si es móvil
+                    mainNav.classList.remove('active');
+                    menuToggle.querySelector('i').classList.remove('fa-times');
+                    menuToggle.querySelector('i').classList.add('fa-bars');
+                }
+            });
+        });
+    } else {
+        console.warn('main.js: Menú de navegación o botón de toggle no encontrados.');
     }
 
-    // Manejar el botón de búsqueda del header
-    const headerSearchBtn = document.getElementById('headerSearchBtn');
-    if (headerSearchBtn) {
-        headerSearchBtn.addEventListener('click', (event) => {
-            event.preventDefault();
-            toggleSearchModal(true); // Abrir el modal de búsqueda
-        });
-    }
-
-    // Manejar el botón de carrito del header
+    // Manejar la apertura/cierre del carrito
     const headerCartBtn = document.getElementById('headerCartBtn');
+    const bottomNavCart = document.getElementById('bottomNavCart');
     if (headerCartBtn) {
-        headerCartBtn.addEventListener('click', (event) => {
-            event.preventDefault();
-            toggleCartSidebar(true); // Abrir la barra lateral del carrito
+        headerCartBtn.addEventListener('click', () => toggleCartSidebar(true));
+    }
+    if (bottomNavCart) {
+        bottomNavCart.addEventListener('click', (e) => {
+            e.preventDefault(); // Evitar que la ancla se dispare
+            toggleCartSidebar(true);
         });
     }
 
-    // Manejar el botón de búsqueda de la barra inferior (si existe)
-    const bottomNavSearchBtn = document.getElementById('bottomNavSearch');
-    if (bottomNavSearchBtn) {
-        bottomNavSearchBtn.addEventListener('click', (event) => {
-            event.preventDefault();
-            toggleSearchModal(true); // Abrir el modal de búsqueda
-        });
+    // Manejar la apertura del modal de búsqueda desde el header y bottom nav
+    const headerSearchBtn = document.getElementById('headerSearchBtn');
+    const bottomNavSearch = document.getElementById('bottomNavSearch');
+    if (headerSearchBtn) {
+        headerSearchBtn.addEventListener('click', () => toggleSearchModal(true));
     }
-
-    // Manejar el botón de carrito de la barra inferior (si existe)
-    const bottomNavCartBtn = document.getElementById('bottomNavCart');
-    if (bottomNavCartBtn) {
-        bottomNavCartBtn.addEventListener('click', (event) => {
-            event.preventDefault();
-            toggleCartSidebar(true); // Abrir la barra lateral del carrito
+    if (bottomNavSearch) {
+        bottomNavSearch.addEventListener('click', (e) => {
+            e.preventDefault(); // Evitar que la ancla se dispare
+            toggleSearchModal(true);
         });
     }
 }
 
 /**
- * Configura el estado activo de la barra de navegación inferior basado en la URL.
+ * Establece el estado activo de los ítems de la barra de navegación inferior
+ * basándose en la sección visible en la ventana.
  */
 function setupBottomNavActiveState() {
-    const navItems = document.querySelectorAll('.bottom-nav .nav-item');
-    // Si no hay hash, o si el hash es solo '#', por defecto al primer elemento (Inicio)
-    const currentHash = window.location.hash && window.location.hash !== '#' ? window.location.hash : '#hero-carousel'; 
+    const bottomNavItems = document.querySelectorAll('.bottom-nav .nav-item');
+    if (bottomNavItems.length === 0) {
+        // console.warn('main.js: Elementos de la barra de navegación inferior no encontrados.'); // ELIMINADO
+        return;
+    }
 
-    navItems.forEach(item => {
-        item.classList.remove('active');
-        // Usar item.getAttribute('href') para comparar con el hash actual
-        if (item.getAttribute('href') === currentHash) {
-            item.classList.add('active');
+    const sections = [
+        { id: 'hero-carousel', navItem: document.querySelector('.bottom-nav a[href="#hero-carousel"]') },
+        { id: 'allProductsGridSection', navItem: document.querySelector('.bottom-nav a[href="#allProductsGridSection"]') },
+        // { id: 'searchModal', navItem: document.getElementById('bottomNavSearch') }, // El modal de búsqueda no es una sección de scroll
+        // { id: 'cartSidebar', navItem: document.getElementById('bottomNavCart') }, // El sidebar del carrito no es una sección de scroll
+        { id: 'support-section', navItem: document.querySelector('.bottom-nav a[href="#support-section"]') }
+    ];
+
+    const observerOptions = {
+        root: null, // viewport
+        rootMargin: '0px',
+        threshold: 0.5 // 50% de la sección debe ser visible
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // Remover 'active' de todos
+                bottomNavItems.forEach(item => item.classList.remove('active'));
+                // Añadir 'active' al que está intersectando
+                const activeNavItem = sections.find(s => s.id === entry.target.id);
+                if (activeNavItem && activeNavItem.navItem) {
+                    activeNavItem.navItem.classList.add('active');
+                }
+            }
+        });
+    }, observerOptions);
+
+    sections.forEach(s => {
+        const sectionElement = document.getElementById(s.id);
+        if (sectionElement) {
+            observer.observe(sectionElement);
+        } else {
+            console.warn(`main.js: Sección con ID '${s.id}' no encontrada para el IntersectionObserver.`);
         }
     });
 
-    // Añadir listener para actualizar el estado activo al cambiar el hash
-    window.addEventListener('hashchange', () => {
-        const newHash = window.location.hash && window.location.hash !== '#' ? window.location.hash : '#hero-carousel';
-        navItems.forEach(item => {
-            item.classList.remove('active');
-            if (item.getAttribute('href') === newHash) {
-                item.classList.add('active');
+    // Manejar clics en los nav-items para scroll suave
+    bottomNavItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+            const href = item.getAttribute('href');
+            if (href && href.startsWith('#') && href !== '#') { // Solo si es un ancla interna
+                e.preventDefault(); // Previene el comportamiento por defecto de la ancla
+                const targetId = href.substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
             }
         });
     });
+
+    // Asegurar que el elemento de inicio esté activo al cargar si no hay otra sección visible
+    const initialActive = document.querySelector('.bottom-nav a[href="#hero-carousel"]');
+    if (initialActive) {
+        initialActive.classList.add('active');
+    }
 }
 
 
-// Punto de entrada principal de la aplicación
+/**
+ * Inicializa la aplicación cuando el DOM está completamente cargado.
+ * Orquesta la carga de datos y la inicialización de todos los componentes.
+ */
 document.addEventListener('DOMContentLoaded', async () => {
-    // Paso 1: Inicializar la verificación de edad
-    initAgeVerification();
+    console.log('main.js: DOMContentLoaded disparado. Iniciando aplicación...');
 
-    // Solo continuar con la carga de la aplicación si la edad ya fue verificada
-    // o si el modal de verificación de edad no existe/no es requerido.
-    // Asumimos que initAgeVerification maneja la lógica de ocultar/redirigir.
-    const ageVerificationModal = document.getElementById('ageVerificationModal');
-    if (ageVerificationModal && window.getComputedStyle(ageVerificationModal).display !== 'none') {
-        // Si el modal está visible, la lógica de la aplicación se pausa hasta que el usuario interactúe.
-        // Se espera que initAgeVerification maneje la redirección o cierre del modal.
-        // console.log('main.js: Esperando verificación de edad para continuar la carga de la aplicación.'); // ELIMINADO
-        return; 
-    }
+    // Paso 1: Inicializar la verificación de edad ANTES de cargar cualquier otra cosa.
+    initAgeVerification();
+    console.log('main.js: Age Verification initialized.');
+
+    // No agregamos la lógica de `hasVerifiedAge` de localStorage, simplemente mostramos el modal
+    // y el resto de la app se inicializa después de que el usuario confirme.
+    // Asumimos que el modal de verificación de edad es bloqueante y se oculta con el click.
 
     try {
-        // Paso 2: Cargar datos iniciales (productos, banners, marcas, contacto)
-        await loadInitialData();
+        // Paso 2: Cargar datos iniciales
+        await loadInitialData(); // Ya tiene logs
 
-        // Paso 3: Inicializar el carrusel principal (banners)
-        initCarousel(appState.banners);
-
-        // Paso 4: Inicializar el módulo del carrito
+        // Paso 3: Inicializar el carrito (necesita appState.cart)
         initCart();
-        updateCartCount(appState.cart); // Actualizar el contador del carrito al cargar
+        console.log('main.js: Cart initialized.');
 
-        // Paso 5: Renderizar todos los productos en la cuadrícula principal
-        renderProducts(appState.products, '#allProductsGrid');
-        
-        // Paso 6: Configurar filtros para la cuadrícula principal de productos
-        setupProductFilters(appState.products, '#allProductsGrid');
+        // Paso 4: Inicializar el carrusel principal (necesita appState.banners)
+        initCarousel(appState.banners);
+        console.log('main.js: Main Carousel initialized.');
 
-        // Paso 7: Inicializar carrusel de productos por categoría
-        // El carrusel de categorías se inicializa con todos los productos
-        // y la lógica de filtrado está dentro de setupCategoryProductCarousel
-        setupCategoryProductCarousel(appState.products, '#categoryProductsSection');
+        // Paso 5: Inicializar carruseles de productos por categoría
+        // La función `setupCategoryProductCarousel` ahora recibe todos los productos.
+        setupCategoryProductCarousel(appState.products, '#categoryProductsSection'); // Asegúrate que el ID es correcto en index.html
+        console.log('main.js: Category Products Carousel setup.');
 
-        // Paso 8: Inicializar carrusel continuo de marcas
-        initContinuousProductCarousel(appState.brands, 'continuousCarouselTrack', 'Cinturón de Marcas');
+        // Paso 6: Renderizar todos los productos en la cuadrícula (si tienes una sección para "todos los productos")
+        // Asumiendo que tienes una sección con ID 'allProductsGridSection' y un grid dentro con ID 'allProductsGrid'
+        renderProducts(appState.products, '#allProductsGrid'); // Asumiendo que renderProducts sabe dónde renderizar
+        setupProductFilters(appState.products, '#allProductsGridSection', '#allProductsGrid');
+        console.log('main.js: All Products Grid rendered and filters setup.');
 
-        // Paso 9: Configurar la funcionalidad de búsqueda
+        // Paso 7: Inicializar el carrusel continuo de marcas (necesita appState.brands)
+        // Asegúrate de que el trackId sea el correcto en tu HTML.
+        initContinuousProductCarousel(appState.brands, 'continuousCarouselTrack', 'Carrusel de Marcas');
+        console.log('main.js: Continuous Carousel initialized.');
+
+        // Paso 8: Configurar la funcionalidad de búsqueda (necesita appState.products)
         setupSearch();
+        console.log('main.js: Search functionality setup.');
 
-        // Paso 10: Configurar el módulo de soporte
-        if (appState.contactInfo && appState.contactInfo.phone) {
-            setupSupport(appState.contactInfo.phone);
-        } else {
-            console.warn('main.js: Número de teléfono de contacto no encontrado en config.json para el módulo de soporte.');
-        }
+        // Paso 9: Configurar la sección de soporte/contacto
+        setupSupport();
+        console.log('main.js: Support functionality setup.');
 
-        // Paso 11: Configurar event listeners de UI
+        // Paso 10: Añadir manejadores de eventos UI generales
         setupUIEventListeners();
+        console.log('main.js: UI Event Listeners setup.');
 
-        // Paso 12: Configurar el estado activo de la barra de navegación inferior
-        setupBottomNavActiveState();
+        // Paso 11: Configurar el estado activo de la barra de navegación inferior
+        setupBottomNavActiveState(); // Asegúrate de que esta función existe o la has trasladado.
+        console.log('main.js: Bottom Nav Active State setup.');
 
-        // Actualizar información de contacto en el footer/contacto
+        // Paso 12: Actualizar información de contacto en el footer/contacto
+        // Verifica que estos IDs existan en tu index.html
         document.getElementById('contactEmail').textContent = appState.contactInfo.email || 'N/A';
         document.getElementById('contactPhone').textContent = appState.contactInfo.phone || 'N/A';
         document.getElementById('contactAddress').textContent = appState.contactInfo.address || 'N/A';
         
-        // También actualizar el footer, si tiene IDs diferentes
         document.getElementById('footerEmail').textContent = appState.contactInfo.email || 'N/A';
         document.getElementById('footerPhone').textContent = appState.contactInfo.phone || 'N/A';
         document.getElementById('footerAddress').textContent = appState.contactInfo.address || 'N/A';
-
 
         const footerWhatsappLink = document.querySelector('.social-media a[href*="whatsapp"]');
         if (footerWhatsappLink && appState.contactInfo.phone) {
             footerWhatsappLink.href = `https://wa.me/${appState.contactInfo.phone}`;
         }
+        console.log('main.js: Contact info updated.');
 
-        // console.log('main.js: Aplicación inicializada completamente.'); // ELIMINADO
+        console.log('main.js: Aplicación inicializada completamente.');
 
     } catch (error) {
-        console.error('main.js: No se pudieron cargar los productos o la aplicación no se renderizó completamente.', error);
+        console.error('main.js: Error crítico al iniciar la aplicación. Por favor, recarga la página.', error);
         showToastNotification('Error crítico al iniciar la aplicación. Por favor, recarga la página.', 'error');
     }
 });
