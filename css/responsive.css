@@ -4,13 +4,23 @@
 /* Estilos para dispositivos pequeños (hasta 767px) */
 @media (max-width: 767px) {
     .header-content {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: var(--spacing-md);
+        flex-direction: row; /* CAMBIO: Elementos en una sola fila */
+        align-items: center; /* CAMBIO: Centra verticalmente */
+        justify-content: space-between; /* CAMBIO: Distribuye el espacio entre logo, menú y botones */
+        /* gap: var(--spacing-md); */ /* Quita gap si usas space-between en el contenedor principal */
+        padding: var(--spacing-sm); /* Ajusta el padding del header si es necesario */
+    }
+
+    /* Asegúrate de que tu HTML tenga un div para los íconos de acción si quieres agruparlos */
+    /* Ejemplo: <div class="header-action-buttons">...</div> */
+    .header-action-buttons { /* Si tienes un contenedor para búsqueda y carrito */
+        display: flex;
+        gap: var(--spacing-md); /* Espacio entre los íconos */
+        align-items: center;
     }
 
     .main-nav {
-        width: 90%;
+        width: 100%; /* CAMBIO: Ocupa todo el ancho del contenedor padre (container) */
         display: none; /* Ocultar por defecto para el menú hamburguesa */
         flex-direction: column;
         background-color: var(--dark-bg); /* Usar el color oscuro del header */
@@ -46,30 +56,32 @@
         display: block; /* Mostrar el menú hamburguesa en móvil */
     }
 
-    .header-icons {
-        margin-left: auto; /* Empuja los íconos a la derecha */
-    }
+    /* El margin-left: auto en .header-icons ya no es estrictamente necesario si .header-content usa space-between */
+    /* .header-icons {
+        margin-left: auto;
+    } */
 
     .hero-section {
-        height: 90px; /* Altura más pequeña para el carrusel en móviles */
+        height: 250px; /* CAMBIO: Altura más visible para el carrusel en móviles, sin ser excesiva */
     }
 
+    /* Ajustes para el texto y botones del carrusel, hazlos más pequeños en móvil */
     .carousel-title {
-        font-size: 2em;
+        font-size: 1.8em; /* Un poco más pequeño */
     }
 
     .carousel-description {
-        font-size: 1em;
+        font-size: 0.9em; /* Más pequeño para ahorrar espacio */
     }
 
     .carousel-button {
-        font-size: 0.9em;
-        padding: var(--spacing-xs) var(--spacing-md);
+        font-size: 0.8em; /* Botones más pequeños */
+        padding: var(--spacing-xs) var(--spacing-sm); /* Padding más compacto */
     }
 
-    .carousel-btn {
+    .carousel-btn { /* Botones de navegación (flechas) del carrusel */
         padding: var(--spacing-xs);
-        font-size: 1.2em;
+        font-size: 1em; /* Más pequeños */
     }
 
     .carousel-dots {
@@ -77,23 +89,27 @@
     }
 
     .product-grid {
-        grid-template-columns: repeat(auto-fill, minmax(69px, 1fr)); /* Más pequeñas en móvil */
+        /* CAMBIO CRÍTICO: Buscar 2 columnas usables en móvil. minmax(140px, 1fr) es un buen punto de partida */
+        /* Si quieres 3 columnas sí o sí, tendrías que ir a minmax(90px, 1fr) aprox., pero las tarjetas serían diminutas */
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); 
+        gap: var(--spacing-sm); /* Espacio reducido entre tarjetas */
     }
 
     .product-card {
-        padding: var(--spacing-xs);
+        padding: var(--spacing-xs); /* Padding más pequeño */
     }
 
     .product-image {
-        max-height: 100px;
+        max-height: 120px; /* CAMBIO: Ajustar para que se vean mejor dentro de la tarjeta más pequeña */
+        object-fit: contain; /* Asegura que la imagen se ajuste bien sin fondo */
     }
 
     .product-name {
-        font-size: 0.9em;
+        font-size: 0.85em; /* Nombres de productos más pequeños */
     }
 
     .product-price {
-        font-size: 1em;
+        font-size: 0.9em; /* Precios más pequeños */
     }
 
     .product-filters {
@@ -151,7 +167,7 @@
 }
 
 /* Tablet (768px a 1023px) */
-@media (min-width: 767px) and (max-width: 1023px) {
+@media (min-width: 768px) and (max-width: 1023px) {
     .container {
         padding: 0 var(--spacing-lg);
     }
@@ -169,19 +185,37 @@
     }
 
     .hero-section {
-        height: 350px; /* Altura intermedia del carrusel en tablet */
+        height: 380px; /* CAMBIO: Altura ligeramente mayor para tablet */
     }
 
     .carousel-title {
-        font-size: 2.2em;
+        font-size: 2em; /* Títulos un poco más grandes que en móvil */
     }
 
     .carousel-description {
-        font-size: 1em;
+        font-size: 1em; /* Descripción legible */
     }
 
     .product-grid {
+        /* CAMBIO CRÍTICO: Buscar 3 columnas en tablet. minmax(180px, 1fr) ya lo tienes y funciona bien. */
         grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* 3-4 columnas en tablet */
+        gap: var(--spacing-md);
+    }
+
+    .product-card {
+        padding: var(--spacing-sm); /* Ajusta padding */
+    }
+
+    .product-image {
+        max-height: 150px; /* Ajusta la altura de la imagen */
+    }
+
+    .product-name {
+        font-size: 0.9em;
+    }
+
+    .product-price {
+        font-size: 1.1em;
     }
 
     .product-filters {
@@ -220,6 +254,7 @@
 
     .product-grid {
         grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* 4-5 columnas en desktop */
+        gap: var(--spacing-lg);
     }
 
     .main-nav {
