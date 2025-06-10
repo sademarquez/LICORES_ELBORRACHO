@@ -37,7 +37,7 @@
         width: 100%;
         color: var(--text-color-light); /* Color de texto para enlaces del menú móvil */
     }
-    
+
     .main-nav .nav-list a::after {
         background-color: var(--primary-color); /* Asegurar color de subrayado en móvil */
     }
@@ -60,7 +60,7 @@
         /* que se auto-ajusta en 2 o 3 columnas dependiendo del espacio, lo cual es óptimo. */
         grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* Más pequeño para móviles */
     }
-    
+
     /* AHORA: Ajuste para el carrusel de productos por categoría */
     .category-product-track {
         /* Usamos flexbox y un ancho fijo para cada tarjeta para controlar el número de columnas */
@@ -72,12 +72,56 @@
     .category-product-track .product-card {
         flex-shrink: 0;
         /* Calcular el ancho para 3 columnas con un gap (var(--spacing-md)) */
-        /* Ancho total disponible / 3 - espacio del gap */
-        /* (100% - (2 * gap)) / 3 */
-        /* 100% de 375px (iPhone 6/7/8) = 375px. (375 - 40px) / 3 = 111.66px */
-        width: calc((100% - (2 * var(--spacing-md))) / 3);
-        min-width: 100px; /* Asegura que no se hagan demasiado pequeñas */
+        width: calc((100% - (2 * var(--spacing-md))) / 3); /* Ensures 3 columns */
+        min-width: 100px; /* Ensures they don't get too small */
+        padding: var(--spacing-sm); /* Reduce padding to optimize space */
+        display: flex; /* Use flex to control internal layout */
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        text-align: center;
     }
+
+    .category-product-track .product-card .product-image {
+        height: 80px; /* Adjust height to give more space for image */
+        margin-bottom: var(--spacing-xs); /* Reduce margin */
+        object-fit: contain;
+        flex-grow: 1; /* Allow image to take available space */
+        width: 100%;
+    }
+
+    .category-product-track .product-card .product-name {
+        font-size: 0.8em; /* Smaller font size for product name */
+        margin-bottom: 0; /* Remove bottom margin */
+        line-height: 1.2; /* Adjust line height for readability */
+        height: 2.4em; /* Fixed height for two lines of text */
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: normal;
+        -webkit-line-clamp: 2; /* Limit to 2 lines */
+        -webkit-box-orient: vertical;
+        display: -webkit-box;
+    }
+
+    /* Hide brand and old/offer prices for category carousel on mobile */
+    .category-product-track .product-card .product-brand,
+    .category-product-track .product-card .product-old-price,
+    .category-product-track .product-card .product-offer-price {
+        display: none;
+    }
+
+    .category-product-track .product-card .product-price {
+        font-size: 0.9em; /* Smaller font size for price */
+        margin-top: var(--spacing-xs); /* Adjust margin */
+        margin-bottom: var(--spacing-xs);
+    }
+
+    .category-product-track .product-card .add-to-cart-btn {
+        font-size: 0.75em; /* Smaller button text */
+        padding: var(--spacing-xs); /* Smaller padding */
+        border-radius: 6px;
+    }
+
 
     .product-card {
         height: auto; /* Ajustar altura automáticamente en móvil */
