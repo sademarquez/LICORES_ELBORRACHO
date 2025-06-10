@@ -3,6 +3,10 @@
 import { appState } from './main.js';
 import { showToastNotification } from './toast.js';
 
+// No es necesario importar renderProductCard aquí si solo se usan logos de marcas.
+// Si se quiere un carrusel continuo de PRODUCTOS, entonces sí se usaría.
+// Para este caso, solo logos de marcas.
+
 /**
  * Inicializa un carrusel de logos continuo.
  * Crea un efecto de desplazamiento infinito duplicando los elementos.
@@ -25,44 +29,71 @@ export function initContinuousProductCarousel(itemsData, trackId, carouselName =
     const itemsToDisplay = itemsData;
 
     if (itemsToDisplay.length === 0) {
-        console.warn(`continuous-carousel.js: No hay elementos para el carrusel continuo "${carouselName}".`);
-        track.innerHTML = `<p style="text-align: center; width: 100%; color: var(--text-color-light);">No hay elementos para mostrar.</p>`;
+        // console.warn(`continuous-carousel.js: No hay elementos para el carrusel continuo "${carouselName}".`); // ELIMINADO
+        track.innerHTML = `<p style="text-align: center; width: 100%; color: var(--text-color-light);">No hay elementos para mostrar en este carrusel.</p>`;
+        // Ocultar la sección si no hay contenido relevante. Asume que el contenedor padre es una sección.
+        track.parentElement.style.display = 'none';
         return;
+    } else {
+        // Mostrar la sección si hay contenido (en caso de que se haya ocultado antes)
+        if (track.parentElement.style.display === 'none') {
+             track.parentElement.style.display = ''; // Restaurar display por defecto
+        }
     }
 
-    // Duplicar los elementos para crear el efecto de carrusel infinito
-    const originalItems = itemsToDisplay.map(item => createBrandLogoElement(item)); // Usar nueva función
-    const clonedItems = itemsToDisplay.map(item => createBrandLogoElement(item));   // Usar nueva función
+    // Duplicar elementos para crear el efecto de carrusel continuo
+    // Calculamos cuántas veces necesitamos duplicar para que el efecto sea "infinito"
+    // Esto dependerá del ancho del contenedor y el ancho de los elementos.
+    // Un valor seguro es duplicar al menos lo suficiente para llenar el ancho del track un par de veces.
+    // Para logos pequeños, podemos duplicar 5-10 veces.
+    const duplicateCount = 5; // Cantidad de veces que se duplica el conjunto de logos
 
-    originalItems.forEach(item => track.appendChild(item));
-    clonedItems.forEach(item => track.appendChild(item.cloneNode(true))); // Clonar para el efecto infinito
+    // Crear y añadir los elementos al track
+    itemsToDisplay.forEach(item => {
+        const itemElement = document.createElement('div');
+        itemElement.classList.add('brand-logo'); // Clase específica para logos de marcas
+        itemElement.innerHTML = `<img src="${item.logoUrl}" alt="${item.name} Logo" loading="lazy">`;
+        track.appendChild(itemElement);
+    });
 
-    // Calcula la duración de la animación basada en el ancho del contenido
-    // Es importante que este cálculo se haga DESPUÉS de que los elementos estén en el DOM.
-    // Usamos setTimeout para dar tiempo al navegador a renderizar y calcular los anchos.
+    // Duplicar los elementos existentes para el efecto continuo
+    for (let i = 0; i < duplicateCount; i++) {
+        itemsToDisplay.forEach(item => {
+            const itemElement = document.createElement('div');
+            itemElement.classList.add('brand-logo');
+            itemElement.innerHTML = `<img src="${item.logoUrl}" alt="${item.name} Logo" loading="lazy">`;
+            track.appendChild(itemElement);
+        });
+    }
+
+    // Configurar la animación CSS
     setTimeout(() => {
+        // Calcular el ancho de un solo conjunto de elementos originales
+        // Esto se hace sumando el ancho de los primeros `itemsToDisplay.length` elementos
         let originalContentWidth = 0;
-        // Solo calcular el ancho de los elementos originales
-        const children = Array.from(track.children).slice(0, itemsToDisplay.length);
-        if (children.length > 0) {
-            children.forEach(child => {
-                originalContentWidth += child.offsetWidth;
-                // Añadir el margin-right que tienen los elementos en CSS
-                const style = window.getComputedStyle(child);
-                originalContentWidth += parseFloat(style.marginRight);
-            });
+        const firstSetElements = track.querySelectorAll('.brand-logo');
+        if (firstSetElements.length > 0) {
+            for (let i = 0; i < itemsToDisplay.length; i++) {
+                if (firstSetElements[i]) {
+                    originalContentWidth += firstSetElements[i].offsetWidth;
+                    // También añadir el gap si es consistente, asumimos 20px de gap por CSS
+                    originalContentWidth += 2 * 20; // Aproximación: 20px de margin-left y 20px de margin-right
+                }
+            }
         } else {
             console.warn('continuous-carousel.js: No se encontraron elementos de marca para calcular el ancho.');
             return;
         }
 
+        // Si el totalWidth es 0, no se puede animar
         if (originalContentWidth === 0) {
             console.warn('continuous-carousel.js: El ancho calculado de los logos es cero, no se aplicará la animación continua.');
             return;
         }
         
         // Ajustar la velocidad basada en la cantidad de elementos y su ancho
-        const scrollSpeedPxPerSecond = 80; // Ajusta este valor para cambiar la velocidad (ej. 50px/segundo)
+        // Velocidad: ej. 50px/segundo. Duración = Ancho_a_desplazar / velocidad_en_px_por_segundo
+        const scrollSpeedPxPerSecond = 80; // Ajusta este valor para cambiar la velocidad
         const duration = originalContentWidth / scrollSpeedPxPerSecond; // Duración para un solo ciclo de desplazamiento
 
         // Establecer la variable CSS para la duración de la animación
@@ -74,16 +105,4 @@ export function initContinuousProductCarousel(itemsData, trackId, carouselName =
     }, 100); // Pequeño retraso para que el navegador calcule los anchos
 
     // console.log(`continuous-carousel.js: Carrusel continuo inicializado para ${trackId} con ${itemsToDisplay.length} elementos originales.`); // ELIMINADO
-}
-
-/**
- * Crea un elemento HTML para un logo de marca.
- * @param {Object} brand - Objeto de marca con 'name' y 'logoUrl'.
- * @returns {HTMLElement} El elemento div que representa el logo de la marca.
- */
-function createBrandLogoElement(brand) {
-    const brandDiv = document.createElement('div');
-    brandDiv.classList.add('brand-logo'); // Asegúrate que esta clase tiene estilos
-    brandDiv.innerHTML = `<img src="${brand.logoUrl}" alt="${brand.name} Logo" loading="lazy">`;
-    return brandDiv;
 }
