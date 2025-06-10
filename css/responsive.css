@@ -42,109 +42,97 @@
         background-color: var(--primary-color); /* Asegurar color de subrayado en móvil */
     }
 
-    .header-actions {
+    .utility-icons {
+        margin-top: var(--spacing-sm);
         width: 100%;
-        justify-content: flex-end; /* Alinear acciones a la derecha */
-    }
-
-    .search-bar {
-        display: none; /* Ocultar la barra de búsqueda en el header en móvil */
-    }
-
-    .cart-icon {
-        margin-left: 0; /* Eliminar margen si solo hay un elemento */
+        justify-content: flex-end;
+        gap: var(--spacing-md);
     }
 
     .menu-toggle {
-        display: block; /* Mostrar el botón de hamburguesa en móvil */
+        display: block; /* Mostrar el menú hamburguesa en móvil */
+        order: -1; /* Mover el toggle al principio visualmente */
+    }
+
+    .logo {
+        font-size: 1.5em;
     }
 
     .hero-section {
-        height: 250px; /* Altura más pequeña para el carrusel en móvil */
-        margin-bottom: var(--spacing-md); /* Reducido para juntar más */
+        height: 300px; /* Reducir altura del carrusel en móvil */
     }
 
     .carousel-slide .slide-content h2 {
-        font-size: 1.5rem; /* Títulos más pequeños en móvil */
+        font-size: 1.8em;
     }
 
     .carousel-slide .slide-content p {
-        font-size: 0.9rem; /* Descripciones más pequeñas */
+        font-size: 0.9em;
     }
 
     .carousel-slide .slide-content .btn {
-        padding: var(--spacing-xs) var(--spacing-sm);
-        font-size: 0.8rem;
-    }
-
-    .brands-section {
-        padding: var(--spacing-lg) 0; /* Menos padding en móvil */
-    }
-
-    .brand-logo {
-        height: 60px; /* Logos más pequeños en móvil */
-        margin-right: var(--spacing-md);
-    }
-
-    .product-grid-section,
-    .category-products-section,
-    .about-section,
-    .support-section {
-        padding: var(--spacing-lg) 0; /* Menos padding general en secciones */
+        padding: var(--spacing-sm) var(--spacing-md);
+        font-size: 0.9em;
     }
 
     .product-grid {
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* 2 columnas en móvil */
-        gap: var(--spacing-md); /* Espacio entre productos */
+        gap: var(--spacing-md);
     }
 
-    /* Carrusel de productos por categoría en móvil (2x2 visualmente) */
-    .category-product-track {
-        display: grid; /* Usar grid para las 2 filas/2 columnas */
-        grid-template-columns: repeat(2, 1fr); /* Dos columnas */
-        grid-auto-rows: auto; /* Altura de fila automática */
-        gap: var(--spacing-md); /* Espacio entre los productos */
-        overflow-x: hidden; /* Ocultar el scroll horizontal en este caso */
-        scroll-snap-type: none; /* Desactivar scroll-snap si se usa grid */
-        padding-bottom: 0; /* Sin padding en el fondo si no hay scrollbar */
+    .product-card {
+        width: 100%; /* Las tarjetas ocuparán el 100% del espacio de la columna minmax */
+        max-width: 180px; /* Pero con un máximo para que no se estiren demasiado en grillas pequeñas */
+        margin: 0 auto; /* Centrar en su columna */
     }
 
-    .category-product-track .product-card {
-        width: auto; /* Dejar que el grid maneje el ancho */
-        margin-right: 0; /* Eliminar margen derecho individual */
-        flex-shrink: 1; /* Permitir que se encoja si es necesario */
-        min-width: unset; /* Deshacer el min-width */
+    .section-title {
+        font-size: 2em;
     }
 
-    /* Ocultar el scrollbar si se usa grid para 2x2 */
-    .category-product-track::-webkit-scrollbar {
-        display: none;
-    }
-    .category-product-track {
-        -ms-overflow-style: none;  /* IE and Edge */
-        scrollbar-width: none;  /* Firefox */
-    }
-
-    .main-footer {
-        padding: var(--spacing-lg) 0;
-    }
-
-    .footer-nav .nav-list {
+    .product-filters {
+        flex-direction: column;
+        align-items: center;
         gap: var(--spacing-sm);
     }
 
-    .social-media {
-        font-size: 1.2rem;
+    .product-filters select,
+    .product-filters input {
+        width: 90%;
+        max-width: 300px;
     }
 
-    /* Modales */
-    .modal-content {
-        padding: var(--spacing-md);
-        width: 95%; /* Más ancho en móvil */
+    .brands-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* Logos más pequeños en móvil */
+    }
+
+    .brands-grid .brand-logo {
+        height: 60px;
+    }
+    .brands-grid .brand-logo img {
+        max-height: 100%;
+        max-width: 100px;
+    }
+
+    .footer-content {
+        gap: var(--spacing-md);
+    }
+
+    .footer-nav .nav-list {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+
+    .contact-info p {
+        font-size: 0.8em;
     }
 
     .age-verification-content {
         padding: var(--spacing-md);
+    }
+
+    .age-verification-content h2 {
+        font-size: 1.8em;
     }
 
     .age-verification-buttons {
@@ -154,51 +142,57 @@
 
     .age-verification-buttons .btn-primary,
     .age-verification-buttons .btn-secondary {
-        width: 100%; /* Ocupar todo el ancho */
+        width: 100%; /* Ancho completo para botones en móvil */
     }
 
+    /* Bottom Navigation Bar (Mobile only) */
     .bottom-nav {
-        display: flex; /* Mostrar la barra de navegación inferior en móvil */
-    }
-
-    /* Asegurar que el searchModal y cartSidebar ocupen toda la pantalla en móvil */
-    #searchModal, #cartSidebar {
-        width: 100%;
-        height: 100%;
-        top: 0;
+        display: flex;
+        position: fixed;
+        bottom: 0;
         left: 0;
-        transform: none; /* Eliminar transformaciones que impidan full screen */
-        border-radius: 0; /* Eliminar bordes redondeados */
-    }
-
-    #cartSidebar .cart-header,
-    #cartSidebar .cart-footer {
-        padding: var(--spacing-md);
-    }
-
-    #cartSidebar .cart-items {
-        padding: 0 var(--spacing-md);
-    }
-
-    #searchModal .search-modal-content {
-        padding: var(--spacing-md);
         width: 100%;
-        max-width: 100%;
-        border-radius: 0;
+        background-color: var(--dark-bg);
+        border-top: 1px solid var(--border-color);
+        justify-content: space-around;
+        padding: var(--spacing-xs) 0;
+        box-shadow: var(--shadow-lg);
+        z-index: 1100;
     }
 
-    .search-modal-content .search-input-group {
+    .bottom-nav .nav-item {
+        display: flex;
         flex-direction: column;
-        gap: var(--spacing-sm);
+        align-items: center;
+        color: var(--text-color-light);
+        font-size: 0.8em;
+        padding: var(--spacing-xs);
+        transition: color var(--transition-speed);
+        position: relative;
     }
 
-    .search-modal-content .search-input-group input {
-        margin-bottom: 0;
+    .bottom-nav .nav-item i {
+        font-size: 1.2em;
+        margin-bottom: 2px;
     }
 
-    .search-results-grid {
-        grid-template-columns: repeat(2, 1fr); /* 2 columnas para resultados de búsqueda en móvil */
-        gap: var(--spacing-md);
+    .bottom-nav .nav-item:hover,
+    .bottom-nav .nav-item.active {
+        color: var(--primary-color);
+    }
+
+    .bottom-nav .cart-count {
+        position: absolute;
+        top: 5px; /* Ajuste para el bottom nav */
+        right: 15px;
+        background-color: var(--danger-color);
+        color: var(--white);
+        font-size: 0.7em;
+        padding: 2px 5px;
+        border-radius: 50%;
+        min-width: 18px;
+        text-align: center;
+        line-height: 1;
     }
 }
 
@@ -208,72 +202,67 @@
         padding: 0 var(--spacing-lg);
     }
 
-    .hero-section {
-        height: 350px; /* Altura intermedia para tablet */
-        margin-bottom: var(--spacing-lg); /* Menor espacio después del hero */
-    }
-
-    .carousel-slide .slide-content h2 {
-        font-size: 2rem;
-    }
-
-    .product-grid {
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* 3-4 columnas en tablet */
-    }
-
-    /* Carrusel de productos por categoría en tablet (ajustar para que se vean bien) */
-    .category-product-track .product-card {
-        width: calc((100% - (2 * var(--spacing-md))) / 3); /* 3 columnas con 2 gaps */
-        min-width: 160px; /* Ajuste mínimo */
-        margin-right: var(--spacing-md);
-    }
-
-    .category-buttons-container {
-        gap: var(--spacing-md);
+    .header-content {
+        justify-content: space-between;
+        align-items: center;
     }
 
     .main-nav {
-        display: flex; /* Asegurar que la navegación principal esté visible */
+        display: flex; /* Mostrar navegación en tablet */
         position: static;
         background-color: transparent;
         box-shadow: none;
-        padding: 0;
         border-top: none;
+        padding: 0;
         width: auto;
     }
 
     .main-nav .nav-list {
         flex-direction: row;
-        gap: var(--spacing-lg);
-    }
-
-    .main-nav .nav-list a {
-        padding: 0;
-        width: auto;
+        gap: var(--spacing-md);
     }
 
     .menu-toggle {
-        display: none; /* Ocultar menú hamburguesa */
+        display: none; /* Ocultar hamburguesa en tablet */
     }
 
-    .header-content {
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
+    .hero-section {
+        height: 400px; /* Altura intermedia del carrusel en tablet */
     }
 
-    .header-actions {
-        width: auto;
-        justify-content: flex-end;
+    .carousel-slide .slide-content h2 {
+        font-size: 2.2em;
     }
 
-    .search-bar {
-        display: block; /* Mostrar barra de búsqueda en el header */
-        margin-left: var(--spacing-md);
+    .carousel-slide .slide-content p {
+        font-size: 1em;
     }
 
-    .bottom-nav {
-        display: none; /* Ocultar la barra inferior en tablet */
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); /* 3-4 columnas en tablet */
+    }
+
+    .product-card {
+        width: 100%; /* Ajustar al 100% de la columna */
+        max-width: 180px; /* Mantener un máximo para el tamaño de la tarjeta */
+    }
+
+    /* Carrusel de productos por categoría en tablet */
+    .category-product-track .product-card {
+        width: calc((100% - (2 * var(--spacing-md))) / 3); /* 3 columnas con 2 gaps */
+        min-width: 160px; /* Ajuste mínimo */
+    }
+
+    .brands-grid {
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    }
+
+    .brands-grid .brand-logo {
+        height: 70px;
+    }
+
+    .brands-grid .brand-logo img {
+        max-width: 110px;
     }
 
     .age-verification-buttons {
@@ -293,13 +282,12 @@
         padding: 0 var(--spacing-xl);
     }
 
-    .hero-section {
-        height: 450px; /* Altura original del carrusel en desktop */
-        margin-bottom: var(--spacing-xl); /* Espacio por defecto después del hero */
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Mantener 4-5 columnas en desktop, ajustadas al tamaño de 180px */
     }
 
-    .product-grid {
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* 4-5 columnas en desktop */
+    .product-card {
+        width: 180px; /* Tamaño fijo para desktop */
     }
 
     /* Carrusel de productos por categoría en desktop */
@@ -320,49 +308,12 @@
         display: none; /* Ocultar la barra inferior en desktop */
     }
 
+    .hero-section {
+        height: 450px; /* Altura original del carrusel en desktop */
+    }
+
     .product-filters select,
     .product-filters input {
-        width: 200px; /* Ancho fijo para filtros en desktop */
-    }
-
-    /* Centrar el contenido de la barra de búsqueda en desktop */
-    .search-modal-content {
-        max-width: 600px;
-        width: 80%;
-    }
-
-    .search-results-grid {
-        grid-template-columns: repeat(4, 1fr); /* Más columnas para resultados de búsqueda en desktop */
-    }
-
-    /* Footer */
-    .footer-content {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: flex-start;
-        text-align: left;
-    }
-
-    .footer-nav, .contact-info, .social-media {
-        flex: 1; /* Distribuir el espacio equitativamente */
-    }
-
-    .footer-logo {
-        margin-bottom: 0;
-        margin-right: var(--spacing-xl);
-    }
-
-    .footer-nav .nav-list {
-        justify-content: flex-start;
-        flex-direction: column; /* Enlaces de navegación en columna en el footer */
-        align-items: flex-start;
-    }
-
-    .contact-info p {
-        text-align: left;
-    }
-
-    .social-media {
-        text-align: right;
+        width: 200px; /* Ancho específico para filtros en desktop */
     }
 }
