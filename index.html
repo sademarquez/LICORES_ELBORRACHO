@@ -1,250 +1,351 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EL BORRACHO - Licores a Domicilio</title>
-    <link rel="icon" href="images/icons/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/components.css">
-    <link rel="stylesheet" href="css/responsive.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-</head>
-<body>
-    <div id="ageVerificationModal" class="age-verification-modal">
-        <div class="age-verification-content">
-            <h2>Verificación de Edad</h2>
-            <p>Para acceder a este sitio, debes ser mayor de 18 años.</p>
-            <div class="age-verification-buttons">
-                <button id="confirmAgeBtn" class="btn-primary">Soy mayor de 18</button>
-                <button id="declineAgeBtn" class="btn-secondary">No soy mayor de 18</button>
-            </div>
-        </div>
-    </div>
+/* css/responsive.css */
 
-    <header class="main-header">
-        <div class="container">
-            <div class="header-content">
-                <a href="#" class="logo">EL BORRACHO</a>
-                <button id="menuToggle" class="menu-toggle" aria-label="Abrir menú">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <nav id="mainNav" class="main-nav">
-                    <ul class="nav-list">
-                        <li><a href="#novedades-ofertas-carousel">Inicio</a></li>
-                        <li><a href="#allProductsGridSection">Productos</a></li>
-                        <li><a href="#about-us">Nosotros</a></li>
-                        <li><a href="#support-section">Soporte</a></li>
-                    </ul>
-                </nav>
-                <div class="header-icons">
-                    <button id="headerSearchBtn" class="icon-btn" aria-label="Abrir búsqueda">
-                        <i class="fas fa-search"></i>
-                    </button>
-                    <button id="headerCartBtn" class="icon-btn" aria-label="Abrir carrito">
-                        <i class="fas fa-shopping-cart"></i>
-                        <span id="cartCount" class="cart-count">0</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </header>
+/* Mobile-First Approach */
+/* Estilos para dispositivos pequeños (hasta 767px) */
+@media (max-width: 767px) {
+    .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-md);
+        padding: var(--spacing-md); /* Añadido padding para que el contenido no se pegue a los bordes */
+    }
 
-    <main>
-        <section class="hero-section" id="hero-carousel">
-            <div class="carousel-container">
-                <div id="carouselTrack" class="carousel-track">
-                    </div>
-                <button id="carouselPrev" class="carousel-btn prev" aria-label="Diapositiva anterior">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                <button id="carouselNext" class="carousel-btn next" aria-label="Diapositiva siguiente">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-                <div id="carouselDots" class="carousel-dots"></div>
-            </div>
-        </section>
+    /* ***** CAMBIO CLAVE AQUÍ: Ajuste del padding-top del hero-section para móvil ***** */
+    .hero-section {
+        height: 300px; /* Altura más pequeña para el carrusel en móviles */
+        padding-top: 100px; /* ESTIMACIÓN: Asume que el header móvil con menú plegado tiene unos 100px de alto. AJUSTA ESTE VALOR. */
+    }
 
-        <section class="category-products-section container" id="categoryProductsSection">
-            <h2>Nuestros Productos por Categoría</h2>
-            <div class="category-buttons-container">
-                <button class="category-btn active" data-category="all">Todos</button>
-                <button class="category-btn" data-category="Licor">Licores</button>
-                <button class="category-btn" data-category="Cigarrillo">Cigarrillos</button>
-                <button class="category-btn" data-category="Bebida no alcohólica">Bebidas</button>
-                <button class="category-btn" data-category="Snack">Snacks</button>
-            </div>
-            <div class="category-products-carousel-wrapper">
-                <div id="categoryProductTrack" class="category-products-track">
-                    </div>
-            </div>
-        </section>
+    .main-nav {
+        width: 100%;
+        display: none; /* Ocultar por defecto para el menú hamburguesa */
+        flex-direction: column;
+        background-color: var(--dark-bg); /* Usar el color oscuro del header */
+        position: absolute; /* Cambiado a absolute para que no desplace otros elementos fijos */
+        top: 100%; /* Se posiciona debajo del header */
+        left: 0;
+        box-shadow: var(--shadow-md);
+        padding: var(--spacing-md);
+        border-top: 1px solid var(--border-color);
+        z-index: 999; /* Z-index menor que el header principal */
+    }
 
-        <section class="brands-belt-section" id="brands-belt-section">
-            <div class="brands-belt-container">
-                <div id="continuousCarouselTrack" class="continuous-carousel-track">
-                    </div>
-            </div>
-        </section>
+    .main-nav.active {
+        display: flex;
+    }
 
-        <section class="products-section container" id="allProductsGridSection">
-            <h2>Explorar Todos los Productos</h2>
-            <div class="product-filters">
-                <div class="filter-group">
-                    <label for="categoryFilter">Categoría:</label>
-                    <select id="categoryFilter">
-                        </select>
-                </div>
-                <div class="filter-group">
-                    <label for="priceFilter">Precio:</label>
-                    <select id="priceFilter">
-                        <option value="all">Todos los Precios</option>
-                        <option value="0-20000">$0 - $20.000</option>
-                        <option value="20001-50000">$20.001 - $50.000</option>
-                        <option value="50001-100000">$50.001 - $100.000</option>
-                        <option value="100001-999999">Más de $100.000</option>
-                    </select>
-                </div>
-                <div class="filter-group search-group">
-                    <label for="productSearch">Buscar:</label>
-                    <input type="text" id="productSearch" placeholder="Buscar producto...">
-                </div>
-            </div>
-            <div id="allProductsGrid" class="product-grid">
-                </div>
-        </section>
-        
-        <section class="about-us-section container" id="about-us">
-            <h2>Sobre Nosotros</h2>
-            <p>En **EL BORRACHO**, nos dedicamos a llevar la mejor selección de licores, cervezas, snacks y bebidas no alcohólicas directamente a tu puerta. Ofrecemos calidad, variedad y un servicio de entrega rápido y confiable. ¡Tu fiesta comienza con nosotros!</p>
-            <p>Comprometidos con el consumo responsable. Prohibida la venta de alcohol a menores de edad.</p>
-        </section>
+    .main-nav .nav-list {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
 
-        <section class="support-section container" id="support-section">
-            <h2>Domicilios y Pedidos</h2>
-            <div class="support-contact-info">
-                <p>¿Necesitas ayuda o quieres hacer un pedido especial?</p>
-                <p><i class="fas fa-envelope"></i> Email: <span id="contactEmail"></span></p>
-                <p><i class="fas fa-phone"></i> Teléfono: <span id="contactPhone"></span></p>
-                <p><i class="fas fa-map-marker-alt"></i> Dirección: <span id="contactAddress"></span></p>
-            </div>
-            <div class="support-buttons">
-                <button id="bookAppointmentBtn" class="btn-primary"><i class="fab fa-whatsapp"></i> Agendar Pedido/Entrega</button>
-                <button id="reportFaultBtn" class="btn-secondary"><i class="fas fa-exclamation-triangle"></i> Reportar un Problema</button>
-            </div>
-        </section>
+    .main-nav .nav-list a {
+        padding: var(--spacing-sm) 0;
+        width: 100%;
+        color: var(--text-color-light); /* Color de texto para enlaces del menú móvil */
+    }
 
-    </main>
+    .main-nav .nav-list a::after {
+        background-color: var(--primary-color); /* Asegurar color de subrayado en móvil */
+    }
 
-    <footer class="main-footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section about">
-                    <h3>EL BORRACHO</h3>
-                    <p>Tu licorería a domicilio de confianza. Calidad y rapidez a tu servicio.</p>
-                </div>
-                <div class="footer-section contact-info">
-                    <h3>Contacto</h3>
-                    <ul>
-                        <li><i class="fas fa-map-marker-alt"></i> <span id="footerAddress"></span></li>
-                        <li><i class="fas fa-phone"></i> <span id="footerPhone"></span></li>
-                        <li><i class="fas fa-envelope"></i> <span id="footerEmail"></span></li>
-                    </ul>
-                </div>
-                <div class="footer-section social-media">
-                    <h3>Síguenos</h3>
-                    <a href="#" class="social-icon" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                    <a href="#" class="social-icon" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="social-icon" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 EL BORRACHO. Todos los derechos reservados. | Diseñado por Tu Nombre/Empresa</p>
-            </div>
-        </div>
-    </footer>
+    /* Ocultar iconos de utilidad en el header en móvil si están en el bottom-nav */
+    .utility-icons .icon-btn:not(#searchIcon):not(#cartIcon) {
+        display: none;
+    }
 
-    <div id="cartSidebar" class="cart-sidebar">
-        <div class="cart-header">
-            <h3>Tu Carrito</h3>
-            <button id="closeCartBtn" class="close-btn" aria-label="Cerrar carrito"><i class="fas fa-times"></i></button>
-        </div>
-        <div id="cartItems" class="cart-items">
-            </div>
-        <div class="cart-footer">
-            <div class="cart-total">
-                <span>Total:</span>
-                <span id="cartTotalPrice">$0</span>
-            </div>
-            <button id="checkoutWhatsappBtn" class="btn-primary checkout-btn"><i class="fab fa-whatsapp"></i> Finalizar Pedido por WhatsApp</button>
-        </div>
-    </div>
+    .menu-toggle {
+        display: block; /* Mostrar el menú hamburguesa en móvil */
+    }
 
-    <div id="searchModal" class="search-modal">
-        <div class="search-modal-content">
-            <button id="closeSearchModalBtn" class="close-btn" aria-label="Cerrar búsqueda"><i class="fas fa-times"></i></button>
-            <div class="search-input-group">
-                <input type="text" id="searchInput" placeholder="Buscar por nombre, marca o categoría...">
-                <button id="searchButton" class="btn-primary">Buscar</button>
-            </div>
-            <div id="searchResultsGrid" class="product-grid search-results-grid">
-                <p class="no-results-message">Ingresa un término para buscar productos.</p>
-            </div>
-        </div>
-    </div>
+    .bottom-nav {
+        display: flex; /* Mostrar la barra de navegación inferior en móvil */
+    }
 
-    <div id="faultReportModal" class="modal">
-        <div class="modal-content">
-            <h3>Reportar un Problema</h3>
-            <form id="faultReportForm">
-                <input type="text" id="faultName" placeholder="Tu Nombre" required>
-                <input type="email" id="faultEmail" placeholder="Tu Email" required>
-                <textarea id="faultDescription" placeholder="Describe el problema" rows="5" required></textarea>
-                <button type="submit" class="btn-primary">Enviar Reporte</button>
-                <button type="button" class="btn-secondary close-modal-btn">Cancelar</button>
-            </form>
-        </div>
-    </div>
+    /* Product Grid for very small screens (iPhone SE, etc.) - 2 columns */
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); /* Aim for 2 columns on smallest screens */
+        gap: var(--spacing-sm); /* Slightly smaller gap */
+    }
 
-    <div id="appointmentModal" class="modal">
-        <div class="modal-content">
-            <h3>Agendar Pedido/Entrega</h3>
-            <form id="appointmentForm">
-                <input type="text" id="appointmentName" placeholder="Tu Nombre" required>
-                <input type="tel" id="appointmentPhone" placeholder="Tu Teléfono (ej. 573101234567)" required>
-                <input type="date" id="appointmentDate" required>
-                <input type="time" id="appointmentTime" required>
-                <textarea id="appointmentReason" placeholder="Detalles de tu pedido o servicio requerido" rows="5" required></textarea>
-                <button type="submit" class="btn-primary">Agendar Ahora</button>
-                <button type="button" class="btn-secondary close-modal-btn">Cancelar</button>
-            </form>
-        </div>
-    </div>
+    .product-card {
+        height: 320px; /* Adjusted height for mobile to fit new image size */
+    }
 
-    <div id="toast-container"></div>
+    .product-image-wrapper {
+        height: 65%; /* IMAGEN MÁS GRANDE: Still 65% of card height */
+    }
 
-    <nav class="bottom-nav">
-        <a href="#hero-carousel" class="nav-item active" aria-label="Inicio">
-            <i class="fas fa-home"></i>
-            <span>Inicio</span>
-        </a>
-        <a href="#allProductsGridSection" class="nav-item" aria-label="Productos">
-            <i class="fas fa-box-open"></i> <span>Productos</span>
-        </a>
-        <a href="#" id="bottomNavSearch" class="nav-item" aria-label="Buscar">
-            <i class="fas fa-search"></i>
-            <span>Buscar</span>
-        </a>
-        <a href="#" id="bottomNavCart" class="nav-item" aria-label="Carrito">
-            <i class="fas fa-shopping-cart"></i>
-            <span id="bottomCartCount" class="cart-count">0</span> <span>Carrito</span>
-        </a>
-        <a href="#support-section" class="nav-item" aria-label="Soporte">
-            <i class="fas fa-headset"></i>
-            <span>Soporte</span>
-        </a>
-    </nav>
+    .product-name {
+        font-size: 1em; /* Adjusted font size for overlay */
+        padding: 5px;
+    }
 
-    <script type="module" src="js/main.js"></script>
-</body>
-</html>
+    .product-price-overlay {
+        font-size: 1.3em; /* Adjusted font size for overlay */
+        padding: 5px;
+    }
+
+    /* Category Carousel remains as per previous update, with image/text overlay adjustments */
+    .category-products-track {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); /* Aim for 2 columns */
+        gap: var(--spacing-sm);
+    }
+
+    .category-products-track .product-card {
+        width: auto; /* Let grid handle width */
+        min-width: 140px;
+        height: 280px; /* REDUCIDO PARA MÓVIL: Altura más compacta para tarjetas de categoría */
+        padding: var(--spacing-sm);
+        position: relative; /* Ensure relative positioning for overlays */
+    }
+
+    .category-products-track .product-card .product-image-wrapper {
+        height: 65%; /* IMAGEN MÁS GRANDE: Image wrapper takes 65% of card height */
+        margin-bottom: var(--spacing-xs);
+    }
+
+    .category-products-track .product-card .product-image {
+        height: 100%; /* Image takes 100% of wrapper */
+        object-fit: contain;
+    }
+
+    .category-products-track .product-card .product-name {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        font-size: 1em; /* Smaller font for categories */
+        padding: 5px;
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 100%);
+        white-space: normal; /* Allow wrapping for category names */
+        overflow: hidden;
+        text-overflow: ellipsis;
+        height: 2.4em; /* Limit to 2 lines */
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        display: -webkit-box;
+    }
+
+    .category-products-track .product-card .product-price-overlay {
+        position: absolute;
+        bottom: 0; /* Position price at the bottom of the image wrapper */
+        left: 0;
+        width: 100%;
+        font-size: 1.3em;
+        padding: 5px;
+        color: var(--primary-color);
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 100%);
+        font-weight: bold;
+    }
+
+    .category-products-track .product-card .product-price, /* Hide original price elements */
+    .category-products-track .product-card .product-brand,
+    .category-products-track .product-card .product-old-price,
+    .category-products-track .product-card .product-offer-price {
+        display: none;
+    }
+
+    .category-products-track .product-card .add-to-cart-btn {
+        font-size: 0.75em;
+        padding: var(--spacing-xs);
+        border-radius: 6px;
+    }
+
+    .product-filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .product-filters select,
+    .product-filters input {
+        width: 100%; /* Ocupar todo el ancho en móvil */
+    }
+
+    .footer-content {
+        text-align: center;
+    }
+
+    .social-media {
+        justify-content: center;
+    }
+
+    .age-verification-buttons {
+        flex-direction: column; /* Apilar botones en móvil */
+    }
+
+    .age-verification-buttons .btn-primary,
+    .age-verification-buttons .btn-secondary {
+        width: 100%; /* Ancho completo para botones en móvil */
+    }
+
+    /* Ajuste para el carrusel de banners en pantallas pequeñas */
+    /* Altura ajustada arriba en .hero-section para incluir padding-top */
+}
+
+/* Tablet (768px a 1023px) and larger phones */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .container {
+        padding: 0 var(--spacing-lg);
+    }
+
+    .main-header {
+        padding: var(--spacing-md) var(--spacing-lg);
+        /* No necesitas re-definir fixed aquí, ya está en styles.css */
+    }
+
+    /* ***** CAMBIO CLAVE AQUÍ: Ajuste del padding-top del hero-section para tablets ***** */
+    .hero-section {
+        height: 400px; /* Altura más pequeña para el carrusel en tablets */
+        padding-top: 80px; /* ESTIMACIÓN: Asume que el header en tablet tiene unos 80px de alto. AJUSTA ESTE VALOR. */
+    }
+
+    /* Product Grid for tablets - aiming for 3 columns */
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Aim for 3 columns on tablet */
+        gap: var(--spacing-md);
+    }
+
+    .product-card {
+        height: 350px; /* Adjust height for tablet */
+    }
+
+    .product-name {
+        font-size: 1.1em;
+    }
+
+    .product-price-overlay {
+        font-size: 1.4em;
+    }
+
+    /* Carrusel de productos por categoría en tablet */
+    .category-products-track {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* 3 columns for category carousel */
+        gap: var(--spacing-md);
+    }
+
+    .category-products-track .product-card {
+        width: auto;
+        min-width: 180px;
+        height: 300px; /* REDUCIDO PARA TABLET: Altura más compacta para tarjetas de categoría */
+    }
+    .category-products-track .product-card .product-image-wrapper {
+        height: 65%; /* IMAGEN MÁS GRANDE: Still 65% of card height */
+    }
+
+    .utility-icons {
+        gap: var(--spacing-md);
+    }
+
+    .menu-toggle {
+        display: none; /* Ocultar en tablet, usar nav principal */
+    }
+
+    .main-nav {
+        display: flex; /* Asegurar que la navegación principal esté visible */
+        width: auto;
+        position: static; /* Volver a static en tablet */
+        box-shadow: none;
+        padding: 0;
+        border-top: none;
+    }
+
+    .main-nav .nav-list {
+        flex-direction: row;
+        gap: var(--spacing-md);
+    }
+
+    .main-nav .nav-list a {
+        padding: var(--spacing-sm) 0;
+        width: auto;
+    }
+
+    .bottom-nav {
+        display: none; /* Ocultar la barra inferior en tablet */
+    }
+
+    .age-verification-buttons {
+        flex-direction: row; /* Botones en fila en tablet */
+        justify-content: center;
+    }
+
+    .age-verification-buttons .btn-primary,
+    .age-verification-buttons .btn-secondary {
+        width: auto; /* Ancho automático para no estirarse */
+    }
+}
+
+/* Desktop (1024px y más) */
+@media (min-width: 1024px) {
+    .container {
+        padding: 0 var(--spacing-xl);
+    }
+
+    /* ***** CAMBIO CLAVE AQUÍ: Ajuste del padding-top del hero-section para desktop ***** */
+    .hero-section {
+        height: 450px; /* Altura original del carrusel en desktop */
+        padding-top: 80px; /* ESTIMACIÓN: Asume que el header en desktop tiene unos 80px de alto. AJUSTA ESTE VALOR. */
+    }
+
+    /* Product Grid for desktop - aiming for 3 columns */
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Aim for 3 columns on desktop, larger min-width */
+        gap: var(--spacing-lg); /* Larger gap on desktop */
+    }
+
+    .product-card {
+        height: 400px; /* Slightly taller cards on desktop */
+    }
+
+    .product-name {
+        font-size: 1.3em;
+    }
+
+    .product-price-overlay {
+        font-size: 1.7em;
+    }
+
+    /* Carrusel de productos por categoría en desktop */
+    .category-products-track {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* 3 columns for category carousel, larger min-width */
+        gap: var(--spacing-lg);
+    }
+
+    .category-products-track .product-card {
+        width: auto;
+        min-width: 280px;
+        height: 350px; /* REDUCIDO PARA DESKTOP: Altura más compacta para tarjetas de categoría */
+    }
+    .category-products-track .product-card .product-image-wrapper {
+        height: 65%; /* IMAGEN MÁS GRANDE: Still 65% of card height */
+    }
+
+    .main-nav {
+        display: flex; /* Asegurar que la navegación principal esté visible en desktop */
+    }
+
+    .menu-toggle {
+        display: none; /* Asegurar que el menú hamburguesa no se muestre en desktop */
+    }
+
+    .bottom-nav {
+        display: none; /* Ocultar la barra inferior en desktop */
+    }
+
+    .product-filters select,
+    .product-filters input {
+        width: 200px; /* Ancho fijo para selectores en desktop */
+    }
+
+    .footer-section {
+        text-align: left; /* Alineado a la izquierda en desktop */
+    }
+
+    .footer-section h3 {
+        text-align: left;
+    }
+
+    .social-media {
+        justify-content: flex-start;
+    }
+}
