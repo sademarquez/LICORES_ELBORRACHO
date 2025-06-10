@@ -15,6 +15,7 @@
         <div class="age-verification-content">
             <h2>Verificación de Edad</h2>
             <p>Para acceder a este sitio, debes ser mayor de 18 años.</p>
+            <p class="warning-message">¡Advertencia! El consumo excesivo de alcohol es perjudicial para la salud. Prohibido el expendio a menores de edad.</p>
             <div class="age-verification-buttons">
                 <button id="confirmAgeBtn" class="btn-primary">Soy mayor de 18</button>
                 <button id="declineAgeBtn" class="btn-secondary">No soy mayor de 18</button>
@@ -25,29 +26,27 @@
     <header class="main-header">
         <div class="container">
             <div class="header-content">
-                <a href="#" class="logo" aria-label="Inicio">
-                    <img src="images/logo.png" alt="El Borracho Logo">
+                <a href="#hero-carousel" class="logo-link">
+                    <img src="images/logo.webp" alt="Logo de El Borracho" class="logo">
                 </a>
-
-                <nav class="main-nav">
+                <nav class="main-nav" id="mainNav">
                     <ul class="nav-list">
-                        <li><a href="#hero-carousel" class="active">Inicio</a></li>
-                        <li><a href="#categoryProductsSection">Categorías</a></li>
+                        <li><a href="#hero-carousel">Inicio</a></li>
                         <li><a href="#allProductsGridSection">Productos</a></li>
-                        <li><a href="#contact-section">Contacto</a></li>
-                        <li><a href="#support-section">Soporte</a></li>
+                        <li><a href="#categoryProductsSection">Categorías</a></li>
+                        <li><a href="#about-us-section">Nosotros</a></li>
+                        <li><a href="#support-section">Contacto</a></li>
                     </ul>
                 </nav>
-
-                <div class="utility-icons">
-                    <button id="searchIcon" class="icon-btn" aria-label="Buscar producto">
+                <div class="header-actions">
+                    <button class="icon-button" id="mainNavSearch" aria-label="Abrir Búsqueda">
                         <i class="fas fa-search"></i>
                     </button>
-                    <button id="cartIcon" class="icon-btn" aria-label="Ver carrito">
+                    <button class="icon-button cart-button" id="cartOpenBtn" aria-label="Abrir Carrito">
                         <i class="fas fa-shopping-cart"></i>
                         <span id="cartCount" class="cart-count">0</span>
                     </button>
-                    <button id="menuToggle" class="icon-btn menu-toggle" aria-label="Abrir menú de navegación">
+                    <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menú">
                         <i class="fas fa-bars"></i>
                     </button>
                 </div>
@@ -58,259 +57,51 @@
     <main>
         <section id="hero-carousel" class="hero-section">
             <div class="carousel-container">
-                <div class="carousel-track">
-                    <div class="carousel-slide" style="background-image: url('images/carousel/banner1.jpg');">
-                        <div class="carousel-content">
-                            <h1 class="carousel-title">Licores a Domicilio</h1>
-                            <p class="carousel-description">Tus bebidas favoritas, entregadas en tu puerta.</p>
-                            <a href="#allProductsGridSection" class="btn-primary carousel-button">Explorar Productos</a>
-                        </div>
+                <div class="carousel-track" id="carouselTrack">
                     </div>
-                    <div class="carousel-slide" style="background-image: url('images/carousel/banner2.jpg');">
-                        <div class="carousel-content">
-                            <h1 class="carousel-title">Ofertas Especiales</h1>
-                            <p class="carousel-description">Descuentos exclusivos solo por tiempo limitado.</p>
-                            <a href="#allProductsGridSection" class="btn-primary carousel-button">Ver Ofertas</a>
-                        </div>
+                <button class="carousel-btn prev" id="carouselPrev" aria-label="Slide Anterior"><i class="fas fa-chevron-left"></i></button>
+                <button class="carousel-btn next" id="carouselNext" aria-label="Siguiente Slide"><i class="fas fa-chevron-right"></i></button>
+                <div class="carousel-dots" id="carouselDots">
                     </div>
-                    <div class="carousel-slide" style="background-image: url('images/carousel/banner3.jpg');">
-                        <div class="carousel-content">
-                            <h1 class="carousel-title">Eventos y Celebraciones</h1>
-                            <p class="carousel-description">El toque perfecto para tus momentos inolvidables.</p>
-                            <a href="#contact-section" class="btn-primary carousel-button">Agenda tu Pedido</a>
-                        </div>
-                    </div>
-                </div>
-                <button class="carousel-btn prev" aria-label="Diapositiva anterior"><i class="fas fa-chevron-left"></i></button>
-                <button class="carousel-btn next" aria-label="Diapositiva siguiente"><i class="fas fa-chevron-right"></i></button>
-                <div class="carousel-dots"></div>
             </div>
         </section>
 
-        <section id="continuousCarouselSection" class="continuous-carousel-section">
+        <section id="categoryProductsSection" class="category-products-section section-padding">
             <div class="container">
-                <h2 class="section-title">Nuestros Clientes Aman</h2>
-                <div class="continuous-carousel-container">
-                    <div class="continuous-carousel-track">
-                        <div class="product-card">
-                            <div class="product-image-wrapper">
-                                <img src="images/products/aguardiente.png" alt="Aguardiente Antioqueño" class="product-image">
-                                <h3 class="product-name">Aguardiente Antioqueño</h3>
-                                <p class="product-price-overlay">$65.000</p>
-                            </div>
-                            <div class="product-info">
-                                <button class="btn-primary add-to-cart-btn" data-product-id="1" data-product-name="Aguardiente Antioqueño" data-product-price="65000" data-product-image="images/products/aguardiente.png">Agregar al Carrito</button>
-                            </div>
-                        </div>
-                        <div class="product-card">
-                            <div class="product-image-wrapper">
-                                <img src="images/products/ron-medellin.png" alt="Ron Medellín Añejo" class="product-image">
-                                <h3 class="product-name">Ron Medellín Añejo</h3>
-                                <p class="product-price-overlay">$70.000</p>
-                            </div>
-                            <div class="product-info">
-                                <button class="btn-primary add-to-cart-btn" data-product-id="2" data-product-name="Ron Medellín Añejo" data-product-price="70000" data-product-image="images/products/ron-medellin.png">Agregar al Carrito</button>
-                            </div>
-                        </div>
-                        <div class="product-card">
-                            <div class="product-image-wrapper">
-                                <img src="images/products/buchanans.png" alt="Buchanan's 12 Años" class="product-image">
-                                <h3 class="product-name">Buchanan's 12 Años</h3>
-                                <p class="product-price-overlay">$180.000</p>
-                            </div>
-                            <div class="product-info">
-                                <button class="btn-primary add-to-cart-btn" data-product-id="3" data-product-name="Buchanan's 12 Años" data-product-price="180000" data-product-image="images/products/buchanans.png">Agregar al Carrito</button>
-                            </div>
-                        </div>
-                        <div class="product-card">
-                            <div class="product-image-wrapper">
-                                <img src="images/products/smirnoff.png" alt="Smirnoff Red" class="product-image">
-                                <h3 class="product-name">Smirnoff Red</h3>
-                                <p class="product-price-overlay">$55.000</p>
-                            </div>
-                            <div class="product-info">
-                                <button class="btn-primary add-to-cart-btn" data-product-id="4" data-product-name="Smirnoff Red" data-product-price="55000" data-product-image="images/products/smirnoff.png">Agregar al Carrito</button>
-                            </div>
-                        </div>
-                        <div class="product-card">
-                            <div class="product-image-wrapper">
-                                <img src="images/products/jagermeister.png" alt="Jägermeister" class="product-image">
-                                <h3 class="product-name">Jägermeister</h3>
-                                <p class="product-price-overlay">$90.000</p>
-                            </div>
-                            <div class="product-info">
-                                <button class="btn-primary add-to-cart-btn" data-product-id="5" data-product-name="Jägermeister" data-product-price="90000" data-product-image="images/products/jagermeister.png">Agregar al Carrito</button>
-                            </div>
-                        </div>
-                        <div class="product-card">
-                            <div class="product-image-wrapper">
-                                <img src="images/products/corona.png" alt="Cerveza Corona" class="product-image">
-                                <h3 class="product-name">Cerveza Corona (6 Pack)</h3>
-                                <p class="product-price-overlay">$30.000</p>
-                            </div>
-                            <div class="product-info">
-                                <button class="btn-primary add-to-cart-btn" data-product-id="6" data-product-name="Cerveza Corona (6 Pack)" data-product-price="30000" data-product-image="images/products/corona.png">Agregar al Carrito</button>
-                            </div>
-                        </div>
-                        <div class="product-card">
-                            <div class="product-image-wrapper">
-                                <img src="images/products/johnnie-walker-red.png" alt="Johnnie Walker Red Label" class="product-image">
-                                <h3 class="product-name">Johnnie Walker Red Label</h3>
-                                <p class="product-price-overlay">$95.000</p>
-                            </div>
-                            <div class="product-info">
-                                <button class="btn-primary add-to-cart-btn" data-product-id="7" data-product-name="Johnnie Walker Red Label" data-product-price="95000" data-product-image="images/products/johnnie-walker-red.png">Agregar al Carrito</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="categoryProductsSection" class="category-products-section">
-            <div class="container">
-                <h2 class="section-title">Explora por Categorías</h2>
+                <h2>Explora por Categoría</h2>
                 <div class="category-buttons-container">
                     <button class="category-btn active" data-category="all">Todos</button>
-                    <button class="category-btn" data-category="aguardientes">Aguardientes</button>
-                    <button class="category-btn" data-category="rones">Rones</button>
-                    <button class="category-btn" data-category="whiskys">Whiskys</button>
-                    <button class="category-btn" data-category="vodkas">Vodkas</button>
                     <button class="category-btn" data-category="cervezas">Cervezas</button>
-                    <button class="category-btn" data-category="tequilas">Tequilas</button>
                     <button class="category-btn" data-category="vinos">Vinos</button>
+                    <button class="category-btn" data-category="licores">Licores</button>
+                    <button class="category-btn" data-category="refrescos">Refrescos</button>
                 </div>
-                <div class="category-products-carousel-wrapper">
-                    <div class="category-products-track">
-                        <div class="product-card" data-category="aguardientes">
-                            <div class="product-image-wrapper">
-                                <img src="images/products/aguardiente.png" alt="Aguardiente Antioqueño" class="product-image">
-                                <h3 class="product-name">Aguardiente Antioqueño</h3>
-                                <p class="product-price-overlay">$65.000</p>
-                            </div>
-                            <div class="product-info">
-                                <button class="btn-primary add-to-cart-btn" data-product-id="1" data-product-name="Aguardiente Antioqueño" data-product-price="65000" data-product-image="images/products/aguardiente.png">Agregar</button>
-                            </div>
-                        </div>
-                        <div class="product-card" data-category="rones">
-                            <div class="product-image-wrapper">
-                                <img src="images/products/ron-medellin.png" alt="Ron Medellín Añejo" class="product-image">
-                                <h3 class="product-name">Ron Medellín Añejo</h3>
-                                <p class="product-price-overlay">$70.000</p>
-                            </div>
-                            <div class="product-info">
-                                <button class="btn-primary add-to-cart-btn" data-product-id="2" data-product-name="Ron Medellín Añejo" data-product-price="70000" data-product-image="images/products/ron-medellin.png">Agregar</button>
-                            </div>
-                        </div>
-                        <div class="product-card" data-category="whiskys">
-                            <div class="product-image-wrapper">
-                                <img src="images/products/buchanans.png" alt="Buchanan's 12 Años" class="product-image">
-                                <h3 class="product-name">Buchanan's 12 Años</h3>
-                                <p class="product-price-overlay">$180.000</p>
-                            </div>
-                            <div class="product-info">
-                                <button class="btn-primary add-to-cart-btn" data-product-id="3" data-product-name="Buchanan's 12 Años" data-product-price="180000" data-product-image="images/products/buchanans.png">Agregar</button>
-                            </div>
-                        </div>
-                        <div class="product-card" data-category="vodkas">
-                            <div class="product-image-wrapper">
-                                <img src="images/products/smirnoff.png" alt="Smirnoff Red" class="product-image">
-                                <h3 class="product-name">Smirnoff Red</h3>
-                                <p class="product-price-overlay">$55.000</p>
-                            </div>
-                            <div class="product-info">
-                                <button class="btn-primary add-to-cart-btn" data-product-id="4" data-product-name="Smirnoff Red" data-product-price="55000" data-product-image="images/products/smirnoff.png">Agregar</button>
-                            </div>
-                        </div>
-                        <div class="product-card" data-category="cervezas">
-                            <div class="product-image-wrapper">
-                                <img src="images/products/corona.png" alt="Cerveza Corona" class="product-image">
-                                <h3 class="product-name">Cerveza Corona (6 Pack)</h3>
-                                <p class="product-price-overlay">$30.000</p>
-                            </div>
-                            <div class="product-info">
-                                <button class="btn-primary add-to-cart-btn" data-product-id="6" data-product-name="Cerveza Corona (6 Pack)" data-product-price="30000" data-product-image="images/products/corona.png">Agregar</button>
-                            </div>
-                        </div>
-                        <div class="product-card" data-category="whiskys">
-                            <div class="product-image-wrapper">
-                                <img src="images/products/johnnie-walker-red.png" alt="Johnnie Walker Red Label" class="product-image">
-                                <h3 class="product-name">Johnnie Walker Red Label</h3>
-                                <p class="product-price-overlay">$95.000</p>
-                            </div>
-                            <div class="product-info">
-                                <button class="btn-primary add-to-cart-btn" data-product-id="7" data-product-name="Johnnie Walker Red Label" data-product-price="95000" data-product-image="images/products/johnnie-walker-red.png">Agregar</button>
-                            </div>
-                        </div>
-                        <div class="product-card" data-category="tequilas">
-                            <div class="product-image-wrapper">
-                                <img src="images/products/jose-cuervo.png" alt="José Cuervo Especial" class="product-image">
-                                <h3 class="product-name">José Cuervo Especial</h3>
-                                <p class="product-price-overlay">$80.000</p>
-                            </div>
-                            <div class="product-info">
-                                <button class="btn-primary add-to-cart-btn" data-product-id="8" data-product-name="José Cuervo Especial" data-product-price="80000" data-product-image="images/products/jose-cuervo.png">Agregar</button>
-                            </div>
-                        </div>
-                        <div class="product-card" data-category="vinos">
-                            <div class="product-image-wrapper">
-                                <img src="images/products/vino-gato-negro.png" alt="Vino Gato Negro Cabernet Sauvignon" class="product-image">
-                                <h3 class="product-name">Vino Gato Negro Cabernet Sauvignon</h3>
-                                <p class="product-price-overlay">$45.000</p>
-                            </div>
-                            <div class="product-info">
-                                <button class="btn-primary add-to-cart-btn" data-product-id="9" data-product-name="Vino Gato Negro Cabernet Sauvignon" data-product-price="45000" data-product-image="images/products/vino-gato-negro.png">Agregar</button>
-                            </div>
-                        </div>
-                        <div class="product-card" data-category="vodkas">
-                            <div class="product-image-wrapper">
-                                <img src="images/products/absolut.png" alt="Absolut Vodka Original" class="product-image">
-                                <h3 class="product-name">Absolut Vodka Original</h3>
-                                <p class="product-price-overlay">$85.000</p>
-                            </div>
-                            <div class="product-info">
-                                <button class="btn-primary add-to-cart-btn" data-product-id="10" data-product-name="Absolut Vodka Original" data-product-price="85000" data-product-image="images/products/absolut.png">Agregar</button>
-                            </div>
-                        </div>
-                        <div class="product-card" data-category="cervezas">
-                            <div class="product-image-wrapper">
-                                <img src="images/products/heineken.png" alt="Cerveza Heineken (6 Pack)" class="product-image">
-                                <h3 class="product-name">Cerveza Heineken (6 Pack)</h3>
-                                <p class="product-price-overlay">$32.000</p>
-                            </div>
-                            <div class="product-info">
-                                <button class="btn-primary add-to-cart-btn" data-product-id="11" data-product-name="Cerveza Heineken (6 Pack)" data-product-price="32000" data-product-image="images/products/heineken.png">Agregar</button>
-                            </div>
-                        </div>
-                        <div class="product-card" data-category="whiskys">
-                            <div class="product-image-wrapper">
-                                <img src="images/products/chivas-regal.png" alt="Chivas Regal 12 Años" class="product-image">
-                                <h3 class="product-name">Chivas Regal 12 Años</h3>
-                                <p class="product-price-overlay">$160.000</p>
-                            </div>
-                            <div class="product-info">
-                                <button class="btn-primary add-to-cart-btn" data-product-id="12" data-product-name="Chivas Regal 12 Años" data-product-price="160000" data-product-image="images/products/chivas-regal.png">Agregar</button>
-                            </div>
-                        </div>
+                <div class="category-product-track" id="categoryProductTrack">
                     </div>
+            </div>
+        </section>
+
+        <section id="brands-section" class="brands-section section-padding">
+            <div class="container">
+                <h2>Nuestras Marcas Destacadas</h2>
+                <div class="continuous-carousel-container">
+                    <div class="continuous-carousel-track" id="continuousCarouselTrack">
+                        </div>
                 </div>
             </div>
         </section>
 
-        <section id="allProductsGridSection" class="product-section">
+        <section id="allProductsGridSection" class="products-grid-section section-padding">
             <div class="container">
-                <h2 class="section-title">Todos Nuestros Productos</h2>
+                <h2>Todos Nuestros Productos</h2>
                 <div class="product-filters">
-                    <input type="text" id="searchInput" placeholder="Buscar productos...">
+                    <input type="text" id="productSearchInput" placeholder="Buscar producto...">
                     <select id="categoryFilter">
                         <option value="all">Todas las Categorías</option>
-                        <option value="aguardientes">Aguardientes</option>
-                        <option value="rones">Rones</option>
-                        <option value="whiskys">Whiskys</option>
-                        <option value="vodkas">Vodkas</option>
                         <option value="cervezas">Cervezas</option>
-                        <option value="tequilas">Tequilas</option>
                         <option value="vinos">Vinos</option>
+                        <option value="licores">Licores</option>
+                        <option value="refrescos">Refrescos</option>
                     </select>
                     <select id="priceFilter">
                         <option value="all">Todos los Precios</option>
@@ -318,272 +109,135 @@
                         <option value="high-to-low">Precio: Mayor a Menor</option>
                     </select>
                 </div>
-                <div class="product-grid">
-                    <div class="product-card" data-category="aguardientes" data-price="65000">
-                        <div class="product-image-wrapper">
-                            <img src="images/products/aguardiente.png" alt="Aguardiente Antioqueño" class="product-image">
-                            <h3 class="product-name">Aguardiente Antioqueño</h3>
-                            <p class="product-price-overlay">$65.000</p>
-                        </div>
-                        <div class="product-info">
-                            <button class="btn-primary add-to-cart-btn" data-product-id="1" data-product-name="Aguardiente Antioqueño" data-product-price="65000" data-product-image="images/products/aguardiente.png">Agregar al Carrito</button>
-                        </div>
+                <div class="product-grid" id="allProductsGrid">
                     </div>
-                    <div class="product-card" data-category="rones" data-price="70000">
-                        <div class="product-image-wrapper">
-                            <img src="images/products/ron-medellin.png" alt="Ron Medellín Añejo" class="product-image">
-                            <h3 class="product-name">Ron Medellín Añejo</h3>
-                            <p class="product-price-overlay">$70.000</p>
-                        </div>
-                        <div class="product-info">
-                            <button class="btn-primary add-to-cart-btn" data-product-id="2" data-product-name="Ron Medellín Añejo" data-product-price="70000" data-product-image="images/products/ron-medellin.png">Agregar al Carrito</button>
-                        </div>
+            </div>
+        </section>
+
+        <section id="about-us-section" class="about-us-section section-padding">
+            <div class="container">
+                <h2>Acerca de Nosotros</h2>
+                <div class="about-content">
+                    <div class="about-image">
+                        <img src="images/about-us.webp" alt="Acerca de El Borracho" loading="lazy">
                     </div>
-                    <div class="product-card" data-category="whiskys" data-price="180000">
-                        <div class="product-image-wrapper">
-                            <img src="images/products/buchanans.png" alt="Buchanan's 12 Años" class="product-image">
-                            <h3 class="product-name">Buchanan's 12 Años</h3>
-                            <p class="product-price-overlay">$180.000</p>
-                        </div>
-                        <div class="product-info">
-                            <button class="btn-primary add-to-cart-btn" data-product-id="3" data-product-name="Buchanan's 12 Años" data-product-price="180000" data-product-image="images/products/buchanans.png">Agregar al Carrito</button>
-                        </div>
-                    </div>
-                    <div class="product-card" data-category="vodkas" data-price="55000">
-                        <div class="product-image-wrapper">
-                            <img src="images/products/smirnoff.png" alt="Smirnoff Red" class="product-image">
-                            <h3 class="product-name">Smirnoff Red</h3>
-                            <p class="product-price-overlay">$55.000</p>
-                        </div>
-                        <div class="product-info">
-                            <button class="btn-primary add-to-cart-btn" data-product-id="4" data-product-name="Smirnoff Red" data-product-price="55000" data-product-image="images/products/smirnoff.png">Agregar al Carrito</button>
-                        </div>
-                    </div>
-                    <div class="product-card" data-category="otros" data-price="90000">
-                        <div class="product-image-wrapper">
-                            <img src="images/products/jagermeister.png" alt="Jägermeister" class="product-image">
-                            <h3 class="product-name">Jägermeister</h3>
-                            <p class="product-price-overlay">$90.000</p>
-                        </div>
-                        <div class="product-info">
-                            <button class="btn-primary add-to-cart-btn" data-product-id="5" data-product-name="Jägermeister" data-product-price="90000" data-product-image="images/products/jagermeister.png">Agregar al Carrito</button>
-                        </div>
-                    </div>
-                    <div class="product-card" data-category="cervezas" data-price="30000">
-                        <div class="product-image-wrapper">
-                            <img src="images/products/corona.png" alt="Cerveza Corona" class="product-image">
-                            <h3 class="product-name">Cerveza Corona (6 Pack)</h3>
-                            <p class="product-price-overlay">$30.000</p>
-                        </div>
-                        <div class="product-info">
-                            <button class="btn-primary add-to-cart-btn" data-product-id="6" data-product-name="Cerveza Corona (6 Pack)" data-product-price="30000" data-product-image="images/products/corona.png">Agregar al Carrito</button>
-                        </div>
-                    </div>
-                    <div class="product-card" data-category="whiskys" data-price="95000">
-                        <div class="product-image-wrapper">
-                            <img src="images/products/johnnie-walker-red.png" alt="Johnnie Walker Red Label" class="product-image">
-                            <h3 class="product-name">Johnnie Walker Red Label</h3>
-                            <p class="product-price-overlay">$95.000</p>
-                        </div>
-                        <div class="product-info">
-                            <button class="btn-primary add-to-cart-btn" data-product-id="7" data-product-name="Johnnie Walker Red Label" data-product-price="95000" data-product-image="images/products/johnnie-walker-red.png">Agregar al Carrito</button>
-                        </div>
-                    </div>
-                    <div class="product-card" data-category="tequilas" data-price="80000">
-                        <div class="product-image-wrapper">
-                            <img src="images/products/jose-cuervo.png" alt="José Cuervo Especial" class="product-image">
-                            <h3 class="product-name">José Cuervo Especial</h3>
-                            <p class="product-price-overlay">$80.000</p>
-                        </div>
-                        <div class="product-info">
-                            <button class="btn-primary add-to-cart-btn" data-product-id="8" data-product-name="José Cuervo Especial" data-product-price="80000" data-product-image="images/products/jose-cuervo.png">Agregar al Carrito</button>
-                        </div>
-                    </div>
-                    <div class="product-card" data-category="vinos" data-price="45000">
-                        <div class="product-image-wrapper">
-                            <img src="images/products/vino-gato-negro.png" alt="Vino Gato Negro Cabernet Sauvignon" class="product-image">
-                            <h3 class="product-name">Vino Gato Negro Cabernet Sauvignon</h3>
-                            <p class="product-price-overlay">$45.000</p>
-                        </div>
-                        <div class="product-info">
-                            <button class="btn-primary add-to-cart-btn" data-product-id="9" data-product-name="Vino Gato Negro Cabernet Sauvignon" data-product-price="45000" data-product-image="images/products/vino-gato-negro.png">Agregar al Carrito</button>
-                        </div>
-                    </div>
-                    <div class="product-card" data-category="vodkas" data-price="85000">
-                        <div class="product-image-wrapper">
-                            <img src="images/products/absolut.png" alt="Absolut Vodka Original" class="product-image">
-                            <h3 class="product-name">Absolut Vodka Original</h3>
-                            <p class="product-price-overlay">$85.000</p>
-                        </div>
-                        <div class="product-info">
-                            <button class="btn-primary add-to-cart-btn" data-product-id="10" data-product-name="Absolut Vodka Original" data-product-price="85000" data-product-image="images/products/absolut.png">Agregar al Carrito</button>
-                        </div>
-                    </div>
-                    <div class="product-card" data-category="cervezas" data-price="32000">
-                        <div class="product-image-wrapper">
-                            <img src="images/products/heineken.png" alt="Cerveza Heineken (6 Pack)" class="product-image">
-                            <h3 class="product-name">Cerveza Heineken (6 Pack)</h3>
-                            <p class="product-price-overlay">$32.000</p>
-                        </div>
-                        <div class="product-info">
-                            <button class="btn-primary add-to-cart-btn" data-product-id="11" data-product-name="Cerveza Heineken (6 Pack)" data-product-price="32000" data-product-image="images/products/heineken.png">Agregar al Carrito</button>
-                        </div>
-                    </div>
-                    <div class="product-card" data-category="whiskys" data-price="160000">
-                        <div class="product-image-wrapper">
-                            <img src="images/products/chivas-regal.png" alt="Chivas Regal 12 Años" class="product-image">
-                            <h3 class="product-name">Chivas Regal 12 Años</h3>
-                            <p class="product-price-overlay">$160.000</p>
-                        </div>
-                        <div class="product-info">
-                            <button class="btn-primary add-to-cart-btn" data-product-id="12" data-product-name="Chivas Regal 12 Años" data-product-price="160000" data-product-image="images/products/chivas-regal.png">Agregar al Carrito</button>
-                        </div>
+                    <div class="about-text">
+                        <p>En "El Borracho", somos tu aliado perfecto para cualquier celebración o simplemente para disfrutar de un buen momento en casa. Nos dedicamos a la distribución de licores a domicilio, ofreciendo una amplia selección de productos de alta calidad para satisfacer todos los gustos y ocasiones.</p>
+                        <p>Desde cervezas artesanales y nacionales, pasando por vinos exquisitos, hasta licores premium y refrescos variados, nuestro catálogo está diseñado para que encuentres exactamente lo que necesitas. Nos enorgullece brindar un servicio rápido, eficiente y seguro, llevando tus bebidas favoritas directamente a tu puerta.</p>
+                        <p>Nuestro compromiso es con la calidad, la variedad y, sobre todo, la satisfacción del cliente. ¡Permítenos ser parte de tus mejores momentos!</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="brands-section" class="brands-section">
+        <section id="support-section" class="support-section section-padding">
             <div class="container">
-                <h2 class="section-title">Marcas de Confianza</h2>
-                <div class="brands-container">
-                    <a href="#" class="brand-logo" aria-label="Marca Antioqueño"><img src="images/brands/antioqueno.png" alt="Logo Antioqueño"></a>
-                    <a href="#" class="brand-logo" aria-label="Marca Medellín"><img src="images/brands/medellin.png" alt="Logo Medellín"></a>
-                    <a href="#" class="brand-logo" aria-label="Marca Buchanan's"><img src="images/brands/buchanans.png" alt="Logo Buchanan's"></a>
-                    <a href="#" class="brand-logo" aria-label="Marca Smirnoff"><img src="images/brands/smirnoff.png" alt="Logo Smirnoff"></a>
-                    <a href="#" class="brand-logo" aria-label="Marca Jägermeister"><img src="images/brands/jagermeister.png" alt="Logo Jägermeister"></a>
-                    <a href="#" class="brand-logo" aria-label="Marca Corona"><img src="images/brands/corona.png" alt="Logo Corona"></a>
-                    <a href="#" class="brand-logo" aria-label="Marca Johnnie Walker"><img src="images/brands/johnnie-walker.png" alt="Logo Johnnie Walker"></a>
-                    <a href="#" class="brand-logo" aria-label="Marca José Cuervo"><img src="images/brands/jose-cuervo.png" alt="Logo José Cuervo"></a>
-                    <a href="#" class="brand-logo" aria-label="Marca Gato Negro"><img src="images/brands/gato-negro.png" alt="Logo Gato Negro"></a>
-                    <a href="#" class="brand-logo" aria-label="Marca Absolut"><img src="images/brands/absolut.png" alt="Logo Absolut"></a>
-                </div>
-            </div>
-        </section>
-
-        <section id="support-section" class="product-section">
-            <div class="container">
-                <h2 class="section-title">Necesitas Ayuda?</h2>
-                <div class="support-content">
-                    <p>Si tienes alguna pregunta, duda o necesitas asistencia, no dudes en contactarnos. Estamos aquí para ayudarte.</p>
-                    <div class="support-channels">
-                        <a href="tel:+573001234567" class="btn-primary"><i class="fas fa-phone-alt"></i> Llámanos: +57 300 123 4567</a>
-                        <a href="mailto:soporte@elborracho.com" class="btn-secondary"><i class="fas fa-envelope"></i> Envíanos un Email</a>
-                        <a href="https://wa.me/573001234567" target="_blank" class="btn-primary whatsapp-btn"><i class="fab fa-whatsapp"></i> Chatea con Nosotros</a>
+                <h2>¿Necesitas Ayuda?</h2>
+                <p class="section-description">Estamos aquí para asistirte. Elige una opción a continuación:</p>
+                <div class="support-options">
+                    <div class="support-card">
+                        <i class="fas fa-bug support-icon"></i>
+                        <h3>Reportar un Problema</h3>
+                        <p>Si experimentas alguna dificultad técnica o un error en el sitio.</p>
+                        <button class="btn-primary" id="reportFaultBtn">Reportar</button>
+                    </div>
+                    <div class="support-card">
+                        <i class="fas fa-calendar-alt support-icon"></i>
+                        <h3>Agendar Pedido/Entrega</h3>
+                        <p>Coordina la entrega de tu pedido o solicita un servicio especial.</p>
+                        <button class="btn-primary" id="bookAppointmentBtn">Agendar</button>
+                    </div>
+                    <div class="support-card">
+                        <i class="fas fa-phone-alt support-icon"></i>
+                        <h3>Contáctanos Directo</h3>
+                        <p>Habla con nosotros para consultas generales o atención personalizada.</p>
+                        <a href="tel: " class="btn-primary" id="callUsBtn"><i class="fas fa-phone"></i> Llámanos</a>
                     </div>
                 </div>
             </div>
         </section>
-
-        <section id="contact-section" class="product-section">
-            <div class="container">
-                <h2 class="section-title">Agenda tu Pedido o Servicio</h2>
-                <p class="text-center">¡Haz tu pedido de forma fácil y rápida!</p>
-                <form id="appointmentForm" class="contact-form">
-                    <div class="form-group">
-                        <label for="fullName">Nombre Completo:</label>
-                        <input type="text" id="fullName" name="fullName" placeholder="Tu nombre y apellido" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="phoneNumber">Número de Teléfono:</label>
-                        <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Ej: 3001234567" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email:</label>
-                        <input type="email" id="email" name="email" placeholder="tu.email@ejemplo.com">
-                    </div>
-                    <div class="form-group">
-                        <label for="address">Dirección de Entrega:</label>
-                        <input type="text" id="address" name="address" placeholder="Ej: Calle 10 # 5-20, Apto 301" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="appointmentDate">Fecha de Entrega/Servicio:</label>
-                        <input type="date" id="appointmentDate" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="appointmentTime">Hora Preferida de Entrega/Servicio:</label>
-                        <input type="time" id="appointmentTime" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="appointmentReason">Detalles de tu Pedido o Servicio:</label>
-                        <textarea id="appointmentReason" name="appointmentReason" placeholder="Ej: 2 Aguardiente Antioqueño, 1 Ron Medellín. Entrega a las 8 PM." rows="5" required></textarea>
-                    </div>
-                    <button type="submit" class="btn-primary">Enviar Pedido</button>
-                </form>
-            </div>
-        </section>
-
     </main>
 
     <footer class="main-footer">
         <div class="container">
             <div class="footer-content">
-                <p>&copy; 2024 EL BORRACHO. Todos los derechos reservados.</p>
-                <div class="social-media">
-                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                    <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                <div class="footer-brand">
+                    <img src="images/logo.webp" alt="Logo El Borracho" class="footer-logo">
+                    <p>&copy; 2024 El Borracho. Todos los derechos reservados.</p>
+                </div>
+                <div class="footer-links">
+                    <h3>Enlaces Rápidos</h3>
+                    <ul>
+                        <li><a href="#hero-carousel">Inicio</a></li>
+                        <li><a href="#allProductsGridSection">Productos</a></li>
+                        <li><a href="#categoryProductsSection">Categorías</a></li>
+                        <li><a href="#about-us-section">Nosotros</a></li>
+                        <li><a href="#support-section">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h3>Contáctanos</h3>
+                    <p><i class="fas fa-envelope"></i> Email: <span id="footerEmail"></span></p>
+                    <p><i class="fas fa-phone"></i> Teléfono: <span id="footerPhone"></span></p>
+                    <p><i class="fas fa-map-marker-alt"></i> Dirección: <span id="footerAddress"></span></p>
+                </div>
+                <div class="footer-social">
+                    <h3>Síguenos</h3>
+                    <div class="social-media">
+                        <a href="#" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    </div>
                 </div>
             </div>
         </div>
     </footer>
 
-    <div id="searchModal" class="search-modal">
-        <div class="search-modal-content">
-            <button class="close-btn" id="closeSearchModal">&times;</button>
-            <div class="search-input-group">
-                <input type="text" id="modalSearchInput" placeholder="Buscar en todos los productos...">
-                <button class="btn-primary"><i class="fas fa-search"></i></button>
-            </div>
-            <div class="search-results-grid">
-                <p class="no-results-message">Empieza a escribir para buscar productos...</p>
-            </div>
-        </div>
-    </div>
-
     <div id="cartSidebar" class="cart-sidebar">
         <div class="cart-header">
             <h3>Tu Carrito</h3>
-            <button class="close-btn" id="closeCartSidebar">&times;</button>
+            <button id="closeCartBtn" class="close-btn" aria-label="Cerrar Carrito">&times;</button>
         </div>
-        <div class="cart-items" id="cartItemsContainer">
-            <p class="empty-cart-message">Tu carrito está vacío.</p>
-        </div>
-        <div class="cart-footer">
-            <div class="cart-total">
-                <span>Total:</span>
-                <span id="cartTotal">$0</span>
+        <div class="cart-items" id="cartItems">
             </div>
-            <button class="btn-primary checkout-btn">Proceder al Pago</button>
+        <div class="cart-summary">
+            <p>Total: <span id="cartTotalPrice">$0</span></p>
+            <button id="checkoutWhatsappBtn" class="btn-primary checkout-btn"><i class="fab fa-whatsapp"></i> Finalizar pedido por WhatsApp</button>
         </div>
     </div>
 
-    <div id="appointmentModal" class="appointment-modal">
-        <div class="appointment-modal-content">
-            <h2>Agenda tu Pedido/Servicio</h2>
-            <form id="modalAppointmentForm">
-                <div class="form-group">
-                    <label for="modalFullName">Nombre Completo:</label>
-                    <input type="text" id="modalFullName" required>
+    <div id="searchModal" class="search-modal">
+        <div class="search-modal-content">
+            <button id="closeSearchModalBtn" class="close-modal-btn">&times;</button>
+            <input type="text" id="searchInput" placeholder="Buscar productos...">
+            <button id="searchButton" class="btn-primary">Buscar</button>
+            <div class="search-results-grid" id="searchResultsGrid">
                 </div>
-                <div class="form-group">
-                    <label for="modalPhoneNumber">Número de Teléfono:</label>
-                    <input type="tel" id="modalPhoneNumber" required>
-                </div>
-                <div class="form-group">
-                    <label for="modalEmail">Email:</label>
-                    <input type="email" id="modalEmail">
-                </div>
-                <div class="form-group">
-                    <label for="modalAddress">Dirección de Entrega:</label>
-                    <input type="text" id="modalAddress" required>
-                </div>
-                <label for="modalAppointmentDate">Fecha de Entrega/Servicio:</label>
-                <input type="date" id="modalAppointmentDate" required>
-                <label for="modalAppointmentTime">Hora Preferida de Entrega/Servicio:</label>
-                <input type="time" id="modalAppointmentTime" required>
-                <textarea id="modalAppointmentReason" placeholder="Detalles de tu pedido o servicio requerido" rows="5" required></textarea>
+        </div>
+    </div>
+
+    <div id="faultReportModal" class="modal">
+        <div class="modal-content">
+            <h3>Reportar un Problema</h3>
+            <form id="faultReportForm">
+                <input type="text" id="faultName" placeholder="Tu Nombre" required>
+                <input type="email" id="faultEmail" placeholder="Tu Email" required>
+                <textarea id="faultDescription" placeholder="Describe el problema" rows="5" required></textarea>
+                <button type="submit" class="btn-primary">Enviar Reporte</button>
+                <button type="button" class="btn-secondary close-modal-btn">Cancelar</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="appointmentModal" class="modal">
+        <div class="modal-content">
+            <h3>Agendar Pedido/Entrega</h3>
+            <form id="appointmentForm">
+                <input type="text" id="appointmentName" placeholder="Tu Nombre" required>
+                <input type="tel" id="appointmentPhone" placeholder="Tu Teléfono (ej. 3001234567)" required>
+                <input type="date" id="appointmentDate" required>
+                <input type="time" id="appointmentTime" required>
+                <textarea id="appointmentReason" placeholder="Detalles de tu pedido o servicio requerido" rows="5" required></textarea>
                 <button type="submit" class="btn-primary">Agendar Ahora</button>
                 <button type="button" class="btn-secondary close-modal-btn">Cancelar</button>
             </form>
@@ -609,10 +263,11 @@
             <span id="bottomCartCount" class="cart-count">0</span> <span>Carrito</span>
         </a>
         <a href="#support-section" class="nav-item" aria-label="Soporte">
-            <i class="fas fa-headset"></i> <span>Soporte</span>
+            <i class="fas fa-headset"></i>
+            <span>Soporte</span>
         </a>
     </nav>
 
-    <script src="js/script.js"></script>
+    <script type="module" src="js/main.js"></script>
 </body>
 </html>
