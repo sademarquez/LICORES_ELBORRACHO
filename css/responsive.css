@@ -42,156 +42,71 @@
         background-color: var(--primary-color); /* Asegurar color de subrayado en móvil */
     }
 
-    .menu-toggle {
-        display: block; /* Mostrar el botón de hamburguesa en móvil */
-    }
-
     .hero-section {
-        height: 250px; /* Altura más pequeña para el carrusel en móvil */
+        height: 300px; /* Reducir altura del carrusel en móviles */
     }
 
-    .carousel-slide-content h1 {
-        font-size: 1.8em;
+    .carousel-content h2 {
+        font-size: 1.8rem;
     }
 
-    .carousel-slide-content p {
-        font-size: 0.9em;
+    .carousel-content p {
+        font-size: 0.9rem;
+    }
+
+    .carousel-btn {
+        padding: var(--spacing-xs) var(--spacing-sm);
+        font-size: 1rem;
     }
 
     .product-grid {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Columnas más pequeñas en móvil */
-        gap: var(--spacing-sm);
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* 2 columnas en móvil */
+        gap: var(--spacing-md);
     }
 
     .product-card {
-        width: 100%; /* Las tarjetas ocupan todo el ancho disponible */
-        margin-right: 0; /* Eliminar margen derecho en carruseles si no es necesario */
+        max-width: none; /* Eliminar max-width para ocupar el 100% de la columna */
+        width: 100%;
     }
 
-    .product-card .add-to-cart-btn {
-        font-size: 0.8em;
-        padding: 8px 12px;
+    .main-header .header-icons {
+        margin-left: auto; /* Mueve los iconos a la derecha en móviles */
     }
 
-    .category-buttons-container {
-        flex-wrap: wrap; /* Envolver botones de categoría */
-        justify-content: center;
-        gap: var(--spacing-sm);
-    }
-
-    .category-btn {
-        font-size: 0.85em;
-        padding: 8px 12px;
-    }
-
-    .brands-section .brand-logo {
-        flex: 1 1 30%; /* 3 logos por fila en móvil */
-        max-width: 30%;
-    }
-
-    .contact-info, .social-media {
+    .footer-section {
         text-align: center;
+    }
+
+    .footer-section h3 {
+        text-align: center;
+    }
+
+    .social-media {
         justify-content: center;
     }
 
-    .modal-content {
-        width: 90%;
-        padding: var(--spacing-md);
+    .product-filters {
+        flex-direction: column;
+        align-items: stretch; /* Estirar los filtros a ancho completo */
     }
 
-    .modal-content h2 {
-        font-size: 1.5em;
+    .product-filters select,
+    .product-filters input {
+        width: 100%; /* Ancho completo para inputs en móvil */
     }
 
-    /* Estilos para el carrito móvil */
     .cart-sidebar {
-        width: 100%; /* El carrito ocupa todo el ancho en móvil */
-        left: 0;
-        right: auto;
-        transform: translateX(-100%); /* Desaparece por la izquierda */
-        border-radius: 0;
-        padding-bottom: 70px; /* Espacio para la barra de navegación inferior */
+        width: 100%; /* Ocupa todo el ancho en móviles */
     }
 
-    .cart-sidebar.open {
-        transform: translateX(0);
-    }
-
-    .cart-item {
+    .age-verification-buttons {
         flex-direction: column;
-        align-items: center;
-        text-align: center;
+        gap: var(--spacing-md);
     }
 
-    .cart-item-details {
-        margin-left: 0;
-        margin-top: var(--spacing-sm);
-    }
-
-    .cart-item-actions {
-        width: 100%;
-        justify-content: center;
-        margin-top: var(--spacing-sm);
-    }
-
-    .cart-summary {
-        padding-bottom: var(--spacing-md);
-    }
-
-    .cart-footer {
-        flex-direction: column;
-        gap: var(--spacing-sm);
-        padding: var(--spacing-sm);
-    }
-    
-    /* Bottom Navigation Bar (Barra de navegación inferior) */
-    .bottom-nav {
-        display: flex; /* Mostrar en móvil */
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        background-color: var(--secondary-color-dark);
-        border-top: 1px solid var(--border-color);
-        justify-content: space-around;
-        padding: var(--spacing-xs) 0;
-        box-shadow: var(--shadow-lg-up); /* Sombra hacia arriba */
-        z-index: 1000; /* Asegurarse de que esté por encima de todo */
-    }
-
-    .bottom-nav .nav-item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        color: var(--text-color-light);
-        font-size: 0.8em;
-        padding: var(--spacing-xs) var(--spacing-sm);
-        text-decoration: none;
-        transition: color var(--transition-speed);
-        position: relative;
-    }
-
-    .bottom-nav .nav-item i {
-        font-size: 1.2em;
-        margin-bottom: 3px;
-    }
-
-    .bottom-nav .nav-item.active {
-        color: var(--primary-color);
-    }
-
-    .bottom-nav .cart-count {
-        position: absolute;
-        top: 0;
-        right: 8px; /* Ajuste para el bottom nav */
-        background-color: var(--danger-color);
-        color: var(--white);
-        font-size: 0.6em;
-        padding: 2px 5px;
-        border-radius: 50%;
-        min-width: 16px;
-        text-align: center;
-        line-height: 1;
+    .age-verification-buttons .btn-primary,
+    .age-verification-buttons .btn-secondary {
+        width: 100%; /* Ocupa todo el ancho en móvil */
     }
 }
 
@@ -201,77 +116,55 @@
         padding: 0 var(--spacing-lg);
     }
 
-    .main-header .container {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* 3-4 columnas en tablet */
     }
 
-    .header-content {
-        flex-direction: row;
-        justify-content: space-between;
-        width: 100%;
-        gap: 0;
+    .hero-section {
+        height: 400px; /* Ajustar altura del carrusel */
+    }
+
+    .carousel-content h2 {
+        font-size: 2.2rem;
+    }
+
+    .carousel-content p {
+        font-size: 1.1rem;
     }
 
     .main-nav {
-        display: flex; /* Mostrar navegación principal en tablet */
+        display: flex; /* Asegurar que la navegación principal esté visible */
         position: static;
-        flex-direction: row;
         background-color: transparent;
         box-shadow: none;
         border-top: none;
+        flex-direction: row; /* Volver a fila */
         padding: 0;
-        width: auto;
     }
 
     .main-nav .nav-list {
-        flex-direction: row;
-        gap: var(--spacing-md);
+        flex-direction: row; /* Volver a fila */
+        gap: var(--spacing-lg);
+        width: auto;
     }
 
     .main-nav .nav-list a {
         padding: 0;
-        color: var(--text-color-dark); /* Color de texto normal para enlaces del menú */
+        width: auto;
     }
 
     .menu-toggle {
-        display: none; /* Ocultar el botón de hamburguesa en tablet */
-    }
-
-    .hero-section {
-        height: 350px; /* Altura intermedia para el carrusel en tablet */
-    }
-
-    .carousel-slide-content h1 {
-        font-size: 2.5em;
-    }
-
-    .carousel-slide-content p {
-        font-size: 1.1em;
-    }
-
-    .product-grid {
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* 3-4 columnas en tablet */
-        gap: var(--spacing-md);
-    }
-
-    .product-card {
-        width: auto; /* Dejar que la grilla controle el ancho */
-        margin-right: var(--spacing-md); /* Mantener margen para carruseles continuos si se usan */
-    }
-
-    .brands-section .brand-logo {
-        flex: 1 1 20%; /* 4-5 logos por fila en tablet */
-        max-width: 20%;
-    }
-
-    .cart-sidebar {
-        width: 400px; /* Un poco más ancho en tablet */
+        display: none; /* Ocultar el botón de hamburguesa */
     }
 
     .bottom-nav {
-        display: none; /* Ocultar la barra inferior en tablet */
+        display: none; /* Ocultar la barra inferior */
+    }
+
+    .product-filters {
+        flex-direction: row; /* Volver a fila */
+        justify-content: space-between;
+        align-items: center;
     }
 
     .age-verification-buttons {
@@ -325,6 +218,6 @@
     }
 
     .social-media {
-        justify-content: flex-start;
+        justify-content: flex-start; /* Alinear a la izquierda */
     }
 }
