@@ -6,35 +6,24 @@ import { addToCart } from './cart.js'; // Importa addToCart directamente
 
 /**
  * Crea y devuelve un elemento de tarjeta de producto HTML.
- * Se exporta para ser reutilizada por otros módulos (ej. carruseles de productos).
+ * Se exporta para ser reutilizada por otros módulos (ej. carruseles de productos, búsqueda).
  * @param {Object} product - El objeto producto a renderizar.
  * @returns {HTMLElement} El elemento div que representa la tarjeta de producto.
  */
 export function renderProductCard(product) {
     const productCard = document.createElement('div');
-    productCard.classList.add('product-card');
+    productCard.classList.add('product-card', 'reveal-on-scroll'); // Añade la clase para la animación de scroll
     productCard.dataset.id = product.id; // Para fácil acceso al ID
 
     let priceHtml = `<span class="product-price">$${product.price.toLocaleString('es-CO')}</span>`;
-    let offerTag = ''; // Variable para la etiqueta de oferta
-    let newTag = ''; // Variable para la etiqueta de nuevo
-
     if (product.isOnOffer && product.offerPrice !== null) {
-        const discountPercentage = ((product.price - product.offerPrice) / product.price) * 100;
         priceHtml = `
             <span class="product-old-price">$${product.price.toLocaleString('es-CO')}</span>
             <span class="product-offer-price">$${product.offerPrice.toLocaleString('es-CO')}</span>
         `;
-        offerTag = `<div class="offer-tag">-${discountPercentage.toFixed(0)}%</div>`;
-    }
-
-    if (product.isNew) {
-        newTag = `<div class="new-tag"><i class="fas fa-star"></i> Nuevo</div>`;
     }
 
     productCard.innerHTML = `
-        ${offerTag}
-        ${newTag}
         <img src="${product.imageUrl}" alt="${product.name}" class="product-image" loading="lazy">
         <div class="product-info">
             <h3 class="product-name">${product.name}</h3>
@@ -42,23 +31,25 @@ export function renderProductCard(product) {
             <div class="product-price-container">
                 ${priceHtml}
             </div>
-            <p class="product-description">${product.description}</p>
+            <div class="product-actions">
+                <button class="add-to-cart-btn btn-primary" data-product-id="${product.id}">
+                    <i class="fas fa-cart-plus"></i> Añadir
+                </button>
+            </div>
         </div>
-        <button class="btn btn-primary add-to-cart-btn" data-id="${product.id}">
-            <i class="fas fa-cart-plus"></i> Añadir al Carrito
-        </button>
     `;
 
-    // Añadir el event listener para el botón de añadir al carrito
-    const addToCartBtn = productCard.querySelector('.add-to-cart-btn');
-    if (addToCartBtn) {
-        addToCartBtn.addEventListener('click', (e) => {
-            const productId = e.currentTarget.dataset.id;
+    // Añadir event listener al botón de añadir al carrito
+    const addToCartButton = productCard.querySelector('.add-to-cart-btn');
+    if (addToCartButton) {
+        addToCartButton.addEventListener('click', (e) => {
+            e.stopPropagation(); // Evita que el clic en el botón active otros eventos de la tarjeta
+            const productId = e.currentTarget.dataset.productId;
             const productToAdd = appState.products.find(p => p.id === productId);
             if (productToAdd) {
-                addToCart(productToAdd, 1); // Añadir 1 unidad del producto
+                addToCart(productToAdd);
             } else {
-                showToastNotification('Error: Producto no encontrado.', 'error');
+                showToastNotification('Producto no encontrado para añadir al carrito.', 'error');
             }
         });
     }
@@ -67,9 +58,9 @@ export function renderProductCard(product) {
 }
 
 /**
- * Renderiza una lista de productos en un contenedor específico.
- * @param {Array<Object>} productsToRender - El array de productos a mostrar.
- * @param {string} containerSelector - Selector CSS del contenedor donde se renderizarán los productos.
+ * Renderiza un array de productos en un contenedor de grilla específico.
+ * @param {Array<Object>} productsToRender - Los productos a mostrar.
+ * @param {string} containerSelector - Selector CSS del contenedor (ej. '#allProductsGrid').
  */
 export function renderProducts(productsToRender, containerSelector) {
     const container = document.querySelector(containerSelector);
@@ -81,7 +72,7 @@ export function renderProducts(productsToRender, containerSelector) {
     container.innerHTML = ''; // Limpiar cualquier contenido existente
 
     if (productsToRender.length === 0) {
-        container.innerHTML = `<p class="no-results-message">No hay productos disponibles con estos criterios.</p>`;
+        container.innerHTML = `<p class="no-results-message">No se encontraron productos que coincidan con tu búsqueda o filtros.</p>`;
         return;
     }
 
@@ -89,68 +80,81 @@ export function renderProducts(productsToRender, containerSelector) {
         const productCard = renderProductCard(product);
         container.appendChild(productCard);
     });
-    // console.log(`products.js: ${productsToRender.length} productos renderizados en ${containerSelector}.`); // ELIMINADO
+
+    console.log(`products.js: ${productsToRender.length} productos renderizados en ${containerSelector}.`);
 }
 
 /**
- * Configura los filtros de productos y aplica el filtrado y renderizado inicial.
- * @param {Array<Object>} allProducts - El array completo de productos.
- * @param {string} sectionContainerSelector - Selector del contenedor principal de la sección.
- * @param {string} productsGridSelector - Selector del contenedor de la cuadrícula de productos.
+ * Configura los filtros de productos para una sección específica.
+ * @param {Array<Object>} allProducts - El array completo de productos disponibles.
+ * @param {string} containerId - El ID del contenedor de la grilla de productos donde se aplicarán los filtros.
  */
-export function setupProductFilters(allProducts, sectionContainerSelector, productsGridSelector) {
-    const sectionContainer = document.querySelector(sectionContainerSelector);
-    if (!sectionContainer) {
-        console.warn(`products.js: Contenedor de sección de filtros no encontrado: ${sectionContainerSelector}. Saltando configuración de filtros.`);
+export function setupProductFilters(allProducts, containerId) {
+    const categoryFilter = document.getElementById('categoryFilter');
+    const priceFilter = document.getElementById('priceFilter'); // Asumo que existe un filtro de precio
+    const productSearchInput = document.getElementById('productSearchInput'); // Asumo que existe un input de búsqueda para la grilla
+
+    if (!categoryFilter && !productSearchInput) {
+        console.warn(`products.js: No se encontraron elementos de filtro para la sección ${containerId}. Los filtros no funcionarán.`);
         return;
     }
 
-    const categoryFilter = sectionContainer.querySelector('#categoryFilter');
-    const priceFilter = sectionContainer.querySelector('#priceFilter');
-    const productSearchInput = sectionContainer.querySelector('#productSearchInput');
+    // Llenar dinámicamente las opciones de categoría
+    const categories = new Set(allProducts.map(p => p.category));
+    categoryFilter.innerHTML = '<option value="all">Todas las Categorías</option>';
+    categories.forEach(category => {
+        const option = document.createElement('option');
+        option.value = category;
+        option.textContent = category;
+        categoryFilter.appendChild(option);
+    });
 
+    /**
+     * Aplica los filtros y renderiza los productos.
+     */
     const applyFilters = () => {
         let filtered = [...allProducts];
 
         // Filtrar por categoría
-        if (categoryFilter && categoryFilter.value !== 'all') {
-            filtered = filtered.filter(product => product.category === categoryFilter.value);
+        const selectedCategory = categoryFilter ? categoryFilter.value : 'all';
+        if (selectedCategory !== 'all') {
+            filtered = filtered.filter(product => product.category === selectedCategory);
         }
 
-        // Filtrar por precio máximo
-        if (priceFilter && priceFilter.value !== '') {
-            const maxPrice = parseFloat(priceFilter.value);
-            if (!isNaN(maxPrice)) {
-                filtered = filtered.filter(product => product.price <= maxPrice || (product.isOnOffer && product.offerPrice <= maxPrice));
-            }
-        }
-
-        // Filtrar por término de búsqueda
-        if (productSearchInput && productSearchInput.value.trim() !== '') {
-            const searchTerm = productSearchInput.value.toLowerCase().trim();
+        // Filtrar por búsqueda de texto
+        const searchTerm = productSearchInput ? productSearchInput.value.toLowerCase().trim() : '';
+        if (searchTerm) {
             filtered = filtered.filter(product =>
                 product.name.toLowerCase().includes(searchTerm) ||
                 product.brand.toLowerCase().includes(searchTerm) ||
                 product.description.toLowerCase().includes(searchTerm)
             );
         }
-        
-        renderProducts(filtered, productsGridSelector);
+
+        // Opcional: Filtrar por precio (si se implementa)
+        // if (priceFilter) {
+        //     const maxPrice = parseFloat(priceFilter.value);
+        //     if (!isNaN(maxPrice)) {
+        //         filtered = filtered.filter(product => (product.isOnOffer ? product.offerPrice : product.price) <= maxPrice);
+        //     }
+        // }
+
+        renderProducts(filtered, containerId); // Renderiza los productos filtrados en el contenedor
     };
 
+    // Añadir event listeners a los filtros
     if (categoryFilter) categoryFilter.addEventListener('change', applyFilters);
-    if (priceFilter) priceFilter.addEventListener('input', applyFilters); // Usar 'input' para reacción instantánea
+    // if (priceFilter) priceFilter.addEventListener('change', applyFilters);
     if (productSearchInput) productSearchInput.addEventListener('input', applyFilters);
 
-    applyFilters();
-    // console.log(`products.js: Filtros configurados para la sección ${sectionContainerSelector}.`); // ELIMINADO
+    applyFilters(); // Aplica los filtros iniciales al cargar la página
+    console.log(`products.js: Filtros configurados para la sección ${containerId}.`);
 }
 
 /**
  * Renderiza los logos de las marcas en un contenedor específico.
- * NOTA: Esta función no es usada por initContinuousProductCarousel
- * ya que ese módulo crea sus propios elementos de marca.
- * Podría ser usada para otra sección de marcas estática.
+ * NOTA: Para el carrusel continuo, `initContinuousProductCarousel` es la función preferida.
+ * Esta función es más útil si solo se quieren mostrar logos estáticos en una grilla.
  * @param {Array<Object>} brandsData - Array de objetos de marca.
  * @param {string} containerSelector - Selector CSS del contenedor donde se renderizarán los logos.
  */
@@ -170,9 +174,9 @@ export function renderBrands(brandsData, containerSelector) {
 
     brandsData.forEach(brand => {
         const brandDiv = document.createElement('div');
-        brandDiv.classList.add('brand-logo'); // Asegúrate que esta clase tiene estilos
+        brandDiv.classList.add('brand-logo');
         brandDiv.innerHTML = `<img src="${brand.logoUrl}" alt="${brand.name} Logo" loading="lazy">`;
         container.appendChild(brandDiv);
     });
-    // console.log(`products.js: Marcas renderizadas en ${containerSelector}.`); // ELIMINADO
+    console.log(`products.js: Marcas renderizadas en ${containerSelector}.`);
 }
