@@ -26,41 +26,75 @@
     --spacing-sm: 10px;
     --spacing-md: 20px;
     --spacing-lg: 30px;
-    --spacing-xl: 40px;
+    --spacing-xl: 50px;
+    --section-padding: 80px 0;
+    --section-padding-y: 60px 0;
 
     /* Fuentes */
-    --font-primary: 'Arial', sans-serif; /* Puedes cambiar por una fuente de Google Fonts */
-    --font-secondary: 'Helvetica Neue', sans-serif;
+    --font-primary: 'Arial', sans-serif; /* Puedes usar Google Fonts aquí */
+    --font-secondary: 'Georgia', serif;
 
-    /* Sombras */
-    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-    --shadow-md: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-    --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
-
-    /* Resplandor Dorado */
-    --golden-glow-sm: 0 0 5px rgba(255, 191, 0, 0.5);
-    --golden-glow-md: 0 0 15px rgba(255, 191, 0, 0.7);
-    --golden-glow-lg: 0 0 25px rgba(255, 191, 0, 0.9);
-
-    /* Bordes */
+    /* Sombras y Bordes */
     --border-radius: 8px;
-    --border-radius-sm: 5px;
-    --border-radius-lg: 12px;
+    --border-radius-sm: 4px;
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.4);
+
+    /* Glow dorado para elementos interactivos y destacados */
+    --golden-glow-sm: 0 0 5px var(--primary-color), 0 0 10px rgba(255, 191, 0, 0.2);
+    --golden-glow-md: 0 0 10px var(--primary-color), 0 0 20px rgba(255, 191, 0, 0.4);
 
     /* Transiciones */
     --transition-speed: 0.3s;
     --transition-timing: ease-in-out;
+
+    /* Altura del header para compensar el contenido */
+    --header-height: 80px;
+
+    /* Variables para el carrusel continuo (se setea por JS) */
+    --scroll-duration: 30s; /* Duración por defecto, se ajusta con JS */
 }
 
-/* Estilos Generales */
-body {
-    font-family: var(--font-primary);
+/* Base global */
+* {
     margin: 0;
     padding: 0;
-    background-color: var(--secondary-color); /* Fondo principal de la página */
-    color: var(--text-color-light);
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-primary);
     line-height: 1.6;
+    color: var(--text-color-dark);
+    background-color: var(--secondary-color); /* Fondo oscuro general */
+    overflow-x: hidden; /* Evitar scroll horizontal por elementos desbordados */
     scroll-behavior: smooth; /* Desplazamiento suave para anclas */
+}
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color var(--transition-speed) var(--transition-timing);
+}
+
+a:hover {
+    color: var(--accent-color);
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block; /* Elimina espacio extra debajo de las imágenes */
+}
+
+ul {
+    list-style: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-md);
 }
 
 .container {
@@ -70,88 +104,97 @@ body {
 }
 
 .section-padding {
-    padding: var(--spacing-xl) 0;
+    padding: var(--section-padding);
 }
 
-h1, h2, h3, h4, h5, h6 {
-    color: var(--text-color-dark);
-    margin-top: 0;
-    margin-bottom: var(--spacing-md);
+.section-padding-y {
+    padding: var(--spacing-lg) 0;
+}
+
+.text-center {
     text-align: center;
 }
 
-h2 {
-    font-size: 2.5em;
-    color: var(--primary-color);
-    margin-bottom: var(--spacing-lg);
-    text-shadow: var(--golden-glow-sm);
-}
-
-.section-description {
-    text-align: center;
-    margin-bottom: var(--spacing-lg);
-    font-size: 1.1em;
-    color: var(--text-color-light);
-}
-
-a {
-    color: var(--primary-color);
-    text-decoration: none;
-    transition: color var(--transition-speed);
-}
-
-a:hover {
-    color: var(--primary-color-dark);
-    text-decoration: underline;
-}
-
-button, .btn-primary, .btn-secondary {
-    display: inline-block;
+/* Botones */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xs);
     padding: var(--spacing-sm) var(--spacing-md);
     border-radius: var(--border-radius);
-    cursor: pointer;
-    font-size: 1em;
     font-weight: bold;
-    text-align: center;
-    transition: background-color var(--transition-speed), color var(--transition-speed), border-color var(--transition-speed), box-shadow var(--transition-speed);
-    text-decoration: none; /* Para usar en elementos 'a' */
+    cursor: pointer;
+    border: none;
+    transition: all var(--transition-speed) var(--transition-timing);
+    font-size: 1em;
 }
 
 .btn-primary {
     background-color: var(--primary-color);
-    color: var(--secondary-color);
-    border: 1px solid var(--primary-color);
+    color: var(--secondary-color-dark);
+    box-shadow: var(--shadow-sm);
 }
 
 .btn-primary:hover {
     background-color: var(--primary-color-dark);
-    border-color: var(--primary-color-dark);
-    box-shadow: var(--golden-glow-sm);
+    box-shadow: var(--shadow-md), var(--golden-glow-sm);
+    transform: translateY(-2px);
 }
 
 .btn-secondary {
-    background-color: transparent;
-    color: var(--primary-color);
-    border: 1px solid var(--primary-color);
+    background-color: var(--secondary-color-dark);
+    color: var(--text-color-dark);
+    border: 1px solid var(--border-color);
 }
 
 .btn-secondary:hover {
+    background-color: var(--border-color);
+    color: var(--primary-color);
+    box-shadow: var(--shadow-sm);
+    transform: translateY(-2px);
+}
+
+.btn-primary-outline {
+    background-color: transparent;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+
+.btn-primary-outline:hover {
     background-color: var(--primary-color);
-    color: var(--secondary-color);
-    box-shadow: var(--golden-glow-sm);
+    color: var(--secondary-color-dark);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.btn-secondary-outline {
+    background-color: transparent;
+    color: var(--text-color-light);
+    border: 1px solid var(--text-color-light);
+}
+
+.btn-secondary-outline:hover {
+    background-color: var(--text-color-light);
+    color: var(--secondary-color-dark);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.btn-block {
+    width: 100%;
+    display: flex; /* Asegura que el contenido del botón se centre si hay iconos */
 }
 
 /* Header */
 .main-header {
     background-color: var(--dark-bg);
-    padding: var(--spacing-sm) 0;
-    border-bottom: 1px solid var(--border-color);
+    color: var(--text-color-dark);
+    padding: var(--spacing-md) 0;
     position: sticky;
     top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1000; /* Asegura que el header esté encima del contenido */
-    box-shadow: var(--shadow-sm);
+    z-index: 1000;
+    box-shadow: var(--shadow-md);
 }
 
 .header-content {
@@ -161,20 +204,12 @@ button, .btn-primary, .btn-secondary {
     gap: var(--spacing-md);
 }
 
-.logo-link {
-    display: flex;
-    align-items: center;
-}
-
-.logo {
-    height: 60px; /* Ajusta el tamaño del logo */
-    width: auto;
+.logo img {
+    height: 50px; /* Tamaño del logo */
+    filter: drop-shadow(0 0 5px rgba(255, 191, 0, 0.5)); /* Pequeño brillo al logo */
 }
 
 .main-nav .nav-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
     display: flex;
     gap: var(--spacing-lg);
 }
@@ -182,23 +217,29 @@ button, .btn-primary, .btn-secondary {
 .main-nav .nav-list a {
     color: var(--text-color-dark);
     font-weight: bold;
+    padding: var(--spacing-xs) 0;
     position: relative;
-    padding-bottom: var(--spacing-xs); /* Espacio para el subrayado */
+    transition: color var(--transition-speed) var(--transition-timing);
 }
 
 .main-nav .nav-list a::after {
     content: '';
     position: absolute;
     left: 0;
-    bottom: 0;
+    bottom: -2px;
     width: 0;
     height: 2px;
     background-color: var(--primary-color);
     transition: width var(--transition-speed) var(--transition-timing);
 }
 
-.main-nav .nav-list a:hover::after {
+.main-nav .nav-list a:hover::after,
+.main-nav .nav-list a.active::after {
     width: 100%;
+}
+
+.main-nav .nav-list a:hover {
+    color: var(--primary-color);
 }
 
 .header-actions {
@@ -207,27 +248,30 @@ button, .btn-primary, .btn-secondary {
     align-items: center;
 }
 
-.icon-button {
+.header-actions button {
     background: none;
     border: none;
     color: var(--text-color-dark);
-    font-size: 1.5em;
+    font-size: 1.2em;
     cursor: pointer;
-    transition: color var(--transition-speed);
+    transition: color var(--transition-speed) var(--transition-timing), transform var(--transition-speed) var(--transition-timing);
 }
 
-.icon-button:hover {
+.header-actions button:hover {
     color: var(--primary-color);
+    transform: scale(1.1);
 }
 
-.cart-button {
+/* Contador del carrito en el header */
+.header-actions .cart-btn {
     position: relative;
+    padding-right: 20px; /* Espacio para el contador */
 }
 
-.cart-button .cart-count {
+.header-actions .cart-count {
     position: absolute;
     top: -5px;
-    right: -10px;
+    right: 0;
     background-color: var(--danger-color);
     color: var(--white);
     font-size: 0.7em;
@@ -239,88 +283,449 @@ button, .btn-primary, .btn-secondary {
 }
 
 .menu-toggle {
-    display: none; /* Oculto por defecto en desktop */
-    font-size: 1.8em;
+    display: none; /* Ocultar por defecto, mostrar en móviles */
 }
 
-/* Product Grid Section */
-.products-grid-section {
-    background-color: var(--dark-bg); /* Fondo oscuro para la sección de productos */
+/* Hero Section */
+.hero-section {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    height: 500px; /* Altura fija para el carrusel */
+    background-color: var(--dark-bg); /* Color de fondo mientras carga la imagen */
 }
 
-/* Product Card - Simetría (aplicado también en components.css) */
-/* Asegura que el contenido interno se distribuya para que las tarjetas tengan la misma altura */
-.product-card {
+.carousel-container {
+    position: relative;
+    width: 100%;
+    height: 100%; /* Ajustado para ocupar toda la altura del hero-section */
+}
+
+.carousel-track {
     display: flex;
-    flex-direction: column;
-    justify-content: space-between; /* Empuja el botón al final */
-    height: 100%; /* CRÍTICO: Asegura que todas las tarjetas tengan la misma altura dentro de la grilla */
+    height: 100%;
+    transition: transform 0.5s ease-in-out; /* Velocidad de transición del slide */
 }
 
-.product-card .product-info {
-    flex-grow: 1; /* Permite que el bloque de info crezca para ocupar espacio disponible */
-    display: flex; /* Nuevo: para controlar el layout interno de info */
-    flex-direction: column; /* Nuevo: organiza los elementos de info en columna */
-    justify-content: flex-start; /* Nuevo: alinea el contenido de info al principio */
-}
-
-.product-card .product-name {
-    min-height: 2.4em; /* Mantiene el espacio para 2 líneas de texto */
-    /* Elipsis y line-clamp ya definidos en components.css */
-}
-
-.product-card .product-price-container {
-    min-height: 2em; /* Mantiene el espacio para precios, incluso si solo hay uno */
-    margin-top: auto; /* Empuja el contenedor de precio hacia el final del product-info */
-}
-
-
-/* About Us Section */
-.about-us-section {
-    background-color: var(--secondary-color); /* Fondo ligeramente diferente para esta sección */
-}
-
-.about-content {
+.carousel-slide {
+    min-width: 100%;
+    height: 100%;
+    position: relative;
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: var(--spacing-xl);
+    flex-direction: column; /* Cambiado a columna para organizar mejor el contenido */
+    align-items: center; /* Centra el contenido verticalmente */
+    justify-content: center; /* Centra el contenido horizontalmente */
+    background-size: cover;
+    background-position: center;
+    color: var(--white);
+    text-align: center;
+    flex-shrink: 0; /* Asegura que no se encoja */
+    padding: var(--spacing-lg); /* Padding para el contenido */
+    box-sizing: border-box; /* Incluir padding en el tamaño */
 }
 
-.about-image {
-    flex: 1;
-    min-width: 300px;
+.carousel-slide::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Oscurece la imagen para que el texto resalte */
+    z-index: 1;
 }
 
-.about-image img {
-    max-width: 100%;
-    height: auto;
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow-md);
+.carousel-slide-content {
+    position: relative;
+    z-index: 2; /* Asegura que el contenido esté sobre la capa oscura */
+    max-width: 800px; /* Ancho máximo para el texto */
 }
 
-.about-text {
-    flex: 2;
-    text-align: left;
+.carousel-slide-content h2 {
+    color: var(--primary-color);
+    font-size: 2.5em;
+    margin-bottom: var(--spacing-sm);
+    text-shadow: var(--shadow-sm);
 }
 
-.about-text p {
+.carousel-slide-content p {
+    font-size: 1.2em;
     margin-bottom: var(--spacing-md);
-    font-size: 1.05em;
+    line-height: 1.5;
     color: var(--text-color-light);
 }
 
-/* Support Section */
-.support-section {
-    background-color: var(--dark-bg);
+.carousel-slide-content .btn {
+    font-size: 1.1em;
+    padding: var(--spacing-sm) var(--spacing-lg);
 }
 
+/* Navegación del Carrusel */
+.carousel-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: var(--white);
+    border: none;
+    padding: var(--spacing-sm);
+    cursor: pointer;
+    z-index: 10;
+    border-radius: var(--border-radius);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.carousel-nav-btn:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.carousel-nav-btn.prev {
+    left: var(--spacing-md);
+}
+
+.carousel-nav-btn.next {
+    right: var(--spacing-md);
+}
+
+.carousel-dots {
+    position: absolute;
+    bottom: var(--spacing-md);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: var(--spacing-sm);
+    z-index: 10;
+}
+
+.carousel-dot {
+    width: 10px;
+    height: 10px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.carousel-dot.active {
+    background-color: var(--primary-color);
+    transform: scale(1.2);
+    border-color: var(--primary-color);
+}
+
+
+/* Product Card */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+}
+
+.product-card {
+    background-color: var(--secondary-color-dark);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform var(--transition-speed) var(--transition-timing), box-shadow var(--transition-speed) var(--transition-timing), background-color var(--transition-speed) var(--transition-timing);
+    position: relative; /* Para posicionar etiquetas de oferta/nuevo */
+}
+
+.product-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: var(--shadow-md), var(--golden-glow-sm);
+    background-color: #2b3035; /* Ligeramente más claro en hover */
+}
+
+.product-card .product-image {
+    width: 100%;
+    height: 180px;
+    object-fit: contain; /* Asegura que la imagen completa sea visible */
+    padding: var(--spacing-sm);
+    background-color: var(--dark-bg); /* Fondo oscuro para la imagen */
+    border-bottom: 1px solid var(--border-color);
+}
+
+.product-card .product-info {
+    padding: var(--spacing-md);
+    flex-grow: 1; /* Permite que la información crezca */
+    display: flex;
+    flex-direction: column;
+}
+
+.product-card .product-name {
+    font-size: 1.1em;
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-xs);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.product-card .product-brand {
+    font-size: 0.9em;
+    color: var(--text-color-light);
+    margin-bottom: var(--spacing-sm);
+}
+
+.product-card .product-description {
+    font-size: 0.8em;
+    color: var(--text-color-light);
+    margin-bottom: var(--spacing-sm);
+    flex-grow: 1; /* Permite que la descripción crezca */
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Limita a 3 líneas */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.product-card .product-price-container {
+    margin-top: auto; /* Empuja el precio y botón al final */
+    margin-bottom: var(--spacing-sm);
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-start;
+    flex-wrap: wrap; /* Permite que los precios se envuelvan si hay poco espacio */
+    gap: var(--spacing-xs);
+}
+
+.product-card .product-price {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: var(--text-color-dark);
+}
+
+/* Mejoras visuales para ofertas y nuevos */
+.offer-tag {
+    position: absolute;
+    top: var(--spacing-sm);
+    right: var(--spacing-sm);
+    background-color: var(--danger-color); /* Rojo o color llamativo */
+    color: var(--white);
+    padding: 5px 8px;
+    border-radius: var(--border-radius-sm);
+    font-size: 0.8em;
+    font-weight: bold;
+    z-index: 10;
+    animation: pulse 1.5s infinite; /* Animación de pulsación */
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); opacity: 0.9; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.new-tag {
+    position: absolute;
+    top: var(--spacing-sm);
+    left: var(--spacing-sm);
+    background-color: var(--primary-color); /* Color primario o verde */
+    color: var(--secondary-color-dark); /* Texto oscuro para contraste */
+    padding: 5px 8px;
+    border-radius: var(--border-radius-sm);
+    font-size: 0.8em;
+    font-weight: bold;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.new-tag .fas {
+    font-size: 0.9em;
+    color: var(--secondary-color-dark);
+}
+
+.product-old-price {
+    text-decoration: line-through;
+    color: var(--text-color-light);
+    font-size: 0.9em;
+    margin-right: var(--spacing-sm);
+}
+
+.product-offer-price {
+    color: var(--primary-color); /* Color ámbar para la oferta */
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.product-card .add-to-cart-btn {
+    margin-top: var(--spacing-md);
+    width: 100%;
+}
+
+/* Secciones generales */
+.product-listing, .category-products-section, .continuous-carousel-section, .support-section {
+    background-color: var(--secondary-color); /* Asegura el fondo oscuro */
+}
+
+.section-title {
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: var(--spacing-lg);
+    font-size: 2em;
+    text-shadow: var(--shadow-sm);
+}
+
+/* Filtros de Productos */
+.product-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+    justify-content: center;
+    margin-bottom: var(--spacing-lg);
+}
+
+.product-filters select,
+.product-filters input {
+    padding: var(--spacing-sm);
+    border-radius: var(--border-radius-sm);
+    border: 1px solid var(--border-color);
+    background-color: var(--secondary-color-dark);
+    color: var(--text-color-dark);
+    font-size: 0.9em;
+    flex-grow: 1; /* Permite que crezcan */
+    min-width: 150px; /* Ancho mínimo para que no se hagan demasiado pequeños */
+}
+
+.product-filters select option {
+    background-color: var(--secondary-color-dark);
+    color: var(--text-color-dark);
+}
+
+/* Carrusel continuo de marcas */
+.continuous-carousel-section {
+    background-color: var(--dark-bg); /* Fondo oscuro para esta sección */
+    padding: var(--spacing-lg) 0;
+}
+
+.continuous-carousel {
+    overflow: hidden; /* Oculta el contenido extra */
+    white-space: nowrap; /* Asegura que los elementos estén en una sola línea */
+    padding: var(--spacing-sm) 0; /* Pequeño padding vertical */
+}
+
+.continuous-carousel-track {
+    display: flex;
+    white-space: nowrap;
+    animation: scroll-left var(--scroll-duration) linear infinite; /* Se controla con JS */
+}
+
+.continuous-carousel-track:hover {
+    animation-play-state: paused; /* Pausa la animación al pasar el mouse */
+}
+
+/* Estilos para los logos de marca en el carrusel continuo */
+.brand-logo {
+    background-color: rgba(52, 58, 64, 0.08); /* Fondo sutil */
+    border: 1px solid rgba(255, 191, 0, 0.3); /* Borde dorado */
+    border-radius: 10px;
+    width: 150px; /* Ancho fijo para logos, ajusta si es necesario */
+    height: 100px; /* Altura fija para logos, para que sean uniformes */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0; /* IMPORANTE: Asegura que no se encoja */
+    margin-right: var(--spacing-md); /* Espacio entre logos */
+    padding: var(--spacing-sm);
+    transition: transform var(--transition-speed) var(--transition-timing), box-shadow var(--transition-speed) var(--transition-timing), background-color var(--transition-speed) var(--transition-timing);
+    box-shadow: var(--shadow-sm);
+}
+
+.brand-logo:hover {
+    transform: translateY(-5px) scale(1.05); /* Ligeramente más grande y elevado al pasar el mouse */
+    background-color: rgba(52, 58, 64, 0.15);
+    box-shadow: var(--shadow-md), var(--golden-glow-sm);
+}
+
+.brand-logo img {
+    max-width: 90%; /* Asegura que la imagen no desborde */
+    max-height: 90%;
+    object-fit: contain; /* Mantiene la relación de aspecto y se ajusta */
+}
+
+/* Animación de desplazamiento hacia la izquierda */
+@keyframes scroll-left {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-50%); } /* Desplaza la mitad de los elementos */
+}
+
+/* Sección de Soporte */
+.support-section {
+    background-color: var(--secondary-color);
+    padding: var(--section-padding);
+}
+
+.support-content {
+    display: flex;
+    flex-wrap: wrap; /* Permite que los bloques se envuelvan en pantallas pequeñas */
+    gap: var(--spacing-lg);
+    justify-content: center;
+    align-items: flex-start; /* Alineación al inicio */
+}
+
+.contact-info-block, .support-actions-block {
+    background-color: var(--secondary-color-dark);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+    flex: 1; /* Permite que crezcan */
+    min-width: 300px; /* Ancho mínimo para bloques */
+    border: 1px solid var(--border-color);
+}
+
+.contact-info-block h3, .support-actions-block h3 {
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-md);
+}
+
+.contact-info-block p {
+    color: var(--text-color-light);
+    margin-bottom: var(--spacing-sm);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.contact-info-block p .fas, .contact-info-block p .fab {
+    color: var(--primary-color);
+    font-size: 1.1em;
+}
+
+.social-media {
+    margin-top: var(--spacing-md);
+    display: flex;
+    gap: var(--spacing-md);
+}
+
+.social-media a {
+    color: var(--text-color-dark);
+    font-size: 1.5em;
+    transition: color var(--transition-speed) var(--transition-timing), transform var(--transition-speed) var(--transition-timing);
+}
+
+.social-media a:hover {
+    color: var(--primary-color);
+    transform: scale(1.1);
+}
+
+.support-actions-block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
 
 /* Footer */
 .main-footer {
     background-color: var(--dark-bg);
     color: var(--text-color-light);
-    padding: var(--spacing-xl) 0 var(--spacing-md) 0;
+    padding: var(--spacing-lg) 0 var(--spacing-sm) 0;
     border-top: 1px solid var(--border-color);
 }
 
@@ -329,119 +734,51 @@ button, .btn-primary, .btn-secondary {
     flex-wrap: wrap;
     justify-content: space-between;
     gap: var(--spacing-lg);
+    padding-bottom: var(--spacing-lg);
 }
 
-.footer-brand, .footer-links, .footer-contact, .footer-social {
+.footer-section {
     flex: 1;
-    min-width: 200px;
+    min-width: 250px;
 }
 
-.footer-logo {
-    height: 80px;
-    margin-bottom: var(--spacing-sm);
-}
-
-.footer-content h3 {
+.footer-section h3 {
     color: var(--primary-color);
     margin-bottom: var(--spacing-md);
-    text-align: left; /* Alineado a la izquierda en el footer */
 }
 
-.footer-links ul {
-    list-style: none;
+.footer-section p, .footer-section li {
+    color: var(--text-color-light);
+    line-height: 1.8;
+}
+
+.footer-section ul {
     padding: 0;
-    margin: 0;
 }
 
-.footer-links ul li {
-    margin-bottom: var(--spacing-sm);
-}
-
-.footer-links a, .footer-contact p {
+.footer-section ul li a {
     color: var(--text-color-light);
-    font-size: 0.95em;
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-xs);
+    transition: color var(--transition-speed) var(--transition-timing);
 }
 
-.footer-links a:hover {
-    color: var(--primary-color);
-    text-decoration: none;
-}
-
-.footer-social .social-media {
-    display: flex;
-    gap: var(--spacing-md);
-    margin-top: var(--spacing-md);
-}
-
-.footer-social .social-media a {
-    color: var(--text-color-dark);
-    font-size: 1.8em;
-    transition: color var(--transition-speed);
-}
-
-.footer-social .social-media a:hover {
+.footer-section ul li a:hover {
     color: var(--primary-color);
 }
 
-/* Bottom Navigation (Mobile Only) */
-.bottom-nav {
-    display: none; /* Oculto por defecto, se muestra en responsive.css */
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: var(--dark-bg);
-    border-top: 1px solid var(--border-color);
-    box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.3);
-    z-index: 1000;
-    display: flex;
-    justify-content: space-around;
-    padding: var(--spacing-sm) 0;
-}
-
-.bottom-nav .nav-item {
-    flex: 1;
+.footer-bottom {
     text-align: center;
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--border-color);
+    font-size: 0.9em;
     color: var(--text-color-light);
-    font-size: 0.8em;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--spacing-xs);
-    padding: var(--spacing-xs) 0;
-    position: relative; /* Para el badge del carrito */
 }
 
-.bottom-nav .nav-item .fas,
-.bottom-nav .nav-item .fab {
-    font-size: 1.4em;
-    color: var(--text-color-light);
-    transition: color var(--transition-speed);
+/* Animación de rebote para el carrito */
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
 }
 
-.bottom-nav .nav-item span {
-    transition: color var(--transition-speed);
-}
-
-.bottom-nav .nav-item:hover .fas,
-.bottom-nav .nav-item:hover .fab,
-.bottom-nav .nav-item:hover span {
-    color: var(--primary-color);
-}
-
-.bottom-nav .nav-item.active {
-    color: var(--primary-color);
-}
-
-.bottom-nav .nav-item.active .fas,
-.bottom-nav .nav-item.active .fab {
-    color: var(--primary-color);
-}
-
-.bottom-nav .cart-count {
-    top: 5px; /* Ajuste para el bottom nav */
-    right: 15px;
+.bouncing-cart {
+    animation: bounce 0.8s ease-in-out;
 }
