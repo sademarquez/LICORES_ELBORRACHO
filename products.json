@@ -1,90 +1,310 @@
-{
-    "siteName": "EL BORRACHO",
-    "contactEmail": "pedidos@elborracho.com",
-    "contactPhone": "573174144815",
-    "address": "Popayán, Cauca, Colombia",
-    "banners": [
-        {
-            "id": "banner1",
-            "title": "¡Novedad! Licores Premium",
-            "description": "Descubre nuestra selección exclusiva de licores finos para cada ocasión.",
-            "imageUrl": "images/banners/banner-licores-premium.jpg",
-            "link": "#licores",
-            "buttonText": "Ver Licores"
-        },
-        {
-            "id": "banner2",
-            "title": "Ofertas Increíbles en Cervezas",
-            "description": "Las mejores marcas de cerveza con descuentos que no querrás perderte.",
-            "imageUrl": "images/banners/banner-cervezas.jpg",
-            "link": "#cervezas",
-            "buttonText": "Comprar Cervezas"
-        },
-        {
-            "id": "banner3",
-            "title": "Snacks y Bebidas no Alcohólicas",
-            "description": "Acompaña tus licores con nuestros deliciosos snacks y bebidas refrescantes.",
-            "imageUrl": "images/banners/banner-snacks.jpg",
-            "link": "#snacks",
-            "buttonText": "Explorar Snacks"
-        },
-        {
-            "id": "banner4",
-            "title": "Entrega Rápida y Segura",
-            "description": "Tu pedido, directamente a tu puerta en tiempo récord.",
-            "imageUrl": "images/banners/banner-entrega-rapida.jpg",
-            "link": "#",
-            "buttonText": "Más Información"
-        }
-    ],
-    "brands": [
-        {
-            "name": "Ron Viejo de Caldas",
-            "logoUrl": "images/icons/ron-caldas-logo.svg"
-        },
-        {
-            "name": "Buchanan's",
-            "logoUrl": "images/icons/buchanans-logo.svg"
-        },
-        {
-            "name": "Club Colombia",
-            "logoUrl": "images/icons/club-colombia-logo.svg"
-        },
-        {
-            "name": "Corona",
-            "logoUrl": "images/icons/corona-logo.svg"
-        },
-        {
-            "name": "Poker",
-            "logoUrl": "images/icons/poker-logo.svg"
-        },
-        {
-            "name": "Aguardiente caucano",
-            "logoUrl": "images/icons/aguardientecaucano-logo.svg"
-        },
-        {
-            "name": "Aguardiente Néctar",
-            "logoUrl": "images/icons/nectar-logo.svg"
-        },
-        {
-            "name": "Don Julio",
-            "logoUrl": "images/icons/donjulio-logo.svg"
-        },
-        {
-            "name": "Smirnoff",
-            "logoUrl": "images/icons/smirnoff-logo.svg"
-        },
-        {
-            "name": "Coca-Cola",
-            "logoUrl": "images/icons/cocacola-logo.svg"
-        },
-        {
-            "name": "Pepsi",
-            "logoUrl": "images/icons/pepsi-logo.svg"
-        },
-        {
-            "name": "Postobón",
-            "logoUrl": "images/icons/postobon-logo.svg"
-        }
-    ]
-}
+[
+    {
+        "id": "aguardiente-caucano-verde",
+        "name": "Aguardiente caucano tapa verde",
+        "brand": "Aguardiente caucano",
+        "category": "Licor",
+        "description": "El sabor tradicional del cauca, ideal para cualquier celebración. Botella de 750ml.",
+        "price": 45000,
+        "imageUrl": "images/products/aguardientec.png",
+        "isOnOffer": false,
+        "offerPrice": null,
+        "isNew": true,
+        "stock": 100,
+        "rating": 4.5
+    },
+    {
+        "id": "ron-viejo-caldas-8-anos",
+        "name": "Ron Viejo de Caldas 8 Años",
+        "brand": "Ron Viejo de Caldas",
+        "category": "Licor",
+        "description": "Ron añejo premium con 8 años de maduración, suave y con carácter. Botella de 750ml.",
+        "price": 75000,
+        "imageUrl": "images/products/ron.png",
+        "isOnOffer": true,
+        "offerPrice": 68000,
+        "isNew": false,
+        "stock": 70,
+        "rating": 4.7
+    },
+    {
+        "id": "whisky-buchanans-12-anos",
+        "name": "Whisky Buchanan's Deluxe 12 Años",
+        "brand": "Buchanan's",
+        "category": "Licor",
+        "description": "El clásico whisky escocés de 12 años, perfecto para compartir. Botella de 750ml.",
+        "price": 180000,
+        "imageUrl": "images/products/buchanans.png",
+        "isOnOffer": true,
+        "offerPrice": 165000,
+        "isNew": false,
+        "stock": 40,
+        "rating": 4.8
+    },
+    {
+        "id": "cerveza-club-colombia-dorada-sixpack",
+        "name": "Cerveza Club Colombia Dorada (Sixpack)",
+        "brand": "Club Colombia",
+        "category": "Cerveza",
+        "description": "Sixpack de cerveza Club Colombia Dorada, refrescante y de sabor balanceado. Latas de 330ml.",
+        "price": 25000,
+        "imageUrl": "images/products/clubcolombia.png",
+        "isOnOffer": false,
+        "offerPrice": null,
+        "isNew": false,
+        "stock": 200,
+        "rating": 4.4
+    },
+    {
+        "id": "cerveza-corona-sixpack",
+        "name": "Cerveza Corona (Sixpack)",
+        "brand": "Corona",
+        "category": "Cerveza",
+        "description": "Sixpack de cerveza Corona, ideal para un día soleado. Botellas de 355ml.",
+        "price": 30000,
+        "imageUrl": "images/products/corona.png",
+        "isOnOffer": true,
+        "offerPrice": 27000,
+        "isNew": false,
+        "stock": 150,
+        "rating": 4.6
+    },
+    {
+        "id": "cerveza-poker-sixpack",
+        "name": "Cerveza Poker (Sixpack)",
+        "brand": "Poker",
+        "category": "Cerveza",
+        "description": "Sixpack de cerveza Poker, la cerveza para los amigos. Latas de 330ml.",
+        "price": 22000,
+        "imageUrl": "images/products/poker.png",
+        "isOnOffer": false,
+        "offerPrice": null,
+        "isNew": false,
+        "stock": 300,
+        "rating": 4.3
+    },
+    {
+        "id": "aguardiente-nectar-rojo",
+        "name": "Aguardiente Néctar Rojo",
+        "brand": "Aguardiente Néctar",
+        "category": "Licor",
+        "description": "El tradicional aguardiente Néctar Rojo, con su sabor anisado característico. Botella de 750ml.",
+        "price": 48000,
+        "imageUrl": "images/products/nectar.png",
+        "isOnOffer": false,
+        "offerPrice": null,
+        "isNew": false,
+        "stock": 90,
+        "rating": 4.2
+    },
+    {
+        "id": "tequila-don-julio-reposado",
+        "name": "Tequila Don Julio Reposado",
+        "brand": "Don Julio",
+        "category": "Licor",
+        "description": "Tequila reposado 100% de agave azul, suave y complejo. Botella de 700ml.",
+        "price": 250000,
+        "imageUrl": "images/products/donjulio.png",
+        "isOnOffer": true,
+        "offerPrice": 230000,
+        "isNew": false,
+        "stock": 25,
+        "rating": 4.9
+    },
+    {
+        "id": "vodka-smirnoff",
+        "name": "Vodka Smirnoff Red Label",
+        "brand": "Smirnoff",
+        "category": "Licor",
+        "description": "Vodka clásico, ideal para cócteles. Botella de 750ml.",
+        "price": 60000,
+        "imageUrl": "images/products/smirnoff.png",
+        "isOnOffer": false,
+        "offerPrice": null,
+        "isNew": true,
+        "stock": 80,
+        "rating": 4.0
+    },
+    {
+        "id": "gaseosa-coca-cola-2l",
+        "name": "Gaseosa Coca-Cola 2 Litros",
+        "brand": "Coca-Cola",
+        "category": "Bebida no alcohólica",
+        "description": "Refrescante gaseosa Coca-Cola en presentación familiar.",
+        "price": 7000,
+        "imageUrl": "images/products/cocacola.png",
+        "isOnOffer": false,
+        "offerPrice": null,
+        "isNew": false,
+        "stock": 180,
+        "rating": 4.5
+    },
+    {
+        "id": "gaseosa-pepsi-15l",
+        "name": "Gaseosa Pepsi 1.5 Litros",
+        "brand": "Pepsi",
+        "category": "Bebida no alcohólica",
+        "description": "Gaseosa Pepsi para acompañar tus comidas. Botella de 1.5L.",
+        "price": 5500,
+        "imageUrl": "images/products/pepsi.png",
+        "isOnOffer": false,
+        "offerPrice": null,
+        "isNew": false,
+        "stock": 160,
+        "rating": 4.0
+    },
+    {
+        "id": "gaseosa-postobon-manzana-15l",
+        "name": "Gaseosa Postobón Manzana 1.5 Litros",
+        "brand": "Postobón",
+        "category": "Bebida no alcohólica",
+        "description": "Clásica gaseosa Postobón sabor manzana. Botella de 1.5L.",
+        "price": 5000,
+        "imageUrl": "images/products/postobon.png",
+        "isOnOffer": false,
+        "offerPrice": null,
+        "isNew": false,
+        "stock": 170,
+        "rating": 4.1
+    },
+    {
+        "id": "bebida-energetica-red-bull",
+        "name": "Bebida Energética Red Bull",
+        "brand": "Red Bull",
+        "category": "Bebida no alcohólica",
+        "description": "Bebida energética para darte alas. Lata de 250ml.",
+        "price": 8000,
+        "imageUrl": "images/products/redbull.png",
+        "isOnOffer": false,
+        "offerPrice": null,
+        "isNew": false,
+        "stock": 120,
+        "rating": 4.3
+    },
+    {
+        "id": "snacks-papas-margarita",
+        "name": "Papas Fritas Margarita",
+        "brand": "Papas Margarita",
+        "category": "Snacks",
+        "description": "Paquete de papas fritas sabor original. Contenido neto 135g.",
+        "price": 4000,
+        "imageUrl": "images/products/margarita.png",
+        "isOnOffer": false,
+        "offerPrice": null,
+        "isNew": false,
+        "stock": 250,
+        "rating": 4.4
+    },
+    {
+        "id": "snacks-choclitos",
+        "name": "Choclitos Limón",
+        "brand": "Choclitos",
+        "category": "Snacks",
+        "description": "Snack de maíz sabor limón. Bolsa de 120g.",
+        "price": 3500,
+        "imageUrl": "images/products/choclitos.png",
+        "isOnOffer": false,
+        "offerPrice": null,
+        "isNew": false,
+        "stock": 190,
+        "rating": 4.1
+    },
+    {
+        "id": "bebida-agua-cristal",
+        "name": "Agua Cristal Sin Gas",
+        "brand": "Cristal",
+        "category": "Bebida no alcohólica",
+        "description": "Agua purificada y embotellada. Botella de 600ml.",
+        "price": 2000,
+        "imageUrl": "images/products/agua.png",
+        "isOnOffer": false,
+        "offerPrice": null,
+        "isNew": false,
+        "stock": 350,
+        "rating": 4.3
+    },
+    {
+        "id": "licor-jagermeister",
+        "name": "Jagermeister",
+        "brand": "Jagermeister",
+        "category": "Licor",
+        "description": "Licor de hierbas alemán, ideal para shots fríos. Botella de 700ml.",
+        "price": 70000,
+        "imageUrl": "images/products/jagermeister.png",
+        "isOnOffer": false,
+        "offerPrice": null,
+        "isNew": true,
+        "stock": 30,
+        "rating": 4.6
+    },
+    {
+        "id": "cigarrillos-lucky-strike",
+        "name": "Cigarrillos Lucky Strike",
+        "brand": "Lucky Strike",
+        "category": "Tabaco",
+        "description": "Caja de 20 cigarrillos.",
+        "price": 8000,
+        "imageUrl": "images/products/lucky.png",
+        "isOnOffer": false,
+        "offerPrice": null,
+        "isNew": false,
+        "stock": 50,
+        "rating": 3.9
+    },
+    {
+        "id": "licor-baileys",
+        "name": "Baileys Irish Cream",
+        "brand": "Baileys",
+        "category": "Licor",
+        "description": "Licor de crema irlandesa, suave y dulce. Botella de 750ml.",
+        "price": 90000,
+        "imageUrl": "images/products/baileys.png",
+        "isOnOffer": true,
+        "offerPrice": 82000,
+        "isNew": false,
+        "stock": 45,
+        "rating": 4.7
+    },
+    {
+        "id": "cerveza-andina-sixpack",
+        "name": "Cerveza Andina (Sixpack)",
+        "brand": "Andina",
+        "category": "Cerveza",
+        "description": "Sixpack de cerveza Andina, refrescante y ligera. Latas de 330ml.",
+        "price": 24000,
+        "imageUrl": "images/products/andina.png",
+        "isOnOffer": false,
+        "offerPrice": null,
+        "isNew": true,
+        "stock": 180,
+        "rating": 4.0
+    },
+    {
+        "id": "snacks-mani-la-especial",
+        "name": "Maní La Especial",
+        "brand": "La Especial",
+        "category": "Snacks",
+        "description": "Paquete de maní salado. Contenido neto 150g.",
+        "price": 3000,
+        "imageUrl": "images/products/mani.png",
+        "isOnOffer": false,
+        "offerPrice": null,
+        "isNew": false,
+        "stock": 200,
+        "rating": 4.2
+    },
+    {
+        "id": "licor-jagermeister-mini",
+        "name": "Jagermeister (Miniatura)",
+        "brand": "Jagermeister",
+        "category": "Licor",
+        "description": "Botella miniatura de Jagermeister, ideal para probar. Botella de 50ml.",
+        "price": 10000,
+        "imageUrl": "images/products/jagermeister-mini.png",
+        "isOnOffer": false,
+        "offerPrice": null,
+        "isNew": true,
+        "stock": 60,
+        "rating": 4.5
+    }
+]
