@@ -25,26 +25,27 @@
     <header class="main-header">
         <div class="container">
             <div class="header-content">
-                <a href="#" class="logo">
-                    <img src="images/logo.png" alt="El Borracho Logo">
-                </a>
+                <a href="#" class="logo">EL BORRACHO</a>
                 <nav class="main-nav" id="mainNav">
                     <ul class="nav-list">
                         <li><a href="#hero-carousel">Inicio</a></li>
+                        <li><a href="#newProducts">Novedades</a></li>
+                        <li><a href="#offerProducts">Ofertas</a></li>
                         <li><a href="#allProductsGridSection">Productos</a></li>
-                        <li><a href="#about-us-section">Nosotros</a></li>
+                        <li><a href="#support-section">Soporte</a></li>
                         <li><a href="#contact-section">Contacto</a></li>
                     </ul>
                 </nav>
-                <div class="header-icons">
-                    <button id="openSearchModalBtn" class="icon-button" aria-label="Abrir búsqueda">
-                        <i class="fas fa-search"></i>
-                    </button>
-                    <button id="openCartBtn" class="icon-button" aria-label="Abrir carrito de compras">
+                <div class="header-actions">
+                    <div class="search-container">
+                        <input type="text" placeholder="Buscar productos..." class="search-input" id="desktopSearchInput">
+                        <button class="search-btn" aria-label="Buscar" id="searchIcon"><i class="fas fa-search"></i></button>
+                    </div>
+                    <button class="cart-btn" aria-label="Carrito de compras" id="cartIcon">
                         <i class="fas fa-shopping-cart"></i>
-                        <span id="cartCount" class="cart-count">0</span>
+                        <span class="cart-count" id="cartCount">0</span>
                     </button>
-                    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú">
+                    <button class="menu-toggle" aria-label="Abrir menú" id="menuToggle">
                         <i class="fas fa-bars"></i>
                     </button>
                 </div>
@@ -53,130 +54,164 @@
     </header>
 
     <main>
-        <section class="hero-section" id="hero-carousel">
+        <section id="hero-carousel" class="hero-section">
             <div class="carousel-container">
                 <div class="carousel-track" id="carouselTrack">
                     </div>
-                <button class="carousel-control prev" id="carouselPrev" aria-label="Diapositiva anterior">&#10094;</button>
-                <button class="carousel-control next" id="carouselNext" aria-label="Siguiente diapositiva">&#10095;</button>
+                <button class="carousel-btn prev" id="carouselPrev" aria-label="Slide anterior">&#10094;</button>
+                <button class="carousel-btn next" id="carouselNext" aria-label="Siguiente slide">&#10095;</button>
             </div>
             <div class="carousel-dots" id="carouselDots">
                 </div>
         </section>
 
-        <section id="featuredProductsSection" class="product-carousel-section container">
-            <h2 class="section-title">Productos Destacados</h2>
-            <div class="category-buttons-container">
-                <button class="category-btn active" data-category="all">Todos</button>
-                <button class="category-btn" data-category="Cerveza">Cervezas</button>
-                <button class="category-btn" data-category="Licor">Licores</button>
-                <button class="category-btn" data-category="Vino">Vinos</button>
-                <button class="category-btn" data-category="Snack">Snacks</button>
-                <button class="category-btn" data-category="Bebida no alcohólica">No Alcohólicas</button>
-            </div>
-            <div class="product-carousel-track" id="categoryProductTrack">
-                </div>
-        </section>
-
-        <section id="brandsSection" class="brands-section container">
-            <h2 class="section-title">Nuestras Marcas</h2>
-            <div class="continuous-carousel">
-                <div class="continuous-carousel-track" id="continuousCarouselTrack">
+        <section id="newProducts" class="product-carousel-section">
+            <div class="container">
+                <h2>Novedades</h2>
+                <div class="continuous-carousel-track" id="newProductsTrack">
                     </div>
             </div>
         </section>
 
-        <section id="allProductsGridSection" class="products-grid-section container">
-            <h2 class="section-title">Todos los Productos</h2>
-            <div class="product-filters">
-                <input type="text" id="productSearch" placeholder="Buscar producto...">
-                <select id="categoryFilter">
-                    <option value="all">Todas las Categorías</option>
+        <section id="offerProducts" class="product-carousel-section">
+            <div class="container">
+                <h2>Ofertas Destacadas</h2>
+                <div class="continuous-carousel-track" id="offerProductsTrack">
+                    </div>
+            </div>
+        </section>
+
+        <section id="allProductsGridSection">
+            <div class="container">
+                <h2>Todos Nuestros Productos</h2>
+                <div class="product-filters">
+                    <input type="text" id="productSearchInput" placeholder="Buscar producto..." class="search-input-inline">
+                    <select id="categoryFilter">
+                        <option value="all">Todas las categorías</option>
+                        <option value="Licor">Licores</option>
+                        <option value="Cerveza">Cervezas</option>
+                        <option value="Snack">Snacks</option>
+                        <option value="Bebida no alcohólica">Bebidas no alcohólicas</option>
+                        <option value="Cigarrillos">Cigarrillos</option>
                     </select>
-                <select id="priceFilter">
-                    <option value="all">Todos los Precios</option>
-                    <option value="asc">Menor a Mayor</option>
-                    <option value="desc">Mayor a Menor</option>
-                </select>
-            </div>
-            <div class="product-grid" id="allProductsGrid">
+                    <select id="priceFilter">
+                        <option value="all">Cualquier precio</option>
+                        <option value="low-to-high">Precio: Menor a Mayor</option>
+                        <option value="high-to-low">Precio: Mayor a Menor</option>
+                    </select>
                 </div>
-        </section>
-
-        <section id="about-us-section" class="about-us-section container">
-            <h2 class="section-title">Sobre Nosotros</h2>
-            <div class="about-us-content">
-                <p>En **EL BORRACHO**, somos tu destino de confianza para licores y más, entregados directamente a tu puerta en Popayán. Nos enorgullece ofrecer una vasta selección de bebidas, desde los licores más exclusivos hasta tus cervezas artesanales favoritas, complementados con una variedad de snacks y bebidas no alcohólicas para cualquier ocasión.</p>
-                <p>Nuestra misión es simple: proporcionar una experiencia de compra conveniente, segura y rápida, garantizando productos de alta calidad y un servicio al cliente excepcional. Entendemos la importancia de la celebración y el compartir, por eso nos esforzamos por ser tu aliado perfecto en cada momento especial.</p>
-                <p>Con **EL BORRACHO**, olvídate de las filas y el transporte. Solo elige, pide y relájate. ¡Nosotros nos encargamos del resto!</p>
+                <div class="product-grid" id="allProductsGrid">
+                    </div>
             </div>
         </section>
 
-        <section id="support-section" class="support-section container">
-            <h2 class="section-title">Contacto y Soporte</h2>
-            <div class="contact-grid">
-                <div class="contact-info-card">
-                    <h3>Información de Contacto</h3>
-                    <p><i class="fas fa-envelope"></i> Email: <span id="contactEmail">cargando...</span></p>
-                    <p><i class="fas fa-phone"></i> Teléfono: <span id="contactPhone">cargando...</span></p>
-                    <p><i class="fas fa-map-marker-alt"></i> Dirección: <span id="contactAddress">cargando...</span></p>
-                    <div class="social-media">
-                        <a href="#" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                        </div>
-                </div>
-                <div class="support-options-card">
-                    <h3>¿Necesitas Ayuda?</h3>
-                    <button id="reportFaultBtn" class="btn-secondary">Reportar un Problema</button>
-                    <button id="bookAppointmentBtn" class="btn-primary">Agendar Pedido/Entrega</button>
+        <section id="brandLogos" class="brand-section">
+            <div class="container">
+                <h2>Nuestras Marcas</h2>
+                <div class="continuous-carousel-track brand-carousel-track" id="continuousCarouselTrack">
+                    </div>
+            </div>
+        </section>
+
+        <section id="support-section" class="support-section">
+            <div class="container">
+                <h2>¿Necesitas Ayuda?</h2>
+                <div class="support-options">
+                    <div class="support-card">
+                        <h3>Reportar un Problema</h3>
+                        <p>Si experimentas algún inconveniente con tu pedido o el sitio web.</p>
+                        <button class="btn-primary" id="reportFaultBtn">Reportar</button>
+                    </div>
+                    <div class="support-card">
+                        <h3>Agendar Pedido/Entrega</h3>
+                        <p>Coordina un horario específico para tu pedido o una entrega especial.</p>
+                        <button class="btn-primary" id="bookAppointmentBtn">Agendar</button>
+                    </div>
+                    <div class="support-card">
+                        <h3>Contacto Directo</h3>
+                        <p>Habla con nosotros directamente por WhatsApp o correo electrónico.</p>
+                        <a href="https://wa.me/{{appState.contactInfo.phone}}" target="_blank" class="btn-primary"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                        <a href="mailto:{{appState.contactInfo.email}}" class="btn-secondary"><i class="fas fa-envelope"></i> Correo</a>
+                    </div>
                 </div>
             </div>
         </section>
 
+        <section id="contact-section" class="contact-section">
+            <div class="container">
+                <h2>Contáctanos</h2>
+                <div class="contact-info">
+                    <p><i class="fas fa-envelope"></i> Correo: <span id="contactEmail"></span></p>
+                    <p><i class="fas fa-phone"></i> Teléfono: <span id="contactPhone"></span></p>
+                    <p><i class="fas fa-map-marker-alt"></i> Dirección: <span id="contactAddress"></span></p>
+                </div>
+                </div>
+        </section>
     </main>
 
-    <footer class="main-footer" id="contact-section">
+    <footer class="main-footer">
         <div class="container">
             <div class="footer-content">
-                <div class="footer-section about">
+                <div class="footer-brand">
                     <h3>EL BORRACHO</h3>
-                    <p>Tu licorería a domicilio de confianza en Popayán. Calidad, rapidez y el mejor servicio.</p>
+                    <p>Tu licorera de confianza a domicilio.</p>
                 </div>
-                <div class="footer-section links">
-                    <h3>Enlaces Rápidos</h3>
+                <div class="footer-links">
+                    <h4>Enlaces Rápidos</h4>
                     <ul>
                         <li><a href="#hero-carousel">Inicio</a></li>
                         <li><a href="#allProductsGridSection">Productos</a></li>
-                        <li><a href="#about-us-section">Sobre Nosotros</a></li>
+                        <li><a href="#support-section">Soporte</a></li>
                         <li><a href="#contact-section">Contacto</a></li>
-                        <li><a href="#" id="privacyPolicyLink">Política de Privacidad</a></li>
                     </ul>
                 </div>
-                <div class="footer-section contact-info">
-                    <h3>Contacto</h3>
-                    <p><i class="fas fa-envelope"></i> Email: <span id="footerEmail">cargando...</span></p>
-                    <p><i class="fas fa-phone"></i> Teléfono: <span id="footerPhone">cargando...</span></p>
-                    <p><i class="fas fa-map-marker-alt"></i> Dirección: <span id="footerAddress">cargando...</span></p>
+                <div class="footer-contact">
+                    <h4>Contacto</h4>
+                    <p><i class="fas fa-envelope"></i> <span id="footerEmail"></span></p>
+                    <p><i class="fas fa-phone"></i> <span id="footerPhone"></span></p>
+                    <p><i class="fas fa-map-marker-alt"></i> <span id="footerAddress"></span></p>
                 </div>
-                <div class="footer-section social">
-                    <h3>Síguenos</h3>
+                <div class="footer-social">
+                    <h4>Síguenos</h4>
                     <div class="social-media">
-                        <a href="#" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                        </div>
+                        <a href="https://facebook.com/elborracho" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://instagram.com/elborracho" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/{{appState.contactInfo.phone}}" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    </div>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2023 EL BORRACHO. Todos los derechos reservados. <span id="currentYear"></span></p>
+                <p>&copy; 2023 EL BORRACHO. Todos los derechos reservados. | Diseñado por [Tu Nombre/Compañía]</p>
+                <div class="payment-methods">
+                    <img src="images/icons/visa.svg" alt="Visa" title="Visa">
+                    <img src="images/icons/mastercard.svg" alt="Mastercard" title="Mastercard">
+                    <img src="images/icons/nequi.svg" alt="Nequi" title="Nequi">
+                    <img src="images/icons/daviplata.svg" alt="Daviplata" title="Daviplata">
+                </div>
             </div>
         </div>
     </footer>
 
+    <div id="cartSidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h3>Tu Carrito</h3>
+            <button id="closeCartBtn" class="close-btn" aria-label="Cerrar carrito">&times;</button>
+        </div>
+        <div id="cartItems" class="cart-items">
+            <p class="empty-cart-message">Tu carrito está vacío.</p>
+        </div>
+        <div class="cart-summary">
+            <p>Total: <span id="cartTotalPrice">$0</span></p>
+            <button id="checkoutWhatsappBtn" class="btn-primary btn-checkout"><i class="fab fa-whatsapp"></i> Finalizar Pedido por WhatsApp</button>
+        </div>
+    </div>
+
     <div id="faultReportModal" class="modal">
         <div class="modal-content">
-            <span class="close-modal-btn">&times;</span>
             <h2>Reportar un Problema</h2>
             <form id="faultReportForm">
                 <input type="text" id="faultName" placeholder="Tu Nombre" required>
-                <input type="tel" id="faultPhone" placeholder="Tu Teléfono (ej. 573123456789)" required>
+                <input type="email" id="faultEmail" placeholder="Tu Correo Electrónico" required>
                 <textarea id="faultDescription" placeholder="Describe el problema en detalle" rows="5" required></textarea>
                 <button type="submit" class="btn-primary">Enviar Reporte</button>
                 <button type="button" class="btn-secondary close-modal-btn">Cancelar</button>
@@ -186,17 +221,32 @@
 
     <div id="appointmentModal" class="modal">
         <div class="modal-content">
-            <span class="close-modal-btn">&times;</span>
             <h2>Agendar Pedido/Entrega</h2>
             <form id="appointmentForm">
                 <input type="text" id="appointmentName" placeholder="Tu Nombre" required>
-                <input type="tel" id="appointmentPhone" placeholder="Tu Teléfono (ej. 573123456789)" required>
+                <input type="tel" id="appointmentPhone" placeholder="Tu Teléfono (ej. 3171234567)" required>
                 <input type="date" id="appointmentDate" required>
                 <input type="time" id="appointmentTime" required>
                 <textarea id="appointmentReason" placeholder="Detalles de tu pedido o servicio requerido" rows="5" required></textarea>
                 <button type="submit" class="btn-primary">Agendar Ahora</button>
                 <button type="button" class="btn-secondary close-modal-btn">Cancelar</button>
             </form>
+        </div>
+    </div>
+
+    <div id="searchModal" class="search-modal">
+        <div class="search-modal-content">
+            <div class="search-modal-header">
+                <h2>Buscar Productos</h2>
+                <button id="closeSearchModalBtn" class="close-btn" aria-label="Cerrar búsqueda">&times;</button>
+            </div>
+            <div class="search-input-container">
+                <input type="text" id="searchInput" placeholder="Escribe para buscar..." autofocus>
+                <button id="searchButton" class="search-btn"><i class="fas fa-search"></i></button>
+            </div>
+            <div id="searchResultsGrid" class="product-grid">
+                <p class="no-results-message">Ingresa al menos 2 caracteres para buscar.</p>
+            </div>
         </div>
     </div>
 
@@ -223,41 +273,6 @@
             <span>Soporte</span>
         </a>
     </nav>
-
-    <div id="searchModal" class="modal search-modal">
-        <div class="modal-content search-modal-content">
-            <button id="closeSearchModalBtn" class="close-btn">&times;</button>
-            <div class="search-input-container">
-                <input type="text" id="searchInput" placeholder="Buscar productos por nombre o marca..." aria-label="Buscar productos">
-                <button id="searchButton" class="search-icon-button" aria-label="Realizar búsqueda">
-                    <i class="fas fa-search"></i>
-                </button>
-            </div>
-            <div id="searchResultsGrid" class="product-grid search-results-grid">
-                <p class="no-results-message">Ingresa un término para buscar productos.</p>
-            </div>
-        </div>
-    </div>
-
-    <div id="cartOverlay" class="cart-overlay"></div>
-
-    <aside id="cartSidebar" class="cart-sidebar">
-        <div class="cart-header">
-            <h2>Tu Carrito</h2>
-            <button id="closeCartBtn" class="close-btn" aria-label="Cerrar carrito">&times;</button>
-        </div>
-        <div id="cartItems" class="cart-items">
-            <p class="empty-cart-message">Tu carrito está vacío.</p>
-        </div>
-        <div class="cart-footer">
-            <div class="cart-total">
-                Total: <span id="cartTotalPrice">$0</span>
-            </div>
-            <button id="checkoutWhatsappBtn" class="btn-primary">
-                <i class="fab fa-whatsapp"></i> Finalizar Pedido por WhatsApp
-            </button>
-        </div>
-    </aside>
 
     <script type="module" src="js/main.js"></script>
 </body>
