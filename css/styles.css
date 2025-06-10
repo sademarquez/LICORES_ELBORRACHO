@@ -2,29 +2,31 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
 :root {
-    /* Paleta de Colores 3D Moderna (Azules/Morados con acentos) */
-    --primary-color: #8A2BE2; /* Azul Violeta Vibrante */
-    --secondary-color: #4A00E0; /* Morado Intenso */
-    --accent-color: #00F2FE; /* Cian Eléctrico para acentos */
-    --bg-color-start: #1a0f2e; /* Inicio del gradiente de fondo (morado oscuro) */
-    --bg-color-end: #0f172a; /* Fin del gradiente de fondo (azul oscuro) */
+    /* Paleta de Colores Elegante (Negro y Dorado) */
+    --primary-color: #D4AF37; /* Dorado Metálico */
+    --secondary-color: #FFBF00; /* Ámbar / Dorado más vibrante para acentos */
+    --accent-color: #E5C100; /* Tono intermedio de dorado */
     
-    /* Colores para Texto y Glassmorphism */
-    --text-color-primary: #f0f2f5; /* Texto principal claro */
-    --text-color-secondary: #a3b3c3; /* Texto secundario más tenue */
-    --glass-bg: rgba(255, 255, 255, 0.05); /* Fondo para tarjetas glass */
-    --glass-border: rgba(255, 255, 255, 0.2); /* Borde para tarjetas glass */
+    /* Tonos de Negro y Vidrio Ahumado */
+    --bg-color-start: #111111; /* Negro profundo */
+    --bg-color-end: #000000;   /* Negro absoluto */
+    --glass-bg: rgba(20, 20, 20, 0.4); /* Vidrio ahumado oscuro */
+    --glass-border: rgba(212, 175, 55, 0.2); /* Borde dorado sutil */
+    
+    /* Colores de Texto */
+    --text-color-primary: #f5f5f5; /* Blanco hueso */
+    --text-color-secondary: #a3a3a3; /* Gris claro */
     
     /* Variables de Diseño */
     --border-radius: 16px;
-    --card-padding: 24px;
-    --shadow-light: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
-    --shadow-medium: 0 12px 40px 0 rgba(0, 0, 0, 0.3);
+    --card-padding: 20px;
+    --shadow-light: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    --shadow-medium: 0 12px 40px 0 rgba(0, 0, 0, 0.5);
     --transition-speed: 0.4s;
     --font-family: 'Poppins', sans-serif;
 }
 
-/* --- ESTILOS BASE Y FONDO 3D --- */
+/* --- ESTILOS BASE Y FONDO --- */
 body {
     font-family: var(--font-family);
     background: linear-gradient(135deg, var(--bg-color-start), var(--bg-color-end));
@@ -33,7 +35,7 @@ body {
     min-height: 100vh;
 }
 
-#bg3d { /* El contenedor del fondo animado */
+#bg3d { /* Contenedor del fondo animado */
     position: fixed;
     top: 0;
     left: 0;
@@ -43,11 +45,11 @@ body {
     overflow: hidden;
 }
 
-/* --- TARJETAS DE PRODUCTO 3D (ESPECIFICACIÓN CRÍTICA) --- */
+/* --- TARJETAS DE PRODUCTO MINIMALISTAS --- */
 .product-card {
     background: var(--glass-bg);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border-radius: var(--border-radius);
     border: 1px solid var(--glass-border);
     box-shadow: var(--shadow-light);
@@ -55,79 +57,65 @@ body {
     text-align: center;
     transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
     transform-style: preserve-3d;
-    position: relative;
-    overflow: hidden;
     display: flex;
     flex-direction: column;
 }
 
 .product-card:hover {
-    transform: translateY(-10px) rotateX(5deg) rotateY(-5deg) scale(1.03);
-    box-shadow: var(--shadow-medium);
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: var(--shadow-medium), 0 0 20px rgba(212, 175, 55, 0.3);
 }
 
 .product-card .product-image {
     width: 100%;
-    height: 180px;
-    object-fit: contain; /* Perfecto para imágenes PNG sin fondo */
+    height: 160px; /* Altura ajustada para simetría cuadrada */
+    object-fit: contain;
     margin-bottom: 1rem;
-    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2));
+    filter: drop-shadow(0 8px 10px rgba(0,0,0,0.4));
     transition: transform var(--transition-speed) ease;
 }
 
 .product-card:hover .product-image {
-    transform: translateZ(40px) scale(1.1);
+    transform: translateZ(30px) scale(1.1);
 }
 
 .product-card .product-name {
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 600;
     color: var(--text-color-primary);
     margin-bottom: 0.5rem;
-    height: 3.3em; /* 2 líneas */
+    height: 3em; /* 2 líneas */
     overflow: hidden;
 }
 
 .product-card .product-price {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-weight: 700;
-    color: var(--accent-color);
+    color: var(--primary-color);
     margin-bottom: 1rem;
+    letter-spacing: 1px;
 }
 
 .product-card .add-to-cart-btn {
-    background: rgba(0, 242, 254, 0.1); /* Acento con transparencia */
-    border: 1px solid var(--accent-color);
-    color: var(--accent-color);
-    padding: 10px 20px;
+    background: rgba(212, 175, 55, 0.1);
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    padding: 10px 15px;
     border-radius: 12px;
     font-weight: 600;
     cursor: pointer;
     transition: all var(--transition-speed) ease;
-    margin-top: auto; /* Empuja el botón al final */
+    margin-top: auto;
 }
 
 .product-card .add-to-cart-btn:hover {
-    background: var(--accent-color);
+    background: var(--primary-color);
     color: var(--bg-color-start);
-    box-shadow: 0 0 20px rgba(0, 242, 254, 0.5);
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
 }
 
 
 /* --- NAVEGACIÓN DE CATEGORÍAS --- */
-.category-nav-container {
-    padding: 20px 0;
-}
-
-.category-buttons-scroll {
-    display: flex;
-    overflow-x: auto;
-    gap: 1rem;
-    padding-bottom: 1rem;
-    scrollbar-width: none; /* Ocultar scrollbar */
-}
-.category-buttons-scroll::-webkit-scrollbar { display: none; }
-
 .category-btn {
     flex-shrink: 0;
     padding: 12px 28px;
@@ -138,76 +126,39 @@ body {
     font-weight: 600;
     cursor: pointer;
     transition: all var(--transition-speed) ease;
-    transform-style: preserve-3d;
 }
 
 .category-btn:hover {
     transform: translateY(-5px) scale(1.05);
-    background: rgba(138, 43, 226, 0.3);
     color: var(--text-color-primary);
     border-color: var(--primary-color);
 }
 
 .category-btn.active {
     background: var(--primary-color);
-    color: white;
+    color: black;
     border-color: var(--primary-color);
-    box-shadow: 0 0 25px rgba(138, 43, 226, 0.6);
+    box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
 }
 
-/* Estilos para el carrusel de productos por categoría */
-.category-products-carousel {
-    display: flex;
-    gap: 1.5rem;
-    overflow-x: auto;
-    padding: 1.5rem 0;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-}
-.category-products-carousel::-webkit-scrollbar { display: none; }
-
-.category-products-carousel .product-card {
-    scroll-snap-align: start;
-    flex: 0 0 80%; /* En móvil, cada tarjeta ocupa el 80% del ancho */
+/* --- NUEVA CUADRÍCULA DE PRODUCTOS POR CATEGORÍA (2 Filas) --- */
+#categoryProductsContainer {
+    display: grid;
+    /* Se define el número de columnas en responsive.css */
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding: 1rem 0;
 }
 
 
 /* --- SECCIÓN PRINCIPAL DE PRODUCTOS Y FILTROS --- */
 .product-filters-sticky {
-    position: sticky;
-    top: 80px; /* Debajo del header */
-    background: rgba(26, 15, 46, 0.8);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    padding: 1rem;
-    border-radius: var(--border-radius);
-    z-index: 10;
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 2rem;
+    /* ... estilos de filtros ... */
 }
-/* ... más estilos de filtros a implementar ... */
 
 .product-grid {
     display: grid;
     gap: 1.5rem;
 }
 
-#loadMoreBtn {
-    display: block;
-    margin: 2rem auto;
-    padding: 1rem 3rem;
-    font-size: 1.1rem;
-    font-weight: 600;
-    background: var(--secondary-color);
-    color: white;
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: all var(--transition-speed) ease;
-}
-
-#loadMoreBtn:hover {
-    background: var(--primary-color);
-    transform: scale(1.05);
-}
+/* ... resto de tus estilos ... */
