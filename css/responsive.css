@@ -10,7 +10,7 @@
     }
 
     .main-nav {
-        width: 150%;
+        width: 90%;
         display: none; /* Ocultar por defecto para el menú hamburguesa */
         flex-direction: column;
         background-color: var(--dark-bg); /* Usar el color oscuro del header */
@@ -51,7 +51,7 @@
     }
 
     .hero-section {
-        height: 200px; /* Altura más pequeña para el carrusel en móviles */
+        height: 90px; /* Altura más pequeña para el carrusel en móviles */
     }
 
     .carousel-title {
@@ -85,7 +85,7 @@
     }
 
     .product-image {
-        max-height: 150px;
+        max-height: 100px;
     }
 
     .product-name {
