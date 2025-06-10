@@ -7,6 +7,13 @@
         flex-direction: column;
         align-items: flex-start;
         gap: var(--spacing-md);
+        padding: var(--spacing-md); /* Añadido padding para que el contenido no se pegue a los bordes */
+    }
+
+    /* ***** CAMBIO CLAVE AQUÍ: Ajuste del padding-top del hero-section para móvil ***** */
+    .hero-section {
+        height: 300px; /* Altura más pequeña para el carrusel en móviles */
+        padding-top: 100px; /* ESTIMACIÓN: Asume que el header móvil con menú plegado tiene unos 100px de alto. AJUSTA ESTE VALOR. */
     }
 
     .main-nav {
@@ -14,13 +21,13 @@
         display: none; /* Ocultar por defecto para el menú hamburguesa */
         flex-direction: column;
         background-color: var(--dark-bg); /* Usar el color oscuro del header */
-        position: absolute;
-        top: 100%;
+        position: absolute; /* Cambiado a absolute para que no desplace otros elementos fijos */
+        top: 100%; /* Se posiciona debajo del header */
         left: 0;
         box-shadow: var(--shadow-md);
         padding: var(--spacing-md);
         border-top: 1px solid var(--border-color);
-        z-index: 100; /* Asegurarse de que el menú está sobre otros elementos */
+        z-index: 999; /* Z-index menor que el header principal */
     }
 
     .main-nav.active {
@@ -66,7 +73,7 @@
     }
 
     .product-image-wrapper {
-        height: 60%; /* Still 60% of card height */
+        height: 65%; /* IMAGEN MÁS GRANDE: Still 65% of card height */
     }
 
     .product-name {
@@ -88,13 +95,13 @@
     .category-products-track .product-card {
         width: auto; /* Let grid handle width */
         min-width: 140px;
-        height: 320px; /* Consistent height for category cards as well */
+        height: 280px; /* REDUCIDO PARA MÓVIL: Altura más compacta para tarjetas de categoría */
         padding: var(--spacing-sm);
         position: relative; /* Ensure relative positioning for overlays */
     }
 
     .category-products-track .product-card .product-image-wrapper {
-        height: 60%; /* Image wrapper takes 60% of card height */
+        height: 65%; /* IMAGEN MÁS GRANDE: Image wrapper takes 65% of card height */
         margin-bottom: var(--spacing-xs);
     }
 
@@ -173,9 +180,7 @@
     }
 
     /* Ajuste para el carrusel de banners en pantallas pequeñas */
-    .hero-section {
-        height: 250px; /* Altura más pequeña para el carrusel en móviles */
-    }
+    /* Altura ajustada arriba en .hero-section para incluir padding-top */
 }
 
 /* Tablet (768px a 1023px) and larger phones */
@@ -186,6 +191,13 @@
 
     .main-header {
         padding: var(--spacing-md) var(--spacing-lg);
+        /* No necesitas re-definir fixed aquí, ya está en styles.css */
+    }
+
+    /* ***** CAMBIO CLAVE AQUÍ: Ajuste del padding-top del hero-section para tablets ***** */
+    .hero-section {
+        height: 400px; /* Altura más pequeña para el carrusel en tablets */
+        padding-top: 80px; /* ESTIMACIÓN: Asume que el header en tablet tiene unos 80px de alto. AJUSTA ESTE VALOR. */
     }
 
     /* Product Grid for tablets - aiming for 3 columns */
@@ -215,7 +227,10 @@
     .category-products-track .product-card {
         width: auto;
         min-width: 180px;
-        height: 350px; /* Consistent height with general cards */
+        height: 300px; /* REDUCIDO PARA TABLET: Altura más compacta para tarjetas de categoría */
+    }
+    .category-products-track .product-card .product-image-wrapper {
+        height: 65%; /* IMAGEN MÁS GRANDE: Still 65% of card height */
     }
 
     .utility-icons {
@@ -229,7 +244,7 @@
     .main-nav {
         display: flex; /* Asegurar que la navegación principal esté visible */
         width: auto;
-        position: static;
+        position: static; /* Volver a static en tablet */
         box-shadow: none;
         padding: 0;
         border-top: none;
@@ -266,6 +281,12 @@
         padding: 0 var(--spacing-xl);
     }
 
+    /* ***** CAMBIO CLAVE AQUÍ: Ajuste del padding-top del hero-section para desktop ***** */
+    .hero-section {
+        height: 450px; /* Altura original del carrusel en desktop */
+        padding-top: 80px; /* ESTIMACIÓN: Asume que el header en desktop tiene unos 80px de alto. AJUSTA ESTE VALOR. */
+    }
+
     /* Product Grid for desktop - aiming for 3 columns */
     .product-grid {
         grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Aim for 3 columns on desktop, larger min-width */
@@ -293,7 +314,10 @@
     .category-products-track .product-card {
         width: auto;
         min-width: 280px;
-        height: 400px; /* Consistent height with general cards */
+        height: 350px; /* REDUCIDO PARA DESKTOP: Altura más compacta para tarjetas de categoría */
+    }
+    .category-products-track .product-card .product-image-wrapper {
+        height: 65%; /* IMAGEN MÁS GRANDE: Still 65% of card height */
     }
 
     .main-nav {
@@ -306,10 +330,6 @@
 
     .bottom-nav {
         display: none; /* Ocultar la barra inferior en desktop */
-    }
-
-    .hero-section {
-        height: 450px; /* Altura original del carrusel en desktop */
     }
 
     .product-filters select,
