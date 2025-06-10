@@ -1,30 +1,58 @@
-// js/age-verification.js
+// js/cart.js
 
-export function initAgeVerification() {
-    const ageVerificationModal = document.getElementById('ageVerificationModal');
-    const confirmAgeBtn = document.getElementById('confirmAgeBtn');
-    const declineAgeBtn = document.getElementById('declineAgeBtn');
+import { appState } from './main.js';
+import { showToastNotification } from './toast.js';
 
-    // CORRECCIÓN: Verificación robusta
-    if (!ageVerificationModal || !confirmAgeBtn || !declineAgeBtn) {
-        console.warn('age-verification.js: Faltan elementos del modal de verificación de edad. La verificación de edad no funcionará.');
+const CART_STORAGE_KEY = 'elborracho_cart';
+// Mueve las declaraciones de variables aquí para que estén disponibles en todo el módulo
+let cartSidebar, cartItemsContainer, cartTotalPriceElement, cartCountElement, bottomCartCountElement, closeCartBtn, checkoutWhatsappBtn;
+
+export function initCart() {
+    // Asigna las variables dentro de la función de inicialización
+    cartSidebar = document.getElementById('cartSidebar');
+    cartItemsContainer = document.getElementById('cartItems');
+    cartTotalPriceElement = document.getElementById('cartTotalPrice');
+    cartCountElement = document.getElementById('cartCount');
+    bottomCartCountElement = document.getElementById('bottomCartCount');
+    closeCartBtn = document.getElementById('closeCartBtn');
+    checkoutWhatsappBtn = document.getElementById('checkoutWhatsappBtn');
+
+    // CORRECCIÓN: Verificación robusta. Si faltan elementos cruciales, la función se detiene.
+    if (!cartSidebar || !closeCartBtn || !checkoutWhatsappBtn) {
+        console.warn('cart.js: Faltan elementos esenciales del carrito (#cartSidebar, #closeCartBtn, #checkoutWhatsappBtn). La funcionalidad del carrito estará deshabilitada.');
         return;
     }
 
-    const ageVerified = localStorage.getItem('ageVerified');
-
-    if (ageVerified === 'true') {
-        ageVerificationModal.style.display = 'none';
-    } else {
-        ageVerificationModal.style.display = 'flex';
+    const storedCart = localStorage.getItem(CART_STORAGE_KEY);
+    if (storedCart) {
+        try {
+            appState.cart = JSON.parse(storedCart);
+        } catch (e) {
+            console.error("Error al parsear el carrito desde localStorage:", e);
+            appState.cart = [];
+        }
     }
 
-    confirmAgeBtn.addEventListener('click', () => {
-        ageVerificationModal.style.display = 'none';
-        localStorage.setItem('ageVerified', 'true');
+    // Los event listeners solo se añaden si los botones existen
+    closeCartBtn.addEventListener('click', () => toggleCartSidebar(false));
+    checkoutWhatsappBtn.addEventListener('click', sendOrderToWhatsapp);
+
+    cartItemsContainer.addEventListener('click', (event) => {
+        const button = event.target.closest('button');
+        if (!button) return;
+
+        const productId = button.dataset.id;
+        if (button.classList.contains('remove-item-btn')) {
+            removeFromCart(productId);
+        } else if (button.classList.contains('quantity-decrease')) {
+            updateCartQuantity(productId, -1);
+        } else if (button.classList.contains('quantity-increase')) {
+            updateCartQuantity(productId, 1);
+        }
     });
 
-    declineAgeBtn.addEventListener('click', () => {
-        window.location.href = 'https://www.google.com';
-    });
+    updateCartDisplay();
 }
+
+// El resto de las funciones (toggleCartSidebar, addToCart, etc.) permanecen igual.
+// ...
