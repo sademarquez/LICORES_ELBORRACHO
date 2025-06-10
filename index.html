@@ -3,135 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E-commerce 3D Moderno</title>
+    <title>E-commerce 3D Moderno - El Borracho</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/responsive.css">
-    <!-- El resto de tu head... -->
+    <link rel="icon" href="images/favicon.png" type="image/png">
 </head>
 <body>
-    <div id="bg3d"></div> <!-- Para el fondo animado -->
-    
-    <!-- Header (simplificado para el ejemplo) -->
-    <header class="sticky top-0 z-50 p-4" style="background: rgba(26, 15, 46, 0.5); backdrop-filter: blur(10px);">
-        <h1 class="text-2xl font-bold text-center text-white">MI TIENDA 3D</h1>
+    <div id="bg3d"></div>
+
+    <header class="sticky top-0 z-40 p-4" style="background: rgba(17, 17, 17, 0.5); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-white tracking-wider">EL BORRACHO</h1>
+            <button id="cartOpenBtn" class="relative">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 0a2 2 0 100 4 2 2 0 000-4z" /></svg>
+                <span id="cartCount" class="absolute -top-2 -right-2 bg-primary-color text-black text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
+            </button>
+        </div>
     </header>
 
     <main class="container mx-auto p-4">
-
-        <!-- 1. CARRUSEL BANNER PRINCIPAL (Placeholder) -->
-        <section id="hero-carousel" class="w-full h-[400px] md:h-[500px] bg-gray-700 rounded-lg mb-8 flex items-center justify-center">
-            <h2 class="text-4xl text-white">Carrusel Principal</h2>
+        <section id="hero-carousel" class="w-full h-[300px] md:h-[400px] bg-gray-900/50 border border-glass-border rounded-lg mb-8 flex items-center justify-center">
+            <h2 class="text-4xl text-white opacity-50">Banners Promocionales</h2>
         </section>
 
-        <!-- 2. NAVEGACIÓN DE CATEGORÍAS -->
         <section class="category-nav-container">
-            <div id="categoryButtonsContainer" class="category-buttons-scroll">
-                <!-- Botones se generan con JS -->
-            </div>
-            <div id="categoryProductsContainer" class="category-products-carousel mt-4">
-                <!-- Productos de categoría se generan con JS -->
-            </div>
+            <div id="categoryButtonsContainer" class="category-buttons-scroll"></div>
+            <div id="categoryProductsContainer" class="category-products-carousel mt-4"></div>
         </section>
 
-        <!-- 3. SECCIÓN PRINCIPAL DE PRODUCTOS -->
         <section id="main-products-section" class="mt-12">
             <h2 class="text-3xl font-bold text-center mb-8">Todos los Productos</h2>
-
-            <!-- Barra de Filtros Sticky -->
-            <div class="product-filters-sticky">
-                <input type="text" id="searchInput" placeholder="Buscar productos..." class="w-full p-2 rounded-lg bg-transparent border border-gray-600 focus:border-primary-color outline-none">
-                <!-- Más filtros aquí -->
+            <div id="productFilters" class="product-filters-sticky">
+                <input type="text" id="mainSearchInput" placeholder="Buscar por nombre..." class="filter-item flex-grow p-2 rounded-lg bg-transparent border border-gray-600 focus:border-primary-color outline-none text-white">
+                <select id="categoryFilter" class="filter-item p-2 rounded-lg bg-gray-800 border border-gray-600 focus:border-primary-color outline-none text-white"><option value="all">Todas las Categorías</option></select>
+                <select id="priceSortFilter" class="filter-item p-2 rounded-lg bg-gray-800 border border-gray-600 focus:border-primary-color outline-none text-white"><option value="default">Ordenar por</option><option value="price-asc">Precio: Menor a Mayor</option><option value="price-desc">Precio: Mayor a Menor</option></select>
             </div>
-
-            <!-- Grid de Productos -->
-            <div id="productGrid" class="product-grid">
-                <!-- Productos se generan con JS -->
-            </div>
-
-            <!-- Botón Ver Más -->
-            <button id="loadMoreBtn">Ver Más</button>
+            <div id="productGrid" class="product-grid"></div>
+            <button id="loadMoreBtn" class="mx-auto block mt-8 px-8 py-3 rounded-full bg-primary-color text-black font-bold hover:bg-secondary-color transition">Ver Más</button>
         </section>
-
-        <!-- 4. CARRUCEL DE MARCAS (Placeholder) -->
-        <section id="brands-carousel" class="mt-12">
-            <h2 class="text-3xl font-bold text-center mb-8">Nuestras Marcas</h2>
-            <div class="w-full h-24 bg-gray-800 rounded-lg flex items-center justify-center">
-                <p class="text-white">Carrusel de Marcas Infinito</p>
-            </div>
-        </section>
-        
     </main>
     
-    <!-- 5. MENÚ INFERIOR NATIVO -->
-    <nav class="fixed bottom-0 left-0 w-full h-20 z-50" style="background: rgba(26, 15, 46, 0.5); backdrop-filter: blur(12px);">
-        <ul class="flex justify-around items-center h-full text-white">
-            <li>Inicio</li>
-            <li>Categorías</li>
-            <li>Carrito</li>
-            <li>Favoritos</li>
-            <li>Perfil</li>
-        </ul>
-    </nav>
+    <div id="cartSidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h2 class="text-2xl font-bold">Tu Carrito</h2>
+            <button id="closeCartBtn" class="text-3xl">×</button>
+        </div>
+        <div id="cartItems" class="cart-items">
+            <p class="text-center text-text-color-secondary">Tu carrito está vacío.</p>
+        </div>
+        <div class="cart-summary">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cartTotalPrice">$0</span>
+            </div>
+            <button id="checkoutWhatsappBtn" class="btn-checkout">Finalizar Compra por WhatsApp</button>
+        </div>
+    </div>
 
-   
     <script type="module" src="js/main.js"></script>
     <script type="module">
-        // --- FONDO 3D DE PARTÍCULAS (CORREGIDO Y CENTRADO) ---
         let scene, camera, renderer, particles;
-
         function init3DBackground() {
             const container = document.getElementById('bg3d');
+            if(!container) return;
             scene = new THREE.Scene();
             camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
             renderer = new THREE.WebGLRenderer({ alpha: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
             container.appendChild(renderer.domElement);
-
             const particlesGeometry = new THREE.BufferGeometry;
             const count = 5000;
             const positions = new Float32Array(count * 3);
-            for (let i = 0; i < count * 3; i++) {
-                positions[i] = (Math.random() - 0.5) * 15; // Aumentar dispersión
-            }
+            for (let i = 0; i < count * 3; i++) { positions[i] = (Math.random() - 0.5) * 15; }
             particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-            
-            const particlesMaterial = new THREE.PointsMaterial({
-                size: 0.025,
-                sizeAttenuation: true,
-                color: '#D4AF37', // Tono dorado principal
-                transparent: true,
-                opacity: 0.7
-            });
+            const particlesMaterial = new THREE.PointsMaterial({ size: 0.025, sizeAttenuation: true, color: '#D4AF37', transparent: true, opacity: 0.7 });
             particles = new THREE.Points(particlesGeometry, particlesMaterial);
             scene.add(particles);
             camera.position.z = 5;
-
-            // **LA CLAVE PARA EL RESPONSIVE**
             window.addEventListener('resize', onWindowResize, false);
-            
             animate();
         }
-
         function onWindowResize() {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
         }
-
         const clock = new THREE.Clock();
         function animate() {
-            const elapsedTime = clock.getElapsedTime();
-            
-            particles.rotation.y = elapsedTime * 0.05;
-            
-            renderer.render(scene, camera);
+            if(particles) particles.rotation.y = clock.getElapsedTime() * 0.05;
+            if(renderer) renderer.render(scene, camera);
             window.requestAnimationFrame(animate);
         }
-        
         init3DBackground();
     </script>
 </body>
 </html>
-
