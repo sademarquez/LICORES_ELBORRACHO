@@ -36,7 +36,7 @@
 
 
     /* Transiciones */
-    --transition-speed: 0.4s;
+    --transition-speed: 1.5s;
     --transition-timing: ease-in-out;
 }
 
@@ -63,7 +63,7 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 var(--spacing-md);
-    width: 100%;
+    width: 150%;
 }
 
 a {
@@ -351,7 +351,7 @@ p {
 
 /* Tarjeta de Producto - CORRECCIÓN CLAVE AQUÍ */
 .product-card {
-    background-color: rgba(52, 58, 64, 0.04); /* Fondo más transparente */
+    background-color: rgba(52, 58, 64, 0.02); /* Fondo más transparente */
     border: 1px solid rgba(255, 191, 0, 0.3); /* Borde dorado sutil */
     border-radius: 10px;
     padding: var(--spacing-md);
@@ -360,7 +360,7 @@ p {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 100%;
+    height: 80%;
     box-shadow: var(--shadow-sm);
     /* Asegurar que las tarjetas no impidan el layout de grid si se usan fuera del grid */
     min-width: 0; /* Permite que la tarjeta se encoja dentro del grid si es necesario */
@@ -374,7 +374,7 @@ p {
 
 .product-image {
     max-width: 100%;
-    height: 180px;
+    height: 120px;
     object-fit: contain;
     margin-bottom: var(--spacing-sm);
     transition: transform var(--transition-speed) var(--transition-timing), filter var(--transition-speed) var(--transition-timing);
@@ -624,7 +624,7 @@ p {
 
 .continuous-carousel-container {
     overflow: hidden; /* Asegura que la animación se vea correctamente */
-    width: 100%;
+    width: 200%;
     position: relative; /* Asegura el contexto para los elementos internos */
 }
 
