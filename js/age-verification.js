@@ -5,7 +5,7 @@
 // Su propósito es bloquear el acceso si la edad no está verificada.
 
 export function initAgeVerification() {
-    console.log('age-verification.js: Inicializando verificación de edad...');
+    // console.log('age-verification.js: Inicializando verificación de edad...'); // ELIMINADO para producción
 
     const ageVerificationModal = document.getElementById('ageVerificationModal');
     const confirmAgeBtn = document.getElementById('confirmAgeBtn');
@@ -22,34 +22,23 @@ export function initAgeVerification() {
     const ageVerified = localStorage.getItem('ageVerified');
 
     if (ageVerified === 'true') {
-        ageVerificationModal.classList.remove('show'); // Asegura que no se muestre si ya está verificado
-        ageVerificationModal.style.display = 'none'; // Ocultar completamente con display
-        console.log('age-verification.js: Edad ya verificada. Ocultando modal.');
+        ageVerificationModal.style.display = 'none';
+        // console.log('age-verification.js: Edad ya verificada. Ocultando modal.'); // ELIMINADO para producción
     } else {
-        ageVerificationModal.style.display = 'flex'; // Mostrar el modal (usando flex para centrar)
-        setTimeout(() => {
-            ageVerificationModal.classList.add('show'); // Añade la clase 'show' para la animación de entrada
-        }, 50); // Pequeño retraso para que la transición CSS funcione
-        console.log('age-verification.js: Edad no verificada. Mostrando modal.');
+        ageVerificationModal.style.display = 'flex'; // Asegurarse de que sea visible
+        // console.log('age-verification.js: Edad no verificada. Mostrando modal.'); // ELIMINADO para producción
     }
 
     confirmAgeBtn.addEventListener('click', () => {
-        console.log('age-verification.js: Botón "Soy Mayor de 18" clicado.');
-        ageVerificationModal.classList.remove('show'); // Inicia animación de salida
-        ageVerificationModal.addEventListener('transitionend', function handler() {
-            ageVerificationModal.style.display = 'none'; // Ocultar después de la transición
-            ageVerificationModal.removeEventListener('transitionend', handler);
-        });
+        // console.log('age-verification.js: Botón "Soy Mayor de 18" clicado.'); // ELIMINADO para producción
+        ageVerificationModal.style.display = 'none';
         localStorage.setItem('ageVerified', 'true');
-        console.log('age-verification.js: Edad verificada y guardada. Modal oculto.');
-        // Opcional: Recargar la página o habilitar el contenido principal aquí si fuera necesario
-        // Pero en este caso, main.js ya verifica si el modal está visible para continuar.
-        window.location.reload(); // Recargar para que main.js continúe con la carga completa
+        // console.log('age-verification.js: Edad verificada y guardada. Modal oculto.'); // ELIMINADO para producción
     });
 
     declineAgeBtn.addEventListener('click', () => {
-        console.log('age-verification.js: Botón "Soy Menor de Edad" clicado. Redirigiendo...');
-        // Redirección obligatoria para menores
+        // console.log('age-verification.js: Botón "Soy Menor de Edad" clicado. Redirigiendo...'); // ELIMINADO para producción
+        // Puedes redirigir a una página de "contenido no apto" o a Google.
         window.location.href = 'https://www.google.com';
     });
 
@@ -57,10 +46,10 @@ export function initAgeVerification() {
     // Esta lógica es importante para forzar al usuario a interactuar con los botones.
     window.addEventListener('click', (event) => {
         if (event.target === ageVerificationModal) {
-            console.log('age-verification.js: Clic en el fondo del modal de verificación de edad. No se cierra.');
+            // console.log('age-verification.js: Clic en el fondo del modal de verificación de edad. No se cierra.'); // ELIMINADO para producción
             // Puedes añadir una pequeña animación o vibración aquí para indicar que no se puede cerrar
         }
     });
 
-    console.log('age-verification.js: Verificación de edad configurada.');
+    // console.log('age-verification.js: Event listeners de verificación de edad configurados.'); // ELIMINADO para producción
 }
