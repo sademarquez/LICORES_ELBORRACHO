@@ -34,22 +34,22 @@ export function setupSearch() {
         filteredProducts = appState.products.filter(product =>
             product.name.toLowerCase().includes(searchTerm) ||
             product.brand.toLowerCase().includes(searchTerm) ||
-            product.description.toLowerCase().includes(searchTerm) ||
             product.category.toLowerCase().includes(searchTerm)
         );
 
         searchResultsGrid.innerHTML = ''; // Limpiar resultados anteriores
 
-        if (filteredProducts.length > 0) {
+        if (filteredProducts.length === 0) {
+            searchResultsGrid.innerHTML = `<p class="no-results-message">No se encontraron resultados para "${searchTerm}".</p>`;
+        } else {
             filteredProducts.forEach(product => {
-                const productCard = renderProductCard(product);
+                const productCard = renderProductCard(product); // Reutiliza renderProductCard
                 searchResultsGrid.appendChild(productCard);
             });
-        } else {
-            searchResultsGrid.innerHTML = `<p class="no-results-message">No se encontraron productos para "${searchTerm}".</p>`;
         }
     };
 
+    // Event Listeners
     searchButton.addEventListener('click', performSearch);
     searchInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
@@ -59,12 +59,7 @@ export function setupSearch() {
 
     closeSearchModalBtn.addEventListener('click', () => toggleSearchModal(false));
 
-    // Cerrar el modal al hacer clic fuera de él
-    window.addEventListener('click', (event) => {
-        if (event.target === searchModal && searchModal.classList.contains('open')) {
-            toggleSearchModal(false);
-        }
-    });
+    // console.log('search.js: Módulo de búsqueda configurado.'); // ELIMINADO para producción
 }
 
 /**
