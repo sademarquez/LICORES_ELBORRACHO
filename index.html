@@ -24,62 +24,107 @@
     </div>
 
     <header class="main-header">
-        </header>
+        <div class="container header-content">
+            <a href="index.html" class="logo">EL BORRACHO</a>
+            <nav class="main-nav">
+                <ul class="nav-list">
+                    <li><a href="#featuredProductsSection">Destacados</a></li>
+                    <li><a href="#allProductsSection">Productos</a></li>
+                    <li><a href="#categoryProductsSection">Categorías</a></li>
+                    <li><a href="#brandCarouselSection">Marcas</a></li>
+                    <li><a href="#support-section">Soporte</a></li>
+                </ul>
+            </nav>
+            <div class="header-icons">
+                <button id="searchIcon" class="icon-button" aria-label="Buscar"><i class="fas fa-search"></i></button>
+                <button id="cartIcon" class="icon-button cart-icon" aria-label="Ver carrito">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span id="cartCount" class="cart-count">0</span>
+                </button>
+                <button id="menuToggle" class="icon-button menu-toggle" aria-label="Abrir menú"><i class="fas fa-bars"></i></button>
+            </div>
+        </div>
+    </header>
 
     <main>
-        <section id="hero-carousel" class="hero-section">
-            <div class="carousel-container">
+        <section class="hero-section">
+            <div id="heroCarousel" class="carousel">
                 <div id="carouselTrack" class="carousel-track">
                     </div>
-                <button id="carouselPrev" class="carousel-btn prev" aria-label="Anterior">&#10094;</button>
-                <button id="carouselNext" class="carousel-btn next" aria-label="Siguiente">&#10095;</button>
-                <div id="carouselDots" class="carousel-dots">
-                    </div>
+                <button class="carousel-button prev" aria-label="Anterior">&#10094;</button>
+                <button class="carousel-button next" aria-label="Siguiente">&#10095;</button>
+                <div class="carousel-pagination"></div>
             </div>
         </section>
 
-        <section id="categoryProductsSection" class="section-padded">
-            <div class="container">
-                <h2 class="section-title">Explora por Categorías</h2>
-                <div class="category-buttons-container">
-                    <button class="category-btn active" data-category="all">Todos</button>
-                    <button class="category-btn" data-category="Licores">Licores</button>
-                    <button class="category-btn" data-category="Cervezas">Cervezas</button>
-                    <button class="category-btn" data-category="Snacks">Snacks</button>
-                    <button class="category-btn" data-category="Bebidas">Bebidas No Alcohólicas</button>
-                    <button class="category-btn" data-category="Cigarrillos">Cigarrillos</button>
+        <section id="featuredProductsSection" class="section-padded">
+            <h2 class="section-title">Productos Destacados</h2>
+            <div id="featuredProductsGrid" class="product-grid">
                 </div>
-                <div class="category-products-wrapper">
-                    <div id="categoryProductTrack" class="product-grid category-product-track">
-                        </div>
-                </div>
+            <div class="view-more-button">
+                <a href="#allProductsSection" class="btn-primary">Ver Todos los Productos</a>
             </div>
         </section>
 
-        <section id="allProductsGridSection" class="section-padded">
-            <div class="container">
-                <h2 class="section-title">Todos Nuestros Productos</h2>
-                <div class="product-filters">
-                    <select id="categoryFilter" class="filter-select">
-                        <option value="all">Todas las Categorías</option>
-                        </select>
-                    <input type="text" id="productSearchInput" placeholder="Buscar producto...">
-                </div>
-                <div id="allProductsGrid" class="product-grid">
-                    </div>
+        <section id="allProductsSection" class="section-padded">
+            <h2 class="section-title">Todos Nuestros Productos</h2>
+            <div class="product-filters">
+                <input type="text" id="productSearchInput" placeholder="Buscar producto...">
+                <select id="productCategoryFilter">
+                    <option value="all">Todas las Categorías</option>
+                    </select>
+                <select id="productBrandFilter">
+                    <option value="all">Todas las Marcas</option>
+                    </select>
             </div>
+            <div id="allProductsGrid" class="product-grid">
+                </div>
+            <button id="loadMoreProductsBtn" class="btn-secondary load-more-btn">Cargar Más Productos</button>
         </section>
+
+        <section id="categoryProductsSection" class="section-padded category-products-section">
+            <h2 class="section-title">Explora por Categoría</h2>
+            <div class="category-buttons-container">
+                <button class="category-btn active" data-category="all">Todos</button>
+                <button class="category-btn" data-category="Licores">Licores</button>
+                <button class="category-btn" data-category="Cervezas">Cervezas</button>
+                <button class="category-btn" data-category="Bebidas no Alcohólicas">Bebidas no Alcohólicas</button>
+                <button class="category-btn" data-category="Snacks">Snacks</button>
+            </div>
+            <div id="categoryProductTrack" class="category-product-track">
+                </div>
+        </section>
+
 
         <section id="brandCarouselSection" class="section-padded brand-carousel-section">
             <h2 class="section-title">Nuestras Marcas</h2>
             <div class="continuous-carousel-container">
-                <div id="continuousCarouselTrack" class="continuous-carousel-track">
+                <div id="brandsContinuousCarouselTrack" class="continuous-carousel-track">
                     </div>
             </div>
         </section>
 
         <section id="support-section" class="section-padded">
-            </section>
+            <h2 class="section-title">¿Necesitas Ayuda?</h2>
+            <div class="support-options">
+                <div class="support-card">
+                    <h3>Reportar un Problema</h3>
+                    <p>Si tienes algún inconveniente con tu pedido o la página, háznoslo saber.</p>
+                    <button id="reportFaultBtn" class="btn-primary">Reportar</button>
+                </div>
+                <div class="support-card">
+                    <h3>Agendar Pedido/Entrega</h3>
+                    <p>Coordina tu pedido o entrega con nosotros.</p>
+                    <button id="bookAppointmentBtn" class="btn-primary">Agendar</button>
+                </div>
+                <div class="support-card">
+                    <h3>Contacto Directo</h3>
+                    <p>Llámanos o escríbenos para cualquier consulta.</p>
+                    <a href="tel:573174144815" class="btn-secondary"><i class="fas fa-phone"></i> Llamar</a>
+                    <a href="https://wa.me/573174144815" target="_blank" class="btn-secondary"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                </div>
+            </div>
+        </section>
         
         <div id="searchModal" class="search-modal">
             <div class="search-modal-content">
@@ -95,17 +140,108 @@
         </div>
 
         <div id="cartSidebar" class="cart-sidebar">
+            <div class="cart-header">
+                <h3>Tu Carrito</h3>
+                <button id="closeCartBtn" class="close-btn">&times;</button>
             </div>
+            <div id="cartItems" class="cart-items">
+                <p class="empty-cart-message">Tu carrito está vacío.</p>
+            </div>
+            <div class="cart-summary">
+                <div class="cart-total">
+                    <span>Total:</span>
+                    <span id="cartTotalPrice">$0.00</span>
+                </div>
+                <button id="checkoutWhatsappBtn" class="btn-primary checkout-btn">
+                    <i class="fab fa-whatsapp"></i> Finalizar Pedido por WhatsApp
+                </button>
+            </div>
+        </div>
 
-        <div id="faultReportModal" class="modal">...</div>
-        <div id="appointmentModal" class="modal">...</div>
+        <div id="faultReportModal" class="modal">
+            <div class="modal-content">
+                <button class="close-modal-btn">&times;</button>
+                <h2>Reportar un Problema</h2>
+                <form id="faultReportForm">
+                    <input type="text" id="faultName" placeholder="Tu Nombre" required>
+                    <input type="tel" id="faultPhone" placeholder="Tu Teléfono (WhatsApp)" required>
+                    <textarea id="faultDescription" placeholder="Describe el problema en detalle..." rows="5" required></textarea>
+                    <button type="submit" class="btn-primary">Enviar Reporte</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="appointmentModal" class="modal">
+            <div class="modal-content">
+                <button class="close-modal-btn">&times;</button>
+                <h2>Agendar Pedido/Entrega</h2>
+                <form id="appointmentForm">
+                    <input type="text" id="appointmentName" placeholder="Tu Nombre" required>
+                    <input type="tel" id="appointmentPhone" placeholder="Tu Teléfono (WhatsApp)" required>
+                    <input type="date" id="appointmentDate" required>
+                    <input type="time" id="appointmentTime" required>
+                    <textarea id="appointmentReason" placeholder="Detalles de tu pedido o servicio requerido..." rows="5" required></textarea>
+                    <button type="submit" class="btn-primary">Agendar</button>
+                </form>
+            </div>
+        </div>
 
         <div id="toast-container"></div>
 
     </main>
 
     <footer class="main-footer">
-        </footer>
+        <div class="container footer-content">
+            <div class="footer-column about">
+                <h3>Sobre Nosotros</h3>
+                <p>EL BORRACHO te trae los mejores licores y bebidas a domicilio en Popayán. Calidad, variedad y servicio a tu puerta.</p>
+            </div>
+            <div class="footer-column links">
+                <h3>Enlaces Rápidos</h3>
+                <ul>
+                    <li><a href="#featuredProductsSection">Destacados</a></li>
+                    <li><a href="#allProductsSection">Productos</a></li>
+                    <li><a href="#categoryProductsSection">Categorías</a></li>
+                    <li><a href="#brandCarouselSection">Marcas</a></li>
+                    <li><a href="#support-section">Soporte</a></li>
+                </ul>
+            </div>
+            <div class="footer-column contact">
+                <h3>Contacto</h3>
+                <p><i class="fas fa-map-marker-alt"></i> <span id="contactAddress">Popayán, Cauca, Colombia</span></p>
+                <p><i class="fas fa-envelope"></i> <span id="contactEmail">pedidos@elborracho.com</span></p>
+                <p><i class="fas fa-phone"></i> <span id="contactPhone">573174144815</span></p>
+                <div class="social-media">
+                    <a href="https://wa.me/573174144815" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="#" aria-label="Facebook (Próximamente)"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Instagram (Próximamente)"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 EL BORRACHO. Todos los derechos reservados. <span class="legal-notice">Prohibida la venta de alcohol a menores de edad.</span></p>
+        </div>
+    </footer>
+
+    <nav class="bottom-nav">
+        <a href="#featuredProductsSection" class="bottom-nav-item active">
+            <i class="fas fa-star"></i>
+            <span>Destacados</span>
+        </a>
+        <a href="#allProductsSection" class="bottom-nav-item">
+            <i class="fas fa-wine-bottle"></i>
+            <span>Productos</span>
+        </a>
+        <a href="#categoryProductsSection" class="bottom-nav-item">
+            <i class="fas fa-tags"></i>
+            <span>Categorías</span>
+        </a>
+        <button id="bottomCartIcon" class="bottom-nav-item cart-icon">
+            <i class="fas fa-shopping-cart"></i>
+            <span>Carrito</span>
+            <span id="bottomCartCount" class="cart-count">0</span>
+        </button>
+    </nav>
 
     <script type="module" src="js/main.js"></script>
 </body>
