@@ -47,9 +47,15 @@
     padding: 0;
 }
 
+html, body {
+    /* Asegura que no haya scrollbar horizontal por overflow de elementos */
+    overflow-x: hidden;
+    /* Esto es importante para el hero-section pegado al tope */
+    margin: 0;
+    padding: 0;
+}
+
 body {
-    margin: 0; /* Aseguramos que el body no tenga margen superior */
-    padding: 0; /* Aseguramos que el body no tenga padding superior */
     font-family: 'Montserrat', sans-serif;
     line-height: 1.6;
     color: var(--text-color-light);
@@ -195,12 +201,17 @@ p {
     flex-wrap: wrap;
 }
 
+/* Logo (Imagen) */
 .logo {
-    font-size: 1.8em;
-    font-weight: bold;
-    color: var(--primary-color);
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    display: block; /* Asegura que la imagen sea un bloque */
+    height: 50px; /* Altura del logo, ajusta según sea necesario */
+    width: auto; /* Ancho automático para mantener la proporción */
+}
+
+.logo img {
+    height: 100%; /* La imagen ocupa el 100% de la altura de su contenedor (.logo) */
+    width: auto; /* Ancho automático */
+    object-fit: contain; /* Asegura que la imagen se ajuste sin ser recortada */
 }
 
 /* Navegación Principal (Desktop) */
@@ -274,7 +285,7 @@ p {
 }
 
 .menu-toggle {
-    display: none;
+    display: none; /* Ocultar por defecto, se muestra en responsive.css para móvil/tablet */
     font-size: 1.5em;
 }
 
@@ -613,6 +624,9 @@ p {
     z-index: 1000;
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
+    /* Asegurarse de que el modal no tenga ningún margin o padding extraño */
+    margin: 0;
+    padding: 0;
 }
 
 .age-verification-content {
