@@ -1,4 +1,4 @@
-// js/carousel.js
+// js/carousel.js 
 
 let currentSlide = 0;
 let autoSlideInterval;
