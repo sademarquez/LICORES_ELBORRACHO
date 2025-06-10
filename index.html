@@ -75,39 +75,63 @@
         </ul>
     </nav>
 
+   
     <script type="module" src="js/main.js"></script>
     <script type="module">
-        // --- FONDO 3D DE PARTÍCULAS ---
-        // (Este es un ejemplo simple, puedes usar el tuyo más complejo)
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ alpha: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.getElementById('bg3d').appendChild(renderer.domElement);
+        // --- FONDO 3D DE PARTÍCULAS (CORREGIDO Y CENTRADO) ---
+        let scene, camera, renderer, particles;
 
-        const particlesGeometry = new THREE.BufferGeometry;
-        const count = 5000;
-        const positions = new Float32Array(count * 3);
-        for (let i = 0; i < count * 3; i++) {
-            positions[i] = (Math.random() - 0.5) * 10;
+        function init3DBackground() {
+            const container = document.getElementById('bg3d');
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            renderer = new THREE.WebGLRenderer({ alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            container.appendChild(renderer.domElement);
+
+            const particlesGeometry = new THREE.BufferGeometry;
+            const count = 5000;
+            const positions = new Float32Array(count * 3);
+            for (let i = 0; i < count * 3; i++) {
+                positions[i] = (Math.random() - 0.5) * 15; // Aumentar dispersión
+            }
+            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            
+            const particlesMaterial = new THREE.PointsMaterial({
+                size: 0.025,
+                sizeAttenuation: true,
+                color: '#D4AF37', // Tono dorado principal
+                transparent: true,
+                opacity: 0.7
+            });
+            particles = new THREE.Points(particlesGeometry, particlesMaterial);
+            scene.add(particles);
+            camera.position.z = 5;
+
+            // **LA CLAVE PARA EL RESPONSIVE**
+            window.addEventListener('resize', onWindowResize, false);
+            
+            animate();
         }
-        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-        const particlesMaterial = new THREE.PointsMaterial({
-            size: 0.02,
-            sizeAttenuation: true,
-            color: '#00F2FE'
-        });
-        const particles = new THREE.Points(particlesGeometry, particlesMaterial);
-        scene.add(particles);
-        camera.position.z = 5;
 
-        const animate = () => {
-            requestAnimationFrame(animate);
-            particles.rotation.x += 0.0001;
-            particles.rotation.y += 0.0002;
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        const clock = new THREE.Clock();
+        function animate() {
+            const elapsedTime = clock.getElapsedTime();
+            
+            particles.rotation.y = elapsedTime * 0.05;
+            
             renderer.render(scene, camera);
-        };
-        animate();
+            window.requestAnimationFrame(animate);
+        }
+        
+        init3DBackground();
     </script>
 </body>
 </html>
+
