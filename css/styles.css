@@ -342,8 +342,8 @@ p {
 
 /* Grid de Productos */
 .product-grid {
-    /* Adjusted for slightly smaller cards and potentially more columns */
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Adjusted min-width for general grid */
+    display: grid; /* Explicitly set display to grid */
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Aim for 3 columns on larger screens */
     gap: var(--spacing-md);
     justify-content: center;
 }
@@ -359,9 +359,11 @@ p {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 100%; /* Ajustado a 100% para que las tarjetas ocupen el espacio disponible en el grid */
+    height: 320px; /* Fixed height for consistency, adjust as needed */
     box-shadow: var(--shadow-sm);
     min-width: 0;
+    position: relative; /* Added for absolute positioning of name/price */
+    overflow: hidden; /* Ensure content doesn't overflow */
 }
 
 .product-card:hover {
@@ -370,11 +372,23 @@ p {
     box-shadow: var(--shadow-md), var(--golden-glow-sm);
 }
 
+.product-image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 60%; /* This wrapper takes 60% of card height */
+    overflow: hidden;
+    margin-bottom: var(--spacing-sm);
+    border-radius: 8px; /* Slightly rounded corners for the image wrapper */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.05); /* Slight background for image area */
+}
+
 .product-image {
     max-width: 100%;
-    height: 100px; /* Slightly reduced height for general product cards */
+    height: 100%; /* Image takes 100% of its wrapper (which is 60% of card) */
     object-fit: contain;
-    margin-bottom: var(--spacing-sm);
     transition: transform var(--transition-speed) var(--transition-timing), filter var(--transition-speed) var(--transition-timing);
 }
 
@@ -388,24 +402,54 @@ p {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    padding-top: var(--spacing-sm); /* Padding to separate info from image */
+}
+
+/* Product name and price overlay on image (optional, based on request) */
+.product-name,
+.product-price-overlay { /* New class for overlaid price */
+    position: absolute;
+    z-index: 5;
+    width: 100%;
+    left: 0;
+    text-align: center;
+    color: var(--text-color-dark); /* White text */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* Stronger shadow for readability */
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 100%); /* Fading background */
+    padding: var(--spacing-xs);
+    box-sizing: border-box;
 }
 
 .product-name {
-    font-size: 1em; /* Slightly smaller font for product name */
+    top: 0; /* Position name at the top */
+    font-size: 1.1em; /* Slightly larger for impact */
     font-weight: bold;
-    color: var(--text-color-dark);
-    margin-bottom: 5px;
+    white-space: nowrap; /* Prevent wrapping */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 100%);
 }
 
-.product-brand {
-    font-size: 0.85em; /* Slightly smaller font for brand */
-    color: var(--text-color-light);
-    margin-bottom: var(--spacing-xs); /* Reduced margin */
+.product-price-overlay {
+    bottom: calc(40% - 10px); /* Position price just below the image area, adjust if image is 40% height */
+    font-size: 1.4em; /* Larger for impact */
+    font-weight: bold;
+    color: var(--primary-color);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 100%);
+    padding-bottom: var(--spacing-sm);
+    /* Note: If you want price *inside* the image area, adjust bottom position */
+    /* Example: bottom: calc(60% - 30px); if image is 60% of the top, and price is inside. */
 }
 
+/* Original price container, now adjusted to show below image area */
 .product-price-container {
-    margin-top: auto;
+    margin-top: auto; /* Pushes it to the bottom of the non-image area */
     margin-bottom: var(--spacing-sm);
+    display: flex; /* Flex to align old and offer prices */
+    justify-content: center;
+    align-items: baseline; /* Align prices */
+    flex-wrap: wrap; /* Allow prices to wrap if too long */
+    padding-top: var(--spacing-sm); /* Add padding if content starts here */
 }
 
 .product-price {
@@ -641,7 +685,7 @@ p {
     background-color: rgba(52, 58, 64, 0.08);
     border: 1px solid rgba(255, 191, 0, 0.3);
     border-radius: 10px;
-    width: 200px;
+    width: 250px; /* Fixed width for continuous carousel cards */
     flex-shrink: 0;
     margin-right: var(--spacing-md);
     text-align: center;
@@ -650,6 +694,9 @@ p {
     display: inline-block;
     vertical-align: top;
     box-shadow: var(--shadow-sm);
+    position: relative; /* Added for absolute positioning */
+    overflow: hidden;
+    height: 320px; /* Consistent height with general product cards */
 }
 
 .continuous-carousel-track .product-card:hover {
@@ -658,8 +705,12 @@ p {
     box-shadow: var(--shadow-md), var(--golden-glow-sm);
 }
 
+.continuous-carousel-track .product-card .product-image-wrapper {
+    height: 60%; /* Image wrapper takes 60% of card height */
+}
+
 .continuous-carousel-track .product-card .product-image {
-    height: 160px;
+    height: 100%; /* Image takes 100% of its wrapper */
     object-fit: contain;
     padding: var(--spacing-sm);
     transition: transform var(--transition-speed) var(--transition-timing), filter var(--transition-speed) var(--transition-timing);
