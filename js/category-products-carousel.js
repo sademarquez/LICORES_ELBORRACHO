@@ -28,26 +28,27 @@ export function setupCategoryProductCarousel(allProducts, sectionSelector) {
         return;
     }
 
-    /**
-     * Renderiza las tarjetas de productos en el track del carrusel de categorías.
-     * @param {Array<Object>} productsToRender - Los productos a mostrar.
-     */
-    const renderCategoryProducts = (productsToRender) => {
-        categoryProductTrack.innerHTML = ''; // Limpiar contenido existente
+    // Limpiar el track al inicio
+    categoryProductTrack.innerHTML = '';
 
+    // Función para renderizar productos en el carrusel de categorías
+    const renderCategoryProducts = (productsToRender) => {
+        categoryProductTrack.innerHTML = ''; // Limpiar antes de renderizar
         if (productsToRender.length === 0) {
-            categoryProductTrack.innerHTML = `<p style="text-align: center; width: 100%; color: var(--text-color-light);">No hay productos disponibles en esta categoría.</p>`;
+            categoryProductTrack.innerHTML = `<p class="no-results-message" style="grid-column: 1 / -1; text-align: center;">No hay productos en esta categoría.</p>`;
             return;
         }
-
         productsToRender.forEach(product => {
-            const productCard = renderProductCard(product); // Reutilizar la función de products.js
+            const productCard = renderProductCard(product);
             categoryProductTrack.appendChild(productCard);
         });
     };
 
-    // Configurar event listeners para los botones de categoría
+    // Crear y añadir botones de categoría dinámicamente si no existen
+    // (Opcional, si ya están definidos en HTML, puedes omitir esto y solo añadir listeners)
+    // Para este diseño, asumimos que los botones están en el HTML y solo necesitan listeners.
     const categoryBtns = categoryButtonsContainer.querySelectorAll('.category-btn');
+
     categoryBtns.forEach(button => {
         button.addEventListener('click', () => {
             // Eliminar clase 'active' de todos los botones
