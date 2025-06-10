@@ -3,64 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Licores el Borracho - Catálogo Online</title>
+    <title>E-commerce 3D Moderno</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/responsive.css">
-    <link rel="icon" href="images/favicon.png" type="image/png">
-    <style>
-        .content-hidden { display: none; }
-        .active-section { display: block !important; }
-        #bg3d { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; }
-        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.8); justify-content: center; align-items: center; backdrop-filter: blur(5px); }
-        .modal-content { background-color: var(--secondary-color-dark); margin: auto; padding: 24px; border: 1px solid var(--border-color); width: 90%; max-width: 600px; border-radius: 12px; box-shadow: 0 14px 28px rgba(0,0,0,0.25); position: relative; animation: fadeInScale 0.3s ease-out; color: #CED4DA; }
-        .modal-content h2 { color: #FFBF00; margin-bottom: 24px; text-align: center; }
-        .close-modal-btn { color: #CED4DA; position: absolute; top: 15px; right: 25px; font-size: 30px; font-weight: bold; cursor: pointer; transition: color 0.3s; }
-        .close-modal-btn:hover { color: #FFBF00; }
-        @keyframes fadeInScale { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-    </style>
+    <!-- El resto de tu head... -->
 </head>
-<body class="bg-dark-bg text-text-color-dark font-sans">
-    <div id="bg3d"></div>
-
-    <div id="ageVerificationModal" class="age-verification-modal">
-        <!-- Contenido... -->
-    </div>
-
-    <header class="main-header bg-dark-bg text-text-color-dark p-4 shadow-md sticky top-0 z-50">
-        <div class="container mx-auto flex justify-between items-center header-content">
-            <!-- CORRECCIÓN: Se elimina el atributo `onclick` -->
-            <a href="#" id="logoLink" class="logo-container flex items-center gap-2">
-                <img src="images/logo.png" alt="Licores el Borracho Logo" class="h-12">
-                <span class="site-name text-2xl font-bold text-primary-color">EL BORRACHO</span>
-            </a>
-            <nav class="main-nav hidden md:flex flex-grow justify-center">
-                <!-- Contenido nav... -->
-            </nav>
-            <div class="header-icons flex items-center gap-4">
-                <!-- Contenido iconos... -->
-            </div>
-        </div>
+<body>
+    <div id="bg3d"></div> <!-- Para el fondo animado -->
+    
+    <!-- Header (simplificado para el ejemplo) -->
+    <header class="sticky top-0 z-50 p-4" style="background: rgba(26, 15, 46, 0.5); backdrop-filter: blur(10px);">
+        <h1 class="text-2xl font-bold text-center text-white">MI TIENDA 3D</h1>
     </header>
 
-    <nav class="bottom-nav"><ul class="flex justify-around items-center h-full"><li class="nav-item-bottom"><a href="#" class="nav-link-bottom active" data-section="inicio"><svg class="w-6 h-6" viewBox="0 0 24 24"><path d="..."></path></svg><span class="nav-text">Inicio</span></a></li><li class="nav-item-bottom"><a href="#" class="nav-link-bottom" data-section="catalogo"><svg class="w-6 h-6" viewBox="0 0 24 24"><path d="..."></path></svg><span class="nav-text">Catálogo</span></a></li><li class="nav-item-bottom"><button id="bottomSearchBtn" class="nav-link-bottom"><svg class="w-6 h-6" viewBox="0 0 24 24"><path d="..."></path></svg><span class="nav-text">Buscar</span></button></li><li class="nav-item-bottom"><button id="bottomCartBtn" class="nav-link-bottom relative"><svg class="w-6 h-6" viewBox="0 0 24 24"><path d="..."></path></svg><span id="bottomCartCount" class="cart-count">0</span><span class="nav-text">Carrito</span></button></li><li class="nav-item-bottom"><a href="#" class="nav-link-bottom" data-section="contacto"><svg class="w-6 h-6" viewBox="0 0 24 24"><path d="..."></path></svg><span class="nav-text">Contacto</span></a></li></ul></nav>
+    <main class="container mx-auto p-4">
 
-    <main class="container mx-auto px-4 py-8">
-        <section id="inicio" class="content-hidden"><div class="carousel-container"><div id="carouselTrack" class="carousel-track"></div><button id="carouselPrev" class="carousel-btn prev"><</button><button id="carouselNext" class="carousel-btn next">></button><div id="carouselDots" class="carousel-dots"></div></div><section id="featuredPromotionsSection" class="my-12 py-8 bg-secondary-color-dark rounded-lg shadow-xl text-center"><h2 class="text-3xl font-bold text-primary-color mb-8">🔥 Promociones Destacadas 🔥</h2><div class="continuous-carousel-container"><div id="continuousProductCarouselTrack" class="continuous-carousel-track"></div></div></section><section id="brandCarouselSection" class="my-12 py-8 bg-light-bg rounded-lg shadow-xl text-center"><h2 class="text-3xl font-bold text-primary-color mb-8">Nuestras Marcas</h2><div class="continuous-carousel-container brand-carousel"><div id="brandContinuousCarouselTrack" class="continuous-carousel-track brand-track"></div></div></section></section>
-        <section id="catalogo" class="content-hidden py-8"><div class="category-explorer mb-12"><h2 class="text-3xl font-bold text-center text-primary-color mb-6">Explora por Categoría</h2><div id="categoryButtons" class="flex flex-wrap justify-center gap-3 mb-8"></div><div id="categoryProductsCarousel" class="relative"><div class="category-product-carousel-track"><p class="w-full text-center text-text-color-light">Selecciona una categoría para ver los productos.</p></div></div></div><h2 class="text-4xl font-bold text-center text-primary-color mb-8 pt-8 border-t-2 border-border-color">Catálogo Completo</h2><div class="product-filters"><div class="filter-group"><label for="categoryFilter">Categoría:</label><select id="categoryFilter"><option value="all">Todas</option></select></div><div class="filter-group"><label for="priceFilter">Precio Máx:</label><input type="range" id="priceFilter" min="0" max="250000" value="250000"><span id="priceValue">$250,000</span></div><div class="filter-group"><label for="productSearch">Buscar Producto:</label><input type="text" id="productSearch" placeholder="Nombre o marca..."></div></div><div id="productGrid" class="product-grid"></div></section>
-        <section id="promociones" class="content-hidden py-8 text-center"><h2 class="text-4xl font-bold text-center text-primary-color mb-8">Ofertas y Promociones</h2><section id="offersCarouselSection" class="my-12 py-8 bg-light-bg rounded-lg shadow-xl text-center"><h2 class="text-3xl font-bold text-primary-color mb-8">✨ Productos en Oferta ✨</h2><div class="continuous-carousel-container"><div id="offersContinuousCarouselTrack" class="continuous-carousel-track"></div></div></section></section>
-        <section id="soporte" class="content-hidden py-8"><!-- ... --></section><section id="contacto" class="content-hidden py-8"><!-- ... --></section>
+        <!-- 1. CARRUSEL BANNER PRINCIPAL (Placeholder) -->
+        <section id="hero-carousel" class="w-full h-[400px] md:h-[500px] bg-gray-700 rounded-lg mb-8 flex items-center justify-center">
+            <h2 class="text-4xl text-white">Carrusel Principal</h2>
+        </section>
+
+        <!-- 2. NAVEGACIÓN DE CATEGORÍAS -->
+        <section class="category-nav-container">
+            <div id="categoryButtonsContainer" class="category-buttons-scroll">
+                <!-- Botones se generan con JS -->
+            </div>
+            <div id="categoryProductsContainer" class="category-products-carousel mt-4">
+                <!-- Productos de categoría se generan con JS -->
+            </div>
+        </section>
+
+        <!-- 3. SECCIÓN PRINCIPAL DE PRODUCTOS -->
+        <section id="main-products-section" class="mt-12">
+            <h2 class="text-3xl font-bold text-center mb-8">Todos los Productos</h2>
+
+            <!-- Barra de Filtros Sticky -->
+            <div class="product-filters-sticky">
+                <input type="text" id="searchInput" placeholder="Buscar productos..." class="w-full p-2 rounded-lg bg-transparent border border-gray-600 focus:border-primary-color outline-none">
+                <!-- Más filtros aquí -->
+            </div>
+
+            <!-- Grid de Productos -->
+            <div id="productGrid" class="product-grid">
+                <!-- Productos se generan con JS -->
+            </div>
+
+            <!-- Botón Ver Más -->
+            <button id="loadMoreBtn">Ver Más</button>
+        </section>
+
+        <!-- 4. CARRUCEL DE MARCAS (Placeholder) -->
+        <section id="brands-carousel" class="mt-12">
+            <h2 class="text-3xl font-bold text-center mb-8">Nuestras Marcas</h2>
+            <div class="w-full h-24 bg-gray-800 rounded-lg flex items-center justify-center">
+                <p class="text-white">Carrusel de Marcas Infinito</p>
+            </div>
+        </section>
+        
     </main>
-
-    <footer class="footer-section bg-secondary-color py-8 text-text-color-light text-center"><!-- ... --></footer>
     
-    <div id="cartSidebar" class="cart-sidebar"><div class="cart-header"><h2 class="text-2xl font-bold text-primary-color">Tu Carrito</h2><button id="closeCartBtn" class="close-btn">×</button></div><div id="cartItems" class="cart-items"><p>Tu carrito está vacío.</p></div><div class="cart-summary"><div class="cart-total"><span>Total:</span><span id="cartTotalPrice">$0</span></div><button id="checkoutWhatsappBtn" class="btn btn-primary w-full mt-4">Realizar Pedido</button></div></div>
-    <div id="searchModal" class="modal"><div class="modal-content"><span id="closeSearchModalBtn" class="close-modal-btn">×</span><h2>Buscar Productos</h2><div class="search-input-container"><input type="text" id="searchInput" placeholder="Escribe para buscar..."><button id="searchButton" class="btn btn-primary">Buscar</button></div><div id="searchResultsGrid" class="product-grid"></div></div></div>
-    <div id="faultReportModal" class="modal"><!-- ... --></div><div id="appointmentModal" class="modal"><!-- ... --></div>
-    <div id="toast-container" class="toast-container"></div>
+    <!-- 5. MENÚ INFERIOR NATIVO -->
+    <nav class="fixed bottom-0 left-0 w-full h-20 z-50" style="background: rgba(26, 15, 46, 0.5); backdrop-filter: blur(12px);">
+        <ul class="flex justify-around items-center h-full text-white">
+            <li>Inicio</li>
+            <li>Categorías</li>
+            <li>Carrito</li>
+            <li>Favoritos</li>
+            <li>Perfil</li>
+        </ul>
+    </nav>
+
     <script type="module" src="js/main.js"></script>
-    <script type="module">// 3D Background script... </script>
+    <script type="module">
+        // --- FONDO 3D DE PARTÍCULAS ---
+        // (Este es un ejemplo simple, puedes usar el tuyo más complejo)
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('bg3d').appendChild(renderer.domElement);
+
+        const particlesGeometry = new THREE.BufferGeometry;
+        const count = 5000;
+        const positions = new Float32Array(count * 3);
+        for (let i = 0; i < count * 3; i++) {
+            positions[i] = (Math.random() - 0.5) * 10;
+        }
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        const particlesMaterial = new THREE.PointsMaterial({
+            size: 0.02,
+            sizeAttenuation: true,
+            color: '#00F2FE'
+        });
+        const particles = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particles);
+        camera.position.z = 5;
+
+        const animate = () => {
+            requestAnimationFrame(animate);
+            particles.rotation.x += 0.0001;
+            particles.rotation.y += 0.0002;
+            renderer.render(scene, camera);
+        };
+        animate();
+    </script>
 </body>
 </html>
