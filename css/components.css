@@ -181,33 +181,79 @@
 .category-products-track {
     display: grid;
     grid-auto-flow: column; /* Organiza los ítems en columnas, permitiendo scroll horizontal */
-    grid-auto-columns: minmax(200px, 1fr); /* Ancho mínimo para cada columna, y que ocupe 1fr si hay espacio */
-    grid-template-rows: repeat(2, auto); /* Dos filas automáticas */
-    gap: var(--spacing-md); /* Espacio entre las tarjetas */
-    padding: var(--spacing-sm) 0; /* Pequeño padding vertical */
-    scroll-behavior: smooth; /* Desplazamiento suave al arrastrar o si se implementa JS scroll */
+    grid-auto-columns: minmax(200px, 1fr); /* Ancho mínimo para cada columna, and takes 1fr if space */
+    grid-template-rows: repeat(2, auto); /* Two automatic rows */
+    gap: var(--spacing-md); /* Space between cards */
+    padding: var(--spacing-sm) 0; /* Small vertical padding */
+    scroll-behavior: smooth; /* Smooth scrolling when dragging or if JS scroll is implemented */
 }
 
-/* Asegurarse que las tarjetas se adapten dentro del grid */
+/* Ensure cards adapt within the grid */
 .category-products-track .product-card {
-    min-width: 200px; /* Asegura que la tarjeta no se encoja demasiado */
-    max-width: 250px; /* Ancho máximo para mantener la consistencia */
-    height: auto; /* Altura automática para el contenido */
-    /* Adjust these for general product card appearance in this carousel */
-    min-height: 180px; /* Added to help with square aspect ratio */
+    min-width: 200px; /* Ensures the card doesn't shrink too much */
+    max-width: 250px; /* Maximum width to maintain consistency */
+    height: 320px; /* Consistent height for category cards as well */
+    position: relative; /* Added for absolute positioning */
+    overflow: hidden; /* Ensure content doesn't overflow */
+}
+
+.category-products-track .product-card .product-image-wrapper {
+    height: 60%; /* Image wrapper takes 60% of card height */
+    overflow: hidden;
+    margin-bottom: var(--spacing-sm);
+    border-radius: 8px; /* Slightly rounded corners for the image wrapper */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.05); /* Slight background for image area */
 }
 
 .category-products-track .product-card .product-image {
-    /* Adjusted for larger image on category carousel */
-    height: 120px; /* Increased image height for category carousel */
+    height: 100%; /* Image takes 100% of its wrapper */
     object-fit: contain;
     padding: var(--spacing-xs); /* Reduced padding for image */
-    margin-bottom: var(--spacing-xs); /* Smaller margin */
+    transition: transform var(--transition-speed) var(--transition-timing), filter var(--transition-speed) var(--transition-timing);
 }
 
+.category-products-track .product-card:hover .product-image {
+    transform: scale(1.05);
+    filter: brightness(1.2) saturate(1.1);
+}
+
+/* Product name and price overlay on image for category cards */
 .category-products-track .product-card .product-name {
-    font-size: 0.9em; /* Smaller font for name */
-    margin-bottom: var(--spacing-xs); /* Smaller margin */
+    position: absolute;
+    top: 0; /* Position name at the top */
+    left: 0;
+    width: 100%;
+    font-size: 1em; /* Adjusted font size */
+    font-weight: bold;
+    color: var(--text-color-dark); /* White text */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* Stronger shadow for readability */
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 100%); /* Fading background */
+    padding: var(--spacing-xs);
+    box-sizing: border-box;
+    white-space: normal; /* Allow wrapping for category names */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 2.4em; /* Limit to 2 lines */
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+}
+
+.category-products-track .product-card .product-price {
+    position: absolute;
+    bottom: calc(40% - 10px); /* Position price just below the image area */
+    left: 0;
+    width: 100%;
+    font-size: 1.3em; /* Adjusted font size for impact */
+    font-weight: bold;
+    color: var(--primary-color);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* Stronger shadow */
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 100%); /* Fading background */
+    padding: var(--spacing-xs);
+    box-sizing: border-box;
 }
 
 .category-products-track .product-card .product-brand,
@@ -216,10 +262,6 @@
     display: none; /* Hide these elements */
 }
 
-.category-products-track .product-card .product-price {
-    font-size: 1.1em; /* Slightly smaller font for price */
-    margin-bottom: var(--spacing-xs); /* Smaller margin */
-}
 
 .category-products-track .product-card .add-to-cart-btn {
     font-size: 0.8em; /* Smaller button text */
