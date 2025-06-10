@@ -42,104 +42,109 @@
         background-color: var(--primary-color); /* Asegurar color de subrayado en móvil */
     }
 
-    .menu-toggle {
-        display: block; /* Mostrar el menú hamburguesa */
-        font-size: 1.5em; /* Icono más grande */
-    }
-
     .header-actions {
-        order: -1; /* Mover acciones al principio */
-        width: 100%; /* Ocupar todo el ancho */
-        justify-content: flex-end; /* Alinear a la derecha */
-        margin-bottom: -15px; /* Ajuste para espacio */
+        width: 100%;
+        justify-content: flex-end; /* Alinear acciones a la derecha */
     }
 
-    .header-actions .cart-btn {
-        margin-left: auto; /* Empuja el carrito a la derecha */
+    .search-bar {
+        display: none; /* Ocultar la barra de búsqueda en el header en móvil */
+    }
+
+    .cart-icon {
+        margin-left: 0; /* Eliminar margen si solo hay un elemento */
+    }
+
+    .menu-toggle {
+        display: block; /* Mostrar el botón de hamburguesa en móvil */
     }
 
     .hero-section {
-        height: 300px; /* Altura más baja para carrusel en móvil */
+        height: 250px; /* Altura más pequeña para el carrusel en móvil */
+        margin-bottom: var(--spacing-md); /* Reducido para juntar más */
     }
 
-    .carousel-slide-content h2 {
-        font-size: 1.8em;
+    .carousel-slide .slide-content h2 {
+        font-size: 1.5rem; /* Títulos más pequeños en móvil */
     }
 
-    .carousel-slide-content p {
-        font-size: 1em;
+    .carousel-slide .slide-content p {
+        font-size: 0.9rem; /* Descripciones más pequeñas */
     }
 
-    .carousel-nav-btn {
-        padding: var(--spacing-xs);
-        font-size: 0.8em;
+    .carousel-slide .slide-content .btn {
+        padding: var(--spacing-xs) var(--spacing-sm);
+        font-size: 0.8rem;
     }
 
-    .carousel-dots {
-        bottom: var(--spacing-sm);
+    .brands-section {
+        padding: var(--spacing-lg) 0; /* Menos padding en móvil */
+    }
+
+    .brand-logo {
+        height: 60px; /* Logos más pequeños en móvil */
+        margin-right: var(--spacing-md);
+    }
+
+    .product-grid-section,
+    .category-products-section,
+    .about-section,
+    .support-section {
+        padding: var(--spacing-lg) 0; /* Menos padding general en secciones */
     }
 
     .product-grid {
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* 2 columnas en móvil */
+        gap: var(--spacing-md); /* Espacio entre productos */
+    }
+
+    /* Carrusel de productos por categoría en móvil (2x2 visualmente) */
+    .category-product-track {
+        display: grid; /* Usar grid para las 2 filas/2 columnas */
+        grid-template-columns: repeat(2, 1fr); /* Dos columnas */
+        grid-auto-rows: auto; /* Altura de fila automática */
+        gap: var(--spacing-md); /* Espacio entre los productos */
+        overflow-x: hidden; /* Ocultar el scroll horizontal en este caso */
+        scroll-snap-type: none; /* Desactivar scroll-snap si se usa grid */
+        padding-bottom: 0; /* Sin padding en el fondo si no hay scrollbar */
+    }
+
+    .category-product-track .product-card {
+        width: auto; /* Dejar que el grid maneje el ancho */
+        margin-right: 0; /* Eliminar margen derecho individual */
+        flex-shrink: 1; /* Permitir que se encoja si es necesario */
+        min-width: unset; /* Deshacer el min-width */
+    }
+
+    /* Ocultar el scrollbar si se usa grid para 2x2 */
+    .category-product-track::-webkit-scrollbar {
+        display: none;
+    }
+    .category-product-track {
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+    }
+
+    .main-footer {
+        padding: var(--spacing-lg) 0;
+    }
+
+    .footer-nav .nav-list {
         gap: var(--spacing-sm);
     }
 
-    .product-card {
-        padding: var(--spacing-xs);
+    .social-media {
+        font-size: 1.2rem;
     }
 
-    .product-card .product-name {
-        font-size: 1em;
+    /* Modales */
+    .modal-content {
+        padding: var(--spacing-md);
+        width: 95%; /* Más ancho en móvil */
     }
 
-    .product-card .product-price {
-        font-size: 1.1em;
-    }
-
-    .product-filters {
-        flex-direction: column;
-        gap: var(--spacing-sm);
-    }
-
-    .product-filters select,
-    .product-filters input {
-        width: 100%; /* Ocupar todo el ancho */
-    }
-
-    .support-content {
-        flex-direction: column;
-    }
-
-    .contact-info-block, .support-actions-block {
-        min-width: unset; /* Remover ancho mínimo */
-        width: 100%;
-    }
-
-    .bottom-nav {
-        display: flex; /* Mostrar en móviles */
-    }
-
-    .main-header {
-        position: fixed; /* Header fijo para que el menú de hamburguesa funcione bien */
-        width: 100%;
-    }
-
-    body {
-        padding-top: var(--header-height); /* Espacio para el header fijo */
-        padding-bottom: 60px; /* Espacio para la barra de navegación inferior */
-    }
-
-    /* Modal de verificación de edad en móvil */
     .age-verification-content {
         padding: var(--spacing-md);
-    }
-
-    .age-verification-content h2 {
-        font-size: 1.5em;
-    }
-
-    .age-verification-content p {
-        font-size: 0.9em;
     }
 
     .age-verification-buttons {
@@ -149,18 +154,51 @@
 
     .age-verification-buttons .btn-primary,
     .age-verification-buttons .btn-secondary {
-        width: 100%; /* Ancho completo */
+        width: 100%; /* Ocupar todo el ancho */
     }
 
-    .toast {
-        max-width: 90%;
-        width: auto; /* Ancho automático para ajustarse al contenido */
-        left: 50%;
-        transform: translateX(-50%);
+    .bottom-nav {
+        display: flex; /* Mostrar la barra de navegación inferior en móvil */
     }
 
-    .modal-content {
-        width: 95%; /* Ajuste de ancho del modal en móviles */
+    /* Asegurar que el searchModal y cartSidebar ocupen toda la pantalla en móvil */
+    #searchModal, #cartSidebar {
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        transform: none; /* Eliminar transformaciones que impidan full screen */
+        border-radius: 0; /* Eliminar bordes redondeados */
+    }
+
+    #cartSidebar .cart-header,
+    #cartSidebar .cart-footer {
+        padding: var(--spacing-md);
+    }
+
+    #cartSidebar .cart-items {
+        padding: 0 var(--spacing-md);
+    }
+
+    #searchModal .search-modal-content {
+        padding: var(--spacing-md);
+        width: 100%;
+        max-width: 100%;
+        border-radius: 0;
+    }
+
+    .search-modal-content .search-input-group {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+
+    .search-modal-content .search-input-group input {
+        margin-bottom: 0;
+    }
+
+    .search-results-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 columnas para resultados de búsqueda en móvil */
+        gap: var(--spacing-md);
     }
 }
 
@@ -170,51 +208,72 @@
         padding: 0 var(--spacing-lg);
     }
 
-    .main-nav {
-        display: flex !important; /* Asegurar que la navegación principal esté visible */
-        position: static;
-        background-color: transparent;
-        box-shadow: none;
-        border-top: none;
-        width: auto;
-        padding: 0;
+    .hero-section {
+        height: 350px; /* Altura intermedia para tablet */
+        margin-bottom: var(--spacing-lg); /* Menor espacio después del hero */
     }
 
-    .main-nav .nav-list {
-        flex-direction: row;
-        gap: var(--spacing-md);
-    }
-
-    .menu-toggle {
-        display: none; /* Ocultar el menú hamburguesa */
-    }
-
-    .header-content {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
+    .carousel-slide .slide-content h2 {
+        font-size: 2rem;
     }
 
     .product-grid {
         grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* 3-4 columnas en tablet */
     }
 
+    /* Carrusel de productos por categoría en tablet (ajustar para que se vean bien) */
     .category-product-track .product-card {
-        width: calc((100% - (3 * var(--spacing-md))) / 4); /* 4 columnas con 3 gaps */
-        min-width: 180px; /* Ajuste mínimo */
+        width: calc((100% - (2 * var(--spacing-md))) / 3); /* 3 columnas con 2 gaps */
+        min-width: 160px; /* Ajuste mínimo */
+        margin-right: var(--spacing-md);
+    }
+
+    .category-buttons-container {
+        gap: var(--spacing-md);
+    }
+
+    .main-nav {
+        display: flex; /* Asegurar que la navegación principal esté visible */
+        position: static;
+        background-color: transparent;
+        box-shadow: none;
+        padding: 0;
+        border-top: none;
+        width: auto;
+    }
+
+    .main-nav .nav-list {
+        flex-direction: row;
+        gap: var(--spacing-lg);
+    }
+
+    .main-nav .nav-list a {
+        padding: 0;
+        width: auto;
+    }
+
+    .menu-toggle {
+        display: none; /* Ocultar menú hamburguesa */
+    }
+
+    .header-content {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .header-actions {
+        width: auto;
+        justify-content: flex-end;
+    }
+
+    .search-bar {
+        display: block; /* Mostrar barra de búsqueda en el header */
+        margin-left: var(--spacing-md);
     }
 
     .bottom-nav {
         display: none; /* Ocultar la barra inferior en tablet */
-    }
-
-    body {
-        padding-top: 0; /* No necesita padding superior si el header no es fixed */
-        padding-bottom: 0; /* No necesita padding inferior si la barra inferior está oculta */
-    }
-
-    .hero-section {
-        height: 400px; /* Altura intermedia para carrusel en tablet */
     }
 
     .age-verification-buttons {
@@ -232,6 +291,11 @@
 @media (min-width: 1024px) {
     .container {
         padding: 0 var(--spacing-xl);
+    }
+
+    .hero-section {
+        height: 450px; /* Altura original del carrusel en desktop */
+        margin-bottom: var(--spacing-xl); /* Espacio por defecto después del hero */
     }
 
     .product-grid {
@@ -256,27 +320,49 @@
         display: none; /* Ocultar la barra inferior en desktop */
     }
 
-    .hero-section {
-        height: 450px; /* Altura original del carrusel en desktop */
-    }
-
     .product-filters select,
     .product-filters input {
         width: 200px; /* Ancho fijo para filtros en desktop */
     }
 
-    body {
-        padding-top: 0; /* No necesita padding superior */
-        padding-bottom: 0; /* No necesita padding inferior */
+    /* Centrar el contenido de la barra de búsqueda en desktop */
+    .search-modal-content {
+        max-width: 600px;
+        width: 80%;
     }
 
-    /* Modal de verificación de edad - asegurar centrado */
-    .age-verification-content {
-        width: auto;
-        padding: var(--spacing-lg);
+    .search-results-grid {
+        grid-template-columns: repeat(4, 1fr); /* Más columnas para resultados de búsqueda en desktop */
     }
 
-    .age-verification-buttons {
+    /* Footer */
+    .footer-content {
         flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+        text-align: left;
+    }
+
+    .footer-nav, .contact-info, .social-media {
+        flex: 1; /* Distribuir el espacio equitativamente */
+    }
+
+    .footer-logo {
+        margin-bottom: 0;
+        margin-right: var(--spacing-xl);
+    }
+
+    .footer-nav .nav-list {
+        justify-content: flex-start;
+        flex-direction: column; /* Enlaces de navegación en columna en el footer */
+        align-items: flex-start;
+    }
+
+    .contact-info p {
+        text-align: left;
+    }
+
+    .social-media {
+        text-align: right;
     }
 }
