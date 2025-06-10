@@ -174,7 +174,7 @@ p {
 
 /* Encabezado Principal */
 .main-header {
-    background-color: rgba(0, 0, 0, 0.2); 
+    background-color: rgba(0, 0, 0, 0.2);
     padding: var(--spacing-md) 0;
     box-shadow: var(--shadow-md);
     position: sticky;
@@ -342,8 +342,8 @@ p {
 
 /* Grid de Productos */
 .product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    /* Adjusted for slightly smaller cards and potentially more columns */
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Adjusted min-width for general grid */
     gap: var(--spacing-md);
     justify-content: center;
 }
@@ -372,7 +372,7 @@ p {
 
 .product-image {
     max-width: 100%;
-    height: 120px;
+    height: 100px; /* Slightly reduced height for general product cards */
     object-fit: contain;
     margin-bottom: var(--spacing-sm);
     transition: transform var(--transition-speed) var(--transition-timing), filter var(--transition-speed) var(--transition-timing);
@@ -391,16 +391,16 @@ p {
 }
 
 .product-name {
-    font-size: 1.1em;
+    font-size: 1em; /* Slightly smaller font for product name */
     font-weight: bold;
     color: var(--text-color-dark);
     margin-bottom: 5px;
 }
 
 .product-brand {
-    font-size: 0.9em;
+    font-size: 0.85em; /* Slightly smaller font for brand */
     color: var(--text-color-light);
-    margin-bottom: var(--spacing-sm);
+    margin-bottom: var(--spacing-xs); /* Reduced margin */
 }
 
 .product-price-container {
@@ -409,21 +409,21 @@ p {
 }
 
 .product-price {
-    font-size: 1.2em;
+    font-size: 1.1em; /* Slightly smaller font for price */
     color: var(--primary-color);
     font-weight: bold;
     display: block;
 }
 
 .product-old-price {
-    font-size: 0.9em;
+    font-size: 0.8em; /* Slightly smaller font for old price */
     color: var(--text-color-light);
     text-decoration: line-through;
     margin-right: 5px;
 }
 
 .product-offer-price {
-    font-size: 1.3em;
+    font-size: 1.2em; /* Slightly smaller font for offer price */
     color: var(--danger-color);
     font-weight: bold;
 }
