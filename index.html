@@ -1,351 +1,618 @@
-/* css/responsive.css */
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EL BORRACHO - Licores a Domicilio</title>
+    <link rel="icon" href="images/icons/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div id="ageVerificationModal" class="age-verification-modal">
+        <div class="age-verification-content">
+            <h2>Verificación de Edad</h2>
+            <p>Para acceder a este sitio, debes ser mayor de 18 años.</p>
+            <div class="age-verification-buttons">
+                <button id="confirmAgeBtn" class="btn-primary">Soy mayor de 18</button>
+                <button id="declineAgeBtn" class="btn-secondary">No soy mayor de 18</button>
+            </div>
+        </div>
+    </div>
 
-/* Mobile-First Approach */
-/* Estilos para dispositivos pequeños (hasta 767px) */
-@media (max-width: 767px) {
-    .header-content {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: var(--spacing-md);
-        padding: var(--spacing-md); /* Añadido padding para que el contenido no se pegue a los bordes */
-    }
+    <header class="main-header">
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo" aria-label="Inicio">
+                    <img src="images/logo.png" alt="El Borracho Logo">
+                </a>
 
-    /* ***** CAMBIO CLAVE AQUÍ: Ajuste del padding-top del hero-section para móvil ***** */
-    .hero-section {
-        height: 300px; /* Altura más pequeña para el carrusel en móviles */
-        padding-top: 100px; /* ESTIMACIÓN: Asume que el header móvil con menú plegado tiene unos 100px de alto. AJUSTA ESTE VALOR. */
-    }
+                <nav class="main-nav">
+                    <ul class="nav-list">
+                        <li><a href="#hero-carousel" class="active">Inicio</a></li>
+                        <li><a href="#categoryProductsSection">Categorías</a></li>
+                        <li><a href="#allProductsGridSection">Productos</a></li>
+                        <li><a href="#contact-section">Contacto</a></li>
+                        <li><a href="#support-section">Soporte</a></li>
+                    </ul>
+                </nav>
 
-    .main-nav {
-        width: 100%;
-        display: none; /* Ocultar por defecto para el menú hamburguesa */
-        flex-direction: column;
-        background-color: var(--dark-bg); /* Usar el color oscuro del header */
-        position: absolute; /* Cambiado a absolute para que no desplace otros elementos fijos */
-        top: 100%; /* Se posiciona debajo del header */
-        left: 0;
-        box-shadow: var(--shadow-md);
-        padding: var(--spacing-md);
-        border-top: 1px solid var(--border-color);
-        z-index: 999; /* Z-index menor que el header principal */
-    }
+                <div class="utility-icons">
+                    <button id="searchIcon" class="icon-btn" aria-label="Buscar producto">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button id="cartIcon" class="icon-btn" aria-label="Ver carrito">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span id="cartCount" class="cart-count">0</span>
+                    </button>
+                    <button id="menuToggle" class="icon-btn menu-toggle" aria-label="Abrir menú de navegación">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
 
-    .main-nav.active {
-        display: flex;
-    }
+    <main>
+        <section id="hero-carousel" class="hero-section">
+            <div class="carousel-container">
+                <div class="carousel-track">
+                    <div class="carousel-slide" style="background-image: url('images/carousel/banner1.jpg');">
+                        <div class="carousel-content">
+                            <h1 class="carousel-title">Licores a Domicilio</h1>
+                            <p class="carousel-description">Tus bebidas favoritas, entregadas en tu puerta.</p>
+                            <a href="#allProductsGridSection" class="btn-primary carousel-button">Explorar Productos</a>
+                        </div>
+                    </div>
+                    <div class="carousel-slide" style="background-image: url('images/carousel/banner2.jpg');">
+                        <div class="carousel-content">
+                            <h1 class="carousel-title">Ofertas Especiales</h1>
+                            <p class="carousel-description">Descuentos exclusivos solo por tiempo limitado.</p>
+                            <a href="#allProductsGridSection" class="btn-primary carousel-button">Ver Ofertas</a>
+                        </div>
+                    </div>
+                    <div class="carousel-slide" style="background-image: url('images/carousel/banner3.jpg');">
+                        <div class="carousel-content">
+                            <h1 class="carousel-title">Eventos y Celebraciones</h1>
+                            <p class="carousel-description">El toque perfecto para tus momentos inolvidables.</p>
+                            <a href="#contact-section" class="btn-primary carousel-button">Agenda tu Pedido</a>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-btn prev" aria-label="Diapositiva anterior"><i class="fas fa-chevron-left"></i></button>
+                <button class="carousel-btn next" aria-label="Diapositiva siguiente"><i class="fas fa-chevron-right"></i></button>
+                <div class="carousel-dots"></div>
+            </div>
+        </section>
 
-    .main-nav .nav-list {
-        flex-direction: column;
-        gap: var(--spacing-sm);
-    }
+        <section id="continuousCarouselSection" class="continuous-carousel-section">
+            <div class="container">
+                <h2 class="section-title">Nuestros Clientes Aman</h2>
+                <div class="continuous-carousel-container">
+                    <div class="continuous-carousel-track">
+                        <div class="product-card">
+                            <div class="product-image-wrapper">
+                                <img src="images/products/aguardiente.png" alt="Aguardiente Antioqueño" class="product-image">
+                                <h3 class="product-name">Aguardiente Antioqueño</h3>
+                                <p class="product-price-overlay">$65.000</p>
+                            </div>
+                            <div class="product-info">
+                                <button class="btn-primary add-to-cart-btn" data-product-id="1" data-product-name="Aguardiente Antioqueño" data-product-price="65000" data-product-image="images/products/aguardiente.png">Agregar al Carrito</button>
+                            </div>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-image-wrapper">
+                                <img src="images/products/ron-medellin.png" alt="Ron Medellín Añejo" class="product-image">
+                                <h3 class="product-name">Ron Medellín Añejo</h3>
+                                <p class="product-price-overlay">$70.000</p>
+                            </div>
+                            <div class="product-info">
+                                <button class="btn-primary add-to-cart-btn" data-product-id="2" data-product-name="Ron Medellín Añejo" data-product-price="70000" data-product-image="images/products/ron-medellin.png">Agregar al Carrito</button>
+                            </div>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-image-wrapper">
+                                <img src="images/products/buchanans.png" alt="Buchanan's 12 Años" class="product-image">
+                                <h3 class="product-name">Buchanan's 12 Años</h3>
+                                <p class="product-price-overlay">$180.000</p>
+                            </div>
+                            <div class="product-info">
+                                <button class="btn-primary add-to-cart-btn" data-product-id="3" data-product-name="Buchanan's 12 Años" data-product-price="180000" data-product-image="images/products/buchanans.png">Agregar al Carrito</button>
+                            </div>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-image-wrapper">
+                                <img src="images/products/smirnoff.png" alt="Smirnoff Red" class="product-image">
+                                <h3 class="product-name">Smirnoff Red</h3>
+                                <p class="product-price-overlay">$55.000</p>
+                            </div>
+                            <div class="product-info">
+                                <button class="btn-primary add-to-cart-btn" data-product-id="4" data-product-name="Smirnoff Red" data-product-price="55000" data-product-image="images/products/smirnoff.png">Agregar al Carrito</button>
+                            </div>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-image-wrapper">
+                                <img src="images/products/jagermeister.png" alt="Jägermeister" class="product-image">
+                                <h3 class="product-name">Jägermeister</h3>
+                                <p class="product-price-overlay">$90.000</p>
+                            </div>
+                            <div class="product-info">
+                                <button class="btn-primary add-to-cart-btn" data-product-id="5" data-product-name="Jägermeister" data-product-price="90000" data-product-image="images/products/jagermeister.png">Agregar al Carrito</button>
+                            </div>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-image-wrapper">
+                                <img src="images/products/corona.png" alt="Cerveza Corona" class="product-image">
+                                <h3 class="product-name">Cerveza Corona (6 Pack)</h3>
+                                <p class="product-price-overlay">$30.000</p>
+                            </div>
+                            <div class="product-info">
+                                <button class="btn-primary add-to-cart-btn" data-product-id="6" data-product-name="Cerveza Corona (6 Pack)" data-product-price="30000" data-product-image="images/products/corona.png">Agregar al Carrito</button>
+                            </div>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-image-wrapper">
+                                <img src="images/products/johnnie-walker-red.png" alt="Johnnie Walker Red Label" class="product-image">
+                                <h3 class="product-name">Johnnie Walker Red Label</h3>
+                                <p class="product-price-overlay">$95.000</p>
+                            </div>
+                            <div class="product-info">
+                                <button class="btn-primary add-to-cart-btn" data-product-id="7" data-product-name="Johnnie Walker Red Label" data-product-price="95000" data-product-image="images/products/johnnie-walker-red.png">Agregar al Carrito</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    .main-nav .nav-list a {
-        padding: var(--spacing-sm) 0;
-        width: 100%;
-        color: var(--text-color-light); /* Color de texto para enlaces del menú móvil */
-    }
+        <section id="categoryProductsSection" class="category-products-section">
+            <div class="container">
+                <h2 class="section-title">Explora por Categorías</h2>
+                <div class="category-buttons-container">
+                    <button class="category-btn active" data-category="all">Todos</button>
+                    <button class="category-btn" data-category="aguardientes">Aguardientes</button>
+                    <button class="category-btn" data-category="rones">Rones</button>
+                    <button class="category-btn" data-category="whiskys">Whiskys</button>
+                    <button class="category-btn" data-category="vodkas">Vodkas</button>
+                    <button class="category-btn" data-category="cervezas">Cervezas</button>
+                    <button class="category-btn" data-category="tequilas">Tequilas</button>
+                    <button class="category-btn" data-category="vinos">Vinos</button>
+                </div>
+                <div class="category-products-carousel-wrapper">
+                    <div class="category-products-track">
+                        <div class="product-card" data-category="aguardientes">
+                            <div class="product-image-wrapper">
+                                <img src="images/products/aguardiente.png" alt="Aguardiente Antioqueño" class="product-image">
+                                <h3 class="product-name">Aguardiente Antioqueño</h3>
+                                <p class="product-price-overlay">$65.000</p>
+                            </div>
+                            <div class="product-info">
+                                <button class="btn-primary add-to-cart-btn" data-product-id="1" data-product-name="Aguardiente Antioqueño" data-product-price="65000" data-product-image="images/products/aguardiente.png">Agregar</button>
+                            </div>
+                        </div>
+                        <div class="product-card" data-category="rones">
+                            <div class="product-image-wrapper">
+                                <img src="images/products/ron-medellin.png" alt="Ron Medellín Añejo" class="product-image">
+                                <h3 class="product-name">Ron Medellín Añejo</h3>
+                                <p class="product-price-overlay">$70.000</p>
+                            </div>
+                            <div class="product-info">
+                                <button class="btn-primary add-to-cart-btn" data-product-id="2" data-product-name="Ron Medellín Añejo" data-product-price="70000" data-product-image="images/products/ron-medellin.png">Agregar</button>
+                            </div>
+                        </div>
+                        <div class="product-card" data-category="whiskys">
+                            <div class="product-image-wrapper">
+                                <img src="images/products/buchanans.png" alt="Buchanan's 12 Años" class="product-image">
+                                <h3 class="product-name">Buchanan's 12 Años</h3>
+                                <p class="product-price-overlay">$180.000</p>
+                            </div>
+                            <div class="product-info">
+                                <button class="btn-primary add-to-cart-btn" data-product-id="3" data-product-name="Buchanan's 12 Años" data-product-price="180000" data-product-image="images/products/buchanans.png">Agregar</button>
+                            </div>
+                        </div>
+                        <div class="product-card" data-category="vodkas">
+                            <div class="product-image-wrapper">
+                                <img src="images/products/smirnoff.png" alt="Smirnoff Red" class="product-image">
+                                <h3 class="product-name">Smirnoff Red</h3>
+                                <p class="product-price-overlay">$55.000</p>
+                            </div>
+                            <div class="product-info">
+                                <button class="btn-primary add-to-cart-btn" data-product-id="4" data-product-name="Smirnoff Red" data-product-price="55000" data-product-image="images/products/smirnoff.png">Agregar</button>
+                            </div>
+                        </div>
+                        <div class="product-card" data-category="cervezas">
+                            <div class="product-image-wrapper">
+                                <img src="images/products/corona.png" alt="Cerveza Corona" class="product-image">
+                                <h3 class="product-name">Cerveza Corona (6 Pack)</h3>
+                                <p class="product-price-overlay">$30.000</p>
+                            </div>
+                            <div class="product-info">
+                                <button class="btn-primary add-to-cart-btn" data-product-id="6" data-product-name="Cerveza Corona (6 Pack)" data-product-price="30000" data-product-image="images/products/corona.png">Agregar</button>
+                            </div>
+                        </div>
+                        <div class="product-card" data-category="whiskys">
+                            <div class="product-image-wrapper">
+                                <img src="images/products/johnnie-walker-red.png" alt="Johnnie Walker Red Label" class="product-image">
+                                <h3 class="product-name">Johnnie Walker Red Label</h3>
+                                <p class="product-price-overlay">$95.000</p>
+                            </div>
+                            <div class="product-info">
+                                <button class="btn-primary add-to-cart-btn" data-product-id="7" data-product-name="Johnnie Walker Red Label" data-product-price="95000" data-product-image="images/products/johnnie-walker-red.png">Agregar</button>
+                            </div>
+                        </div>
+                        <div class="product-card" data-category="tequilas">
+                            <div class="product-image-wrapper">
+                                <img src="images/products/jose-cuervo.png" alt="José Cuervo Especial" class="product-image">
+                                <h3 class="product-name">José Cuervo Especial</h3>
+                                <p class="product-price-overlay">$80.000</p>
+                            </div>
+                            <div class="product-info">
+                                <button class="btn-primary add-to-cart-btn" data-product-id="8" data-product-name="José Cuervo Especial" data-product-price="80000" data-product-image="images/products/jose-cuervo.png">Agregar</button>
+                            </div>
+                        </div>
+                        <div class="product-card" data-category="vinos">
+                            <div class="product-image-wrapper">
+                                <img src="images/products/vino-gato-negro.png" alt="Vino Gato Negro Cabernet Sauvignon" class="product-image">
+                                <h3 class="product-name">Vino Gato Negro Cabernet Sauvignon</h3>
+                                <p class="product-price-overlay">$45.000</p>
+                            </div>
+                            <div class="product-info">
+                                <button class="btn-primary add-to-cart-btn" data-product-id="9" data-product-name="Vino Gato Negro Cabernet Sauvignon" data-product-price="45000" data-product-image="images/products/vino-gato-negro.png">Agregar</button>
+                            </div>
+                        </div>
+                        <div class="product-card" data-category="vodkas">
+                            <div class="product-image-wrapper">
+                                <img src="images/products/absolut.png" alt="Absolut Vodka Original" class="product-image">
+                                <h3 class="product-name">Absolut Vodka Original</h3>
+                                <p class="product-price-overlay">$85.000</p>
+                            </div>
+                            <div class="product-info">
+                                <button class="btn-primary add-to-cart-btn" data-product-id="10" data-product-name="Absolut Vodka Original" data-product-price="85000" data-product-image="images/products/absolut.png">Agregar</button>
+                            </div>
+                        </div>
+                        <div class="product-card" data-category="cervezas">
+                            <div class="product-image-wrapper">
+                                <img src="images/products/heineken.png" alt="Cerveza Heineken (6 Pack)" class="product-image">
+                                <h3 class="product-name">Cerveza Heineken (6 Pack)</h3>
+                                <p class="product-price-overlay">$32.000</p>
+                            </div>
+                            <div class="product-info">
+                                <button class="btn-primary add-to-cart-btn" data-product-id="11" data-product-name="Cerveza Heineken (6 Pack)" data-product-price="32000" data-product-image="images/products/heineken.png">Agregar</button>
+                            </div>
+                        </div>
+                        <div class="product-card" data-category="whiskys">
+                            <div class="product-image-wrapper">
+                                <img src="images/products/chivas-regal.png" alt="Chivas Regal 12 Años" class="product-image">
+                                <h3 class="product-name">Chivas Regal 12 Años</h3>
+                                <p class="product-price-overlay">$160.000</p>
+                            </div>
+                            <div class="product-info">
+                                <button class="btn-primary add-to-cart-btn" data-product-id="12" data-product-name="Chivas Regal 12 Años" data-product-price="160000" data-product-image="images/products/chivas-regal.png">Agregar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    .main-nav .nav-list a::after {
-        background-color: var(--primary-color); /* Asegurar color de subrayado en móvil */
-    }
+        <section id="allProductsGridSection" class="product-section">
+            <div class="container">
+                <h2 class="section-title">Todos Nuestros Productos</h2>
+                <div class="product-filters">
+                    <input type="text" id="searchInput" placeholder="Buscar productos...">
+                    <select id="categoryFilter">
+                        <option value="all">Todas las Categorías</option>
+                        <option value="aguardientes">Aguardientes</option>
+                        <option value="rones">Rones</option>
+                        <option value="whiskys">Whiskys</option>
+                        <option value="vodkas">Vodkas</option>
+                        <option value="cervezas">Cervezas</option>
+                        <option value="tequilas">Tequilas</option>
+                        <option value="vinos">Vinos</option>
+                    </select>
+                    <select id="priceFilter">
+                        <option value="all">Todos los Precios</option>
+                        <option value="low-to-high">Precio: Menor a Mayor</option>
+                        <option value="high-to-low">Precio: Mayor a Menor</option>
+                    </select>
+                </div>
+                <div class="product-grid">
+                    <div class="product-card" data-category="aguardientes" data-price="65000">
+                        <div class="product-image-wrapper">
+                            <img src="images/products/aguardiente.png" alt="Aguardiente Antioqueño" class="product-image">
+                            <h3 class="product-name">Aguardiente Antioqueño</h3>
+                            <p class="product-price-overlay">$65.000</p>
+                        </div>
+                        <div class="product-info">
+                            <button class="btn-primary add-to-cart-btn" data-product-id="1" data-product-name="Aguardiente Antioqueño" data-product-price="65000" data-product-image="images/products/aguardiente.png">Agregar al Carrito</button>
+                        </div>
+                    </div>
+                    <div class="product-card" data-category="rones" data-price="70000">
+                        <div class="product-image-wrapper">
+                            <img src="images/products/ron-medellin.png" alt="Ron Medellín Añejo" class="product-image">
+                            <h3 class="product-name">Ron Medellín Añejo</h3>
+                            <p class="product-price-overlay">$70.000</p>
+                        </div>
+                        <div class="product-info">
+                            <button class="btn-primary add-to-cart-btn" data-product-id="2" data-product-name="Ron Medellín Añejo" data-product-price="70000" data-product-image="images/products/ron-medellin.png">Agregar al Carrito</button>
+                        </div>
+                    </div>
+                    <div class="product-card" data-category="whiskys" data-price="180000">
+                        <div class="product-image-wrapper">
+                            <img src="images/products/buchanans.png" alt="Buchanan's 12 Años" class="product-image">
+                            <h3 class="product-name">Buchanan's 12 Años</h3>
+                            <p class="product-price-overlay">$180.000</p>
+                        </div>
+                        <div class="product-info">
+                            <button class="btn-primary add-to-cart-btn" data-product-id="3" data-product-name="Buchanan's 12 Años" data-product-price="180000" data-product-image="images/products/buchanans.png">Agregar al Carrito</button>
+                        </div>
+                    </div>
+                    <div class="product-card" data-category="vodkas" data-price="55000">
+                        <div class="product-image-wrapper">
+                            <img src="images/products/smirnoff.png" alt="Smirnoff Red" class="product-image">
+                            <h3 class="product-name">Smirnoff Red</h3>
+                            <p class="product-price-overlay">$55.000</p>
+                        </div>
+                        <div class="product-info">
+                            <button class="btn-primary add-to-cart-btn" data-product-id="4" data-product-name="Smirnoff Red" data-product-price="55000" data-product-image="images/products/smirnoff.png">Agregar al Carrito</button>
+                        </div>
+                    </div>
+                    <div class="product-card" data-category="otros" data-price="90000">
+                        <div class="product-image-wrapper">
+                            <img src="images/products/jagermeister.png" alt="Jägermeister" class="product-image">
+                            <h3 class="product-name">Jägermeister</h3>
+                            <p class="product-price-overlay">$90.000</p>
+                        </div>
+                        <div class="product-info">
+                            <button class="btn-primary add-to-cart-btn" data-product-id="5" data-product-name="Jägermeister" data-product-price="90000" data-product-image="images/products/jagermeister.png">Agregar al Carrito</button>
+                        </div>
+                    </div>
+                    <div class="product-card" data-category="cervezas" data-price="30000">
+                        <div class="product-image-wrapper">
+                            <img src="images/products/corona.png" alt="Cerveza Corona" class="product-image">
+                            <h3 class="product-name">Cerveza Corona (6 Pack)</h3>
+                            <p class="product-price-overlay">$30.000</p>
+                        </div>
+                        <div class="product-info">
+                            <button class="btn-primary add-to-cart-btn" data-product-id="6" data-product-name="Cerveza Corona (6 Pack)" data-product-price="30000" data-product-image="images/products/corona.png">Agregar al Carrito</button>
+                        </div>
+                    </div>
+                    <div class="product-card" data-category="whiskys" data-price="95000">
+                        <div class="product-image-wrapper">
+                            <img src="images/products/johnnie-walker-red.png" alt="Johnnie Walker Red Label" class="product-image">
+                            <h3 class="product-name">Johnnie Walker Red Label</h3>
+                            <p class="product-price-overlay">$95.000</p>
+                        </div>
+                        <div class="product-info">
+                            <button class="btn-primary add-to-cart-btn" data-product-id="7" data-product-name="Johnnie Walker Red Label" data-product-price="95000" data-product-image="images/products/johnnie-walker-red.png">Agregar al Carrito</button>
+                        </div>
+                    </div>
+                    <div class="product-card" data-category="tequilas" data-price="80000">
+                        <div class="product-image-wrapper">
+                            <img src="images/products/jose-cuervo.png" alt="José Cuervo Especial" class="product-image">
+                            <h3 class="product-name">José Cuervo Especial</h3>
+                            <p class="product-price-overlay">$80.000</p>
+                        </div>
+                        <div class="product-info">
+                            <button class="btn-primary add-to-cart-btn" data-product-id="8" data-product-name="José Cuervo Especial" data-product-price="80000" data-product-image="images/products/jose-cuervo.png">Agregar al Carrito</button>
+                        </div>
+                    </div>
+                    <div class="product-card" data-category="vinos" data-price="45000">
+                        <div class="product-image-wrapper">
+                            <img src="images/products/vino-gato-negro.png" alt="Vino Gato Negro Cabernet Sauvignon" class="product-image">
+                            <h3 class="product-name">Vino Gato Negro Cabernet Sauvignon</h3>
+                            <p class="product-price-overlay">$45.000</p>
+                        </div>
+                        <div class="product-info">
+                            <button class="btn-primary add-to-cart-btn" data-product-id="9" data-product-name="Vino Gato Negro Cabernet Sauvignon" data-product-price="45000" data-product-image="images/products/vino-gato-negro.png">Agregar al Carrito</button>
+                        </div>
+                    </div>
+                    <div class="product-card" data-category="vodkas" data-price="85000">
+                        <div class="product-image-wrapper">
+                            <img src="images/products/absolut.png" alt="Absolut Vodka Original" class="product-image">
+                            <h3 class="product-name">Absolut Vodka Original</h3>
+                            <p class="product-price-overlay">$85.000</p>
+                        </div>
+                        <div class="product-info">
+                            <button class="btn-primary add-to-cart-btn" data-product-id="10" data-product-name="Absolut Vodka Original" data-product-price="85000" data-product-image="images/products/absolut.png">Agregar al Carrito</button>
+                        </div>
+                    </div>
+                    <div class="product-card" data-category="cervezas" data-price="32000">
+                        <div class="product-image-wrapper">
+                            <img src="images/products/heineken.png" alt="Cerveza Heineken (6 Pack)" class="product-image">
+                            <h3 class="product-name">Cerveza Heineken (6 Pack)</h3>
+                            <p class="product-price-overlay">$32.000</p>
+                        </div>
+                        <div class="product-info">
+                            <button class="btn-primary add-to-cart-btn" data-product-id="11" data-product-name="Cerveza Heineken (6 Pack)" data-product-price="32000" data-product-image="images/products/heineken.png">Agregar al Carrito</button>
+                        </div>
+                    </div>
+                    <div class="product-card" data-category="whiskys" data-price="160000">
+                        <div class="product-image-wrapper">
+                            <img src="images/products/chivas-regal.png" alt="Chivas Regal 12 Años" class="product-image">
+                            <h3 class="product-name">Chivas Regal 12 Años</h3>
+                            <p class="product-price-overlay">$160.000</p>
+                        </div>
+                        <div class="product-info">
+                            <button class="btn-primary add-to-cart-btn" data-product-id="12" data-product-name="Chivas Regal 12 Años" data-product-price="160000" data-product-image="images/products/chivas-regal.png">Agregar al Carrito</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    /* Ocultar iconos de utilidad en el header en móvil si están en el bottom-nav */
-    .utility-icons .icon-btn:not(#searchIcon):not(#cartIcon) {
-        display: none;
-    }
+        <section id="brands-section" class="brands-section">
+            <div class="container">
+                <h2 class="section-title">Marcas de Confianza</h2>
+                <div class="brands-container">
+                    <a href="#" class="brand-logo" aria-label="Marca Antioqueño"><img src="images/brands/antioqueno.png" alt="Logo Antioqueño"></a>
+                    <a href="#" class="brand-logo" aria-label="Marca Medellín"><img src="images/brands/medellin.png" alt="Logo Medellín"></a>
+                    <a href="#" class="brand-logo" aria-label="Marca Buchanan's"><img src="images/brands/buchanans.png" alt="Logo Buchanan's"></a>
+                    <a href="#" class="brand-logo" aria-label="Marca Smirnoff"><img src="images/brands/smirnoff.png" alt="Logo Smirnoff"></a>
+                    <a href="#" class="brand-logo" aria-label="Marca Jägermeister"><img src="images/brands/jagermeister.png" alt="Logo Jägermeister"></a>
+                    <a href="#" class="brand-logo" aria-label="Marca Corona"><img src="images/brands/corona.png" alt="Logo Corona"></a>
+                    <a href="#" class="brand-logo" aria-label="Marca Johnnie Walker"><img src="images/brands/johnnie-walker.png" alt="Logo Johnnie Walker"></a>
+                    <a href="#" class="brand-logo" aria-label="Marca José Cuervo"><img src="images/brands/jose-cuervo.png" alt="Logo José Cuervo"></a>
+                    <a href="#" class="brand-logo" aria-label="Marca Gato Negro"><img src="images/brands/gato-negro.png" alt="Logo Gato Negro"></a>
+                    <a href="#" class="brand-logo" aria-label="Marca Absolut"><img src="images/brands/absolut.png" alt="Logo Absolut"></a>
+                </div>
+            </div>
+        </section>
 
-    .menu-toggle {
-        display: block; /* Mostrar el menú hamburguesa en móvil */
-    }
+        <section id="support-section" class="product-section">
+            <div class="container">
+                <h2 class="section-title">Necesitas Ayuda?</h2>
+                <div class="support-content">
+                    <p>Si tienes alguna pregunta, duda o necesitas asistencia, no dudes en contactarnos. Estamos aquí para ayudarte.</p>
+                    <div class="support-channels">
+                        <a href="tel:+573001234567" class="btn-primary"><i class="fas fa-phone-alt"></i> Llámanos: +57 300 123 4567</a>
+                        <a href="mailto:soporte@elborracho.com" class="btn-secondary"><i class="fas fa-envelope"></i> Envíanos un Email</a>
+                        <a href="https://wa.me/573001234567" target="_blank" class="btn-primary whatsapp-btn"><i class="fab fa-whatsapp"></i> Chatea con Nosotros</a>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    .bottom-nav {
-        display: flex; /* Mostrar la barra de navegación inferior en móvil */
-    }
+        <section id="contact-section" class="product-section">
+            <div class="container">
+                <h2 class="section-title">Agenda tu Pedido o Servicio</h2>
+                <p class="text-center">¡Haz tu pedido de forma fácil y rápida!</p>
+                <form id="appointmentForm" class="contact-form">
+                    <div class="form-group">
+                        <label for="fullName">Nombre Completo:</label>
+                        <input type="text" id="fullName" name="fullName" placeholder="Tu nombre y apellido" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phoneNumber">Número de Teléfono:</label>
+                        <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Ej: 3001234567" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" placeholder="tu.email@ejemplo.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Dirección de Entrega:</label>
+                        <input type="text" id="address" name="address" placeholder="Ej: Calle 10 # 5-20, Apto 301" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="appointmentDate">Fecha de Entrega/Servicio:</label>
+                        <input type="date" id="appointmentDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="appointmentTime">Hora Preferida de Entrega/Servicio:</label>
+                        <input type="time" id="appointmentTime" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="appointmentReason">Detalles de tu Pedido o Servicio:</label>
+                        <textarea id="appointmentReason" name="appointmentReason" placeholder="Ej: 2 Aguardiente Antioqueño, 1 Ron Medellín. Entrega a las 8 PM." rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary">Enviar Pedido</button>
+                </form>
+            </div>
+        </section>
 
-    /* Product Grid for very small screens (iPhone SE, etc.) - 2 columns */
-    .product-grid {
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); /* Aim for 2 columns on smallest screens */
-        gap: var(--spacing-sm); /* Slightly smaller gap */
-    }
+    </main>
 
-    .product-card {
-        height: 320px; /* Adjusted height for mobile to fit new image size */
-    }
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2024 EL BORRACHO. Todos los derechos reservados.</p>
+                <div class="social-media">
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
 
-    .product-image-wrapper {
-        height: 65%; /* IMAGEN MÁS GRANDE: Still 65% of card height */
-    }
+    <div id="searchModal" class="search-modal">
+        <div class="search-modal-content">
+            <button class="close-btn" id="closeSearchModal">&times;</button>
+            <div class="search-input-group">
+                <input type="text" id="modalSearchInput" placeholder="Buscar en todos los productos...">
+                <button class="btn-primary"><i class="fas fa-search"></i></button>
+            </div>
+            <div class="search-results-grid">
+                <p class="no-results-message">Empieza a escribir para buscar productos...</p>
+            </div>
+        </div>
+    </div>
 
-    .product-name {
-        font-size: 1em; /* Adjusted font size for overlay */
-        padding: 5px;
-    }
+    <div id="cartSidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h3>Tu Carrito</h3>
+            <button class="close-btn" id="closeCartSidebar">&times;</button>
+        </div>
+        <div class="cart-items" id="cartItemsContainer">
+            <p class="empty-cart-message">Tu carrito está vacío.</p>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cartTotal">$0</span>
+            </div>
+            <button class="btn-primary checkout-btn">Proceder al Pago</button>
+        </div>
+    </div>
 
-    .product-price-overlay {
-        font-size: 1.3em; /* Adjusted font size for overlay */
-        padding: 5px;
-    }
+    <div id="appointmentModal" class="appointment-modal">
+        <div class="appointment-modal-content">
+            <h2>Agenda tu Pedido/Servicio</h2>
+            <form id="modalAppointmentForm">
+                <div class="form-group">
+                    <label for="modalFullName">Nombre Completo:</label>
+                    <input type="text" id="modalFullName" required>
+                </div>
+                <div class="form-group">
+                    <label for="modalPhoneNumber">Número de Teléfono:</label>
+                    <input type="tel" id="modalPhoneNumber" required>
+                </div>
+                <div class="form-group">
+                    <label for="modalEmail">Email:</label>
+                    <input type="email" id="modalEmail">
+                </div>
+                <div class="form-group">
+                    <label for="modalAddress">Dirección de Entrega:</label>
+                    <input type="text" id="modalAddress" required>
+                </div>
+                <label for="modalAppointmentDate">Fecha de Entrega/Servicio:</label>
+                <input type="date" id="modalAppointmentDate" required>
+                <label for="modalAppointmentTime">Hora Preferida de Entrega/Servicio:</label>
+                <input type="time" id="modalAppointmentTime" required>
+                <textarea id="modalAppointmentReason" placeholder="Detalles de tu pedido o servicio requerido" rows="5" required></textarea>
+                <button type="submit" class="btn-primary">Agendar Ahora</button>
+                <button type="button" class="btn-secondary close-modal-btn">Cancelar</button>
+            </form>
+        </div>
+    </div>
 
-    /* Category Carousel remains as per previous update, with image/text overlay adjustments */
-    .category-products-track {
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); /* Aim for 2 columns */
-        gap: var(--spacing-sm);
-    }
+    <div id="toast-container"></div>
 
-    .category-products-track .product-card {
-        width: auto; /* Let grid handle width */
-        min-width: 140px;
-        height: 280px; /* REDUCIDO PARA MÓVIL: Altura más compacta para tarjetas de categoría */
-        padding: var(--spacing-sm);
-        position: relative; /* Ensure relative positioning for overlays */
-    }
+    <nav class="bottom-nav">
+        <a href="#hero-carousel" class="nav-item active" aria-label="Inicio">
+            <i class="fas fa-home"></i>
+            <span>Inicio</span>
+        </a>
+        <a href="#allProductsGridSection" class="nav-item" aria-label="Productos">
+            <i class="fas fa-box-open"></i> <span>Productos</span>
+        </a>
+        <a href="#" id="bottomNavSearch" class="nav-item" aria-label="Buscar">
+            <i class="fas fa-search"></i>
+            <span>Buscar</span>
+        </a>
+        <a href="#" id="bottomNavCart" class="nav-item" aria-label="Carrito">
+            <i class="fas fa-shopping-cart"></i>
+            <span id="bottomCartCount" class="cart-count">0</span> <span>Carrito</span>
+        </a>
+        <a href="#support-section" class="nav-item" aria-label="Soporte">
+            <i class="fas fa-headset"></i> <span>Soporte</span>
+        </a>
+    </nav>
 
-    .category-products-track .product-card .product-image-wrapper {
-        height: 65%; /* IMAGEN MÁS GRANDE: Image wrapper takes 65% of card height */
-        margin-bottom: var(--spacing-xs);
-    }
-
-    .category-products-track .product-card .product-image {
-        height: 100%; /* Image takes 100% of wrapper */
-        object-fit: contain;
-    }
-
-    .category-products-track .product-card .product-name {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        font-size: 1em; /* Smaller font for categories */
-        padding: 5px;
-        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 100%);
-        white-space: normal; /* Allow wrapping for category names */
-        overflow: hidden;
-        text-overflow: ellipsis;
-        height: 2.4em; /* Limit to 2 lines */
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        display: -webkit-box;
-    }
-
-    .category-products-track .product-card .product-price-overlay {
-        position: absolute;
-        bottom: 0; /* Position price at the bottom of the image wrapper */
-        left: 0;
-        width: 100%;
-        font-size: 1.3em;
-        padding: 5px;
-        color: var(--primary-color);
-        background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 100%);
-        font-weight: bold;
-    }
-
-    .category-products-track .product-card .product-price, /* Hide original price elements */
-    .category-products-track .product-card .product-brand,
-    .category-products-track .product-card .product-old-price,
-    .category-products-track .product-card .product-offer-price {
-        display: none;
-    }
-
-    .category-products-track .product-card .add-to-cart-btn {
-        font-size: 0.75em;
-        padding: var(--spacing-xs);
-        border-radius: 6px;
-    }
-
-    .product-filters {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .product-filters select,
-    .product-filters input {
-        width: 100%; /* Ocupar todo el ancho en móvil */
-    }
-
-    .footer-content {
-        text-align: center;
-    }
-
-    .social-media {
-        justify-content: center;
-    }
-
-    .age-verification-buttons {
-        flex-direction: column; /* Apilar botones en móvil */
-    }
-
-    .age-verification-buttons .btn-primary,
-    .age-verification-buttons .btn-secondary {
-        width: 100%; /* Ancho completo para botones en móvil */
-    }
-
-    /* Ajuste para el carrusel de banners en pantallas pequeñas */
-    /* Altura ajustada arriba en .hero-section para incluir padding-top */
-}
-
-/* Tablet (768px a 1023px) and larger phones */
-@media (min-width: 768px) and (max-width: 1023px) {
-    .container {
-        padding: 0 var(--spacing-lg);
-    }
-
-    .main-header {
-        padding: var(--spacing-md) var(--spacing-lg);
-        /* No necesitas re-definir fixed aquí, ya está en styles.css */
-    }
-
-    /* ***** CAMBIO CLAVE AQUÍ: Ajuste del padding-top del hero-section para tablets ***** */
-    .hero-section {
-        height: 400px; /* Altura más pequeña para el carrusel en tablets */
-        padding-top: 80px; /* ESTIMACIÓN: Asume que el header en tablet tiene unos 80px de alto. AJUSTA ESTE VALOR. */
-    }
-
-    /* Product Grid for tablets - aiming for 3 columns */
-    .product-grid {
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Aim for 3 columns on tablet */
-        gap: var(--spacing-md);
-    }
-
-    .product-card {
-        height: 350px; /* Adjust height for tablet */
-    }
-
-    .product-name {
-        font-size: 1.1em;
-    }
-
-    .product-price-overlay {
-        font-size: 1.4em;
-    }
-
-    /* Carrusel de productos por categoría en tablet */
-    .category-products-track {
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* 3 columns for category carousel */
-        gap: var(--spacing-md);
-    }
-
-    .category-products-track .product-card {
-        width: auto;
-        min-width: 180px;
-        height: 300px; /* REDUCIDO PARA TABLET: Altura más compacta para tarjetas de categoría */
-    }
-    .category-products-track .product-card .product-image-wrapper {
-        height: 65%; /* IMAGEN MÁS GRANDE: Still 65% of card height */
-    }
-
-    .utility-icons {
-        gap: var(--spacing-md);
-    }
-
-    .menu-toggle {
-        display: none; /* Ocultar en tablet, usar nav principal */
-    }
-
-    .main-nav {
-        display: flex; /* Asegurar que la navegación principal esté visible */
-        width: auto;
-        position: static; /* Volver a static en tablet */
-        box-shadow: none;
-        padding: 0;
-        border-top: none;
-    }
-
-    .main-nav .nav-list {
-        flex-direction: row;
-        gap: var(--spacing-md);
-    }
-
-    .main-nav .nav-list a {
-        padding: var(--spacing-sm) 0;
-        width: auto;
-    }
-
-    .bottom-nav {
-        display: none; /* Ocultar la barra inferior en tablet */
-    }
-
-    .age-verification-buttons {
-        flex-direction: row; /* Botones en fila en tablet */
-        justify-content: center;
-    }
-
-    .age-verification-buttons .btn-primary,
-    .age-verification-buttons .btn-secondary {
-        width: auto; /* Ancho automático para no estirarse */
-    }
-}
-
-/* Desktop (1024px y más) */
-@media (min-width: 1024px) {
-    .container {
-        padding: 0 var(--spacing-xl);
-    }
-
-    /* ***** CAMBIO CLAVE AQUÍ: Ajuste del padding-top del hero-section para desktop ***** */
-    .hero-section {
-        height: 450px; /* Altura original del carrusel en desktop */
-        padding-top: 80px; /* ESTIMACIÓN: Asume que el header en desktop tiene unos 80px de alto. AJUSTA ESTE VALOR. */
-    }
-
-    /* Product Grid for desktop - aiming for 3 columns */
-    .product-grid {
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Aim for 3 columns on desktop, larger min-width */
-        gap: var(--spacing-lg); /* Larger gap on desktop */
-    }
-
-    .product-card {
-        height: 400px; /* Slightly taller cards on desktop */
-    }
-
-    .product-name {
-        font-size: 1.3em;
-    }
-
-    .product-price-overlay {
-        font-size: 1.7em;
-    }
-
-    /* Carrusel de productos por categoría en desktop */
-    .category-products-track {
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* 3 columns for category carousel, larger min-width */
-        gap: var(--spacing-lg);
-    }
-
-    .category-products-track .product-card {
-        width: auto;
-        min-width: 280px;
-        height: 350px; /* REDUCIDO PARA DESKTOP: Altura más compacta para tarjetas de categoría */
-    }
-    .category-products-track .product-card .product-image-wrapper {
-        height: 65%; /* IMAGEN MÁS GRANDE: Still 65% of card height */
-    }
-
-    .main-nav {
-        display: flex; /* Asegurar que la navegación principal esté visible en desktop */
-    }
-
-    .menu-toggle {
-        display: none; /* Asegurar que el menú hamburguesa no se muestre en desktop */
-    }
-
-    .bottom-nav {
-        display: none; /* Ocultar la barra inferior en desktop */
-    }
-
-    .product-filters select,
-    .product-filters input {
-        width: 200px; /* Ancho fijo para selectores en desktop */
-    }
-
-    .footer-section {
-        text-align: left; /* Alineado a la izquierda en desktop */
-    }
-
-    .footer-section h3 {
-        text-align: left;
-    }
-
-    .social-media {
-        justify-content: flex-start;
-    }
-}
+    <script src="js/script.js"></script>
+</body>
+</html>
