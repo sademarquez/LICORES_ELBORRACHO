@@ -7,12 +7,15 @@
     overflow: hidden;
     height: 500px; /* Altura fija para el carrusel */
     background-color: var(--dark-bg); /* Color de fondo mientras carga la imagen */
+    /* ***** CAMBIO CLAVE AQUÍ: Padding top para compensar el header fijo ***** */
+    padding-top: 80px; /* Valor estimado, ajustar con las alturas de tu header */
+    box-sizing: border-box; /* Asegura que el padding se incluya en la altura total */
 }
 
 .carousel-container {
     position: relative;
     width: 100%;
-    height: 80%;
+    height: 80%; /* Esto es relativo a la altura de .hero-section */
 }
 
 .carousel-track {
@@ -181,7 +184,7 @@
 .category-products-track {
     display: grid;
     grid-auto-flow: column; /* Organiza los ítems en columnas, permitiendo scroll horizontal */
-    grid-auto-columns: minmax(200px, 1fr); /* Ancho mínimo para cada columna, and takes 1fr if space */
+    grid-auto-columns: minmax(180px, 1fr); /* Ancho mínimo para cada columna, y toma 1fr si hay espacio */
     grid-template-rows: repeat(2, auto); /* Two automatic rows */
     gap: var(--spacing-md); /* Space between cards */
     padding: var(--spacing-sm) 0; /* Small vertical padding */
@@ -190,23 +193,30 @@
 
 /* Ensure cards adapt within the grid */
 .category-products-track .product-card {
-    min-width: 200px; /* Ensures the card doesn't shrink too much */
-    max-width: 250px; /* Maximum width to maintain consistency */
-    height: 380px; /* Consistent height with general product cards */
+    min-width: 180px; /* Ensures the card doesn't shrink too much */
+    max-width: 220px; /* Maximum width to maintain consistency */
+    height: 320px; /* REDUCIDO: Altura más compacta para tarjetas de categoría */
     position: relative; /* Added for absolute positioning */
     overflow: hidden; /* Ensure content doesn't overflow */
+    transition: transform var(--transition-speed) var(--transition-timing), box-shadow var(--transition-speed) var(--transition-timing), background-color var(--transition-speed) var(--transition-timing);
+}
+
+.category-products-track .product-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    background-color: rgba(52, 58, 64, 0.15);
+    box-shadow: var(--shadow-md), var(--golden-glow-sm); /* Brillo dorado al pasar el mouse */
 }
 
 .category-products-track .product-card .product-image-wrapper {
     position: relative; /* For name/price overlay */
-    height: 60%; /* Image wrapper takes 60% of card height */
+    height: 65%; /* IMAGEN MÁS GRANDE: Image wrapper takes 65% of card height */
     overflow: hidden;
     margin-bottom: var(--spacing-sm);
-    border-radius: 8px; /* Slightly rounded corners for the image wrapper */
+    border-radius: 8px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.05); /* Slight background for image area */
+    background-color: rgba(0, 0, 0, 0.05);
 }
 
 .category-products-track .product-card .product-image {
@@ -662,6 +672,9 @@
     height: 100%;
     background-color: rgba(0, 0, 0, 0.95); /* Fondo muy oscuro */
     z-index: 3000; /* Siempre encima de todo */
+    /* Asegurarse de que el modal no tenga ningún margin o padding extraño */
+    margin: 0;
+    padding: 0;
 }
 
 .age-verification-content {
