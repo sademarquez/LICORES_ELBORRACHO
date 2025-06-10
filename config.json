@@ -9,7 +9,7 @@
             "title": "¡Novedad! Licores Premium",
             "description": "Descubre nuestra selección exclusiva de licores finos para cada ocasión.",
             "imageUrl": "images/banners/banner-licores-premium.jpg",
-            "link": "#licores",
+            "link": "#catalogo",
             "buttonText": "Ver Licores"
         },
         {
@@ -17,7 +17,7 @@
             "title": "Ofertas Increíbles en Cervezas",
             "description": "Las mejores marcas de cerveza con descuentos que no querrás perderte.",
             "imageUrl": "images/banners/banner-cervezas.jpg",
-            "link": "#cervezas",
+            "link": "#promociones",
             "buttonText": "Comprar Cervezas"
         },
         {
@@ -25,22 +25,22 @@
             "title": "Snacks y Bebidas no Alcohólicas",
             "description": "Acompaña tus licores con nuestros deliciosos snacks y bebidas refrescantes.",
             "imageUrl": "images/banners/banner-snacks.jpg",
-            "link": "#snacks",
+            "link": "#catalogo",
             "buttonText": "Explorar Snacks"
         },
         {
             "id": "banner4",
             "title": "Entrega Rápida y Segura",
-            "description": "Tu pedido en la puerta de tu casa en tiempo récord y con total seguridad.",
+            "description": "Tu pedido en la puerta de tu casa en tiempo récord. ¡Confianza y eficiencia!",
             "imageUrl": "images/banners/banner-delivery.jpg",
-            "link": "#support-section",
-            "buttonText": "Pedir Ahora"
+            "link": "#contacto",
+            "buttonText": "Contáctanos"
         }
     ],
     "brands": [
         {
-            "name": "Aguardiente Antioqueño",
-            "logoUrl": "images/icons/antioqueno-logo.svg"
+            "name": "Aguardiente caucano",
+            "logoUrl": "images/icons/aguardientecaucano-logo.svg"
         },
         {
             "name": "Ron Viejo de Caldas",
@@ -61,10 +61,6 @@
         {
             "name": "Poker",
             "logoUrl": "images/icons/poker-logo.svg"
-        },
-        {
-            "name": "Aguardiente caucano",
-            "logoUrl": "images/icons/aguardientecaucano-logo.svg"
         },
         {
             "name": "Aguardiente Néctar",
@@ -91,12 +87,16 @@
             "logoUrl": "images/icons/postobon-logo.svg"
         },
         {
-            "name": "Frito Lay",
-            "logoUrl": "images/icons/fritolay-logo.svg"
+            "name": "Red Bull",
+            "logoUrl": "images/icons/redbull-logo.svg"
         },
         {
-            "name": "Marlboro",
-            "logoUrl": "images/icons/marlboro-logo.svg"
+            "name": "Papas Margarita",
+            "logoUrl": "images/icons/margarita-logo.svg"
+        },
+        {
+            "name": "Choclitos",
+            "logoUrl": "images/icons/choclitos-logo.svg"
         }
-    
-
+    ]
+}
