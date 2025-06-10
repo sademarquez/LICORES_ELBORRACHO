@@ -1,436 +1,114 @@
-[
-    {
-        "id": "aguardiente-caucano-verde",
-        "name": "Aguardiente caucano tapa verde",
-        "brand": "Aguardiente caucano",
-        "category": "Licor",
-        "description": "El sabor tradicional del cauca, ideal para cualquier celebración. Botella de 750ml.",
-        "price": 45000,
-        "imageUrl": "images/products/aguardientec.png",
-        "isOnOffer": false,
-        "offerPrice": null,
-        "isNew": true,
-        "stock": 100,
-        "rating": 4.5
-    },
-    {
-        "id": "ron-viejo-caldas-8-anos",
-        "name": "Ron Viejo de Caldas 8 Años",
-        "brand": "Ron Viejo de Caldas",
-        "category": "Licor",
-        "description": "Ron añejo premium con 8 años de maduración, suave y con carácter. Botella de 750ml.",
-        "price": 75000,
-        "imageUrl": "images/products/ron.png",
-        "isOnOffer": true,
-        "offerPrice": 68000,
-        "isNew": false,
-        "stock": 70,
-        "rating": 4.7
-    },
-    {
-        "id": "whisky-buchanans-12-anos",
-        "name": "Whisky Buchanan's Deluxe 12 Años",
-        "brand": "Buchanan's",
-        "category": "Licor",
-        "description": "Un blend escocés suave y vibrante, perfecto para compartir. Botella de 750ml.",
-        "price": 120000,
-        "imageUrl": "images/products/buchanans.png",
-        "isOnOffer": false,
-        "offerPrice": null,
-        "isNew": false,
-        "stock": 50,
-        "rating": 4.8
-    },
-    {
-        "id": "cerveza-club-colombia-dorada",
-        "name": "Cerveza Club Colombia Dorada",
-        "brand": "Club Colombia",
-        "category": "Cerveza",
-        "description": "Cerveza tipo Lager, suave y refrescante. Pack de 6 botellas de 330ml.",
-        "price": 18000,
-        "imageUrl": "images/products/clubcolombia.png",
-        "isOnOffer": false,
-        "offerPrice": null,
-        "isNew": true,
-        "stock": 200,
-        "rating": 4.6
-    },
-    {
-        "id": "cerveza-corona-extra",
-        "name": "Cerveza Corona Extra",
-        "brand": "Corona",
-        "category": "Cerveza",
-        "description": "Cerveza Lager mexicana, ligera y con sabor a malta. Pack de 6 botellas de 355ml.",
-        "price": 25000,
-        "imageUrl": "images/products/corona.png",
-        "isOnOffer": true,
-        "offerPrice": 22000,
-        "isNew": false,
-        "stock": 150,
-        "rating": 4.4
-    },
-    {
-        "id": "tequila-jose-cuervo-reposado",
-        "name": "Tequila Jose Cuervo Especial Reposado",
-        "brand": "Jose Cuervo",
-        "category": "Licor",
-        "description": "Tequila 100% de agave azul, añejado para un sabor suave. Botella de 700ml.",
-        "price": 85000,
-        "imageUrl": "images/products/josecuervo.png",
-        "isOnOffer": false,
-        "offerPrice": null,
-        "isNew": false,
-        "stock": 60,
-        "rating": 4.5
-    },
-    {
-        "id": "vodka-absolut-original",
-        "name": "Vodka Absolut Original",
-        "brand": "Absolut",
-        "category": "Licor",
-        "description": "Vodka sueco, puro y limpio. Ideal para cocteles. Botella de 750ml.",
-        "price": 90000,
-        "imageUrl": "images/products/absolut.png",
-        "isOnOffer": true,
-        "offerPrice": 82000,
-        "isNew": true,
-        "stock": 80,
-        "rating": 4.7
-    },
-    {
-        "id": "papas-margarita-pollo",
-        "name": "Papas Fritas Margarita Sabor Pollo",
-        "brand": "Margarita",
-        "category": "Snack",
-        "description": "Crujientes papas fritas con delicioso sabor a pollo. Paquete de 135g.",
-        "price": 5000,
-        "imageUrl": "images/products/papas.png",
-        "isOnOffer": false,
-        "offerPrice": null,
-        "isNew": false,
-        "stock": 300,
-        "rating": 4.3
-    },
-    {
-        "id": "chocolatina-jet",
-        "name": "Chocolatina Jet Leche",
-        "brand": "Jet",
-        "category": "Snack",
-        "description": "Clásica chocolatina colombiana de leche. Barra de 30g.",
-        "price": 1500,
-        "imageUrl": "images/products/chocolatina.png",
-        "isOnOffer": false,
-        "offerPrice": null,
-        "isNew": true,
-        "stock": 500,
-        "rating": 4.6
-    },
-    {
-        "id": "gaseosa-coca-cola",
-        "name": "Gaseosa Coca-Cola Original",
-        "brand": "Coca-Cola",
-        "category": "Bebida no alcohólica",
-        "description": "La bebida refrescante sabor original. Botella de 1.5 Litros.",
-        "price": 6000,
-        "imageUrl": "images/products/cocacola.png",
-        "isOnOffer": false,
-        "offerPrice": null,
-        "isNew": false,
-        "stock": 250,
-        "rating": 4.7
-    },
-    {
-        "id": "cerveza-aguila-original",
-        "name": "Cerveza Águila Original",
-        "brand": "Águila",
-        "category": "Cerveza",
-        "description": "La cerveza más vendida en Colombia, ligera y refrescante. Pack de 6 latas de 330ml.",
-        "price": 16000,
-        "imageUrl": "images/products/aguila.png",
-        "isOnOffer": true,
-        "offerPrice": 14500,
-        "isNew": false,
-        "stock": 180,
-        "rating": 4.3
-    },
-    {
-        "id": "ron-medellin-8-anos",
-        "name": "Ron Medellín Añejo 8 Años",
-        "brand": "Ron Medellín",
-        "category": "Licor",
-        "description": "Ron con cuerpo, notas a madera y vainilla. Botella de 750ml.",
-        "price": 68000,
-        "imageUrl": "images/products/ronmedellin.png",
-        "isOnOffer": false,
-        "offerPrice": null,
-        "isNew": false,
-        "stock": 55,
-        "rating": 4.6
-    },
-    {
-        "id": "whisky-johnnie-walker-red",
-        "name": "Whisky Johnnie Walker Red Label",
-        "brand": "Johnnie Walker",
-        "category": "Licor",
-        "description": "El whisky escocés blended más vendido del mundo. Botella de 750ml.",
-        "price": 95000,
-        "imageUrl": "images/products/jwred.png",
-        "isOnOffer": true,
-        "offerPrice": 88000,
-        "isNew": false,
-        "stock": 65,
-        "rating": 4.5
-    },
-    {
-        "id": "gin-tanqueray-london-dry",
-        "name": "Gin Tanqueray London Dry",
-        "brand": "Tanqueray",
-        "category": "Licor",
-        "description": "Ginebra premium con distintivas notas de enebro. Botella de 750ml.",
-        "price": 110000,
-        "imageUrl": "images/products/tanqueray.png",
-        "isOnOffer": false,
-        "offerPrice": null,
-        "isNew": true,
-        "stock": 40,
-        "rating": 4.7
-    },
-    {
-        "id": "vino-gato-negro-cabernet",
-        "name": "Vino Gato Negro Cabernet Sauvignon",
-        "brand": "Gato Negro",
-        "category": "Licor",
-        "description": "Vino tinto chileno, seco y afrutado. Botella de 750ml.",
-        "price": 28000,
-        "imageUrl": "images/products/gatonegro.png",
-        "isOnOffer": false,
-        "offerPrice": null,
-        "isNew": false,
-        "stock": 90,
-        "rating": 4.2
-    },
-    {
-        "id": "snack-doritos-nacho",
-        "name": "Doritos Nacho",
-        "brand": "Doritos",
-        "category": "Snack",
-        "description": "Totopos de maíz crujientes con sabor a queso. Paquete de 140g.",
-        "price": 5500,
-        "imageUrl": "images/products/doritos.png",
-        "isOnOffer": false,
-        "offerPrice": null,
-        "isNew": false,
-        "stock": 280,
-        "rating": 4.4
-    },
-    {
-        "id": "snack-pringles-original",
-        "name": "Pringles Original",
-        "brand": "Pringles",
-        "category": "Snack",
-        "description": "Patatas fritas apilables, sabor original. Lata de 124g.",
-        "price": 8000,
-        "imageUrl": "images/products/pringles.png",
-        "isOnOffer": true,
-        "offerPrice": 6500,
-        "isNew": false,
-        "stock": 300,
-        "rating": 4.5
-    },
-    {
-        "id": "bebida-jugo-del-valle-naranja",
-        "name": "Jugo Del Valle Naranja",
-        "brand": "Del Valle",
-        "category": "Bebida no alcohólica",
-        "description": "Jugo de naranja pasteurizado. Botella de 1 litro.",
-        "price": 4000,
-        "imageUrl": "images/products/jugonaranja.png",
-        "isOnOffer": false,
-        "offerPrice": null,
-        "isNew": true,
-        "stock": 250,
-        "rating": 4.2
-    },
-    {
-        "id": "bebida-gatorade-azul",
-        "name": "Gatorade Cool Blue",
-        "brand": "Gatorade",
-        "category": "Bebida no alcohólica",
-        "description": "Bebida hidratante con electrolitos, sabor mora azul. Botella de 500ml.",
-        "price": 4500,
-        "imageUrl": "images/products/gatorade.png",
-        "isOnOffer": false,
-        "offerPrice": null,
-        "isNew": false,
-        "stock": 150,
-        "rating": 4.3
-    },
-    {
-        "id": "cigarrillos-marlboro-rojo",
-        "name": "Cigarrillos Marlboro Rojo",
-        "brand": "Marlboro",
-        "category": "Cigarrillo",
-        "description": "Cigarrillos con sabor fuerte y distintivo. Cajetilla de 20 unidades.",
-        "price": 10000,
-        "imageUrl": "images/products/marlboro.png",
-        "isOnOffer": false,
-        "offerPrice": null,
-        "isNew": true,
-        "stock": 120,
-        "rating": 4.0
-    },
-    {
-        "id": "cigarrillos-camel-filter",
-        "name": "Cigarrillos Camel Filter",
-        "brand": "Camel",
-        "category": "Cigarrillo",
-        "description": "Sabor clásico y suave. Cajetilla de 20 unidades.",
-        "price": 9500,
-        "imageUrl": "images/products/camel.png",
-        "isOnOffer": false,
-        "offerPrice": null,
-        "isNew": false,
-        "stock": 110,
-        "rating": 4.1
-    },
-    {
-        "id": "cerveza-heineken-lata",
-        "name": "Cerveza Heineken Lata",
-        "brand": "Heineken",
-        "category": "Cerveza",
-        "description": "Cerveza Lager premium holandesa. Pack de 6 latas de 330ml.",
-        "price": 22000,
-        "imageUrl": "images/products/heineken.png",
-        "isOnOffer": false,
-        "offerPrice": null,
-        "isNew": false,
-        "stock": 100,
-        "rating": 4.5
-    },
-    {
-        "id": "licor-crema-baileys",
-        "name": "Crema de Whisky Baileys Original",
-        "brand": "Baileys",
-        "category": "Licor",
-        "description": "Liqueur irlandés a base de whisky y crema. Botella de 700ml.",
-        "price": 80000,
-        "imageUrl": "images/products/baileys.png",
-        "isOnOffer": false,
-        "offerPrice": null,
-        "isNew": true,
-        "stock": 35,
-        "rating": 4.8
-    },
-    {
-        "id": "bebida-red-bull",
-        "name": "Bebida Energética Red Bull",
-        "brand": "Red Bull",
-        "category": "Bebida no alcohólica",
-        "description": "Bebida energética para revitalizar cuerpo y mente. Lata de 250ml.",
-        "price": 7000,
-        "imageUrl": "images/products/redbull.png",
-        "isOnOffer": false,
-        "offerPrice": null,
-        "isNew": false,
-        "stock": 180,
-        "rating": 4.5
-    },
-    {
-        "id": "snack-manzana-postobon",
-        "name": "Manzana Postobón Lata",
-        "brand": "Postobón",
-        "category": "Bebida no alcohólica",
-        "description": "Gaseosa con delicioso sabor a manzana. Lata de 330ml.",
-        "price": 2500,
-        "imageUrl": "images/products/manzana-postobon.png",
-        "isOnOffer": false,
-        "offerPrice": null,
-        "isNew": false,
-        "stock": 200,
-        "rating": 4.2
-    },
-    {
-        "id": "whisky-old-parr-12-anos",
-        "name": "Whisky Old Parr 12 Años",
-        "brand": "Old Parr",
-        "category": "Licor",
-        "description": "Whisky escocés blended con notas de fruta y jerez. Botella de 750ml.",
-        "price": 105000,
-        "imageUrl": "images/products/oldparr.png",
-        "isOnOffer": false,
-        "offerPrice": null,
-        "isNew": false,
-        "stock": 45,
-        "rating": 4.6
-    },
-    {
-        "id": "cerveza-poker-botella",
-        "name": "Cerveza Poker Botella",
-        "brand": "Poker",
-        "category": "Cerveza",
-        "description": "Cerveza Lager colombiana, ideal para compartir. Pack de 6 botellas de 330ml.",
-        "price": 15000,
-        "imageUrl": "images/products/poker.png",
-        "isOnOffer": false,
-        "offerPrice": null,
-        "isNew": true,
-        "stock": 220,
-        "rating": 4.0
-    },
-    {
-        "id": "snack-choclitos",
-        "name": "Choclitos Limón",
-        "brand": "Choclitos",
-        "category": "Snack",
-        "description": "Snack de maíz con sabor a limón y picante. Paquete de 100g.",
-        "price": 4000,
-        "imageUrl": "images/products/choclitos.png",
-        "isOnOffer": false,
-        "offerPrice": null,
-        "isNew": false,
-        "stock": 190,
-        "rating": 4.1
-    },
-    {
-        "id": "bebida-agua-cristal",
-        "name": "Agua Cristal Sin Gas",
-        "brand": "Cristal",
-        "category": "Bebida no alcohólica",
-        "description": "Agua purificada y embotellada. Botella de 600ml.",
-        "price": 2000,
-        "imageUrl": "images/products/agua.png",
-        "isOnOffer": false,
-        "offerPrice": null,
-        "isNew": false,
-        "stock": 350,
-        "rating": 4.3
-    },
-    {
-        "id": "licor-jagermeister",
-        "name": "Jagermeister",
-        "brand": "Jagermeister",
-        "category": "Licor",
-        "description": "Licor de hierbas alemán, ideal para shots fríos. Botella de 700ml.",
-        "price": 70000,
-        "imageUrl": "images/products/jagermeister.png",
-        "isOnOffer": false,
-        "offerPrice": null,
-        "isNew": true,
-        "stock": 30,
-        "rating": 4.6
-    },
-    {
-        "id": "cigarrillos-lucky-strike",
-        "name": "Cigarrillos Lucky Strike",
-        "brand": "Lucky Strike",
-        "category": "Cigarrillo",
-        "description": "Cigarrillos con sabor distintivo. Cajetilla de 20 unidades.",
-        "price": 9000,
-        "imageUrl": "images/products/lucky.png",
-        "isOnOffer": false,
-        "offerPrice": null,
-        "isNew": false,
-        "stock": 90,
-        "rating": 3.9
-    }
-]
+{
+    "siteName": "EL BORRACHO",
+    "contactEmail": "pedidos@elborracho.com",
+    "contactPhone": "573174144815",
+    "address": "Popayán, Cauca, Colombia",
+    "banners": [
+        {
+            "id": "banner1",
+            "title": "¡Novedad! Licores Premium",
+            "description": "Descubre nuestra selección exclusiva de licores finos para cada ocasión.",
+            "imageUrl": "images/banners/banner-licores-premium.jpg",
+            "link": "#licores",
+            "buttonText": "Ver Licores"
+        },
+        {
+            "id": "banner2",
+            "title": "Ofertas Increíbles en Cervezas",
+            "description": "Las mejores marcas de cerveza con descuentos que no querrás perderte.",
+            "imageUrl": "images/banners/banner-cervezas.jpg",
+            "link": "#cervezas",
+            "buttonText": "Comprar Cervezas"
+        },
+        {
+            "id": "banner3",
+            "title": "Snacks y Bebidas no Alcohólicas",
+            "description": "Acompaña tus licores con nuestros deliciosos snacks y bebidas refrescantes.",
+            "imageUrl": "images/banners/banner-snacks.jpg",
+            "link": "#snacks",
+            "buttonText": "Explorar Snacks"
+        },
+        {
+            "id": "banner4",
+            "title": "Entrega Rápida y Segura",
+            "description": "Tu pedido en la puerta de tu casa en tiempo récord. ¡Calidad garantizada!",
+            "imageUrl": "images/banners/banner-entrega.jpg",
+            "link": "#support-section",
+            "buttonText": "Conocer Más"
+        }
+    ],
+    "brands": [
+        {
+            "name": "Aguardiente Antioqueño",
+            "logoUrl": "images/icons/antioqueno-logo.svg"
+        },
+        {
+            "name": "Ron Viejo de Caldas",
+            "logoUrl": "images/icons/ron-caldas-logo.svg"
+        },
+        {
+            "name": "Buchanan's",
+            "logoUrl": "images/icons/buchanans-logo.svg"
+        },
+        {
+            "name": "Club Colombia",
+            "logoUrl": "images/icons/club-colombia-logo.svg"
+        },
+        {
+            "name": "Corona",
+            "logoUrl": "images/icons/corona-logo.svg"
+        },
+        {
+            "name": "Poker",
+            "logoUrl": "images/icons/poker-logo.svg"
+        },
+        {
+            "name": "Aguardiente caucano",
+            "logoUrl": "images/icons/aguardientecaucano-logo.svg"
+        },
+        {
+            "name": "Aguardiente Néctar",
+            "logoUrl": "images/icons/nectar-logo.svg"
+        },
+        {
+            "name": "Don Julio",
+            "logoUrl": "images/icons/donjulio-logo.svg"
+        },
+        {
+            "name": "Smirnoff",
+            "logoUrl": "images/icons/smirnoff-logo.svg"
+        },
+        {
+            "name": "Coca-Cola",
+            "logoUrl": "images/icons/cocacola-logo.svg"
+        },
+        {
+            "name": "Pepsi",
+            "logoUrl": "images/icons/pepsi-logo.svg"
+        },
+        {
+            "name": "Postobón",
+            "logoUrl": "images/icons/postobon-logo.svg"
+        },
+        {
+            "name": "Sprite",
+            "logoUrl": "images/icons/sprite-logo.svg"
+        },
+        {
+            "name": "Frito Lay",
+            "logoUrl": "images/icons/fritolay-logo.svg"
+        },
+        {
+            "name": "Margarita",
+            "logoUrl": "images/icons/margarita-logo.svg"
+        },
+        {
+            "name": "Pringles",
+            "logoUrl": "images/icons/pringles-logo.svg"
+        },
+        {
+            "name": "Cheetos",
+            "logoUrl": "images/icons/cheetos-logo.svg"
+        }
+    ]
+}
