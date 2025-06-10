@@ -30,27 +30,27 @@ export function setupSearch() {
             searchResultsGrid.innerHTML = `<p class="no-results-message">Ingresa al menos 2 caracteres para buscar.</p>`;
             return;
         }
-        
+
         filteredProducts = appState.products.filter(product =>
             product.name.toLowerCase().includes(searchTerm) ||
             product.brand.toLowerCase().includes(searchTerm) ||
-            (product.description && product.description.toLowerCase().includes(searchTerm)) ||
-            (product.category && product.category.toLowerCase().includes(searchTerm))
+            product.description.toLowerCase().includes(searchTerm) ||
+            product.category.toLowerCase().includes(searchTerm)
         );
 
         searchResultsGrid.innerHTML = ''; // Limpiar resultados anteriores
-        if (filteredProducts.length === 0) {
-            searchResultsGrid.innerHTML = `<p class="no-results-message">No se encontraron productos para "${searchTerm}".</p>`;
-        } else {
+
+        if (filteredProducts.length > 0) {
             filteredProducts.forEach(product => {
                 const productCard = renderProductCard(product);
                 searchResultsGrid.appendChild(productCard);
             });
+        } else {
+            searchResultsGrid.innerHTML = `<p class="no-results-message">No se encontraron productos para "${searchTerm}".</p>`;
         }
     };
 
     searchButton.addEventListener('click', performSearch);
-
     searchInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
             performSearch();
@@ -59,7 +59,12 @@ export function setupSearch() {
 
     closeSearchModalBtn.addEventListener('click', () => toggleSearchModal(false));
 
-    // console.log('search.js: Módulo de búsqueda configurado.'); // ELIMINADO
+    // Cerrar el modal al hacer clic fuera de él
+    window.addEventListener('click', (event) => {
+        if (event.target === searchModal && searchModal.classList.contains('open')) {
+            toggleSearchModal(false);
+        }
+    });
 }
 
 /**
