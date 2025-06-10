@@ -169,7 +169,8 @@
 
 .product-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Columnas responsivas */
+    /* Ajuste para tarjetas más pequeñas: minmax(150px, 1fr) */
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Columnas responsivas */
     gap: var(--spacing-lg);
     padding: var(--spacing-md) 0;
 }
@@ -186,16 +187,22 @@
     justify-content: space-between; /* Espacia el contenido */
     height: 100%; /* Asegura que todas las tarjetas tengan la misma altura si la cuadrícula lo permite */
     box-shadow: var(--shadow-sm);
+    /* Ajuste para tarjetas más pequeñas: ancho fijo para base */
+    width: 100%; /* Permite que la grilla controle el ancho, pero se puede limitar en media queries */
+    max-width: 200px; /* Ancho máximo para la tarjeta */
+    margin: 0 auto; /* Centrar la tarjeta en su celda de grilla */
 }
 
 .product-card:hover {
     transform: translateY(-5px);
-    box-shadow: var(--shadow-md), var(--golden-glow-sm); /* Sombra más pronunciada y un pequeño brillo dorado */
+    /* Restauración y ajuste del brillo dorado */
+    box-shadow: var(--shadow-md), 0 0 15px var(--primary-color-dark), 0 0 25px rgba(255, 191, 0, 0.4); /* Sombra más pronunciada y un brillo dorado */
 }
 
 .product-image {
     width: 100%;
-    height: 180px; /* Altura fija para las imágenes del producto */
+    /* Ajuste para imágenes más pequeñas */
+    height: 140px; /* Altura fija reducida para las imágenes del producto */
     object-fit: contain; /* Asegura que la imagen se ajuste sin recortarse */
     padding: var(--spacing-sm);
     background-color: var(--white); /* Fondo blanco para las imágenes */
@@ -203,7 +210,7 @@
 }
 
 .product-info {
-    padding: var(--spacing-md);
+    padding: var(--spacing-sm); /* Espaciado interno reducido */
     flex-grow: 1; /* Permite que la información crezca y empuje el botón al final */
     display: flex;
     flex-direction: column;
@@ -211,10 +218,10 @@
 }
 
 .product-name {
-    font-size: var(--font-size-md);
+    font-size: var(--font-size-sm); /* Tamaño de fuente ligeramente reducido */
     color: var(--text-color-dark);
-    margin-bottom: var(--spacing-sm);
-    height: 3em; /* Altura fija para el nombre del producto para alineación */
+    margin-bottom: var(--spacing-xs); /* Margen más pequeño */
+    height: 2.8em; /* Altura fija para el nombre del producto para alineación */
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
@@ -223,15 +230,15 @@
 }
 
 .product-brand {
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size-xs); /* Tamaño de fuente más pequeño */
     color: var(--text-color-light);
-    margin-bottom: var(--spacing-sm);
+    margin-bottom: var(--spacing-xs); /* Margen más pequeño */
 }
 
 .product-price-container {
     margin-top: var(--spacing-sm);
-    margin-bottom: var(--spacing-md); /* Espacio antes del botón */
-    min-height: 40px; /* Para que el precio tenga un espacio consistente */
+    margin-bottom: var(--spacing-sm); /* Espacio antes del botón */
+    min-height: 35px; /* Para que el precio tenga un espacio consistente */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -239,20 +246,20 @@
 }
 
 .product-price {
-    font-size: var(--font-size-lg);
+    font-size: var(--font-size-md); /* Tamaño de fuente ligeramente reducido */
     color: var(--primary-color);
     font-weight: bold;
 }
 
 .product-old-price {
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size-xs); /* Tamaño de fuente más pequeño */
     color: var(--text-color-light);
     text-decoration: line-through;
-    margin-right: var(--spacing-sm);
+    margin-right: var(--spacing-xs);
 }
 
 .product-offer-price {
-    font-size: var(--font-size-md);
+    font-size: var(--font-size-sm); /* Tamaño de fuente ligeramente reducido */
     color: var(--danger-color); /* Color rojo para ofertas */
     font-weight: bold;
 }
@@ -261,10 +268,10 @@
     background-color: var(--primary-color);
     color: var(--secondary-color-dark);
     border: none;
-    padding: var(--spacing-sm) var(--spacing-md);
+    padding: var(--spacing-xs) var(--spacing-sm); /* Padding reducido */
     border-radius: var(--border-radius);
     cursor: pointer;
-    font-size: var(--font-size-md);
+    font-size: var(--font-size-sm); /* Tamaño de fuente ligeramente reducido */
     font-weight: bold;
     transition: background-color var(--transition-speed) var(--transition-timing), transform var(--transition-speed) var(--transition-timing);
     width: 100%; /* Botón de añadir al carrito ocupa todo el ancho */
@@ -318,7 +325,8 @@
 
 .product-carousel-track .product-card {
     flex-shrink: 0; /* Evita que las tarjetas se encojan */
-    width: 220px; /* Ancho fijo para las tarjetas en el carrusel */
+    /* Ajuste para tarjetas de carrusel más pequeñas */
+    width: 160px; /* Ancho fijo para las tarjetas en el carrusel, ajustado */
     scroll-snap-align: start; /* Alinea las tarjetas al inicio del scroll */
 }
 
@@ -600,7 +608,7 @@
 .search-results-grid {
     min-height: 200px; /* Espacio para resultados */
     display: grid; /* Asegura que siempre sea una cuadrícula */
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Más compacto para resultados */
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); /* Más compacto para resultados, ajustado para tarjetas pequeñas */
     gap: var(--spacing-md);
 }
 
@@ -675,6 +683,7 @@
     top: 0;
     right: 0; /* Posición inicial en la pantalla, pero se ocultará con transform */
     width: 350px;
+    max-width: 90%; /* Asegura que no se desborde en pantallas muy pequeñas */
     height: 100%;
     background-color: var(--secondary-color-dark);
     box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
