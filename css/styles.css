@@ -424,8 +424,8 @@ section {
 
 /* Para el carrusel continuo de productos, si se usara el mismo estilo de tarjeta */
 .continuous-carousel-track .product-card {
-    background-color: rgba(52, 58, 64, 0.08);
-    border: 1px solid rgba(255, 191, 0, 0.3);
+    /* Eliminado: background-color: rgba(52, 58, 64, 0.08); */
+    /* Eliminado: border: 1px solid rgba(255, 191, 0, 0.3); */
     border-radius: 10px;
     width: 200px; /* Ajusta este ancho si quieres tarjetas más grandes en el carrusel continuo */
     flex-shrink: 0;
@@ -435,7 +435,7 @@ section {
     transition: transform var(--transition-speed) var(--transition-timing), box-shadow var(--transition-speed) var(--transition-timing), background-color var(--transition-speed) var(--transition-timing);
     display: inline-block;
     vertical-align: top;
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--shadow-sm), 0 0 10px rgba(255, 191, 0, 0.3); /* Sombra básica + sutil brillo dorado */
 }
 
 .continuous-carousel-track .product-card:hover {
