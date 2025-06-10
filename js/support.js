@@ -46,10 +46,10 @@ export function setupSupport() {
         });
     }
 
-    // Enviar formulario de Reporte de Problemas
+    // Enviar formulario de Reporte de Problema/Sugerencia a WhatsApp
     if (faultReportForm) {
         faultReportForm.addEventListener('submit', (event) => {
-            event.preventDefault(); // Evita el envío tradicional del formulario
+            event.preventDefault();
 
             const whatsappNumber = appState.contactInfo.phone;
             if (!whatsappNumber) {
@@ -60,36 +60,38 @@ export function setupSupport() {
 
             const name = document.getElementById('faultName').value;
             const email = document.getElementById('faultEmail').value;
+            const type = document.getElementById('faultType').value;
             const description = document.getElementById('faultDescription').value;
 
-            if (!name || !email || !description) {
-                showToastNotification('Por favor, completa todos los campos para enviar tu reporte.', 'error');
+            if (!name || !type || !description) {
+                showToastNotification('Por favor, completa todos los campos requeridos para el reporte.', 'error');
                 return;
             }
 
-            let message = `¡Hola EL BORRACHO!%0AReporte de un Problema:%0A%0A`;
-            message += `*Nombre:* ${name}%0A`;
-            message += `*Email:* ${email}%0A`;
-            message += `*Problema:* ${description}%0A%0A`;
-            message += `Esperamos tu pronta respuesta. ¡Gracias!`;
+            let message = `¡Hola EL BORRACHO!%0AReporte/Sugerencia:%0A%0A`;
+            message += `*De:* ${name}%0A`;
+            if (email) message += `*Email:* ${email}%0A`;
+            message += `*Tipo:* ${type}%0A`;
+            message += `*Descripción:* ${description}%0A%0A`;
+            message += `Gracias por tu valiosa información.`;
 
             const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
             window.open(whatsappUrl, '_blank');
 
-            showToastNotification('Reporte de problema enviado a WhatsApp. Te contactaremos pronto.', 'success');
+            showToastNotification('Tu reporte/sugerencia ha sido enviado a WhatsApp. ¡Gracias por ayudarnos a mejorar!', 'success');
             faultReportModal.style.display = 'none'; // Cerrar modal
             faultReportForm.reset(); // Limpiar formulario
         });
     }
 
-    // Enviar formulario de Agendar Pedido/Entrega
+    // Enviar formulario de Agendar Pedido/Entrega a WhatsApp
     if (appointmentForm) {
         appointmentForm.addEventListener('submit', (event) => {
-            event.preventDefault(); // Evita el envío tradicional del formulario
+            event.preventDefault();
 
             const whatsappNumber = appState.contactInfo.phone;
             if (!whatsappNumber) {
-                showToastNotification('Número de WhatsApp no configurado. No se puede enviar el pedido.', 'error');
+                showToastNotification('Número de WhatsApp no configurado. No se puede enviar la solicitud.', 'error');
                 console.error('WhatsApp number is not configured in appState.contactInfo.phone');
                 return;
             }
@@ -121,6 +123,4 @@ export function setupSupport() {
             appointmentForm.reset(); // Limpiar formulario
         });
     }
-
-    // console.log('support.js: Módulo de soporte configurado.'); // ELIMINADO
 }
