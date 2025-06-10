@@ -4,144 +4,102 @@ import { appState } from './main.js';
 import { showToastNotification } from './toast.js';
 
 const CART_STORAGE_KEY = 'elborracho_cart';
-let cartSidebar;
-let cartItemsContainer;
-let cartTotalPriceElement;
-let cartCountElement; // Contador del header
-let bottomCartCountElement; // Contador de la barra inferior
-let closeCartBtn;
-let checkoutWhatsappBtn;
+let cartSidebar, cartItemsContainer, cartTotalPriceElement, cartCountElement, bottomCartCountElement, closeCartBtn, checkoutWhatsappBtn;
 
 export function initCart() {
     cartSidebar = document.getElementById('cartSidebar');
     cartItemsContainer = document.getElementById('cartItems');
     cartTotalPriceElement = document.getElementById('cartTotalPrice');
-    cartCountElement = document.getElementById('cartCount'); // Del header
-    bottomCartCountElement = document.getElementById('bottomCartCount'); // Del bottom nav
+    cartCountElement = document.getElementById('cartCount');
+    bottomCartCountElement = document.getElementById('bottomCartCount');
     closeCartBtn = document.getElementById('closeCartBtn');
     checkoutWhatsappBtn = document.getElementById('checkoutWhatsappBtn');
 
-    if (!cartSidebar || !cartItemsContainer || !cartTotalPriceElement || !cartCountElement || !bottomCartCountElement || !closeCartBtn || !checkoutWhatsappBtn) {
-        console.warn('cart.js: Algunos elementos del carrito no se encontraron. Funcionalidad limitada.');
-        return;
-    }
+    if (!cartSidebar) return; // Si no hay carrito, no hacer nada
 
-    // Cargar carrito desde localStorage
     const storedCart = localStorage.getItem(CART_STORAGE_KEY);
     if (storedCart) {
         try {
             appState.cart = JSON.parse(storedCart);
         } catch (e) {
-            console.error('Error parsing cart from localStorage:', e);
-            appState.cart = []; // Si hay un error, inicializar como array vacío
+            appState.cart = [];
         }
     }
 
-    // Event Listeners
-    closeCartBtn.addEventListener('click', toggleCartSidebar);
+    closeCartBtn.addEventListener('click', () => toggleCartSidebar(false));
     checkoutWhatsappBtn.addEventListener('click', sendOrderToWhatsapp);
 
-    // Delegación de eventos para los botones de cantidad y eliminar en el contenedor del carrito
     cartItemsContainer.addEventListener('click', (event) => {
-        const target = event.target;
-        if (target.classList.contains('remove-item-btn')) {
-            const productId = target.dataset.id;
+        const button = event.target.closest('button');
+        if (!button) return;
+
+        const productId = button.dataset.id;
+        if (button.classList.contains('remove-item-btn')) {
             removeFromCart(productId);
-        } else if (target.classList.contains('quantity-decrease')) {
-            const productId = target.dataset.id;
+        } else if (button.classList.contains('quantity-decrease')) {
             updateCartQuantity(productId, -1);
-        } else if (target.classList.contains('quantity-increase')) {
-            const productId = target.dataset.id;
+        } else if (button.classList.contains('quantity-increase')) {
             updateCartQuantity(productId, 1);
         }
     });
 
-    updateCartDisplay(); // Mostrar el estado inicial del carrito
-    // console.log('cart.js: Carrito inicializado.'); // ELIMINADO para producción
+    updateCartDisplay();
 }
 
-export function toggleCartSidebar() {
+export function toggleCartSidebar(forceState) {
     if (cartSidebar) {
-        cartSidebar.classList.toggle('open');
-        document.body.classList.toggle('no-scroll', cartSidebar.classList.contains('open'));
-        // console.log(`cart.js: Sidebar del carrito ${cartSidebar.classList.contains('open') ? 'abierto' : 'cerrado'}.`); // ELIMINADO para producción
+        const isOpen = typeof forceState === 'boolean' ? forceState : !cartSidebar.classList.contains('open');
+        cartSidebar.classList.toggle('open', isOpen);
+        document.body.classList.toggle('no-scroll', isOpen);
     }
 }
 
 export function addToCart(productId, quantity = 1) {
     const product = appState.products.find(p => p.id === productId);
+    if (!product) return showToastNotification('Producto no encontrado.', 'error');
 
-    if (!product) {
-        showToastNotification('Producto no encontrado.', 'error');
-        // console.error(`cart.js: Producto con ID ${productId} no encontrado.`); // ELIMINADO para producción
-        return;
-    }
-
-    // Verificar si el producto ya está en el carrito
     const existingItem = appState.cart.find(item => item.id === productId);
 
     if (existingItem) {
-        // Verificar stock antes de añadir
         if (existingItem.quantity + quantity > product.stock) {
-            showToastNotification(`No hay suficiente stock para ${product.name}. Stock disponible: ${product.stock}`, 'warning');
-            return;
+            return showToastNotification(`Stock insuficiente para ${product.name}.`, 'warning');
         }
         existingItem.quantity += quantity;
-        showToastNotification(`Se añadió ${quantity} unidad(es) más de ${product.name} al carrito.`, 'info');
+        showToastNotification(`${product.name} actualizado en el carrito.`, 'info');
     } else {
-        // Verificar stock para el nuevo producto
         if (quantity > product.stock) {
-            showToastNotification(`No hay suficiente stock para ${product.name}. Stock disponible: ${product.stock}`, 'warning');
-            return;
+            return showToastNotification(`Stock insuficiente para ${product.name}.`, 'warning');
         }
-        appState.cart.push({ ...product, quantity: quantity });
+        appState.cart.push({ ...product, quantity });
         showToastNotification(`${product.name} añadido al carrito.`, 'success');
     }
 
     saveCart();
     updateCartDisplay();
-    // console.log('cart.js: Producto añadido/actualizado en el carrito.', appState.cart); // ELIMINADO para producción
 }
 
 export function removeFromCart(productId) {
-    const initialCartLength = appState.cart.length;
     appState.cart = appState.cart.filter(item => item.id !== productId);
-    
-    if (appState.cart.length < initialCartLength) {
-        showToastNotification('Producto eliminado del carrito.', 'info');
-    } else {
-        showToastNotification('El producto no se encontró en el carrito.', 'warning');
-    }
-    
+    showToastNotification('Producto eliminado del carrito.', 'info');
     saveCart();
     updateCartDisplay();
-    // console.log('cart.js: Producto eliminado del carrito.', appState.cart); // ELIMINADO para producción
 }
 
 export function updateCartQuantity(productId, change) {
-    const item = appState.cart.find(item => item.id === productId);
-    if (!item) {
-        showToastNotification('Producto no encontrado en el carrito.', 'error');
-        return;
-    }
-
-    const productInStock = appState.products.find(p => p.id === productId);
+    const item = appState.cart.find(i => i.id === productId);
+    if (!item) return;
 
     if (item.quantity + change <= 0) {
-        removeFromCart(productId); // Si la cantidad es 0 o menos, eliminar
-        return;
+        removeFromCart(productId);
+    } else {
+        const product = appState.products.find(p => p.id === productId);
+        if (item.quantity + change > product.stock) {
+            return showToastNotification(`Stock insuficiente para ${product.name}.`, 'warning');
+        }
+        item.quantity += change;
+        saveCart();
+        updateCartDisplay();
     }
-
-    if (productInStock && (item.quantity + change) > productInStock.stock) {
-        showToastNotification(`No hay suficiente stock para ${item.name}. Stock disponible: ${productInStock.stock}`, 'warning');
-        return;
-    }
-
-    item.quantity += change;
-    showToastNotification(`Cantidad de ${item.name} actualizada a ${item.quantity}.`, 'info');
-    saveCart();
-    updateCartDisplay();
-    // console.log('cart.js: Cantidad de producto actualizada.', appState.cart); // ELIMINADO para producción
 }
 
 function saveCart() {
@@ -149,86 +107,70 @@ function saveCart() {
 }
 
 export function updateCartDisplay() {
-    if (!cartItemsContainer || !cartTotalPriceElement || !cartCountElement || !bottomCartCountElement) {
-        // console.warn('cart.js: Elementos del display del carrito no encontrados para actualizar.'); // ELIMINADO para producción
-        return;
-    }
+    if (!cartItemsContainer) return;
 
-    cartItemsContainer.innerHTML = ''; // Limpiar lista
-    let totalItems = 0;
-    let totalPrice = 0;
-
-    if (appState.cart.length === 0) {
-        cartItemsContainer.innerHTML = '<p class="empty-cart-message">Tu carrito está vacío.</p>';
-        // console.log('cart.js: Carrito vacío, mensaje mostrado.'); // ELIMINADO para producción
-    } else {
-        appState.cart.forEach(item => {
-            const itemPrice = item.isOnOffer && item.offerPrice !== null ? item.offerPrice : item.price;
-            const itemElement = document.createElement('div');
-            itemElement.classList.add('cart-item');
-            itemElement.innerHTML = `
-                <img src="${item.imageUrl}" alt="${item.name}" class="cart-item-image" loading="lazy">
-                <div class="cart-item-info">
-                    <h4 class="cart-item-name">${item.name}</h4>
-                    <p class="cart-item-price">$${itemPrice.toLocaleString('es-CO')}</p>
-                    <div class="cart-item-quantity-control">
-                        <button class="quantity-decrease btn-icon" data-id="${item.id}" aria-label="Disminuir cantidad">-</button>
-                        <span class="quantity-display">${item.quantity}</span>
-                        <button class="quantity-increase btn-icon" data-id="${item.id}" aria-label="Aumentar cantidad">+</button>
-                    </div>
-                </div>
-                <button class="remove-item-btn btn-icon" data-id="${item.id}" aria-label="Eliminar producto">
-                    <i class="fas fa-trash-alt"></i>
-                </button>
-            `;
-            cartItemsContainer.appendChild(itemElement);
-
-            totalItems += item.quantity;
-            totalPrice += itemPrice * item.quantity;
-        });
-    }
+    let totalItems = appState.cart.reduce((sum, item) => sum + item.quantity, 0);
+    let totalPrice = appState.cart.reduce((sum, item) => {
+        const price = item.isOnOffer ? item.offerPrice : item.price;
+        return sum + (price * item.quantity);
+    }, 0);
 
     cartCountElement.textContent = totalItems;
     bottomCartCountElement.textContent = totalItems;
     cartTotalPriceElement.textContent = `$${totalPrice.toLocaleString('es-CO')}`;
-    // console.log(`cart.js: Display del carrito actualizado. Total items: ${totalItems}, Total price: $${totalPrice.toLocaleString('es-CO')}.`); // ELIMINADO para producción
+
+    if (appState.cart.length === 0) {
+        cartItemsContainer.innerHTML = '<p class="text-text-color-light text-center">Tu carrito está vacío.</p>';
+    } else {
+        cartItemsContainer.innerHTML = appState.cart.map(item => {
+            const price = item.isOnOffer ? item.offerPrice : item.price;
+            // CORRECCIÓN: Se reemplaza el icono <i> con un SVG inline.
+            return `
+                <div class="cart-item">
+                    <img src="${item.imageUrl}" alt="${item.name}" class="w-16 h-16 object-cover rounded-md">
+                    <div class="flex-grow">
+                        <h4 class="font-semibold text-sm">${item.name}</h4>
+                        <p class="text-accent-color text-xs">$${price.toLocaleString('es-CO')}</p>
+                        <div class="flex items-center gap-2 mt-1">
+                            <button class="quantity-decrease bg-secondary-color p-1 rounded-md" data-id="${item.id}">-</button>
+                            <span class="font-bold">${item.quantity}</span>
+                            <button class="quantity-increase bg-secondary-color p-1 rounded-md" data-id="${item.id}">+</button>
+                        </div>
+                    </div>
+                    <button class="remove-item-btn text-danger-color" data-id="${item.id}">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm4 0a1 1 0 012 0v6a1 1 0 11-2 0V8z" clip-rule="evenodd"></path></svg>
+                    </button>
+                </div>
+            `;
+        }).join('');
+    }
 }
 
 export function sendOrderToWhatsapp() {
     if (appState.cart.length === 0) {
-        showToastNotification('Tu carrito está vacío. ¡Añade productos antes de finalizar tu pedido!', 'warning');
-        return;
+        return showToastNotification('Tu carrito está vacío.', 'warning');
+    }
+    const { phone } = appState.contactInfo;
+    if (!phone) {
+        return showToastNotification('Número de contacto no disponible.', 'error');
     }
 
-    const whatsappNumber = appState.contactInfo.phone;
-    if (!whatsappNumber) {
-        showToastNotification('Número de WhatsApp no configurado. No se puede enviar el pedido.', 'error');
-        console.error('WhatsApp number is not configured in appState.contactInfo.phone');
-        return;
-    }
-
-    let message = `¡Hola EL BORRACHO!%0AMi pedido es el siguiente:%0A%0A`;
+    let message = "¡Hola EL BORRACHO! Mi pedido es:\n\n";
     let totalPrice = 0;
 
-    appState.cart.forEach((item, index) => {
-        const itemPrice = item.isOnOffer && item.offerPrice !== null ? item.offerPrice : item.price;
-        const subtotal = itemPrice * item.quantity;
-        totalPrice += subtotal;
-        message += `${index + 1}. ${item.quantity} x ${item.name} - $${itemPrice.toLocaleString('es-CO')} c/u%0A`;
+    appState.cart.forEach(item => {
+        const price = item.isOnOffer ? item.offerPrice : item.price;
+        totalPrice += price * item.quantity;
+        message += `${item.quantity}x ${item.name} - $${(price * item.quantity).toLocaleString('es-CO')}\n`;
     });
 
-    message += `%0ATotal del pedido: *$${totalPrice.toLocaleString('es-CO')}*%0A%0A`;
-    message += `Por favor, confírmame la disponibilidad y el proceso de entrega. ¡Gracias!`;
-
-    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+    message += `\n*Total: $${totalPrice.toLocaleString('es-CO')}*\n\nGracias, espero confirmación.`;
+    const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
 
-    showToastNotification('Tu pedido ha sido enviado a WhatsApp. Te contactaremos pronto.', 'success', 5000);
-
-    // Opcional: Vaciar el carrito después de enviar el pedido
+    showToastNotification('Pedido enviado por WhatsApp.', 'success');
     appState.cart = [];
     saveCart();
     updateCartDisplay();
-    toggleCartSidebar(); // Cierra el modal después de enviar
-    // console.log('cart.js: Pedido enviado por WhatsApp y carrito vaciado.'); // ELIMINADO para producción
+    toggleCartSidebar(false);
 }
