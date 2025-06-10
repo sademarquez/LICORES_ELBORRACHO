@@ -2,60 +2,30 @@
 
 /* --- MÓVILES (Hasta 768px) --- */
 @media (max-width: 768px) {
-    /* Cuadrícula principal */
-    .product-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
-    }
+    .product-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
 
-    /* NUEVO: Cuadrícula de productos por categoría */
-    #categoryProductsContainer {
-        /* OBLIGATORIO: 3 productos por fila en móvil */
-        grid-template-columns: repeat(3, 1fr);
-    }
-
-    /* NUEVO: Cuadrícula de resultados de búsqueda */
-    #searchResultsGrid {
-        /* OBLIGATORIO: 3 productos por fila en móvil */
-        grid-template-columns: repeat(3, 1fr) !important;
-        gap: 0.75rem;
+    /* CARRUSEL DE CATEGORÍAS: Mínimo 3 por vista */
+    .category-products-carousel .product-card {
+        flex: 0 0 calc(33.33% - 1rem); /* 3 por vista, ajustando por el gap */
     }
 }
-
 
 /* --- TABLETS (769px a 1024px) --- */
 @media (min-width: 769px) and (max-width: 1024px) {
-    /* Cuadrícula principal */
-    .product-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
+    .product-grid { grid-template-columns: repeat(3, 1fr); }
 
-    /* Cuadrícula de productos por categoría */
-    #categoryProductsContainer {
-        grid-template-columns: repeat(4, 1fr);
-    }
-    
-    /* Cuadrícula de resultados de búsqueda */
-    #searchResultsGrid {
-         grid-template-columns: repeat(4, 1fr) !important;
+    /* CARRUSEL DE CATEGORÍAS: 4 por vista */
+    .category-products-carousel .product-card {
+        flex: 0 0 calc(25% - 1rem);
     }
 }
 
-
 /* --- DESKTOP (1025px y más) --- */
 @media (min-width: 1025px) {
-    /* Cuadrícula principal */
-    .product-grid {
-        grid-template-columns: repeat(4, 1fr);
-    }
+    .product-grid { grid-template-columns: repeat(4, 1fr); }
     
-    /* Cuadrícula de productos por categoría */
-    #categoryProductsContainer {
-        grid-template-columns: repeat(5, 1fr);
-    }
-    
-    /* Cuadrícula de resultados de búsqueda */
-    #searchResultsGrid {
-         grid-template-columns: repeat(5, 1fr) !important;
+    /* CARRUSEL DE CATEGORÍAS: 5 por vista */
+    .category-products-carousel .product-card {
+        flex: 0 0 calc(20% - 1rem);
     }
 }
