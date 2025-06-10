@@ -33,164 +33,168 @@ export function initCart() {
             appState.cart = JSON.parse(storedCart);
         } catch (e) {
             console.error('Error parsing cart from localStorage:', e);
-            appState.cart = []; // Resetear carrito si hay un error de parseo
+            appState.cart = []; // Si hay un error, inicializar como array vacío
         }
-    } else {
-        appState.cart = [];
     }
-
-    updateCartDisplay(); // Renderizar el carrito al cargar
 
     // Event Listeners
     closeCartBtn.addEventListener('click', toggleCartSidebar);
     checkoutWhatsappBtn.addEventListener('click', sendOrderToWhatsapp);
 
-    // Cerrar el sidebar si se hace clic fuera de él
-    window.addEventListener('click', (event) => {
-        if (event.target === cartSidebar && cartSidebar.classList.contains('open')) {
-            toggleCartSidebar();
+    // Delegación de eventos para los botones de cantidad y eliminar en el contenedor del carrito
+    cartItemsContainer.addEventListener('click', (event) => {
+        const target = event.target;
+        if (target.classList.contains('remove-item-btn')) {
+            const productId = target.dataset.id;
+            removeFromCart(productId);
+        } else if (target.classList.contains('quantity-decrease')) {
+            const productId = target.dataset.id;
+            updateCartQuantity(productId, -1);
+        } else if (target.classList.contains('quantity-increase')) {
+            const productId = target.dataset.id;
+            updateCartQuantity(productId, 1);
         }
     });
+
+    updateCartDisplay(); // Mostrar el estado inicial del carrito
+    // console.log('cart.js: Carrito inicializado.'); // ELIMINADO para producción
 }
 
-/**
- * Abre o cierra el sidebar del carrito.
- */
 export function toggleCartSidebar() {
-    cartSidebar.classList.toggle('open');
-    if (cartSidebar.classList.contains('open')) {
-        cartSidebar.focus(); // Enfocar el sidebar para accesibilidad
+    if (cartSidebar) {
+        cartSidebar.classList.toggle('open');
+        document.body.classList.toggle('no-scroll', cartSidebar.classList.contains('open'));
+        // console.log(`cart.js: Sidebar del carrito ${cartSidebar.classList.contains('open') ? 'abierto' : 'cerrado'}.`); // ELIMINADO para producción
     }
 }
 
-/**
- * Añade un producto al carrito o incrementa su cantidad si ya existe.
- * @param {string} productId - El ID del producto a añadir.
- */
-export function addToCart(productId) {
+export function addToCart(productId, quantity = 1) {
     const product = appState.products.find(p => p.id === productId);
+
     if (!product) {
         showToastNotification('Producto no encontrado.', 'error');
+        // console.error(`cart.js: Producto con ID ${productId} no encontrado.`); // ELIMINADO para producción
         return;
     }
 
+    // Verificar si el producto ya está en el carrito
     const existingItem = appState.cart.find(item => item.id === productId);
 
     if (existingItem) {
-        existingItem.quantity++;
-        showToastNotification(`${product.name} actualizado en el carrito.`, 'info');
+        // Verificar stock antes de añadir
+        if (existingItem.quantity + quantity > product.stock) {
+            showToastNotification(`No hay suficiente stock para ${product.name}. Stock disponible: ${product.stock}`, 'warning');
+            return;
+        }
+        existingItem.quantity += quantity;
+        showToastNotification(`Se añadió ${quantity} unidad(es) más de ${product.name} al carrito.`, 'info');
     } else {
-        appState.cart.push({ ...product, quantity: 1 });
+        // Verificar stock para el nuevo producto
+        if (quantity > product.stock) {
+            showToastNotification(`No hay suficiente stock para ${product.name}. Stock disponible: ${product.stock}`, 'warning');
+            return;
+        }
+        appState.cart.push({ ...product, quantity: quantity });
         showToastNotification(`${product.name} añadido al carrito.`, 'success');
     }
+
     saveCart();
     updateCartDisplay();
+    // console.log('cart.js: Producto añadido/actualizado en el carrito.', appState.cart); // ELIMINADO para producción
 }
 
-/**
- * Elimina un producto del carrito.
- * @param {string} productId - El ID del producto a eliminar.
- */
-function removeFromCart(productId) {
+export function removeFromCart(productId) {
     const initialCartLength = appState.cart.length;
     appState.cart = appState.cart.filter(item => item.id !== productId);
+    
     if (appState.cart.length < initialCartLength) {
         showToastNotification('Producto eliminado del carrito.', 'info');
-        saveCart();
-        updateCartDisplay();
+    } else {
+        showToastNotification('El producto no se encontró en el carrito.', 'warning');
     }
+    
+    saveCart();
+    updateCartDisplay();
+    // console.log('cart.js: Producto eliminado del carrito.', appState.cart); // ELIMINADO para producción
 }
 
-/**
- * Actualiza la cantidad de un producto en el carrito.
- * @param {string} productId - El ID del producto.
- * @param {number} change - Cantidad a sumar o restar (ej. 1 o -1).
- */
-function changeQuantity(productId, change) {
+export function updateCartQuantity(productId, change) {
     const item = appState.cart.find(item => item.id === productId);
-    if (item) {
-        item.quantity += change;
-        if (item.quantity <= 0) {
-            removeFromCart(productId);
-        } else {
-            saveCart();
-            updateCartDisplay();
-        }
+    if (!item) {
+        showToastNotification('Producto no encontrado en el carrito.', 'error');
+        return;
     }
+
+    const productInStock = appState.products.find(p => p.id === productId);
+
+    if (item.quantity + change <= 0) {
+        removeFromCart(productId); // Si la cantidad es 0 o menos, eliminar
+        return;
+    }
+
+    if (productInStock && (item.quantity + change) > productInStock.stock) {
+        showToastNotification(`No hay suficiente stock para ${item.name}. Stock disponible: ${productInStock.stock}`, 'warning');
+        return;
+    }
+
+    item.quantity += change;
+    showToastNotification(`Cantidad de ${item.name} actualizada a ${item.quantity}.`, 'info');
+    saveCart();
+    updateCartDisplay();
+    // console.log('cart.js: Cantidad de producto actualizada.', appState.cart); // ELIMINADO para producción
 }
 
-/**
- * Guarda el estado actual del carrito en localStorage.
- */
 function saveCart() {
     localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(appState.cart));
 }
 
-/**
- * Renderiza los ítems del carrito y actualiza los totales y contadores.
- */
 export function updateCartDisplay() {
-    cartItemsContainer.innerHTML = '';
-    let totalItemsInCart = 0;
+    if (!cartItemsContainer || !cartTotalPriceElement || !cartCountElement || !bottomCartCountElement) {
+        // console.warn('cart.js: Elementos del display del carrito no encontrados para actualizar.'); // ELIMINADO para producción
+        return;
+    }
+
+    cartItemsContainer.innerHTML = ''; // Limpiar lista
+    let totalItems = 0;
     let totalPrice = 0;
 
     if (appState.cart.length === 0) {
-        cartItemsContainer.innerHTML = '<p class="text-text-color-light text-center">Tu carrito está vacío.</p>';
+        cartItemsContainer.innerHTML = '<p class="empty-cart-message">Tu carrito está vacío.</p>';
+        // console.log('cart.js: Carrito vacío, mensaje mostrado.'); // ELIMINADO para producción
     } else {
         appState.cart.forEach(item => {
             const itemPrice = item.isOnOffer && item.offerPrice !== null ? item.offerPrice : item.price;
-            const subtotal = itemPrice * item.quantity;
-            totalPrice += subtotal;
-            totalItemsInCart += item.quantity;
-
-            const cartItemElement = document.createElement('div');
-            cartItemElement.classList.add('cart-item', 'flex', 'items-center', 'gap-4', 'mb-4', 'pb-4', 'border-b', 'border-border-color');
-            cartItemElement.innerHTML = `
-                <img src="${item.imageUrl}" alt="${item.name}" class="w-16 h-16 object-cover rounded-md border border-border-color">
-                <div class="cart-item-details flex-grow">
-                    <h4 class="text-text-color-dark font-semibold">${item.name}</h4>
-                    <p class="text-sm text-text-color-light">${item.brand}</p>
-                    <p class="price text-accent-color font-bold">$${itemPrice.toLocaleString('es-CO')}</p>
+            const itemElement = document.createElement('div');
+            itemElement.classList.add('cart-item');
+            itemElement.innerHTML = `
+                <img src="${item.imageUrl}" alt="${item.name}" class="cart-item-image" loading="lazy">
+                <div class="cart-item-info">
+                    <h4 class="cart-item-name">${item.name}</h4>
+                    <p class="cart-item-price">$${itemPrice.toLocaleString('es-CO')}</p>
+                    <div class="cart-item-quantity-control">
+                        <button class="quantity-decrease btn-icon" data-id="${item.id}" aria-label="Disminuir cantidad">-</button>
+                        <span class="quantity-display">${item.quantity}</span>
+                        <button class="quantity-increase btn-icon" data-id="${item.id}" aria-label="Aumentar cantidad">+</button>
+                    </div>
                 </div>
-                <div class="cart-item-controls flex items-center gap-2">
-                    <button class="quantity-btn decrease-quantity-btn bg-secondary-color text-text-color-dark px-2 py-1 rounded-md hover:bg-primary-color hover:text-secondary-color-dark transition-colors" data-id="${item.id}">-</button>
-                    <span class="item-quantity text-text-color-dark font-bold">${item.quantity}</span>
-                    <button class="quantity-btn increase-quantity-btn bg-secondary-color text-text-color-dark px-2 py-1 rounded-md hover:bg-primary-color hover:text-secondary-color-dark transition-colors" data-id="${item.id}">+</button>
-                    <button class="remove-item-btn text-danger-color text-lg hover:text-red-700 transition-colors" data-id="${item.id}">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 011-1h4a1 1 0 110 2H8a1 1 0 01-1-1zm6 3a1 1 0 100 2h1a1 1 0 100-2h-1z" clip-rule="evenodd"></path></svg>
-                    </button>
-                </div>
+                <button class="remove-item-btn btn-icon" data-id="${item.id}" aria-label="Eliminar producto">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
             `;
-            cartItemsContainer.appendChild(cartItemElement);
-        });
+            cartItemsContainer.appendChild(itemElement);
 
-        // Añadir event listeners a los botones de cantidad y eliminar
-        cartItemsContainer.querySelectorAll('.increase-quantity-btn').forEach(button => {
-            button.addEventListener('click', (event) => {
-                changeQuantity(event.target.dataset.id, 1);
-            });
-        });
-        cartItemsContainer.querySelectorAll('.decrease-quantity-btn').forEach(button => {
-            button.addEventListener('click', (event) => {
-                changeQuantity(event.target.dataset.id, -1);
-            });
-        });
-        cartItemsContainer.querySelectorAll('.remove-item-btn').forEach(button => {
-            button.addEventListener('click', (event) => {
-                removeFromCart(event.target.dataset.id);
-            });
+            totalItems += item.quantity;
+            totalPrice += itemPrice * item.quantity;
         });
     }
 
+    cartCountElement.textContent = totalItems;
+    bottomCartCountElement.textContent = totalItems;
     cartTotalPriceElement.textContent = `$${totalPrice.toLocaleString('es-CO')}`;
-    cartCountElement.textContent = totalItemsInCart.toString();
-    bottomCartCountElement.textContent = totalItemsInCart.toString();
+    // console.log(`cart.js: Display del carrito actualizado. Total items: ${totalItems}, Total price: $${totalPrice.toLocaleString('es-CO')}.`); // ELIMINADO para producción
 }
 
-/**
- * Genera el mensaje de pedido y lo envía a WhatsApp.
- */
-function sendOrderToWhatsapp() {
+export function sendOrderToWhatsapp() {
     if (appState.cart.length === 0) {
         showToastNotification('Tu carrito está vacío. ¡Añade productos antes de finalizar tu pedido!', 'warning');
         return;
@@ -226,4 +230,5 @@ function sendOrderToWhatsapp() {
     saveCart();
     updateCartDisplay();
     toggleCartSidebar(); // Cierra el modal después de enviar
+    // console.log('cart.js: Pedido enviado por WhatsApp y carrito vaciado.'); // ELIMINADO para producción
 }
