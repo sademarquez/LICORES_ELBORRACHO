@@ -1,31 +1,15 @@
-/* css/responsive.css */
-
-/* --- MÓVILES (Hasta 768px) --- */
 @media (max-width: 768px) {
     .product-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
-
-    /* CARRUSEL DE CATEGORÍAS: Mínimo 3 por vista */
-    .category-products-carousel .product-card {
-        flex: 0 0 calc(33.33% - 1rem); /* 3 por vista, ajustando por el gap */
-    }
+    .category-products-carousel .product-card { flex: 0 0 calc(33.33% - 1rem); }
+    #productFilters { top: 68px; }
 }
 
-/* --- TABLETS (769px a 1024px) --- */
 @media (min-width: 769px) and (max-width: 1024px) {
     .product-grid { grid-template-columns: repeat(3, 1fr); }
-
-    /* CARRUSEL DE CATEGORÍAS: 4 por vista */
-    .category-products-carousel .product-card {
-        flex: 0 0 calc(25% - 1rem);
-    }
+    .category-products-carousel .product-card { flex: 0 0 calc(25% - 1rem); }
 }
 
-/* --- DESKTOP (1025px y más) --- */
 @media (min-width: 1025px) {
     .product-grid { grid-template-columns: repeat(4, 1fr); }
-    
-    /* CARRUSEL DE CATEGORÍAS: 5 por vista */
-    .category-products-carousel .product-card {
-        flex: 0 0 calc(20% - 1rem);
-    }
+    .category-products-carousel .product-card { flex: 0 0 calc(20% - 1rem); }
 }
