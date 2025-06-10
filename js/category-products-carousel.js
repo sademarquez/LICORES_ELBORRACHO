@@ -24,25 +24,46 @@ export function setupCategoryProductCarousel(allProducts, sectionSelector) {
         return;
     }
 
-    /**
-     * Renderiza los productos para la categoría seleccionada en el carrusel.
-     * @param {Array<Object>} productsToRender - Productos filtrados para la categoría.
-     */
-    const renderCategoryProducts = (productsToRender) => {
-        categoryProductTrack.innerHTML = ''; // Limpiar contenido previo
+    // Limpiar botones existentes si los hay (útil para recargas dinámicas)
+    categoryButtonsContainer.innerHTML = '';
 
-        if (productsToRender.length === 0) {
-            categoryProductTrack.innerHTML = `<p class="no-results-message">No hay productos en esta categoría.</p>`;
+    // Crear un conjunto de categorías únicas de los productos
+    const uniqueCategories = new Set(['all', ...allProducts.map(p => p.category)]); // 'all' siempre primero
+
+    // Crear los botones de categoría dinámicamente
+    uniqueCategories.forEach(category => {
+        const button = document.createElement('button');
+        button.classList.add('category-btn');
+        button.dataset.category = category;
+        button.textContent = category === 'all' ? 'Todos' : category; // Mostrar 'Todos' en lugar de 'all'
+
+        if (category === 'all') { // Establecer 'Todos' como activo por defecto
+            button.classList.add('active');
+        }
+        categoryButtonsContainer.appendChild(button);
+    });
+
+    /**
+     * Renderiza los productos para la categoría seleccionada en el track.
+     * @param {Array<Object>} productsToDisplay - Los productos a renderizar.
+     */
+    const renderCategoryProducts = (productsToDisplay) => {
+        categoryProductTrack.innerHTML = ''; // Limpiar productos previos
+
+        if (productsToDisplay.length === 0) {
+            categoryProductTrack.innerHTML = `<p style="text-align: center; width: 100%; color: var(--text-color-light);">No hay productos en esta categoría.</p>`;
             return;
         }
 
-        productsToRender.forEach(product => {
+        productsToDisplay.forEach(product => {
             const productCard = renderProductCard(product);
             categoryProductTrack.appendChild(productCard);
         });
+
+        console.log(`category-products-carousel.js: ${productsToDisplay.length} productos renderizados para la categoría.`);
     };
 
-    // Event listeners para los botones de categoría
+    // Añadir event listeners a los botones de categoría
     const categoryBtns = categoryButtonsContainer.querySelectorAll('.category-btn');
     categoryBtns.forEach(button => {
         button.addEventListener('click', () => {
@@ -57,6 +78,7 @@ export function setupCategoryProductCarousel(allProducts, sectionSelector) {
             if (selectedCategory === 'all') {
                 filteredProducts = allProducts;
             } else {
+                // Asegúrate de que la propiedad 'category' en products.json coincide con el 'data-category'
                 filteredProducts = allProducts.filter(product => product.category === selectedCategory);
             }
             
@@ -77,5 +99,5 @@ export function setupCategoryProductCarousel(allProducts, sectionSelector) {
         renderCategoryProducts(allProducts);
     }
 
-    // console.log(`category-products-carousel.js: Carrusel de categorías "${sectionSelector}" inicializado.`); // ELIMINADO
+    console.log(`category-products-carousel.js: Carrusel de categorías \"${sectionSelector}\" inicializado.`);
 }
