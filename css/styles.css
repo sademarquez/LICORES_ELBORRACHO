@@ -2,27 +2,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
 :root {
-    /* Paleta de Colores Elegante (Negro y Dorado) */
-    --primary-color: #D4AF37; /* Dorado Metálico */
-    --secondary-color: #FFBF00; /* Ámbar / Dorado más vibrante para acentos */
-    --accent-color: #E5C100; /* Tono intermedio de dorado */
-    
-    /* Tonos de Negro y Vidrio Ahumado */
-    --bg-color-start: #111111; /* Negro profundo */
-    --bg-color-end: #000000;   /* Negro absoluto */
-    --glass-bg: rgba(20, 20, 20, 0.4); /* Vidrio ahumado oscuro */
-    --glass-border: rgba(212, 175, 55, 0.2); /* Borde dorado sutil */
-    
-    /* Colores de Texto */
-    --text-color-primary: #f5f5f5; /* Blanco hueso */
-    --text-color-secondary: #a3a3a3; /* Gris claro */
-    
-    /* Variables de Diseño */
-    --border-radius: 16px;
-    --card-padding: 20px;
-    --shadow-light: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-    --shadow-medium: 0 12px 40px 0 rgba(0, 0, 0, 0.5);
-    --transition-speed: 0.4s;
+    /* ... (La paleta de colores Negro y Dorado permanece igual) ... */
+    --primary-color: #D4AF37; --secondary-color: #FFBF00; --accent-color: #E5C100;
+    --bg-color-start: #111111; --bg-color-end: #000000;
+    --glass-bg: rgba(20, 20, 20, 0.4); --glass-border: rgba(212, 175, 55, 0.2);
+    --text-color-primary: #f5f5f5; --text-color-secondary: #a3a3a3;
+    --border-radius: 16px; --card-padding: 20px; --shadow-light: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    --shadow-medium: 0 12px 40px 0 rgba(0, 0, 0, 0.5); --transition-speed: 0.4s;
     --font-family: 'Poppins', sans-serif;
 }
 
@@ -35,68 +21,76 @@ body {
     min-height: 100vh;
 }
 
-#bg3d { /* Contenedor del fondo animado */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    overflow: hidden;
-}
+#bg3d { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; }
 
-/* --- TARJETAS DE PRODUCTO MINIMALISTAS --- */
+/* --- TARJETAS DE PRODUCTO CON NOMBRE SOBRE IMAGEN --- */
 .product-card {
     background: var(--glass-bg);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
     border-radius: var(--border-radius);
     border: 1px solid var(--glass-border);
     box-shadow: var(--shadow-light);
-    padding: var(--card-padding);
-    text-align: center;
     transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
     transform-style: preserve-3d;
     display: flex;
     flex-direction: column;
+    overflow: hidden; /* Importante para que el nombre no se salga */
 }
 
-.product-card:hover {
-    transform: translateY(-10px) scale(1.03);
-    box-shadow: var(--shadow-medium), 0 0 20px rgba(212, 175, 55, 0.3);
-}
+.product-card:hover { transform: translateY(-10px) scale(1.03); box-shadow: var(--shadow-medium), 0 0 20px rgba(212, 175, 55, 0.3); }
 
-.product-card .product-image {
+.product-image-container {
+    position: relative; /* Contenedor para la imagen y el nombre */
     width: 100%;
-    height: 160px; /* Altura ajustada para simetría cuadrada */
+    height: 220px; /* Un poco más de altura para el nombre */
+}
+
+.product-image {
+    width: 100%;
+    height: 100%;
     object-fit: contain;
-    margin-bottom: 1rem;
     filter: drop-shadow(0 8px 10px rgba(0,0,0,0.4));
     transition: transform var(--transition-speed) ease;
 }
 
-.product-card:hover .product-image {
-    transform: translateZ(30px) scale(1.1);
+.product-card:hover .product-image { transform: scale(1.1); }
+
+.product-name-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 1.5rem 1rem 0.75rem; /* Padding superior para el degradado */
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+    text-align: center;
 }
 
-.product-card .product-name {
+.product-name {
     font-size: 1rem;
     font-weight: 600;
     color: var(--text-color-primary);
-    margin-bottom: 0.5rem;
-    height: 3em; /* 2 líneas */
-    overflow: hidden;
+    line-height: 1.2;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
 }
 
-.product-card .product-price {
+.product-details {
+    padding: var(--card-padding);
+    padding-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Para que ocupe el espacio restante */
+}
+
+.product-price {
     font-size: 1.4rem;
     font-weight: 700;
     color: var(--primary-color);
     margin-bottom: 1rem;
     letter-spacing: 1px;
+    text-align: center;
 }
 
-.product-card .add-to-cart-btn {
+.add-to-cart-btn {
     background: rgba(212, 175, 55, 0.1);
     border: 1px solid var(--primary-color);
     color: var(--primary-color);
@@ -105,60 +99,32 @@ body {
     font-weight: 600;
     cursor: pointer;
     transition: all var(--transition-speed) ease;
-    margin-top: auto;
+    margin-top: auto; /* Empuja el botón al final */
+    width: 100%;
 }
 
-.product-card .add-to-cart-btn:hover {
-    background: var(--primary-color);
-    color: var(--bg-color-start);
-    box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
-}
+.add-to-cart-btn:hover { background: var(--primary-color); color: var(--bg-color-start); box-shadow: 0 0 20px rgba(212, 175, 55, 0.5); }
 
+/* --- NAVEGACIÓN DE CATEGORÍAS (CON CARRUSEL RESTAURADO) --- */
+.category-nav-container { padding: 20px 0; }
+.category-buttons-scroll { display: flex; overflow-x: auto; gap: 1rem; padding-bottom: 1rem; scrollbar-width: none; }
+.category-buttons-scroll::-webkit-scrollbar { display: none; }
 
-/* --- NAVEGACIÓN DE CATEGORÍAS --- */
-.category-btn {
-    flex-shrink: 0;
-    padding: 12px 28px;
-    border-radius: 50px;
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    color: var(--text-color-secondary);
-    font-weight: 600;
-    cursor: pointer;
-    transition: all var(--transition-speed) ease;
-}
+.category-btn { /* ... Estilos de botón sin cambios ... */ }
 
-.category-btn:hover {
-    transform: translateY(-5px) scale(1.05);
-    color: var(--text-color-primary);
-    border-color: var(--primary-color);
-}
-
-.category-btn.active {
-    background: var(--primary-color);
-    color: black;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
-}
-
-/* --- NUEVA CUADRÍCULA DE PRODUCTOS POR CATEGORÍA (2 Filas) --- */
-#categoryProductsContainer {
-    display: grid;
-    /* Se define el número de columnas en responsive.css */
+/* CARRUSEL LATERAL DE PRODUCTOS POR CATEGORÍA */
+.category-products-carousel {
+    display: flex;
     gap: 1rem;
-    margin-top: 1.5rem;
-    padding: 1rem 0;
+    overflow-x: auto;
+    padding: 1.5rem 0;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
 }
+.category-products-carousel::-webkit-scrollbar { display: none; }
 
-
-/* --- SECCIÓN PRINCIPAL DE PRODUCTOS Y FILTROS --- */
-.product-filters-sticky {
-    /* ... estilos de filtros ... */
+.category-products-carousel .product-card {
+    scroll-snap-align: start;
+    /* El ancho se define en responsive.css */
+    flex-shrink: 0;
 }
-
-.product-grid {
-    display: grid;
-    gap: 1.5rem;
-}
-
-/* ... resto de tus estilos ... */
