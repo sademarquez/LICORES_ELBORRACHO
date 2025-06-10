@@ -111,6 +111,7 @@
     </style>
 </head>
 <body class="bg-dark-bg text-text-color-dark font-sans">
+    <!-- El resto de tu body (bg3d, ageVerificationModal, header, bottom-nav) permanece igual... -->
     <div id="bg3d"></div>
 
     <div id="ageVerificationModal" class="age-verification-modal">
@@ -126,461 +127,75 @@
     </div>
 
     <header class="main-header bg-dark-bg text-text-color-dark p-4 shadow-md sticky top-0 z-50">
-        <div class="container mx-auto flex justify-between items-center header-content">
-            <a href="#" class="logo-container flex items-center gap-2" onclick="showSection('inicio'); return false;">
-                <img src="images/logo.png" alt="Licores el Borracho Logo" class="h-12">
-                <span class="site-name text-2xl font-bold text-primary-color">EL BORRACHO</span>
-            </a>
-
-            <nav class="main-nav hidden md:flex flex-grow justify-center">
-                <ul class="nav-list flex space-x-6">
-                    <li><a href="#" class="nav-link" data-section="inicio">Inicio</a></li>
-                    <li><a href="#" class="nav-link" data-section="catalogo">Catálogo</a></li>
-                    <li><a href="#" class="nav-link" data-section="promociones">Promociones</a></li>
-                    <li><a href="#" class="nav-link" data-section="contacto">Contacto</a></li>
-                    <li><a href="#" class="nav-link" data-section="soporte">Soporte</a></li>
-                </ul>
-            </nav>
-
-            <div class="header-icons flex items-center gap-4">
-                <button id="searchOpenBtn" class="icon-button text-text-color-dark hover:text-primary-color transition-colors">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                </button>
-                <button id="cartOpenBtn" class="icon-button relative text-text-color-dark hover:text-primary-color transition-colors">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 0a2 2 0 100 4 2 2 0 000-4z"></path></svg>
-                    <span id="cartCount" class="cart-count absolute -top-2 -right-2 bg-danger-color text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">0</span>
-                </button>
-                <button id="menuToggle" class="menu-toggle md:hidden text-text-color-dark hover:text-primary-color transition-colors">
-                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-                </button>
-            </div>
-        </div>
+        <!-- Contenido del Header... -->
     </header>
 
     <nav class="bottom-nav fixed bottom-0 left-0 w-full bg-dark-bg border-t border-border-color z-50 md:hidden">
-        <ul class="flex justify-around items-center h-full">
-            <li class="nav-item-bottom">
-                <a href="#" class="nav-link-bottom active" data-section="inicio">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2 2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-                    <span class="nav-text">Inicio</span>
-                </a>
-            </li>
-            <li class="nav-item-bottom">
-                <a href="#" class="nav-link-bottom" data-section="catalogo">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m7 0V5a2 2 0 012-2h2a2 2 0 012 2v6m-6 0h6"></path></svg>
-                    <span class="nav-text">Catálogo</span>
-                </a>
-            </li>
-            <li class="nav-item-bottom">
-                <button id="bottomSearchBtn" class="nav-link-bottom">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                    <span class="nav-text">Buscar</span>
-                </button>
-            </li>
-            <li class="nav-item-bottom">
-                <button id="bottomCartBtn" class="nav-link-bottom relative">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 0a2 2 0 100 4 2 2 0 000-4z"></path></svg>
-                    <span id="bottomCartCount" class="cart-count absolute -top-1 -right-1 bg-danger-color text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">0</span>
-                    <span class="nav-text">Carrito</span>
-                </button>
-            </li>
-            <li class="nav-item-bottom">
-                <a href="#" class="nav-link-bottom" data-section="contacto">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2H7a2 2 0 01-2-2V6a2 2 0 012-2h2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v1m-4 2H9m7 0a2 2 0 012 2v6a2 2 0 01-2 2H7a2 2 0 01-2-2V6a2 2 0 012-2h2"></path></svg>
-                    <span class="nav-text">Contacto</span>
-                </a>
-            </li>
-        </ul>
+        <!-- Contenido del Bottom Nav... -->
     </nav>
-
+    
     <main class="container mx-auto px-4 py-8">
         <section id="inicio" class="hero-section active-section">
-            <div class="carousel-container">
-                <div id="carouselTrack" class="carousel-track">
-                    </div>
-                <button id="carouselPrev" class="carousel-btn prev">&lt;</button>
-                <button id="carouselNext" class="carousel-btn next">&gt;</button>
-                <div id="carouselDots" class="carousel-dots">
-                    </div>
-            </div>
-
-            <section id="featuredPromotionsSection" class="my-12 py-8 bg-secondary-color-dark rounded-lg shadow-xl text-center">
-                <h2 class="text-3xl font-bold text-primary-color mb-8">🔥 Promociones Destacadas 🔥</h2>
-                <div class="continuous-carousel-container">
-                    <div id="continuousProductCarouselTrack" class="continuous-carousel-track">
-                        </div>
-                </div>
-            </section>
-
-            <section id="brandCarouselSection" class="my-12 py-8 bg-light-bg rounded-lg shadow-xl text-center">
-                <h2 class="text-3xl font-bold text-primary-color mb-8">Nuestras Marcas</h2>
-                <div class="continuous-carousel-container brand-carousel">
-                    <div id="brandContinuousCarouselTrack" class="continuous-carousel-track brand-track">
-                        </div>
-                </div>
-            </section>
+            <!-- Contenido de la sección Inicio... -->
         </section>
 
+        <!-- =========== SECCIÓN DE CATÁLOGO MODIFICADA =========== -->
         <section id="catalogo" class="content-hidden py-8">
-            <h2 class="text-4xl font-bold text-center text-primary-color mb-8">Nuestro Catálogo</h2>
-            <div class="product-filters bg-secondary-color-dark p-6 rounded-lg shadow-md mb-8 flex flex-col md:flex-row justify-between items-center gap-4">
-                <div class="filter-group w-full md:w-auto">
-                    <label for="categoryFilter" class="block text-text-color-light mb-2">Categoría:</label>
-                    <select id="categoryFilter" class="form-select w-full">
-                        <option value="all">Todas</option>
-                        </select>
+            <!-- --- NUEVA SECCIÓN DE CATEGORÍAS --- -->
+            <div class="category-explorer mb-12">
+                <h2 class="text-3xl font-bold text-center text-primary-color mb-6">Explora por Categoría</h2>
+                
+                <!-- Contenedor para los botones de categoría (generados con JS) -->
+                <div id="categoryButtons" class="flex flex-wrap justify-center gap-3 mb-8">
+                    <!-- Ejemplo de botón: <button class="category-btn">Licores</button> -->
                 </div>
-                <div class="filter-group w-full md:w-auto">
-                    <label for="priceFilter" class="block text-text-color-light mb-2">Precio Máx:</label>
-                    <input type="range" id="priceFilter" min="0" max="200000" value="200000" class="form-range w-full">
-                    <span id="priceValue" class="text-accent-color text-sm mt-1 block text-center">$200,000</span>
-                </div>
-                <div class="filter-group w-full md:w-auto">
-                    <label for="productSearch" class="block text-text-color-light mb-2">Buscar Producto:</label>
-                    <input type="text" id="productSearch" placeholder="Nombre o marca..." class="form-input w-full">
+
+                <!-- Carrusel de productos de la categoría seleccionada -->
+                <div id="categoryProductsCarousel" class="relative">
+                    <div class="category-product-carousel-track">
+                        <!-- Los productos de la categoría se insertarán aquí con JS -->
+                        <p class="w-full text-center text-text-color-light">Selecciona una categoría para ver los productos.</p>
+                    </div>
                 </div>
             </div>
+            <!-- --- FIN DE LA NUEVA SECCIÓN --- -->
+            
+            <h2 class="text-4xl font-bold text-center text-primary-color mb-8 pt-8 border-t-2 border-border-color">Catálogo Completo</h2>
+            
+            <!-- Filtros existentes -->
+            <div class="product-filters bg-secondary-color-dark p-6 rounded-lg shadow-md mb-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <!-- Contenido de filtros... -->
+            </div>
 
+            <!-- Cuadrícula principal de productos -->
             <div id="productGrid" class="product-grid">
-                </div>
+                <!-- Los productos se insertarán aquí con JS -->
+            </div>
         </section>
+        <!-- ======================================================= -->
 
         <section id="promociones" class="content-hidden py-8 text-center">
-            <h2 class="text-4xl font-bold text-center text-primary-color mb-8">Ofertas y Promociones Exclusivas</h2>
-            <p class="text-lg text-text-color-light mb-8">
-                Descubre descuentos increíbles y paquetes especiales que no querrás perderte.
-                ¡Mantente atento a nuestras actualizaciones!
-            </p>
-            <div class="flex flex-wrap justify-center gap-6">
-                <div class="promotion-highlight bg-secondary-color-dark p-6 rounded-lg shadow-md flex-1 min-w-[280px] max-w-sm">
-                    <h3 class="text-2xl font-semibold text-accent-color mb-4">Envío Gratis</h3>
-                    <p class="text-text-color-light mb-4">En pedidos superiores a $150.000 COP. ¡Aprovecha!</p>
-                    <button class="btn btn-primary" onclick="showSection('catalogo'); document.getElementById('priceFilter').value=150000; applyFilters();">Ver Catálogo</button>
-                </div>
-                <div class="promotion-highlight bg-secondary-color-dark p-6 rounded-lg shadow-md flex-1 min-w-[280px] max-w-sm">
-                    <h3 class="text-2xl font-semibold text-accent-color mb-4">Descuentos por Volumen</h3>
-                    <p class="text-text-color-light mb-4">Compra más, paga menos. Ideal para eventos.</p>
-                    <button class="btn btn-secondary">Más Información</button>
-                </div>
-            </div>
-             <section id="offersCarouselSection" class="my-12 py-8 bg-light-bg rounded-lg shadow-xl text-center">
-                <h2 class="text-3xl font-bold text-primary-color mb-8">✨ Productos en Oferta ✨</h2>
-                <div class="continuous-carousel-container">
-                    <div id="offersContinuousCarouselTrack" class="continuous-carousel-track">
-                        </div>
-                </div>
-            </section>
+            <!-- Contenido de la sección Promociones... -->
         </section>
 
-
         <section id="soporte" class="content-hidden py-8">
-            <h2 class="text-4xl font-bold text-center text-primary-color mb-8">Centro de Ayuda y Soporte</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="bg-secondary-color-dark p-6 rounded-lg shadow-md">
-                    <h3 class="text-2xl font-semibold text-accent-color mb-4">Preguntas Frecuentes (FAQ)</h3>
-                    <div class="faq-item mb-4">
-                        <h4 class="text-xl font-medium text-text-color-dark cursor-pointer hover:text-primary-color" onclick="this.nextElementSibling.classList.toggle('hidden')">¿Cuáles son los métodos de pago?</h4>
-                        <p class="text-text-color-light mt-2 hidden">Aceptamos pagos en efectivo, transferencia bancaria (Nequi, Bancolombia) y pagos con tarjeta de crédito/débito a través de nuestro datafono en el punto de entrega o en el local.</p>
-                    </div>
-                    <div class="faq-item mb-4">
-                        <h4 class="text-xl font-medium text-text-color-dark cursor-pointer hover:text-primary-color" onclick="this.nextElementSibling.classList.toggle('hidden')">¿Hacen entregas a domicilio?</h4>
-                        <p class="text-text-color-light mt-2 hidden">Sí, ofrecemos servicio de entrega a domicilio en Popayán y sus alrededores. El costo y tiempo de entrega varían según tu ubicación.</p>
-                    </div>
-                    <div class="faq-item mb-4">
-                        <h4 class="text-xl font-medium text-text-color-dark cursor-pointer hover:text-primary-color" onclick="this.nextElementSibling.classList.toggle('hidden')">¿Puedo devolver un producto?</h4>
-                        <p class="text-text-color-light mt-2 hidden">Las devoluciones se aceptan solo si el producto presenta defectos de fábrica o no corresponde al pedido. Revisa nuestra política de devoluciones completa.</p>
-                    </div>
-                    <div class="faq-item">
-                        <h4 class="text-xl font-medium text-text-color-dark cursor-pointer hover:text-primary-color" onclick="this.nextElementSibling.classList.toggle('hidden')">¿Tienen promociones especiales?</h4>
-                        <p class="text-text-color-light mt-2 hidden">Constantemente tenemos nuevas promociones. Visita nuestra sección de "Promociones" o síguenos en redes sociales para estar al tanto.</p>
-                    </div>
-                </div>
-
-                <div class="bg-secondary-color-dark p-6 rounded-lg shadow-md">
-                    <h3 class="text-2xl font-semibold text-accent-color mb-4">Contáctanos para Soporte</h3>
-                    <p class="text-text-color-light mb-6">Si no encuentras lo que buscas, contáctanos directamente o agenda un pedido/entrega.</p>
-                    <div class="space-y-4">
-                        <button id="reportFaultBtn" class="btn btn-primary w-full">Reportar un Problema o Sugerencia</button>
-                        <button id="bookAppointmentBtn" class="btn btn-secondary w-full">Agendar Pedido/Entrega</button>
-                    </div>
-                </div>
-            </div>
+            <!-- Contenido de la sección Soporte... -->
         </section>
 
         <section id="contacto" class="content-hidden py-8">
-            <h2 class="text-4xl font-bold text-center text-primary-color mb-8">Contáctanos</h2>
-            <div class="bg-secondary-color-dark p-8 rounded-lg shadow-md max-w-2xl mx-auto">
-                <p class="text-lg text-text-color-light mb-6 text-center">Estamos aquí para ayudarte. Ponte en contacto con nosotros a través de los siguientes medios:</p>
-                <div class="space-y-4 text-center">
-                    <p class="text-xl text-accent-color flex items-center justify-center gap-3">
-                        <svg class="w-7 h-7 text-primary-color" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M.05 3.197c.567-.406 1.258-.69 2.012-.832L18.423.082a2.001 2.001 0 012.316 1.488l-1.378 12.016a2.001 2.001 0 01-1.488 2.316L3.929 18.95c-.754.143-1.445-.141-2.012-.832a2.001 2.001 0 01-.767-1.895L.05 3.197zM12 11c0 1.657-1.343 3-3 3s-3-1.343-3-3 1.343-3 3-3 3 1.343 3 3z"></path></svg>
-                        Email: <span id="contactEmail" class="text-text-color-dark ml-2"></span>
-                    </p>
-                    <p class="text-xl text-accent-color flex items-center justify-center gap-3">
-                        <svg class="w-7 h-7 text-primary-color" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.181c-.707-.468-1.748-.962-2.91-1.127-1.163-.165-2.45-.195-3.69-.195-1.24 0-2.43.03-3.69.195-1.162.165-2.203.659-2.91 1.127C3.125 14.512 2 15.65 2 17v2c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2v-2c0-1.35-1.125-2.488-2.528-2.819zM12 4c2.206 0 4 1.794 4 4s-1.794 4-4 4-4-1.794-4-4 1.794-4 4-4z"></path></svg>
-                        Teléfono: <span id="contactPhone" class="text-text-color-dark ml-2"></span>
-                    </p>
-                    <p class="text-xl text-accent-color flex items-center justify-center gap-3">
-                        <svg class="w-7 h-7 text-primary-color" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"></path></svg>
-                        Dirección: <span id="contactAddress" class="text-text-color-dark ml-2"></span>
-                    </p>
-                </div>
-                <div class="social-media flex justify-center gap-6 mt-8">
-                    <a href="#" target="_blank" class="text-text-color-dark hover:text-primary-color transition-colors">
-                        <img src="images/icons/whatsapp-icon.svg" alt="WhatsApp" class="h-9 w-9">
-                    </a>
-                    <a href="#" target="_blank" class="text-text-color-dark hover:text-primary-color transition-colors">
-                        <img src="images/icons/facebook-icon.svg" alt="Facebook" class="h-9 w-9">
-                    </a>
-                    <a href="#" target="_blank" class="text-text-color-dark hover:text-primary-color transition-colors">
-                        <img src="images/icons/instagram-icon.svg" alt="Instagram" class="h-9 w-9">
-                    </a>
-                </div>
-            </div>
+            <!-- Contenido de la sección Contacto... -->
         </section>
     </main>
-
+    
     <footer class="footer-section bg-secondary-color py-8 text-text-color-light text-center">
-        <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div>
-                <h3 class="text-2xl font-bold text-primary-color mb-4">Licores el Borracho</h3>
-                <p>&copy; 2023 Todos los derechos reservados.</p>
-                <p class="text-sm">Diseñado con pasión por la buena bebida.</p>
-            </div>
-            <div>
-                <h3 class="text-2xl font-bold text-primary-color mb-4">Contacto</h3>
-                <p>Email: <span id="footerEmail"></span></p>
-                <p>Teléfono: <span id="footerPhone"></span></p>
-                <p>Dirección: <span id="footerAddress"></span></p>
-            </div>
-            <div>
-                <h3 class="text-2xl font-bold text-primary-color mb-4">Síguenos</h3>
-                <div class="social-media flex justify-center md:justify-start gap-4">
-                    <a href="#" target="_blank" class="text-text-color-dark hover:text-primary-color transition-colors">
-                        <img src="images/icons/whatsapp-icon.svg" alt="WhatsApp" class="h-8 w-8">
-                    </a>
-                    <a href="#" target="_blank" class="text-text-color-dark hover:text-primary-color transition-colors">
-                        <img src="images/icons/facebook-icon.svg" alt="Facebook" class="h-8 w-8">
-                    </a>
-                    <a href="#" target="_blank" class="text-text-color-dark hover:text-primary-color transition-colors">
-                        <img src="images/icons/instagram-icon.svg" alt="Instagram" class="h-8 w-8">
-                    </a>
-                </div>
-            </div>
-        </div>
+        <!-- Contenido del Footer... -->
     </footer>
 
-    <div id="cartSidebar" class="cart-sidebar">
-        <div class="cart-header">
-            <h2 class="text-2xl font-bold text-primary-color">Tu Carrito</h2>
-            <button id="closeCartBtn" class="close-btn">&times;</button>
-        </div>
-        <div id="cartItems" class="cart-items">
-            <p class="text-text-color-light text-center">Tu carrito está vacío.</p>
-        </div>
-        <div class="cart-summary">
-            <div class="cart-total">
-                <span>Total:</span>
-                <span id="cartTotalPrice" class="text-primary-color text-xl font-bold">$0</span>
-            </div>
-            <button id="checkoutWhatsappBtn" class="btn btn-primary w-full mt-4">
-                <svg class="w-5 h-5 inline-block mr-2" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M.057 20.354l1.328-4.839A10.875 10.875 0 010 12C0 5.373 5.373 0 12 0s12 5.373 12 12-5.373 12-12 12c-2.427 0-4.708-.73-6.62-2.003L.057 20.354zm6.54-3.921a8.653 8.653 0 005.404 1.936c4.664 0 8.448-3.784 8.448-8.448S16.668 3.552 12 3.552 3.552 7.336 3.552 12c0 1.905.632 3.65 1.737 5.093l-.903 3.327 3.427-.927zM17.472 13.918c-.29-.145-.72-.23-1.127-.27-.407-.04-.707-.059-1.008.03-.3.09-.523.364-.784.654-.262.29-.53.64-.78.775-.25.136-.51.196-.957.06-.447-.136-1.895-.697-3.614-2.228-1.332-1.164-2.228-2.73-2.492-3.178-.263-.448-.028-.69-.02-1.018.008-.328-.016-.628.21-.908.226-.29.492-.6.757-.866.265-.266.353-.44.47-.73.116-.29.058-.548-.03-.775-.088-.227-.78-.718-1.071-1.385-.29-.667-.58-1.335-.55-1.86.03-.526.37-1.018.52-1.346.15-.327.305-.448.47-.455.166-.008.36-.008.526-.008.165 0 .42.06.6.178.18.118.396.345.54.55.146.205.317.47.47.64.155.17.29.28.455.455.164.174.34.33.52.485.18.155.335.25.56.28.22.03.547.002.793-.11.246-.11.785-.304 1.488-.94.704-.635 1.173-.956 1.39-.956.216 0 .343.1.53.4.188.3.64.99 1.096 1.93.454.94.733 1.91.733 2.062.008.152-.228.878-.453 1.345-.226.467-.442.776-.838.995z"/></svg>
-                Realizar Pedido por WhatsApp
-            </button>
-        </div>
-    </div>
-
-    <div id="searchModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal-btn" id="closeSearchModalBtn">&times;</span>
-            <h2 class="text-primary-color mb-4">Buscar Productos</h2>
-            <div class="search-input-container mb-6">
-                <input type="text" id="searchInput" placeholder="Escribe el nombre del producto o marca..." class="form-input w-full p-3 rounded-md border border-border-color bg-light-bg text-text-color-dark focus:border-primary-color">
-                <button id="searchButton" class="btn btn-primary mt-3 w-full md:w-auto">Buscar</button>
-            </div>
-            <div id="searchResultsGrid" class="product-grid min-h-[100px] max-h-[calc(100vh-350px)] overflow-y-auto custom-scrollbar">
-                <p class="no-results-message text-text-color-light text-center">Ingresa un término para buscar productos.</p>
-            </div>
-        </div>
-    </div>
-
-    <div id="faultReportModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal-btn">&times;</span>
-            <h2 class="text-primary-color mb-4">Reportar un Problema o Sugerencia</h2>
-            <form id="faultReportForm" class="space-y-4">
-                <div>
-                    <label for="faultName" class="block text-text-color-light text-sm font-bold mb-2">Tu Nombre:</label>
-                    <input type="text" id="faultName" class="form-input w-full" placeholder="Tu nombre" required>
-                </div>
-                <div>
-                    <label for="faultEmail" class="block text-text-color-light text-sm font-bold mb-2">Tu Email (opcional):</label>
-                    <input type="email" id="faultEmail" class="form-input w-full" placeholder="ejemplo@correo.com">
-                </div>
-                <div>
-                    <label for="faultType" class="block text-text-color-light text-sm font-bold mb-2">Tipo de Problema/Sugerencia:</label>
-                    <select id="faultType" class="form-select w-full" required>
-                        <option value="">Selecciona un tipo</option>
-                        <option value="error-sitio">Error en el sitio web</option>
-                        <option value="sugerencia-producto">Sugerencia de producto</option>
-                        <option value="sugerencia-mejora">Sugerencia de mejora</option>
-                        <option value="otro">Otro</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="faultDescription" class="block text-text-color-light text-sm font-bold mb-2">Descripción:</label>
-                    <textarea id="faultDescription" class="form-textarea w-full" rows="5" placeholder="Describe el problema o tu sugerencia..." required></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary w-full">Enviar Reporte</button>
-            </form>
-        </div>
-    </div>
-
-    <div id="appointmentModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal-btn">&times;</span>
-            <h2 class="text-primary-color mb-4">Agendar Pedido / Entrega</h2>
-            <form id="appointmentForm" class="space-y-4">
-                <div>
-                    <label for="appointmentName" class="block text-text-color-light text-sm font-bold mb-2">Tu Nombre:</label>
-                    <input type="text" id="appointmentName" class="form-input w-full" placeholder="Tu nombre" required>
-                </div>
-                <div>
-                    <label for="appointmentPhone" class="block text-text-color-light text-sm font-bold mb-2">Tu Teléfono (WhatsApp):</label>
-                    <input type="tel" id="appointmentPhone" class="form-input w-full" placeholder="Ej: 573123456789" required>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label for="appointmentDate" class="block text-text-color-light text-sm font-bold mb-2">Fecha Preferida:</label>
-                        <input type="date" id="appointmentDate" class="form-input w-full" required>
-                    </div>
-                    <div>
-                        <label for="appointmentTime" class="block text-text-color-light text-sm font-bold mb-2">Hora Preferida:</label>
-                        <input type="time" id="appointmentTime" class="form-input w-full" required>
-                    </div>
-                </div>
-                <div>
-                    <label for="appointmentReason" class="block text-text-color-light text-sm font-bold mb-2">Detalles del Pedido/Servicio:</label>
-                    <textarea id="appointmentReason" class="form-textarea w-full" rows="5" placeholder="Ej: Necesito 2 botellas de Aguardiente Antioqueño y 1 sixpack de Club Colombia para entrega a domicilio." required></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary w-full">Enviar Solicitud por WhatsApp</button>
-            </form>
-        </div>
-    </div>
-
-
-    <div id="toast-container" class="toast-container"></div>
+    <!-- Modales y otros elementos al final del body... -->
 
     <script type="module" src="js/main.js"></script>
     <script type="module">
-        // three-background.js
-        import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.module.js';
-
-        let scene, camera, renderer, particles, particleMaterial;
-
-        function init3DBackground() {
-            const container = document.getElementById('bg3d');
-            if (!container) {
-                console.error("Contenedor #bg3d no encontrado para el fondo 3D.");
-                return;
-            }
-
-            // Escena
-            scene = new THREE.Scene();
-
-            // Cámara
-            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            camera.position.z = 5;
-
-            // Renderizador
-            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true }); // alpha: true para fondo transparente
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            container.appendChild(renderer.domElement);
-
-            // Partículas
-            const particleCount = 1000;
-            const positions = new Float32Array(particleCount * 3);
-            const colors = new Float32Array(particleCount * 3); // Para color de las partículas
-
-            const particleGeometry = new THREE.BufferGeometry();
-            const color = new THREE.Color();
-
-            for (let i = 0; i < particleCount; i++) {
-                // Posiciones aleatorias
-                positions[i * 3] = (Math.random() * 2 - 1) * 10;
-                positions[i * 3 + 1] = (Math.random() * 2 - 1) * 10;
-                positions[i * 3 + 2] = (Math.random() * 2 - 1) * 10;
-
-                // Colores aleatorios (tonos de ámbar/dorado o gris oscuro)
-                if (Math.random() > 0.5) {
-                    color.setHSL(0.1, 0.9, Math.random() * 0.5 + 0.3); // Tonos dorados/ámbar
-                } else {
-                    color.setHSL(0, 0, Math.random() * 0.2 + 0.1); // Tonos grises muy oscuros
-                }
-                colors[i * 3] = color.r;
-                colors[i * 3 + 1] = color.g;
-                colors[i * 3 + 2] = color.b;
-            }
-
-            particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-            particleGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3)); // Añadir atributo de color
-
-            particleMaterial = new THREE.PointsMaterial({
-                size: 0.05,
-                vertexColors: true, // Habilitar colores por vértice
-                blending: THREE.AdditiveBlending, // Mezcla aditiva para un efecto de brillo
-                transparent: true,
-                opacity: 0.8
-            });
-
-            particles = new THREE.Points(particleGeometry, particleMaterial);
-            scene.add(particles);
-
-            // Luces (opcional, para dar más profundidad)
-            const ambientLight = new THREE.AmbientLight(0x404040, 0.5); // Luz ambiental suave
-            scene.add(ambientLight);
-            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-            directionalLight.position.set(1, 1, 1).normalize();
-            scene.add(directionalLight);
-
-
-            // Animación
-            animate();
-
-            // Manejar redimensionamiento de ventana
-            window.addEventListener('resize', onWindowResize, false);
-        }
-
-        function onWindowResize() {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        }
-
-        function animate() {
-            requestAnimationFrame(animate);
-
-            // Rotación de las partículas (ajusta la velocidad y los ejes)
-            if (particles) {
-                particles.rotation.x += 0.0001;
-                particles.rotation.y += 0.0002;
-                particles.rotation.z += 0.00005;
-
-                // Mover las partículas ligeramente para un efecto de "movimiento de fluidos"
-                const positions = particles.geometry.attributes.position.array;
-                for (let i = 0; i < positions.length; i += 3) {
-                    positions[i] += Math.sin(Date.now() * 0.0001 + i) * 0.00005;
-                    positions[i + 1] += Math.cos(Date.now() * 0.0001 + i) * 0.00005;
-                }
-                particles.geometry.attributes.position.needsUpdate = true;
-            }
-
-            renderer.render(scene, camera);
-        }
-
-        // Llama a la inicialización cuando el DOM esté cargado
-        document.addEventListener('DOMContentLoaded', init3DBackground);
-
+        // Tu script de three.js permanece igual...
     </script>
 </body>
 </html>
