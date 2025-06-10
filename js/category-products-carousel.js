@@ -28,21 +28,19 @@ export function setupCategoryProductCarousel(allProducts, sectionSelector) {
         return;
     }
 
-    // Limpiar contenido previo para evitar duplicados
-    categoryButtonsContainer.innerHTML = '';
-    categoryProductTrack.innerHTML = '';
-
-    // Obtener categorías únicas
+    // Generar botones de categoría dinámicamente
+    // Obtener categorías únicas de los productos
     const categories = ['all', ...new Set(allProducts.map(p => p.category))];
 
-    // Crear botones de categoría
+    categoryButtonsContainer.innerHTML = ''; // Limpiar botones existentes
+
     categories.forEach(category => {
         const button = document.createElement('button');
         button.classList.add('category-btn');
         if (category === 'all') {
             button.textContent = 'Todos';
             button.dataset.category = 'all';
-            button.classList.add('active'); // Activo por defecto
+            button.classList.add('active'); // Botón "Todos" activo por defecto
         } else {
             button.textContent = category;
             button.dataset.category = category;
@@ -50,25 +48,27 @@ export function setupCategoryProductCarousel(allProducts, sectionSelector) {
         categoryButtonsContainer.appendChild(button);
     });
 
-    // Función para renderizar productos en el carrusel de categorías
+    /**
+     * Renderiza los productos para la categoría seleccionada en el track del carrusel.
+     * @param {Array<Object>} productsToRender - Los productos filtrados por categoría.
+     */
     const renderCategoryProducts = (productsToRender) => {
-        categoryProductTrack.innerHTML = '';
+        categoryProductTrack.innerHTML = ''; // Limpiar el track
         if (productsToRender.length === 0) {
-            categoryProductTrack.innerHTML = '<p class="text-center text-text-color-light text-lg w-full">No hay productos en esta categoría.</p>';
+            categoryProductTrack.innerHTML = '<p class="empty-category-message">No hay productos en esta categoría.</p>';
             return;
         }
         productsToRender.forEach(product => {
-            const productCard = renderProductCard(product);
-            productCard.classList.add('continuous-carousel-product-card'); // Usa estilos de tarjeta de carrusel continuo
+            const productCard = renderProductCard(product); // Reutiliza la función de products.js
             categoryProductTrack.appendChild(productCard);
         });
     };
 
-    // Añadir event listeners a los botones de categoría
+    // Event listeners para los botones de categoría
     const categoryBtns = categoryButtonsContainer.querySelectorAll('.category-btn');
     categoryBtns.forEach(button => {
         button.addEventListener('click', () => {
-            // Remover clase 'active' de todos los botones
+            // Eliminar clase 'active' de todos los botones
             categoryBtns.forEach(btn => btn.classList.remove('active'));
             // Añadir clase 'active' al botón clickeado
             button.classList.add('active');
@@ -98,4 +98,6 @@ export function setupCategoryProductCarousel(allProducts, sectionSelector) {
         // Si no hay botón 'active' por defecto, renderiza todos los productos
         renderCategoryProducts(allProducts);
     }
+
+    // console.log(`category-products-carousel.js: Carrusel de categorías "${sectionSelector}" inicializado.`); // ELIMINADO para producción
 }
