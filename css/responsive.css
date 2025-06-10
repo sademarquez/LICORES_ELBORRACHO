@@ -51,7 +51,7 @@
     }
 
     .hero-section {
-        height: 300px; /* Altura más pequeña para el carrusel en móviles */
+        height: 200px; /* Altura más pequeña para el carrusel en móviles */
     }
 
     .carousel-title {
@@ -77,7 +77,7 @@
     }
 
     .product-grid {
-        grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); /* Más pequeñas en móvil */
+        grid-template-columns: repeat(auto-fill, minmax(69px, 1fr)); /* Más pequeñas en móvil */
     }
 
     .product-card {
@@ -85,7 +85,7 @@
     }
 
     .product-image {
-        max-height: 100px;
+        max-height: 150px;
     }
 
     .product-name {
