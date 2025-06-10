@@ -14,30 +14,34 @@ export function initAgeVerification() {
         return;
     }
 
-    // Siempre muestra el modal al inicio.
+    // --- MODIFICACIÓN CLAVE: Siempre muestra el modal ---
+    // Eliminamos la lógica de localStorage y siempre mostramos el modal al cargar la página.
     ageVerificationModal.style.display = 'flex'; // Asegurarse de que sea visible
     ageVerificationModal.style.opacity = '1'; // Asegurarse de que sea completamente opaco al inicio
 
     confirmAgeBtn.addEventListener('click', () => {
+        // --- MODIFICACIÓN: Transición suave para "Soy mayor de 18" ---
         // Aplicar la transición para desvanecer el modal
         ageVerificationModal.style.opacity = '0';
-        ageVerificationModal.style.transition = 'opacity 0.5s ease-out';
+        ageVerificationModal.style.transition = 'opacity 0.5s ease-out'; // Duración y curva de la transición
 
         // Ocultar el modal completamente después de que la transición termine
         setTimeout(() => {
             ageVerificationModal.style.display = 'none';
-            console.log('age-verification.js: Modal de verificación de edad ocultado después de confirmación.'); // Nuevo log
+            // Opcional: Podrías querer resetear la opacidad a 1 aquí
+            // si el modal pudiera ser reutilizado y necesitará aparecer de nuevo con opacidad completa.
+            // ageVerificationModal.style.opacity = '1';
         }, 500); // Coincide con la duración de la transición (0.5s = 500ms)
     });
 
     declineAgeBtn.addEventListener('click', () => {
-        window.location.href = 'https://www.google.com'; // Redirección inmediata
+        // --- MODIFICACIÓN: Redirección inmediata para "No soy mayor de 18" ---
+        window.location.href = 'https://www.google.com';
     });
 
     // Evitar que el modal se cierre al hacer clic fuera (se mantiene esta lógica):
     window.addEventListener('click', (event) => {
         if (event.target === ageVerificationModal) {
-            // console.log('age-verification.js: Intento de cerrar modal haciendo clic fuera.'); // ELIMINADO
             // Puedes añadir una pequeña animación o vibración aquí para indicar que no se puede cerrar
             // Por ejemplo, ageVerificationModal.classList.add('shake-animation');
             // setTimeout(() => ageVerificationModal.classList.remove('shake-animation'), 300);
