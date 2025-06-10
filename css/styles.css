@@ -1,71 +1,213 @@
-/* ... Tu CSS existente ... */
+/* css/styles.css */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
-/* --- Estilos para la Nueva Sección de Explorador por Categorías --- */
-
-.category-explorer {
-    background-color: rgba(0, 0, 0, 0.4);
-    padding: var(--spacing-lg);
-    border-radius: var(--border-radius-lg);
-    border: 1px solid var(--border-color);
+:root {
+    /* Paleta de Colores 3D Moderna (Azules/Morados con acentos) */
+    --primary-color: #8A2BE2; /* Azul Violeta Vibrante */
+    --secondary-color: #4A00E0; /* Morado Intenso */
+    --accent-color: #00F2FE; /* Cian Eléctrico para acentos */
+    --bg-color-start: #1a0f2e; /* Inicio del gradiente de fondo (morado oscuro) */
+    --bg-color-end: #0f172a; /* Fin del gradiente de fondo (azul oscuro) */
+    
+    /* Colores para Texto y Glassmorphism */
+    --text-color-primary: #f0f2f5; /* Texto principal claro */
+    --text-color-secondary: #a3b3c3; /* Texto secundario más tenue */
+    --glass-bg: rgba(255, 255, 255, 0.05); /* Fondo para tarjetas glass */
+    --glass-border: rgba(255, 255, 255, 0.2); /* Borde para tarjetas glass */
+    
+    /* Variables de Diseño */
+    --border-radius: 16px;
+    --card-padding: 24px;
+    --shadow-light: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+    --shadow-medium: 0 12px 40px 0 rgba(0, 0, 0, 0.3);
+    --transition-speed: 0.4s;
+    --font-family: 'Poppins', sans-serif;
 }
 
-#categoryButtons {
-    /* El flexbox ya está definido en el HTML con Tailwind, esto es para personalización adicional si es necesario */
+/* --- ESTILOS BASE Y FONDO 3D --- */
+body {
+    font-family: var(--font-family);
+    background: linear-gradient(135deg, var(--bg-color-start), var(--bg-color-end));
+    color: var(--text-color-primary);
+    overflow-x: hidden;
+    min-height: 100vh;
 }
+
+#bg3d { /* El contenedor del fondo animado */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+}
+
+/* --- TARJETAS DE PRODUCTO 3D (ESPECIFICACIÓN CRÍTICA) --- */
+.product-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-light);
+    padding: var(--card-padding);
+    text-align: center;
+    transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+    transform-style: preserve-3d;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-card:hover {
+    transform: translateY(-10px) rotateX(5deg) rotateY(-5deg) scale(1.03);
+    box-shadow: var(--shadow-medium);
+}
+
+.product-card .product-image {
+    width: 100%;
+    height: 180px;
+    object-fit: contain; /* Perfecto para imágenes PNG sin fondo */
+    margin-bottom: 1rem;
+    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2));
+    transition: transform var(--transition-speed) ease;
+}
+
+.product-card:hover .product-image {
+    transform: translateZ(40px) scale(1.1);
+}
+
+.product-card .product-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-color-primary);
+    margin-bottom: 0.5rem;
+    height: 3.3em; /* 2 líneas */
+    overflow: hidden;
+}
+
+.product-card .product-price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    margin-bottom: 1rem;
+}
+
+.product-card .add-to-cart-btn {
+    background: rgba(0, 242, 254, 0.1); /* Acento con transparencia */
+    border: 1px solid var(--accent-color);
+    color: var(--accent-color);
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-speed) ease;
+    margin-top: auto; /* Empuja el botón al final */
+}
+
+.product-card .add-to-cart-btn:hover {
+    background: var(--accent-color);
+    color: var(--bg-color-start);
+    box-shadow: 0 0 20px rgba(0, 242, 254, 0.5);
+}
+
+
+/* --- NAVEGACIÓN DE CATEGORÍAS --- */
+.category-nav-container {
+    padding: 20px 0;
+}
+
+.category-buttons-scroll {
+    display: flex;
+    overflow-x: auto;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    scrollbar-width: none; /* Ocultar scrollbar */
+}
+.category-buttons-scroll::-webkit-scrollbar { display: none; }
 
 .category-btn {
-    background-color: var(--secondary-color-dark);
-    color: var(--text-color-light);
-    padding: 10px 25px;
-    border-radius: 50px; /* Botones ovalados modernos */
-    border: 2px solid var(--border-color);
-    cursor: pointer;
+    flex-shrink: 0;
+    padding: 12px 28px;
+    border-radius: 50px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: var(--text-color-secondary);
     font-weight: 600;
-    text-transform: capitalize;
-    transition: all var(--transition-speed) ease-in-out;
+    cursor: pointer;
+    transition: all var(--transition-speed) ease;
+    transform-style: preserve-3d;
 }
 
 .category-btn:hover {
-    background-color: var(--primary-color-dark);
-    color: var(--secondary-color-dark);
-    border-color: var(--primary-color-dark);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md), var(--golden-glow-sm);
+    transform: translateY(-5px) scale(1.05);
+    background: rgba(138, 43, 226, 0.3);
+    color: var(--text-color-primary);
+    border-color: var(--primary-color);
 }
 
 .category-btn.active {
-    background-color: var(--primary-color);
-    color: var(--secondary-color-dark);
+    background: var(--primary-color);
+    color: white;
     border-color: var(--primary-color);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg), var(--golden-glow-md);
+    box-shadow: 0 0 25px rgba(138, 43, 226, 0.6);
 }
 
-
-/* Carrusel Horizontal de Productos por Categoría */
-#categoryProductsCarousel {
-    width: 100%;
-}
-
-.category-product-carousel-track {
+/* Estilos para el carrusel de productos por categoría */
+.category-products-carousel {
     display: flex;
-    overflow-x: auto; /* Permite el scroll horizontal */
-    -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
-    scroll-behavior: smooth;
-    gap: var(--spacing-lg);
-    padding: var(--spacing-sm) 4px; /* Pequeño padding para que no se corten las sombras */
-    /* Ocultar la barra de scroll para un look más limpio */
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE, Edge */
+    gap: 1.5rem;
+    overflow-x: auto;
+    padding: 1.5rem 0;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+}
+.category-products-carousel::-webkit-scrollbar { display: none; }
+
+.category-products-carousel .product-card {
+    scroll-snap-align: start;
+    flex: 0 0 80%; /* En móvil, cada tarjeta ocupa el 80% del ancho */
 }
 
-.category-product-carousel-track::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
+
+/* --- SECCIÓN PRINCIPAL DE PRODUCTOS Y FILTROS --- */
+.product-filters-sticky {
+    position: sticky;
+    top: 80px; /* Debajo del header */
+    background: rgba(26, 15, 46, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    z-index: 10;
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+/* ... más estilos de filtros a implementar ... */
+
+.product-grid {
+    display: grid;
+    gap: 1.5rem;
 }
 
-/* Las tarjetas de producto dentro de este carrusel no deben encogerse */
-.category-product-carousel-track .product-card {
-    flex: 0 0 280px; /* Ancho fijo para cada tarjeta en el carrusel */
-    width: 280px;
-    max-width: 280px;
+#loadMoreBtn {
+    display: block;
+    margin: 2rem auto;
+    padding: 1rem 3rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    background: var(--secondary-color);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all var(--transition-speed) ease;
+}
+
+#loadMoreBtn:hover {
+    background: var(--primary-color);
+    transform: scale(1.05);
 }
