@@ -55,13 +55,14 @@
         display: flex; /* Mostrar la barra de navegación inferior en móvil */
     }
 
+    /* Product Grid for very small screens (iPhone SE, etc.) - 2 columns */
     .product-grid {
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); /* 2 columns on small screens */
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); /* Aim for 2 columns on smallest screens */
         gap: var(--spacing-sm); /* Slightly smaller gap */
     }
 
     .product-card {
-        height: 280px; /* Slightly smaller card height on mobile */
+        height: 320px; /* Adjusted height for mobile to fit new image size */
     }
 
     .product-image-wrapper {
@@ -69,25 +70,25 @@
     }
 
     .product-name {
-        font-size: 0.9em;
+        font-size: 1em; /* Adjusted font size for overlay */
         padding: 5px;
     }
 
     .product-price-overlay {
-        font-size: 1.1em;
+        font-size: 1.3em; /* Adjusted font size for overlay */
         padding: 5px;
     }
 
     /* Category Carousel remains as per previous update, with image/text overlay adjustments */
     .category-products-track {
-        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); /* Aim for 2-3 columns */
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); /* Aim for 2 columns */
         gap: var(--spacing-sm);
     }
 
     .category-products-track .product-card {
         width: auto; /* Let grid handle width */
-        min-width: 130px;
-        height: 280px; /* Consistent height for category cards as well */
+        min-width: 140px;
+        height: 320px; /* Consistent height for category cards as well */
         padding: var(--spacing-sm);
         position: relative; /* Ensure relative positioning for overlays */
     }
@@ -107,9 +108,9 @@
         top: 0;
         left: 0;
         width: 100%;
-        font-size: 0.9em; /* Smaller font for categories */
+        font-size: 1em; /* Smaller font for categories */
         padding: 5px;
-        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 100%);
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 100%);
         white-space: normal; /* Allow wrapping for category names */
         overflow: hidden;
         text-overflow: ellipsis;
@@ -119,22 +120,23 @@
         display: -webkit-box;
     }
 
-    .category-products-track .product-card .product-price {
+    .category-products-track .product-card .product-price-overlay {
         position: absolute;
-        bottom: calc(40% - 10px); /* Position price just below the image area */
+        bottom: 0; /* Position price at the bottom of the image wrapper */
         left: 0;
         width: 100%;
-        font-size: 1.1em;
+        font-size: 1.3em;
         padding: 5px;
         color: var(--primary-color);
         background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 100%);
         font-weight: bold;
     }
 
+    .category-products-track .product-card .product-price, /* Hide original price elements */
     .category-products-track .product-card .product-brand,
     .category-products-track .product-card .product-old-price,
     .category-products-track .product-card .product-offer-price {
-        display: none; /* Still hide these elements in category carousel */
+        display: none;
     }
 
     .category-products-track .product-card .add-to-cart-btn {
@@ -176,7 +178,7 @@
     }
 }
 
-/* Tablet (768px a 1023px) */
+/* Tablet (768px a 1023px) and larger phones */
 @media (min-width: 768px) and (max-width: 1023px) {
     .container {
         padding: 0 var(--spacing-lg);
@@ -186,21 +188,22 @@
         padding: var(--spacing-md) var(--spacing-lg);
     }
 
+    /* Product Grid for tablets - aiming for 3 columns */
     .product-grid {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Aim for 3 columns on tablet */
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Aim for 3 columns on tablet */
         gap: var(--spacing-md);
     }
 
     .product-card {
-        height: 300px; /* Adjust height for tablet */
+        height: 350px; /* Adjust height for tablet */
     }
 
     .product-name {
-        font-size: 1em;
+        font-size: 1.1em;
     }
 
     .product-price-overlay {
-        font-size: 1.2em;
+        font-size: 1.4em;
     }
 
     /* Carrusel de productos por categoría en tablet */
@@ -212,7 +215,7 @@
     .category-products-track .product-card {
         width: auto;
         min-width: 180px;
-        height: 300px; /* Consistent height with general cards */
+        height: 350px; /* Consistent height with general cards */
     }
 
     .utility-icons {
@@ -263,35 +266,35 @@
         padding: 0 var(--spacing-xl);
     }
 
+    /* Product Grid for desktop - aiming for 3 columns */
     .product-grid {
         grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Aim for 3 columns on desktop, larger min-width */
         gap: var(--spacing-lg); /* Larger gap on desktop */
     }
 
     .product-card {
-        height: 350px; /* Slightly taller cards on desktop */
+        height: 400px; /* Slightly taller cards on desktop */
     }
 
     .product-name {
-        font-size: 1.2em;
+        font-size: 1.3em;
     }
 
     .product-price-overlay {
-        font-size: 1.5em;
+        font-size: 1.7em;
     }
 
     /* Carrusel de productos por categoría en desktop */
     .category-products-track {
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* 3 columns for category carousel, larger min-width */
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* 3 columns for category carousel, larger min-width */
         gap: var(--spacing-lg);
     }
 
     .category-products-track .product-card {
         width: auto;
-        min-width: 250px;
-        height: 350px; /* Consistent height with general cards */
+        min-width: 280px;
+        height: 400px; /* Consistent height with general cards */
     }
-
 
     .main-nav {
         display: flex; /* Asegurar que la navegación principal esté visible en desktop */
