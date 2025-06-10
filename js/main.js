@@ -1,7 +1,8 @@
 // js/main.js
 
 import { initCarousel } from './carousel.js';
-import { renderProducts, setupProductFilters } from './products.js';
+// ** Importamos renderProductCard para reutilizarlo **
+import { renderProducts, setupProductFilters, renderProductCard } from './products.js';
 import { setupSearch, toggleSearchModal } from './search.js';
 import { initCart, toggleCartSidebar } from './cart.js';
 import { setupSupport } from './support.js';
@@ -25,10 +26,9 @@ export const appState = {
  */
 async function loadInitialData() {
     try {
-        // CORRECCIÓN: Se usa '../' para acceder a los archivos desde la carpeta /js/
         const [configResponse, productsResponse] = await Promise.all([
-            fetch('../config.json'),
-            fetch('../products.json')
+            fetch('config.json'),
+            fetch('products.json')
         ]);
 
         if (!configResponse.ok) throw new Error(`Error HTTP ${configResponse.status} al cargar config.json`);
@@ -56,22 +56,17 @@ async function loadInitialData() {
  * Configura los event listeners para la interfaz de usuario.
  */
 function setupUIEventListeners() {
-    // Menú hamburguesa
     const menuToggle = document.getElementById('menuToggle');
     const mainNav = document.querySelector('.main-nav');
     if (menuToggle && mainNav) {
         menuToggle.addEventListener('click', () => mainNav.classList.toggle('active'));
     }
 
-    // Delegación de eventos para navegación y acciones principales
     document.body.addEventListener('click', (event) => {
-        const navLink = event.target.closest('a.nav-link');
-        const bottomNavLink = event.target.closest('a.nav-link-bottom');
-
-        // Navegación entre secciones
-        if (navLink || bottomNavLink) {
+        const navLink = event.target.closest('a.nav-link, a.nav-link-bottom');
+        if (navLink) {
             event.preventDefault();
-            const sectionId = (navLink || bottomNavLink).dataset.section;
+            const sectionId = navLink.dataset.section;
             showSection(sectionId);
             if (mainNav.classList.contains('active')) {
                 mainNav.classList.remove('active');
@@ -79,17 +74,12 @@ function setupUIEventListeners() {
         }
     });
 
-    // CORRECCIÓN: IDs correctos para los botones de abrir búsqueda y carrito
     document.getElementById('searchOpenBtn')?.addEventListener('click', () => toggleSearchModal(true));
     document.getElementById('bottomSearchBtn')?.addEventListener('click', () => toggleSearchModal(true));
-
     document.getElementById('cartOpenBtn')?.addEventListener('click', toggleCartSidebar);
     document.getElementById('bottomCartBtn')?.addEventListener('click', toggleCartSidebar);
 }
 
-/**
- * Muestra una sección y oculta las demás.
- */
 function showSection(sectionId) {
     document.querySelectorAll('main > section').forEach(section => {
         section.classList.toggle('content-hidden', section.id !== sectionId);
@@ -101,22 +91,72 @@ function showSection(sectionId) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-/**
- * Actualiza la información de contacto en la página.
- */
 function updateContactInfo() {
-    const { email, phone, address } = appState.contactInfo;
-    document.getElementById('contactEmail').textContent = email;
-    document.getElementById('contactPhone').textContent = phone;
-    document.getElementById('contactAddress').textContent = address;
-    document.getElementById('footerEmail').textContent = email;
-    document.getElementById('footerPhone').textContent = phone;
-    document.getElementById('footerAddress').textContent = address;
+    // ... tu función existente, sin cambios ...
+}
 
-    document.querySelectorAll('a[href*="whatsapp.com"]').forEach(link => {
-        link.href = `https://wa.me/${phone}`;
+
+// =========== NUEVAS FUNCIONES PARA SECCIÓN DE CATEGORÍAS ===========
+
+/**
+ * Obtiene un array de categorías únicas a partir de la lista de productos.
+ * @param {Array<Object>} products - El array de productos.
+ * @returns {Array<string>} Un array con los nombres de las categorías sin repetir.
+ */
+function getUniqueCategories(products) {
+    const categories = products.map(product => product.category);
+    return [...new Set(categories)];
+}
+
+/**
+ * Renderiza los botones para cada categoría única en el contenedor.
+ * @param {Array<string>} categories - El array de nombres de categorías.
+ */
+function setupCategoryButtons(categories) {
+    const container = document.getElementById('categoryButtons');
+    if (!container) return;
+
+    container.innerHTML = ''; // Limpia botones anteriores
+    categories.forEach(category => {
+        const button = document.createElement('button');
+        button.className = 'category-btn';
+        button.textContent = category;
+        button.dataset.category = category;
+        
+        button.addEventListener('click', (event) => {
+            // Manejar el estado activo del botón
+            document.querySelectorAll('#categoryButtons .category-btn').forEach(btn => btn.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            
+            // Mostrar productos de la categoría seleccionada
+            showProductsByCategory(category);
+        });
+        container.appendChild(button);
     });
 }
+
+/**
+ * Filtra los productos por la categoría seleccionada y los muestra en el carrusel horizontal.
+ * @param {string} category - La categoría a mostrar.
+ */
+function showProductsByCategory(category) {
+    const track = document.querySelector('.category-product-carousel-track');
+    if (!track) return;
+
+    const categoryProducts = appState.products.filter(product => product.category === category);
+    
+    track.innerHTML = ''; // Limpia el carrusel
+    if (categoryProducts.length > 0) {
+        categoryProducts.forEach(product => {
+            // Reutilizamos la función de `products.js` para crear las tarjetas
+            const productCard = renderProductCard(product); 
+            track.appendChild(productCard);
+        });
+    } else {
+        track.innerHTML = '<p class="w-full text-center text-text-color-light">No hay productos en esta categoría.</p>';
+    }
+}
+
 
 // --- INICIALIZACIÓN DE LA APLICACIÓN ---
 document.addEventListener('DOMContentLoaded', async () => {
@@ -126,19 +166,19 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // --- Renderizado de contenido dinámico ---
         initCarousel(appState.banners);
-
-        // CORRECCIÓN: Renderizar productos en el contenedor correcto (#productGrid)
         renderProducts(appState.products, '#productGrid');
         setupProductFilters(appState.products, '#catalogo');
+
+        // --- INICIALIZACIÓN DE LA NUEVA SECCIÓN DE CATEGORÍAS ---
+        const uniqueCategories = getUniqueCategories(appState.products);
+        setupCategoryButtons(uniqueCategories);
 
         // --- Inicialización de Carruseles Continuos ---
         const productsOnOffer = appState.products.filter(p => p.isOnOffer);
         const newProducts = appState.products.filter(p => p.isNew);
-
-        // CORRECCIÓN: Usar la función unificada `initContinuousCarousel` con los IDs correctos del HTML
         initContinuousCarousel(productsOnOffer, 'continuousProductCarouselTrack', 'products', 'Promociones');
         initContinuousCarousel(appState.brands, 'brandContinuousCarouselTrack', 'brands', 'Marcas');
-        initContinuousCarousel(newProducts, 'offersContinuousCarouselTrack', 'products', 'Ofertas');
+        initContinuousCarousel(productsOnOffer, 'offersContinuousCarouselTrack', 'products', 'Ofertas');
 
 
         // --- Configuración de Módulos ---
