@@ -43,181 +43,188 @@
     }
 
     .menu-toggle {
-        display: block; /* Mostrar el menú hamburguesa */
-        font-size: 1.5em; /* Icono más grande */
+        display: block; /* Mostrar el menú hamburguesa en móviles */
     }
 
-    .header-actions {
-        order: -1; /* Mover acciones al principio */
-        width: 100%; /* Ocupar todo el ancho */
-        justify-content: flex-end; /* Alinear a la derecha */
-        margin-bottom: -15px; /* Ajuste para espacio */
-    }
-
-    .header-actions .cart-btn {
-        margin-left: auto; /* Empuja el carrito a la derecha */
+    .utility-icons {
+        margin-left: auto; /* Empuja los iconos a la derecha en móviles */
     }
 
     .hero-section {
-        height: 300px; /* Altura más baja para carrusel en móvil */
+        height: 300px; /* Reducir altura del carrusel en móviles */
     }
 
-    .carousel-slide-content h2 {
+    .slide-content h2 {
         font-size: 1.8em;
     }
 
-    .carousel-slide-content p {
-        font-size: 1em;
+    .slide-content p {
+        font-size: 0.9em;
     }
 
-    .carousel-nav-btn {
+    .carousel-btn {
+        font-size: 1.2em;
         padding: var(--spacing-xs);
-        font-size: 0.8em;
     }
 
     .carousel-dots {
         bottom: var(--spacing-sm);
+        gap: var(--spacing-xs);
+    }
+    .dot {
+        width: 10px;
+        height: 10px;
     }
 
-    .product-grid {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* 2 columnas en móvil */
-        gap: var(--spacing-sm);
-    }
-
-    .product-card {
-        padding: var(--spacing-xs);
-    }
-
-    .product-card .product-name {
-        font-size: 1em;
-    }
-
-    .product-card .product-price {
-        font-size: 1.1em;
+    .section-title {
+        font-size: 2em;
     }
 
     .product-filters {
-        flex-direction: column;
+        flex-direction: column; /* Apilar filtros en móviles */
+        align-items: center;
         gap: var(--spacing-sm);
     }
 
-    .product-filters select,
-    .product-filters input {
-        width: 100%; /* Ocupar todo el ancho */
+    .product-filters input,
+    .product-filters select {
+        width: 100%; /* Ocupar todo el ancho disponible */
+        max-width: 300px; /* Limitar ancho máximo */
     }
 
-    .support-content {
-        flex-direction: column;
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* 2 columnas en móviles */
+        gap: var(--spacing-md);
     }
 
-    .contact-info-block, .support-actions-block {
-        min-width: unset; /* Remover ancho mínimo */
+    .product-card .product-image {
+        height: 150px;
+    }
+
+    .product-name {
+        font-size: 1em;
+    }
+
+    .product-price {
+        font-size: 1.2em;
+    }
+
+    .product-old-price, .product-offer-price {
+        font-size: 1.1em;
+    }
+
+    .brands-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* Logos más pequeños */
+        gap: var(--spacing-md);
+    }
+
+    .brand-logo {
+        height: 80px;
         width: 100%;
+        max-width: 120px;
+    }
+
+    .support-section .support-buttons {
+        flex-direction: column; /* Apilar botones de soporte */
     }
 
     .bottom-nav {
         display: flex; /* Mostrar en móviles */
     }
 
-    .main-header {
-        position: fixed; /* Header fijo para que el menú de hamburguesa funcione bien */
-        width: 100%;
-    }
-
-    body {
-        padding-top: var(--header-height); /* Espacio para el header fijo */
-        padding-bottom: 60px; /* Espacio para la barra de navegación inferior */
-    }
-
-    /* Modal de verificación de edad en móvil */
-    .age-verification-content {
-        padding: var(--spacing-md);
-    }
-
-    .age-verification-content h2 {
-        font-size: 1.5em;
-    }
-
-    .age-verification-content p {
-        font-size: 0.9em;
-    }
-
-    .age-verification-buttons {
-        flex-direction: column; /* Botones apilados en móvil */
+    /* Ocultar el scroll horizontal en Firefox para el carrusel de categorías */
+    .category-product-track,
+    .product-carousel-track {
+        scrollbar-width: none; /* Para Firefox */
+        padding: var(--spacing-sm) var(--spacing-xs); /* Ajuste de padding en móviles */
         gap: var(--spacing-sm);
     }
 
-    .age-verification-buttons .btn-primary,
-    .age-verification-buttons .btn-secondary {
-        width: 100%; /* Ancho completo */
+    /* Ocultar el scroll horizontal en WebKit para el carrusel de categorías */
+    .category-product-track::-webkit-scrollbar,
+    .product-carousel-track::-webkit-scrollbar {
+        display: none;
     }
 
-    .toast {
-        max-width: 90%;
-        width: auto; /* Ancho automático para ajustarse al contenido */
-        left: 50%;
-        transform: translateX(-50%);
+    .category-product-track .product-card,
+    .product-carousel-track .product-card {
+        width: 180px; /* Ancho fijo más pequeño para tarjetas en carrusel */
     }
 
-    .modal-content {
-        width: 95%; /* Ajuste de ancho del modal en móviles */
+    .category-buttons-container {
+        gap: var(--spacing-xs);
+        padding: 0 var(--spacing-xs);
+    }
+
+    .category-btn {
+        padding: var(--spacing-xs) var(--spacing-sm);
+        font-size: 0.9em;
+    }
+
+    /* Ajuste para el carrusel continuo en móvil */
+    .continuous-carousel-track .brand-logo {
+        width: 120px; /* Ancho más pequeño para los logos en carrusel continuo */
+        height: 80px;
+        margin-right: var(--spacing-sm); /* Menos espacio entre logos */
+    }
+
+    /* Ajuste para el modal de verificación de edad */
+    .age-verification-content {
+        padding: var(--spacing-md);
     }
 }
 
 /* Tablet (768px a 1023px) */
 @media (min-width: 768px) and (max-width: 1023px) {
     .container {
-        padding: 0 var(--spacing-lg);
+        padding: 0 var(--spacing-md);
+    }
+
+    .main-header .header-content {
+        flex-wrap: nowrap; /* Evitar que el header se envuelva */
     }
 
     .main-nav {
-        display: flex !important; /* Asegurar que la navegación principal esté visible */
-        position: static;
-        background-color: transparent;
-        box-shadow: none;
-        border-top: none;
-        width: auto;
-        padding: 0;
+        margin-left: auto; /* Empuja la nav hacia la derecha */
     }
 
-    .main-nav .nav-list {
-        flex-direction: row;
-        gap: var(--spacing-md);
+    .hero-section {
+        height: 380px; /* Altura intermedia del carrusel en tablet */
     }
 
-    .menu-toggle {
-        display: none; /* Ocultar el menú hamburguesa */
+    .slide-content h2 {
+        font-size: 2.2em;
     }
 
-    .header-content {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
+    .slide-content p {
+        font-size: 1em;
     }
 
     .product-grid {
         grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* 3-4 columnas en tablet */
     }
 
-    .category-product-track .product-card {
-        width: calc((100% - (3 * var(--spacing-md))) / 4); /* 4 columnas con 3 gaps */
-        min-width: 180px; /* Ajuste mínimo */
+    .category-product-track .product-card,
+    .product-carousel-track .product-card {
+        width: 220px; /* Ancho un poco más grande para tarjetas en carrusel */
+    }
+
+    .brands-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: var(--spacing-lg);
+    }
+
+    .brand-logo {
+        height: 90px;
+        width: 100%;
+        max-width: 140px;
     }
 
     .bottom-nav {
         display: none; /* Ocultar la barra inferior en tablet */
     }
 
-    body {
-        padding-top: 0; /* No necesita padding superior si el header no es fixed */
-        padding-bottom: 0; /* No necesita padding inferior si la barra inferior está oculta */
-    }
-
-    .hero-section {
-        height: 400px; /* Altura intermedia para carrusel en tablet */
-    }
-
-    .age-verification-buttons {
+    .category-buttons-container {
         flex-direction: row; /* Botones en fila en tablet */
         justify-content: center;
     }
@@ -239,7 +246,8 @@
     }
 
     /* Carrusel de productos por categoría en desktop */
-    .category-product-track .product-card {
+    .category-product-track .product-card,
+    .product-carousel-track .product-card {
         width: calc((100% - (4 * var(--spacing-md))) / 5); /* 5 columnas con 4 gaps */
         min-width: 180px; /* Ajuste mínimo */
     }
@@ -262,21 +270,25 @@
 
     .product-filters select,
     .product-filters input {
-        width: 200px; /* Ancho fijo para filtros en desktop */
+        width: 200px; /* Ancho fijo para los filtros en desktop */
+        flex-grow: 0;
     }
 
-    body {
-        padding-top: 0; /* No necesita padding superior */
-        padding-bottom: 0; /* No necesita padding inferior */
+    .brands-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: var(--spacing-lg);
     }
 
-    /* Modal de verificación de edad - asegurar centrado */
-    .age-verification-content {
-        width: auto;
-        padding: var(--spacing-lg);
+    .brand-logo {
+        height: 100px;
+        width: 100%;
+        max-width: 150px;
     }
 
-    .age-verification-buttons {
-        flex-direction: row;
+    /* Ajuste para el carrusel continuo en desktop */
+    .continuous-carousel-track .brand-logo {
+        width: 150px; /* Restaurar ancho original */
+        height: 100px;
+        margin-right: var(--spacing-md);
     }
 }
