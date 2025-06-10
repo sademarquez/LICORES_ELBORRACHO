@@ -5,7 +5,7 @@
     position: relative;
     width: 100%;
     overflow: hidden;
-    height: 450px; /* Altura fija para el carrusel */
+    height: 500px; /* Altura fija para el carrusel */
     background-color: var(--dark-bg); /* Color de fondo mientras carga la imagen */
 }
 
