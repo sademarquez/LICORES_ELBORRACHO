@@ -56,26 +56,26 @@
     }
 
     .hero-section {
-        height: 250px; /* REVERTIDO/AJUSTADO: Altura para el carrusel en móviles (era 90px, se ajustó a 250px por visibilidad) */
+        height: 250px; /* Altura ajustada para el carrusel en móviles para mejor visibilidad */
     }
 
     /* Ajustes para el texto y botones del carrusel, hazlos más pequeños en móvil */
     .carousel-title {
-        font-size: 1.8em; /* REVERTIDO: Tamaño original o similar para móvil */
+        font-size: 1.8em; 
     }
 
     .carousel-description {
-        font-size: 0.9em; /* REVERTIDO: Tamaño original o similar para móvil */
+        font-size: 0.9em; 
     }
 
     .carousel-button {
-        font-size: 0.8em; /* REVERTIDO: Tamaño original o similar para móvil */
-        padding: var(--spacing-xs) var(--spacing-sm); /* REVERTIDO: Padding original o similar */
+        font-size: 0.8em; 
+        padding: var(--spacing-xs) var(--spacing-sm); 
     }
 
     .carousel-btn { /* Botones de navegación (flechas) del carrusel */
         padding: var(--spacing-xs);
-        font-size: 1em; /* REVERTIDO: Tamaño original o similar para móvil */
+        font-size: 1em; 
     }
 
     .carousel-dots {
@@ -83,29 +83,31 @@
     }
 
     .product-grid {
-        /* REVERTIDO: Aquí te doy una opción para 2 columnas usables en móvil. */
-        /* Si quieres 3 columnas sí o sí como en tu última pregunta (pero muy pequeñas),
-           tendrías que usar minmax(90px, 1fr) o menos, pero no es recomendable para usabilidad.
-           Con 140px caben 2 columnas decentemente. */
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); 
-        gap: var(--spacing-sm); /* Espacio reducido entre tarjetas */
+        /* OBJETIVO: Buscar 3 columnas cuando sea posible.
+           minmax(100px, 1fr) permite 3 columnas en anchos de móvil medios/grandes,
+           y al menos 2 en los muy pequeños, manteniendo la usabilidad. */
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); 
+        gap: var(--spacing-sm); /* Espacio reducido entre tarjetas para más densidad */
     }
 
     .product-card {
-        padding: var(--spacing-xs); /* REVERTIDO: Padding original o similar */
+        padding: var(--spacing-xs); /* Padding más compacto */
     }
 
     .product-image {
-        max-height: 120px; /* REVERTIDO: Ajustar para que se vean mejor dentro de la tarjeta más pequeña */
+        max-height: 90px; /* REDUCIDO: Altura más pequeña para permitir 3 columnas y 2 filas por vista */
         object-fit: contain; /* Asegura que la imagen se ajuste bien sin fondo */
     }
 
     .product-name {
-        font-size: 0.85em; /* REVERTIDO: Nombres de productos más pequeños */
+        font-size: 0.75em; /* REDUCIDO: Nombres de productos más pequeños */
+        white-space: nowrap; /* Evita saltos de línea abruptos */
+        overflow: hidden; /* Oculta el texto que desborda */
+        text-overflow: ellipsis; /* Añade puntos suspensivos al texto desbordado */
     }
 
     .product-price {
-        font-size: 0.9em; /* REVERTIDO: Precios más pequeños */
+        font-size: 0.85em; /* REDUCIDO: Precios más pequeños */
     }
 
     .product-filters {
@@ -181,29 +183,30 @@
     }
 
     .hero-section {
-        height: 380px; /* REVERTIDO/AJUSTADO: Altura del carrusel en tablet (era 350px, ajustado a 380px por coherencia) */
+        height: 380px; /* Altura del carrusel en tablet */
     }
 
     .carousel-title {
-        font-size: 2em; /* REVERTIDO: Títulos originales o similares */
+        font-size: 2.2em; /* Títulos adecuados para tablet */
     }
 
     .carousel-description {
-        font-size: 1em; /* REVERTIDO: Descripción original o similar */
+        font-size: 1em; /* Descripción adecuada para tablet */
     }
 
     .product-grid {
-        /* REVERTIDO: Mantiene 3-4 columnas. minmax(180px, 1fr) ya lo tenías y funciona bien. */
+        /* OBJETIVO: 3-4 columnas en tablet.
+           minmax(180px, 1fr) funciona bien para esto. */
         grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
         gap: var(--spacing-md);
     }
 
     .product-card {
-        padding: var(--spacing-sm); /* REVERTIDO: Padding original o similar */
+        padding: var(--spacing-sm); 
     }
 
     .product-image {
-        max-height: 150px; /* REVERTIDO: Altura original o similar */
+        max-height: 150px; /* Altura adecuada para tablet */
     }
 
     .product-name {
@@ -249,7 +252,8 @@
     }
 
     .product-grid {
-        /* REVERTIDO: Mantiene 4-5 columnas. minmax(220px, 1fr) ya lo tenías. */
+        /* OBJETIVO: 4-5 columnas en desktop.
+           minmax(220px, 1fr) funciona bien. */
         grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
         gap: var(--spacing-lg);
     }
@@ -267,7 +271,7 @@
     }
 
     .hero-section {
-        height: 450px; /* REVERTIDO: Altura original del carrusel en desktop */
+        height: 450px; /* Altura original del carrusel en desktop */
     }
 
     .product-filters select,
