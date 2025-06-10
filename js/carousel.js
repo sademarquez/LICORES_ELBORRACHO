@@ -39,62 +39,44 @@ function createSlideElement(banner) {
  * @param {number} index - El índice del slide a mostrar.
  */
 function showSlide(index) {
-    if (totalSlides === 0) return; // No hay slides para mostrar
+    if (totalSlides === 0) return; // No hacer nada si no hay slides
 
-    // Calcular el índice real para asegurar el bucle infinito
+    // Ajustar el índice para que sea cíclico
     currentSlide = (index + totalSlides) % totalSlides;
 
-    const offset = -currentSlide * 100; // Desplazamiento en porcentaje
+    // Calcular la posición del track
+    const offset = -currentSlide * 100; // 100% por slide
     carouselTrack.style.transform = `translateX(${offset}%)`;
 
-    // Actualizar clases 'active' y atributos ARIA
-    slides.forEach((slide, idx) => {
-        const interactiveElements = slide.querySelectorAll('a, button, input, select, textarea');
-        if (idx === currentSlide) {
-            slide.classList.add('active');
-            slide.setAttribute('aria-hidden', 'false');
-            slide.setAttribute('tabindex', '0');
-            interactiveElements.forEach(el => el.setAttribute('tabindex', '0')); // Hacer focuseables los elementos interactivos
-        } else {
-            slide.classList.remove('active');
-            slide.setAttribute('aria-hidden', 'true');
-            slide.setAttribute('tabindex', '-1');
-            interactiveElements.forEach(el => el.setAttribute('tabindex', '-1')); // Hacer NO focuseables los elementos interactivos
-        }
-    });
-
-    dots.forEach((dot, index) => {
-        if (index === currentSlide) {
-            dot.classList.add('active');
-            dot.setAttribute('aria-selected', 'true');
-            dot.setAttribute('tabindex', '0');
-        } else {
-            dot.classList.remove('active');
-            dot.setAttribute('aria-selected', 'false');
-            dot.setAttribute('tabindex', '-1');
-        }
+    // Actualizar los puntos de paginación
+    dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === currentSlide);
+        dot.setAttribute('aria-current', i === currentSlide ? 'true' : 'false');
     });
 }
 
 /**
- * Inicia el temporizador para el auto-avance del carrusel.
+ * Inicia el avance automático del carrusel.
  */
 function startAutoSlide() {
-    stopAutoSlide(); // Asegura que solo un intervalo esté activo
+    stopAutoSlide(); // Asegurarse de que no haya múltiples intervalos
     autoSlideInterval = setInterval(() => {
         showSlide(currentSlide + 1);
     }, slideDuration);
 }
 
 /**
- * Detiene el temporizador del auto-avance del carrusel.
+ * Detiene el avance automático del carrusel.
  */
 function stopAutoSlide() {
-    clearInterval(autoSlideInterval);
+    if (autoSlideInterval) {
+        clearInterval(autoSlideInterval);
+    }
 }
 
 /**
- * Reinicia el temporizador del auto-avance (llamado después de interacción del usuario).
+ * Reinicia el temporizador de avance automático.
+ * Útil después de una interacción manual del usuario.
  */
 function resetAutoSlide() {
     stopAutoSlide();
@@ -102,29 +84,33 @@ function resetAutoSlide() {
 }
 
 /**
- * Inicializa el carrusel con los datos de banners proporcionados.
- * @param {Array<Object>} bannersData - Un array de objetos con información de los banners.
+ * Inicializa el carrusel de banners principal.
+ * @param {Array<Object>} bannersData - Array de objetos de banners (de config.json).
  */
 export function initCarousel(bannersData) {
+    const carouselContainer = document.getElementById('heroCarousel');
+    // Añadir mensajes de error más específicos para depuración
+    if (!carouselContainer) { console.error('carousel.js: Elemento #heroCarousel no encontrado. Inicialización abortada.'); return; }
+    
     carouselTrack = document.getElementById('carouselTrack');
-    const carouselPrevBtn = document.getElementById('carouselPrev');
-    const carouselNextBtn = document.getElementById('carouselNext');
-    carouselDotsContainer = document.getElementById('carouselDots');
+    if (!carouselTrack) { console.error('carousel.js: Elemento #carouselTrack no encontrado. Inicialización abortada.'); return; }
+    
+    const carouselPrevBtn = carouselContainer.querySelector('.carousel-button.prev');
+    if (!carouselPrevBtn) { console.error('carousel.js: Botón .carousel-button.prev no encontrado. Inicialización abortada.'); return; }
+    
+    const carouselNextBtn = carouselContainer.querySelector('.carousel-button.next');
+    if (!carouselNextBtn) { console.error('carousel.js: Botón .carousel-button.next no encontrado. Inicialización abortada.'); return; }
+    
+    carouselDotsContainer = carouselContainer.querySelector('.carousel-pagination');
+    if (!carouselDotsContainer) { console.error('carousel.js: Contenedor .carousel-pagination no encontrado. Inicialización abortada.'); return; }
 
-    if (!carouselTrack || !carouselDotsContainer || !carouselPrevBtn || !carouselNextBtn) {
-        console.warn('carousel.js: Elementos del carrusel no encontrados. Inicialización abortada.');
-        return;
-    }
 
-    // Limpiar contenido previo para evitar duplicados si se llama varias veces
-    carouselTrack.innerHTML = '';
-    carouselDotsContainer.innerHTML = '';
-    slides = []; // Resetear array de slides
-    dots = [];   // Resetear array de dots
-    currentSlide = 0; // Resetear slide actual
-
+    // Asegurarse de que haya datos de banners antes de continuar
     if (bannersData && bannersData.length > 0) {
         totalSlides = bannersData.length;
+        carouselTrack.innerHTML = ''; // Limpiar cualquier contenido previo
+        carouselDotsContainer.innerHTML = ''; // Limpiar dots previos
+
         bannersData.forEach((banner, index) => {
             const slideElement = createSlideElement(banner);
             carouselTrack.appendChild(slideElement);
@@ -162,7 +148,7 @@ export function initCarousel(bannersData) {
 
     } else {
         console.warn('carousel.js: No hay datos de banners para inicializar el carrusel.');
-        // Opcional: Ocultar el contenedor del carrusel si no hay datos
-        document.getElementById('hero-carousel').style.display = 'none';
+        // Opcional: Ocultar el contenedor del carrusel si no hay datos (¡ID CORREGIDO!)
+        document.getElementById('heroCarousel').style.display = 'none'; // Usar el ID correcto
     }
 }
