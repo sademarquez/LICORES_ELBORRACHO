@@ -175,7 +175,7 @@ p {
 
 /* Encabezado Principal */
 .main-header {
-    background-color: rgba(0, 0, 0, 0.8); 
+    background-color: rgba(0, 0, 0, 0.2); 
     padding: var(--spacing-md) 0;
     box-shadow: var(--shadow-md);
     position: sticky;
