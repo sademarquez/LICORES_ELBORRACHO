@@ -1,50 +1,49 @@
 // js/age-verification.js
 
-// Nota: Este módulo no importa appState directamente porque debe ejecutarse
-// ANTES de que se cargue cualquier otro contenido o se intente acceder a datos.
-// Su propósito es bloquear el acceso si la edad no está verificada.
-
 export function initAgeVerification() {
     const ageVerificationModal = document.getElementById('ageVerificationModal');
     const confirmAgeBtn = document.getElementById('confirmAgeBtn');
     const declineAgeBtn = document.getElementById('declineAgeBtn');
 
     if (!ageVerificationModal || !confirmAgeBtn || !declineAgeBtn) {
-        console.warn('age-verification.js: Elementos del modal de verificación de edad no encontrados. La verificación de edad no funcionará.');
+        console.warn('Elementos del modal de verificación de edad no encontrados. La verificación de edad no funcionará.');
         return;
     }
 
-    // --- MODIFICACIÓN CLAVE: Siempre muestra el modal ---
-    // Eliminamos la lógica de localStorage y siempre mostramos el modal al cargar la página.
-    ageVerificationModal.style.display = 'flex'; // Asegurarse de que sea visible
-    ageVerificationModal.style.opacity = '1'; // Asegurarse de que sea completamente opaco al inicio
+    const ageVerified = localStorage.getItem('ageVerified');
+
+    if (ageVerified === 'true') {
+        ageVerificationModal.classList.remove('open'); // Quitar clase 'open' si ya está verificado
+        ageVerificationModal.style.display = 'none'; // Asegurar que no se muestre
+    } else {
+        ageVerificationModal.style.display = 'flex'; // Asegurarse de que sea visible antes de añadir 'open'
+        // Pequeño retraso para que la propiedad display se aplique antes de la transición de opacidad/transform
+        setTimeout(() => {
+            ageVerificationModal.classList.add('open');
+        }, 50); 
+    }
 
     confirmAgeBtn.addEventListener('click', () => {
-        // --- MODIFICACIÓN: Transición suave para "Soy mayor de 18" ---
-        // Aplicar la transición para desvanecer el modal
-        ageVerificationModal.style.opacity = '0';
-        ageVerificationModal.style.transition = 'opacity 0.5s ease-out'; // Duración y curva de la transición
-
-        // Ocultar el modal completamente después de que la transición termine
-        setTimeout(() => {
-            ageVerificationModal.style.display = 'none';
-            // Opcional: Podrías querer resetear la opacidad a 1 aquí
-            // si el modal pudiera ser reutilizado y necesitará aparecer de nuevo con opacidad completa.
-            // ageVerificationModal.style.opacity = '1';
-        }, 500); // Coincide con la duración de la transición (0.5s = 500ms)
+        ageVerificationModal.classList.remove('open'); // Inicia la transición de cierre
+        ageVerificationModal.addEventListener('transitionend', function handler() {
+            ageVerificationModal.style.display = 'none'; // Oculta después de la transición
+            ageVerificationModal.removeEventListener('transitionend', handler);
+        });
+        localStorage.setItem('ageVerified', 'true');
     });
 
     declineAgeBtn.addEventListener('click', () => {
-        // --- MODIFICACIÓN: Redirección inmediata para "No soy mayor de 18" ---
-        window.location.href = 'https://www.google.com';
+        window.location.href = 'https://www.google.com'; // Redirige si no es mayor de edad
     });
 
-    // Evitar que el modal se cierre al hacer clic fuera (se mantiene esta lógica):
+    // Evitar que el modal se cierre al hacer clic fuera:
     window.addEventListener('click', (event) => {
-        if (event.target === ageVerificationModal) {
-            // Puedes añadir una pequeña animación o vibración aquí para indicar que no se puede cerrar
-            // Por ejemplo, ageVerificationModal.classList.add('shake-animation');
-            // setTimeout(() => ageVerificationModal.classList.remove('shake-animation'), 300);
+        if (event.target === ageVerificationModal && ageVerificationModal.classList.contains('open')) {
+            // Opcional: añadir una pequeña animación de "sacudida" para indicar que no se puede cerrar
+            ageVerificationModal.classList.add('shake');
+            setTimeout(() => {
+                ageVerificationModal.classList.remove('shake');
+            }, 300);
         }
     });
 }
