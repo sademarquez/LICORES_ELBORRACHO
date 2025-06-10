@@ -43,152 +43,124 @@
     }
 
     .menu-toggle {
-        display: block; /* Mostrar el menú hamburguesa en móvil */
-        margin-left: auto; /* Empuja el toggle a la derecha */
+        display: block; /* Mostrar el menú hamburguesa */
+        font-size: 1.5em; /* Icono más grande */
     }
 
     .header-actions {
-        width: 100%; /* Asegura que los botones de acción ocupen todo el ancho disponible */
-        justify-content: flex-end; /* Alinea los botones a la derecha */
+        order: -1; /* Mover acciones al principio */
+        width: 100%; /* Ocupar todo el ancho */
+        justify-content: flex-end; /* Alinear a la derecha */
+        margin-bottom: -15px; /* Ajuste para espacio */
     }
 
-    .logo {
-        height: 50px; /* Logo más pequeño en móvil */
+    .header-actions .cart-btn {
+        margin-left: auto; /* Empuja el carrito a la derecha */
     }
 
-    /* Hero Section en móvil */
     .hero-section {
-        height: 300px; /* Altura más pequeña para el carrusel en móvil */
+        height: 300px; /* Altura más baja para carrusel en móvil */
     }
 
-    .carousel-content h2 {
-        font-size: 2em; /* Título más pequeño */
+    .carousel-slide-content h2 {
+        font-size: 1.8em;
     }
 
-    .carousel-content p {
-        font-size: 1em; /* Párrafo más pequeño */
+    .carousel-slide-content p {
+        font-size: 1em;
     }
 
-    .carousel-btn {
-        font-size: 1.2em; /* Botones de carrusel más pequeños */
+    .carousel-nav-btn {
+        padding: var(--spacing-xs);
+        font-size: 0.8em;
     }
 
-    .carousel-dot {
-        width: 8px; /* Puntos de carrusel más pequeños */
-        height: 8px;
+    .carousel-dots {
+        bottom: var(--spacing-sm);
     }
 
-    /* Grilla de Productos en móvil */
     .product-grid {
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* 2 columnas en móvil */
-        gap: var(--spacing-md);
+        gap: var(--spacing-sm);
     }
 
-    .product-card .product-image {
-        height: 120px; /* Imágenes más pequeñas en móvil */
+    .product-card {
+        padding: var(--spacing-xs);
     }
 
     .product-card .product-name {
-        font-size: 1em; /* Nombre de producto más pequeño */
-        min-height: 2.2em; /* Ajusta la altura mínima para el nombre */
+        font-size: 1em;
     }
 
     .product-card .product-price {
-        font-size: 0.9em;
+        font-size: 1.1em;
     }
 
     .product-filters {
         flex-direction: column;
-    }
-
-    .product-filters input,
-    .product-filters select {
-        max-width: 100%; /* Ocupan todo el ancho disponible */
-    }
-
-    /* Carrusel de productos por categoría en móvil */
-    .category-product-track .product-card {
-        width: 180px; /* Ancho más pequeño para tarjetas en carrusel móvil */
-    }
-    
-    /* Carrusel continuo de marcas */
-    .brand-logo {
-        height: 60px; /* Logos de marcas más pequeños en móvil */
-    }
-
-    /* About Us Section en móvil */
-    .about-content {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .about-image {
-        min-width: unset;
-        width: 80%;
-    }
-
-    .about-text {
-        text-align: center;
-    }
-
-    /* Support Section en móvil */
-    .support-options {
-        flex-direction: column;
-    }
-
-    /* Footer en móvil */
-    .footer-content {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .footer-brand, .footer-links, .footer-contact, .footer-social {
-        min-width: unset;
-        width: 100%;
-        text-align: center; /* Centrar elementos del footer */
-    }
-    
-    .footer-links ul, .footer-contact p, .footer-social .social-media {
-        justify-content: center; /* Centrar el contenido de las listas/sociales */
-        align-items: center;
-    }
-
-    /* Bottom Navigation */
-    .bottom-nav {
-        display: flex; /* Asegura que la barra inferior se muestre en móvil */
-    }
-
-    /* --- Ajustes del Modal de Verificación de Edad para Móvil --- */
-    .age-verification-content {
-        padding: var(--spacing-md);
-        max-width: 95%; /* Ocupa más ancho en móvil */
-    }
-    .age-verification-content h2 {
-        font-size: 1.8em;
-    }
-    .age-verification-content p {
-        font-size: 1em;
-    }
-    .age-verification-content .warning-message {
-        font-size: 0.9em; /* Mensaje de advertencia más pequeño */
-    }
-    .age-verification-buttons {
-        flex-direction: column; /* Botones en columna en móvil */
         gap: var(--spacing-sm);
     }
-    .age-verification-buttons .btn-primary,
-    .age-verification-buttons .btn-secondary {
-        width: 100%; /* Ocupa todo el ancho disponible */
-        min-width: unset;
+
+    .product-filters select,
+    .product-filters input {
+        width: 100%; /* Ocupar todo el ancho */
     }
 
-    /* Modales de búsqueda, reporte, cita en móvil */
-    .modal-content {
-        padding: var(--spacing-md);
-        max-width: 95%;
+    .support-content {
+        flex-direction: column;
     }
-    .modal-content input, .modal-content textarea {
+
+    .contact-info-block, .support-actions-block {
+        min-width: unset; /* Remover ancho mínimo */
+        width: 100%;
+    }
+
+    .bottom-nav {
+        display: flex; /* Mostrar en móviles */
+    }
+
+    .main-header {
+        position: fixed; /* Header fijo para que el menú de hamburguesa funcione bien */
+        width: 100%;
+    }
+
+    body {
+        padding-top: var(--header-height); /* Espacio para el header fijo */
+        padding-bottom: 60px; /* Espacio para la barra de navegación inferior */
+    }
+
+    /* Modal de verificación de edad en móvil */
+    .age-verification-content {
+        padding: var(--spacing-md);
+    }
+
+    .age-verification-content h2 {
+        font-size: 1.5em;
+    }
+
+    .age-verification-content p {
         font-size: 0.9em;
+    }
+
+    .age-verification-buttons {
+        flex-direction: column; /* Botones apilados en móvil */
+        gap: var(--spacing-sm);
+    }
+
+    .age-verification-buttons .btn-primary,
+    .age-verification-buttons .btn-secondary {
+        width: 100%; /* Ancho completo */
+    }
+
+    .toast {
+        max-width: 90%;
+        width: auto; /* Ancho automático para ajustarse al contenido */
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .modal-content {
+        width: 95%; /* Ajuste de ancho del modal en móviles */
     }
 }
 
@@ -198,18 +170,14 @@
         padding: 0 var(--spacing-lg);
     }
 
-    .header-content {
-        gap: var(--spacing-xl);
-    }
-
     .main-nav {
-        display: flex; /* Asegurar que la navegación principal esté visible en tablet */
-        position: static; /* No flotar en tablet */
-        background-color: transparent; /* Fondo transparente */
+        display: flex !important; /* Asegurar que la navegación principal esté visible */
+        position: static;
+        background-color: transparent;
         box-shadow: none;
-        padding: 0;
         border-top: none;
-        z-index: auto;
+        width: auto;
+        padding: 0;
     }
 
     .main-nav .nav-list {
@@ -217,60 +185,38 @@
         gap: var(--spacing-md);
     }
 
-    .main-nav .nav-list a {
-        padding: 0;
-        color: var(--text-color-dark);
-    }
-
     .menu-toggle {
-        display: none; /* Ocultar el menú hamburguesa en tablet */
+        display: none; /* Ocultar el menú hamburguesa */
     }
 
-    .hero-section {
-        height: 400px; /* Altura intermedia para el carrusel en tablet */
+    .header-content {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
     }
 
     .product-grid {
         grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* 3-4 columnas en tablet */
-        gap: var(--spacing-lg);
     }
 
-    /* Carrusel de productos por categoría en tablet */
     .category-product-track .product-card {
-        width: 200px; /* Ajuste para tablets */
-    }
-
-    /* About Us Section en tablet */
-    .about-content {
-        flex-direction: row; /* Vuelve a la fila en tablet */
-        text-align: left;
-    }
-
-    /* Support Section en tablet */
-    .support-options {
-        flex-direction: row;
-    }
-
-    /* Footer en tablet */
-    .footer-content {
-        flex-direction: row;
-        text-align: left;
-    }
-    
-    .footer-links ul, .footer-contact p, .footer-social .social-media {
-        justify-content: flex-start; /* Alinear a la izquierda */
-        align-items: flex-start;
+        width: calc((100% - (3 * var(--spacing-md))) / 4); /* 4 columnas con 3 gaps */
+        min-width: 180px; /* Ajuste mínimo */
     }
 
     .bottom-nav {
-        display: none; /* Ocultar la barra inferior en tablet si el menú principal es suficiente */
+        display: none; /* Ocultar la barra inferior en tablet */
     }
 
-    /* Ajustes del Modal de Verificación de Edad para Tablet */
-    .age-verification-content {
-        max-width: 600px;
-        padding: var(--spacing-xl);
+    body {
+        padding-top: 0; /* No necesita padding superior si el header no es fixed */
+        padding-bottom: 0; /* No necesita padding inferior si la barra inferior está oculta */
     }
+
+    .hero-section {
+        height: 400px; /* Altura intermedia para carrusel en tablet */
+    }
+
     .age-verification-buttons {
         flex-direction: row; /* Botones en fila en tablet */
         justify-content: center;
@@ -317,5 +263,20 @@
     .product-filters select,
     .product-filters input {
         width: 200px; /* Ancho fijo para filtros en desktop */
+    }
+
+    body {
+        padding-top: 0; /* No necesita padding superior */
+        padding-bottom: 0; /* No necesita padding inferior */
+    }
+
+    /* Modal de verificación de edad - asegurar centrado */
+    .age-verification-content {
+        width: auto;
+        padding: var(--spacing-lg);
+    }
+
+    .age-verification-buttons {
+        flex-direction: row;
     }
 }
