@@ -3,6 +3,10 @@
 import { appState } from './main.js';
 import { renderProductCard } from './products.js'; // Reutilizamos renderProductCard para crear tarjetas
 
+// Este módulo ya no necesita mantener referencias globales para cada carrusel de categoría,
+// ya que la lógica de "carrusel de productos por categoría" ahora es única
+// y se maneja por el cambio de botones.
+
 /**
  * Configura la sección de carrusel de productos por categoría.
  * Esto incluye los botones de categoría y el track donde se renderizan los productos.
@@ -24,43 +28,40 @@ export function setupCategoryProductCarousel(allProducts, sectionSelector) {
         return;
     }
 
-    // Limpiar botones existentes si los hay (útil para recargas dinámicas)
+    // Limpiar contenido previo para evitar duplicados
     categoryButtonsContainer.innerHTML = '';
+    categoryProductTrack.innerHTML = '';
 
-    // Crear un conjunto de categorías únicas de los productos
-    const uniqueCategories = new Set(['all', ...allProducts.map(p => p.category)]); // 'all' siempre primero
+    // Obtener categorías únicas
+    const categories = ['all', ...new Set(allProducts.map(p => p.category))];
 
-    // Crear los botones de categoría dinámicamente
-    uniqueCategories.forEach(category => {
+    // Crear botones de categoría
+    categories.forEach(category => {
         const button = document.createElement('button');
         button.classList.add('category-btn');
-        button.dataset.category = category;
-        button.textContent = category === 'all' ? 'Todos' : category; // Mostrar 'Todos' en lugar de 'all'
-
-        if (category === 'all') { // Establecer 'Todos' como activo por defecto
-            button.classList.add('active');
+        if (category === 'all') {
+            button.textContent = 'Todos';
+            button.dataset.category = 'all';
+            button.classList.add('active'); // Activo por defecto
+        } else {
+            button.textContent = category;
+            button.dataset.category = category;
         }
         categoryButtonsContainer.appendChild(button);
     });
 
-    /**
-     * Renderiza los productos para la categoría seleccionada en el track.
-     * @param {Array<Object>} productsToDisplay - Los productos a renderizar.
-     */
-    const renderCategoryProducts = (productsToDisplay) => {
-        categoryProductTrack.innerHTML = ''; // Limpiar productos previos
-
-        if (productsToDisplay.length === 0) {
-            categoryProductTrack.innerHTML = `<p style="text-align: center; width: 100%; color: var(--text-color-light);">No hay productos en esta categoría.</p>`;
+    // Función para renderizar productos en el carrusel de categorías
+    const renderCategoryProducts = (productsToRender) => {
+        categoryProductTrack.innerHTML = '';
+        if (productsToRender.length === 0) {
+            categoryProductTrack.innerHTML = '<p class="text-center text-text-color-light text-lg w-full">No hay productos en esta categoría.</p>';
             return;
         }
-
-        productsToDisplay.forEach(product => {
+        productsToRender.forEach(product => {
             const productCard = renderProductCard(product);
+            productCard.classList.add('continuous-carousel-product-card'); // Usa estilos de tarjeta de carrusel continuo
             categoryProductTrack.appendChild(productCard);
         });
-
-        console.log(`category-products-carousel.js: ${productsToDisplay.length} productos renderizados para la categoría.`);
     };
 
     // Añadir event listeners a los botones de categoría
@@ -78,7 +79,6 @@ export function setupCategoryProductCarousel(allProducts, sectionSelector) {
             if (selectedCategory === 'all') {
                 filteredProducts = allProducts;
             } else {
-                // Asegúrate de que la propiedad 'category' en products.json coincide con el 'data-category'
                 filteredProducts = allProducts.filter(product => product.category === selectedCategory);
             }
             
@@ -98,6 +98,4 @@ export function setupCategoryProductCarousel(allProducts, sectionSelector) {
         // Si no hay botón 'active' por defecto, renderiza todos los productos
         renderCategoryProducts(allProducts);
     }
-
-    console.log(`category-products-carousel.js: Carrusel de categorías \"${sectionSelector}\" inicializado.`);
 }
