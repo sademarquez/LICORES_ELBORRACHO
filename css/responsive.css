@@ -4,24 +4,24 @@
 /* Estilos para dispositivos pequeños (hasta 767px) */
 @media (max-width: 767px) {
     .header-content {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: var(--spacing-md);
-        padding: var(--spacing-md); /* Añadido padding para que el contenido no se pegue a los bordes */
+        flex-direction: row; /* Mantener en fila para logo y iconos */
+        justify-content: space-between; /* Espacio entre logo y grupo de iconos */
+        align-items: center;
+        padding: var(--spacing-sm) var(--spacing-md); /* Reducir padding horizontal */
     }
 
-    /* ***** CAMBIO CLAVE AQUÍ: Ajuste del padding-top del hero-section para móvil ***** */
-    .hero-section {
-        height: 300px; /* Altura más pequeña para el carrusel en móviles */
-        padding-top: 100px; /* ESTIMACIÓN: Asume que el header móvil con menú plegado tiene unos 100px de alto. AJUSTA ESTE VALOR. */
+    /* Logo en móvil */
+    .logo {
+        height: 40px; /* Altura más pequeña para el logo en móvil */
     }
 
+    /* Navegación principal (oculto en móvil) */
     .main-nav {
         width: 100%;
         display: none; /* Ocultar por defecto para el menú hamburguesa */
         flex-direction: column;
         background-color: var(--dark-bg); /* Usar el color oscuro del header */
-        position: absolute; /* Cambiado a absolute para que no desplace otros elementos fijos */
+        position: absolute;
         top: 100%; /* Se posiciona debajo del header */
         left: 0;
         box-shadow: var(--shadow-md);
@@ -42,24 +42,42 @@
     .main-nav .nav-list a {
         padding: var(--spacing-sm) 0;
         width: 100%;
-        color: var(--text-color-light); /* Color de texto para enlaces del menú móvil */
+        color: var(--text-color-light);
     }
 
     .main-nav .nav-list a::after {
-        background-color: var(--primary-color); /* Asegurar color de subrayado en móvil */
+        background-color: var(--primary-color);
     }
 
-    /* Ocultar iconos de utilidad en el header en móvil si están en el bottom-nav */
-    .utility-icons .icon-btn:not(#searchIcon):not(#cartIcon) {
+    /* Iconos de utilidad en el header en móvil */
+    .utility-icons {
+        gap: var(--spacing-sm); /* Espacio entre iconos */
+    }
+
+    /* Ocultar iconos de utilidad que no son search/cart/menuToggle en el header */
+    .utility-icons .icon-btn:not(#searchIcon):not(#cartIcon):not(#menuToggle) {
         display: none;
     }
 
     .menu-toggle {
         display: block; /* Mostrar el menú hamburguesa en móvil */
+        font-size: 1.4em; /* Ajustar tamaño */
+    }
+
+    .utility-icons #searchIcon,
+    .utility-icons #cartIcon {
+        display: block; /* Asegurar que el buscador y el carrito estén siempre visibles en el header */
+        font-size: 1.4em; /* Ajustar tamaño */
     }
 
     .bottom-nav {
         display: flex; /* Mostrar la barra de navegación inferior en móvil */
+    }
+
+    /* ***** CAMBIO CLAVE AQUÍ: Ajuste del padding-top del hero-section para móvil ***** */
+    .hero-section {
+        height: 300px; /* Altura más pequeña para el carrusel en móviles */
+        padding-top: 80px; /* ESTIMACIÓN: Ajustar a la altura real de tu header en móvil */
     }
 
     /* Product Grid for very small screens (iPhone SE, etc.) - 2 columns */
@@ -88,7 +106,7 @@
 
     /* Category Carousel remains as per previous update, with image/text overlay adjustments */
     .category-products-track {
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); /* Aim for 2 columns */
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); /* 2 columns for category carousel */
         gap: var(--spacing-sm);
     }
 
@@ -178,9 +196,6 @@
     .age-verification-buttons .btn-secondary {
         width: 100%; /* Ancho completo para botones en móvil */
     }
-
-    /* Ajuste para el carrusel de banners en pantallas pequeñas */
-    /* Altura ajustada arriba en .hero-section para incluir padding-top */
 }
 
 /* Tablet (768px a 1023px) and larger phones */
@@ -191,13 +206,62 @@
 
     .main-header {
         padding: var(--spacing-md) var(--spacing-lg);
-        /* No necesitas re-definir fixed aquí, ya está en styles.css */
+    }
+
+    .header-content {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* Logo en tablet */
+    .logo {
+        height: 45px; /* Altura ligeramente mayor para el logo en tablet */
+    }
+
+    /* Navegación principal (visible en tablet) */
+    .main-nav {
+        display: flex; /* Asegurar que la navegación principal esté visible */
+        width: auto;
+        position: static;
+        box-shadow: none;
+        padding: 0;
+        border-top: none;
+    }
+
+    .main-nav .nav-list {
+        flex-direction: row;
+        gap: var(--spacing-md);
+    }
+
+    .main-nav .nav-list a {
+        padding: var(--spacing-sm) 0;
+        width: auto;
+    }
+
+    /* Iconos de utilidad en tablet */
+    .utility-icons {
+        gap: var(--spacing-md);
+    }
+
+    .menu-toggle {
+        display: none; /* Ocultar en tablet, usar nav principal */
+    }
+
+    .utility-icons #searchIcon,
+    .utility-icons #cartIcon {
+        display: block; /* Asegurar que el buscador y el carrito estén visibles */
+        font-size: 1.2em; /* Tamaño estándar */
+    }
+
+    .bottom-nav {
+        display: none; /* Ocultar la barra inferior en tablet */
     }
 
     /* ***** CAMBIO CLAVE AQUÍ: Ajuste del padding-top del hero-section para tablets ***** */
     .hero-section {
         height: 400px; /* Altura más pequeña para el carrusel en tablets */
-        padding-top: 80px; /* ESTIMACIÓN: Asume que el header en tablet tiene unos 80px de alto. AJUSTA ESTE VALOR. */
+        padding-top: 80px; /* ESTIMACIÓN: Ajustar a la altura real de tu header en tablet */
     }
 
     /* Product Grid for tablets - aiming for 3 columns */
@@ -233,37 +297,6 @@
         height: 65%; /* IMAGEN MÁS GRANDE: Still 65% of card height */
     }
 
-    .utility-icons {
-        gap: var(--spacing-md);
-    }
-
-    .menu-toggle {
-        display: none; /* Ocultar en tablet, usar nav principal */
-    }
-
-    .main-nav {
-        display: flex; /* Asegurar que la navegación principal esté visible */
-        width: auto;
-        position: static; /* Volver a static en tablet */
-        box-shadow: none;
-        padding: 0;
-        border-top: none;
-    }
-
-    .main-nav .nav-list {
-        flex-direction: row;
-        gap: var(--spacing-md);
-    }
-
-    .main-nav .nav-list a {
-        padding: var(--spacing-sm) 0;
-        width: auto;
-    }
-
-    .bottom-nav {
-        display: none; /* Ocultar la barra inferior en tablet */
-    }
-
     .age-verification-buttons {
         flex-direction: row; /* Botones en fila en tablet */
         justify-content: center;
@@ -281,10 +314,53 @@
         padding: 0 var(--spacing-xl);
     }
 
+    .main-header {
+        padding: var(--spacing-md) var(--spacing-xl); /* Mayor padding en desktop */
+    }
+
+    .header-content {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* Logo en desktop */
+    .logo {
+        height: 50px; /* Altura original del logo en desktop */
+    }
+
+    /* Navegación principal (visible en desktop) */
+    .main-nav {
+        display: flex;
+        width: auto;
+        position: static;
+        box-shadow: none;
+        padding: 0;
+        border-top: none;
+    }
+
+    .main-nav .nav-list {
+        flex-direction: row;
+        gap: var(--spacing-lg); /* Mayor espacio entre enlaces en desktop */
+    }
+
+    /* Iconos de utilidad en desktop */
+    .utility-icons {
+        gap: var(--spacing-md);
+    }
+
+    .menu-toggle {
+        display: none; /* Asegurar que el menú hamburguesa no se muestre en desktop */
+    }
+
+    .bottom-nav {
+        display: none; /* Ocultar la barra inferior en desktop */
+    }
+
     /* ***** CAMBIO CLAVE AQUÍ: Ajuste del padding-top del hero-section para desktop ***** */
     .hero-section {
         height: 450px; /* Altura original del carrusel en desktop */
-        padding-top: 80px; /* ESTIMACIÓN: Asume que el header en desktop tiene unos 80px de alto. AJUSTA ESTE VALOR. */
+        padding-top: 80px; /* ESTIMACIÓN: Ajustar a la altura real de tu header en desktop */
     }
 
     /* Product Grid for desktop - aiming for 3 columns */
@@ -318,18 +394,6 @@
     }
     .category-products-track .product-card .product-image-wrapper {
         height: 65%; /* IMAGEN MÁS GRANDE: Still 65% of card height */
-    }
-
-    .main-nav {
-        display: flex; /* Asegurar que la navegación principal esté visible en desktop */
-    }
-
-    .menu-toggle {
-        display: none; /* Asegurar que el menú hamburguesa no se muestre en desktop */
-    }
-
-    .bottom-nav {
-        display: none; /* Ocultar la barra inferior en desktop */
     }
 
     .product-filters select,
