@@ -37,7 +37,34 @@ body { font-family: var(--font-family); background: linear-gradient(135deg, var(
 
 #productFilters { position: sticky; top: 80px; background: rgba(17, 17, 17, 0.7); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); padding: 1rem; border-radius: var(--border-radius); z-index: 20; display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; border: 1px solid var(--glass-border); }
 .product-grid { display: grid; gap: 1.5rem; }
+/* ... (todos tus estilos existentes) ... */
 
+.add-to-cart-btn {
+    background: rgba(212, 175, 55, 0.1);
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    padding: 10px 15px;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-speed) ease;
+    margin-top: auto;
+    width: 100%;
+    
+    /* --- AJUSTE DE ALINEACIÓN --- */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.add-to-cart-btn:hover {
+    background: var(--primary-color);
+    color: var(--bg-color-start);
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+}
+
+/* ... (el resto de tus estilos) ... */
 .cart-sidebar { position: fixed; top: 0; right: 0; width: 100%; max-width: 400px; height: 100%; background: rgba(10, 10, 10, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-left: 1px solid var(--glass-border); z-index: 50; display: flex; flex-direction: column; transform: translateX(100%); transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1); }
 .cart-sidebar.open { transform: translateX(0); box-shadow: -10px 0 50px rgba(0,0,0,0.5); }
 .cart-header { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem; border-bottom: 1px solid var(--glass-border); flex-shrink: 0; }
