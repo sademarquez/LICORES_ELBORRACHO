@@ -3,10 +3,6 @@
 import { appState } from './main.js';
 import { renderProductCard } from './products.js'; // Reutilizamos renderProductCard para crear tarjetas
 
-// Este módulo ya no necesita mantener referencias globales para cada carrusel de categoría,
-// ya que la lógica de "carrusel de productos por categoría" ahora es única
-// y se maneja por el cambio de botones.
-
 /**
  * Configura la sección de carrusel de productos por categoría.
  * Esto incluye los botones de categoría y el track donde se renderizan los productos.
@@ -28,30 +24,29 @@ export function setupCategoryProductCarousel(allProducts, sectionSelector) {
         return;
     }
 
-    // Limpiar el track al inicio
-    categoryProductTrack.innerHTML = '';
-
-    // Función para renderizar productos en el carrusel de categorías
+    /**
+     * Renderiza los productos para la categoría seleccionada en el carrusel.
+     * @param {Array<Object>} productsToRender - Productos filtrados para la categoría.
+     */
     const renderCategoryProducts = (productsToRender) => {
-        categoryProductTrack.innerHTML = ''; // Limpiar antes de renderizar
+        categoryProductTrack.innerHTML = ''; // Limpiar contenido previo
+
         if (productsToRender.length === 0) {
-            categoryProductTrack.innerHTML = `<p class="no-results-message" style="grid-column: 1 / -1; text-align: center;">No hay productos en esta categoría.</p>`;
+            categoryProductTrack.innerHTML = `<p class="no-results-message">No hay productos en esta categoría.</p>`;
             return;
         }
+
         productsToRender.forEach(product => {
             const productCard = renderProductCard(product);
             categoryProductTrack.appendChild(productCard);
         });
     };
 
-    // Crear y añadir botones de categoría dinámicamente si no existen
-    // (Opcional, si ya están definidos en HTML, puedes omitir esto y solo añadir listeners)
-    // Para este diseño, asumimos que los botones están en el HTML y solo necesitan listeners.
+    // Event listeners para los botones de categoría
     const categoryBtns = categoryButtonsContainer.querySelectorAll('.category-btn');
-
     categoryBtns.forEach(button => {
         button.addEventListener('click', () => {
-            // Eliminar clase 'active' de todos los botones
+            // Remover clase 'active' de todos los botones
             categoryBtns.forEach(btn => btn.classList.remove('active'));
             // Añadir clase 'active' al botón clickeado
             button.classList.add('active');
