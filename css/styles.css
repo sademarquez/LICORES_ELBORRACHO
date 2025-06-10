@@ -5,7 +5,7 @@
     /* Paleta de Colores EL BORRACHO (Oscura y Dorada/Ámbar) */
     --primary-color: #FFBF00; /* Ámbar/Dorado vibrante */
     --primary-color-dark: #E0A800; /* Ámbar más oscuro */
-    --secondary-color: #343a40; /* Gris oscuro, casi negro */
+    --secondary-color: #000000; /* Gris oscuro, casi negro */
     --secondary-color-dark: #23272b;
     --accent-color: #FFDA6A; /* Tono más claro para acentos */
     --accent-color-dark: #FFC107;
@@ -278,7 +278,7 @@ p {
 /* Sección de Producto General y Filtros */
 .product-section {
     padding: var(--spacing-lg) 0;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.2);
     flex-grow: 1;
 }
 
@@ -351,7 +351,7 @@ p {
 
 /* Tarjeta de Producto - CORRECCIÓN CLAVE AQUÍ */
 .product-card {
-    background-color: rgba(52, 58, 64, 0.08); /* Fondo más transparente */
+    background-color: rgba(52, 58, 64, 0.04); /* Fondo más transparente */
     border: 1px solid rgba(255, 191, 0, 0.3); /* Borde dorado sutil */
     border-radius: 10px;
     padding: var(--spacing-md);
@@ -462,7 +462,7 @@ p {
     border-radius: 8px;
     transition: transform var(--transition-speed) var(--transition-timing), box-shadow var(--transition-speed) var(--transition-timing), background-color var(--transition-speed) var(--transition-timing);
     box-shadow: var(--shadow-sm);
-    border: 1px solid rgba(255, 191, 0, 0.2);
+    border: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 .brand-logo:hover {
