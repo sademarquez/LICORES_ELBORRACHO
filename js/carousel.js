@@ -1,4 +1,4 @@
-// js/carousel.js 
+// js/carousel.js
 
 let currentSlide = 0;
 let autoSlideInterval;
@@ -37,64 +37,59 @@ export function initCarousel(bannersData) {
         bannersData.forEach((banner, index) => {
             const slideElement = createSlideElement(banner);
             carouselTrack.appendChild(slideElement);
-            slides.push(slideElement);
 
             const dotElement = document.createElement('span');
             dotElement.classList.add('carousel-dot');
-            dotElement.setAttribute('role', 'button');
-            dotElement.setAttribute('aria-label', `Ir a la diapositiva ${index + 1}`);
-            dotElement.setAttribute('data-slide-index', index);
-            dotElement.addEventListener('click', () => {
-                showSlide(index);
-                resetAutoSlide();
-            });
+            dotElement.dataset.slideIndex = index;
+            dotElement.addEventListener('click', () => showSlide(index));
             carouselDotsContainer.appendChild(dotElement);
+
+            slides.push(slideElement);
             dots.push(dotElement);
         });
 
-        // Configurar botones de navegación
-        carouselPrevBtn.addEventListener('click', () => {
-            showSlide(currentSlide - 1);
-            resetAutoSlide();
-        });
-        carouselNextBtn.addEventListener('click', () => {
-            showSlide(currentSlide + 1);
-            resetAutoSlide();
-        });
+        // Event listeners para botones de navegación
+        carouselPrevBtn.addEventListener('click', () => showSlide(currentSlide - 1));
+        carouselNextBtn.addEventListener('click', () => showSlide(currentSlide + 1));
 
-        // Mostrar el primer slide y comenzar el auto-avance
-        showSlide(currentSlide);
-        startAutoSlide();
-        // console.log('carousel.js: Carrusel principal inicializado con éxito.'); // ELIMINADO
+        showSlide(currentSlide); // Mostrar el primer slide
+        startAutoSlide(); // Iniciar el auto-avance
+        
+        // Pausar auto-avance al pasar el mouse sobre el carrusel
+        carouselTrack.parentElement.addEventListener('mouseenter', stopAutoSlide);
+        carouselTrack.parentElement.addEventListener('mouseleave', startAutoSlide);
+
     } else {
-        console.warn('carousel.js: No hay datos de banners para inicializar el carrusel principal.');
-        // Puedes ocultar el carrusel si no hay banners
-        carouselTrack.parentElement.style.display = 'none'; 
+        console.warn('carousel.js: No hay datos de banners para el carrusel principal.');
+        carouselTrack.innerHTML = `<p style="text-align: center; width: 100%; padding: var(--spacing-lg); color: var(--text-color-light);">No hay banners para mostrar.</p>`;
+        carouselPrevBtn.style.display = 'none';
+        carouselNextBtn.style.display = 'none';
+        carouselDotsContainer.style.display = 'none';
     }
+    // console.log('carousel.js: Carrusel principal inicializado.'); // ELIMINADO
 }
 
 /**
- * Crea un elemento de slide para el carrusel principal.
- * @param {Object} banner - Objeto con los datos del banner (imageUrl, title, description, link, buttonText).
- * @returns {HTMLElement} El elemento div que representa un slide.
+ * Crea un elemento de slide HTML para el carrusel principal.
+ * @param {Object} banner - Objeto con los datos del banner (title, description, imageUrl, link, buttonText).
+ * @returns {HTMLElement} El elemento div del slide.
  */
 function createSlideElement(banner) {
     const slide = document.createElement('div');
     slide.classList.add('carousel-slide');
-    slide.style.backgroundImage = `url(${banner.imageUrl})`;
+    slide.style.backgroundImage = `url('${banner.imageUrl}')`;
     slide.setAttribute('role', 'group');
-    slide.setAttribute('aria-roledescription', 'slide');
-    slide.setAttribute('aria-label', `Diapositiva ${currentSlide + 1} de ${totalSlides}`);
+    slide.setAttribute('aria-label', `Slide ${banner.id}`);
 
     let buttonHtml = '';
     if (banner.link && banner.buttonText) {
-        buttonHtml = `<a href="${banner.link}" class="btn-primary carousel-button">${banner.buttonText}</a>`;
+        buttonHtml = `<a href="${banner.link}" class="btn btn-primary">${banner.buttonText}</a>`;
     }
 
     slide.innerHTML = `
-        <div class="carousel-content">
-            <h2 class="carousel-title">${banner.title}</h2>
-            <p class="carousel-description">${banner.description}</p>
+        <div class="carousel-slide-content">
+            <h2>${banner.title}</h2>
+            <p>${banner.description}</p>
             ${buttonHtml}
         </div>
     `;
@@ -102,40 +97,30 @@ function createSlideElement(banner) {
 }
 
 /**
- * Muestra el slide especificado.
+ * Muestra un slide específico del carrusel.
  * @param {number} index - El índice del slide a mostrar.
  */
 function showSlide(index) {
-    if (index >= totalSlides) {
-        currentSlide = 0; // Vuelve al inicio si pasa el último slide
-    } else if (index < 0) {
-        currentSlide = totalSlides - 1; // Va al final si retrocede desde el primero
-    } else {
-        currentSlide = index;
-    }
+    if (slides.length === 0) return;
 
+    currentSlide = (index + totalSlides) % totalSlides;
     const offset = -currentSlide * 100;
     carouselTrack.style.transform = `translateX(${offset}%)`;
 
-    updateCarousel();
-}
+    // Actualizar clases 'active' y atributos de accesibilidad
+    slides.forEach((slide, idx) => {
+        // Encontrar elementos interactivos dentro del slide
+        const interactiveElements = slide.querySelectorAll('a, button, input, select, textarea');
 
-/**
- * Actualiza las clases 'active' y los atributos de accesibilidad de slides y dots.
- */
-function updateCarousel() {
-    slides.forEach((slide, index) => {
-        const interactiveElements = slide.querySelectorAll('button, a, input, select, textarea'); // Selecciona elementos interactivos
-
-        if (index === currentSlide) {
+        if (idx === currentSlide) {
             slide.classList.add('active');
             slide.setAttribute('aria-hidden', 'false');
-            slide.setAttribute('tabindex', '0');
+            slide.setAttribute('tabindex', '0'); // Hacer el slide focuseable
             interactiveElements.forEach(el => el.setAttribute('tabindex', '0')); // Hacer focuseables los elementos interactivos
         } else {
             slide.classList.remove('active');
             slide.setAttribute('aria-hidden', 'true');
-            slide.setAttribute('tabindex', '-1');
+            slide.setAttribute('tabindex', '-1'); // Quitar el slide del orden de tabulación
             interactiveElements.forEach(el => el.setAttribute('tabindex', '-1')); // Hacer NO focuseables los elementos interactivos
         }
     });
@@ -144,11 +129,11 @@ function updateCarousel() {
         if (index === currentSlide) {
             dot.classList.add('active');
             dot.setAttribute('aria-selected', 'true');
-            dot.setAttribute('tabindex', '0');
+            dot.setAttribute('tabindex', '0'); // Hacer el dot focuseable
         } else {
             dot.classList.remove('active');
             dot.setAttribute('aria-selected', 'false');
-            dot.setAttribute('tabindex', '-1');
+            dot.setAttribute('tabindex', '-1'); // Quitar el dot del orden de tabulación
         }
     });
 }
