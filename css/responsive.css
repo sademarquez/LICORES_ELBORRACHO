@@ -1,47 +1,44 @@
 /* css/responsive.css */
 
-/* Mobile-First Approach */
-/* Estilos para dispositivos pequeños (hasta 767px) */
-@media (max-width: 767px) {
-    /* ... Tus otros estilos para móvil ... */
-
+/* --- RESPONSIVIDAD CRÍTICA (Móviles pequeños y grandes) --- */
+@media (max-width: 768px) {
     .product-grid {
-        /* Mínimo 2 columnas en móvil: repeat(auto-fit, minmax(140px, 1fr)) */
-        /* minmax(140px, ...) asegura que en una pantalla de 320px, entren dos columnas */
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); 
-        gap: var(--spacing-md);
+        /* OBLIGATORIO: Mínimo 2 productos por fila */
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
     }
-    
-    .category-product-carousel-track .product-card {
-        flex: 0 0 240px; /* Tarjetas un poco más pequeñas en el carrusel en móvil */
-        width: 240px;
-        max-width: 240px;
+
+    .category-products-carousel .product-card {
+        flex: 0 0 80%; /* Para que se vea 1 y un poco del siguiente */
     }
-}
 
-/* Tablet (768px a 1023px) */
-@media (min-width: 768px) and (max-width: 1023px) {
-    /* ... Tus otros estilos para tablet ... */
-
-    .product-grid {
-        /* Generalmente 3 columnas en tablet con este ajuste */
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+    .product-filters-sticky {
+        flex-direction: column;
+        top: 60px; /* Ajustar por el header más pequeño */
     }
 }
 
-/* Desktop (1024px y más) */
-@media (min-width: 1024px) {
-    /* ... Tus otros estilos para desktop ... */
 
+/* --- TABLETS --- */
+@media (min-width: 769px) and (max-width: 1024px) {
     .product-grid {
-        /* Forzamos 3 columnas para un diseño estable en escritorio, como solicitaste */
+        /* 3 productos por fila */
         grid-template-columns: repeat(3, 1fr);
     }
 
-    /* Restauramos el auto-fill para pantallas muy grandes si se desea */
-    @media (min-width: 1440px) {
-        .product-grid {
-             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        }
+    .category-products-carousel .product-card {
+        flex: 0 0 45%; /* Mostrar 2 productos */
+    }
+}
+
+
+/* --- DESKTOP --- */
+@media (min-width: 1025px) {
+    .product-grid {
+        /* 4 productos por fila como se especifica */
+        grid-template-columns: repeat(4, 1fr);
+    }
+    .category-products-carousel .product-card {
+        flex: 0 0 30%; /* Mostrar 3 productos */
     }
 }
