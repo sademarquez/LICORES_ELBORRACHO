@@ -3,12 +3,21 @@
 import { initCarousel } from './carousel.js';
 import { renderProducts, setupProductFilters, renderBrands } from './products.js';
 import { setupSearch, toggleSearchModal } from './search.js';
-import { initCart, updateCartDisplay, toggleCartSidebar } from './cart.js'; // CAMBIO CLAVE AQUÍ: updateCartCount AHORA ES updateCartDisplay
+// ******************************************************************************************************************************************************
+// CORRECCIÓN CLAVE AQUÍ: Se cambió 'updateCartCount' a 'updateCartDisplay' porque 'cart.js' exporta 'updateCartDisplay' y no 'updateCartCount'.
+import { initCart, updateCartDisplay, toggleCartSidebar } from './cart.js';
+// ******************************************************************************************************************************************************
 import { setupSupport } from './support.js';
 import { showToastNotification } from './toast.js';
 import { setupCategoryProductCarousel } from './category-products-carousel.js';
 import { initAgeVerification } from './age-verification.js';
+// ******************************************************************************************************************************************************
+// VERIFICADO: 'initContinuousProductCarousel' SÍ se exporta desde 'continuous-carousel.js'.
+// Si hay error aquí, la causa es casi siempre:
+// 1. Capitalización del nombre del archivo en tu repositorio de GitHub/Netlify (debe ser `continuous-carousel.js`).
+// 2. Caché en el despliegue de Netlify que necesita ser forzada (limpiar caché y redesplegar).
 import { initContinuousProductCarousel } from './continuous-carousel.js';
+// ******************************************************************************************************************************************************
 
 /**
  * appState: Objeto global para almacenar el estado de la aplicación.
@@ -28,7 +37,7 @@ export const appState = {
  */
 async function loadInitialData() {
     try {
-        // console.log('main.js: Iniciando carga de datos iniciales...'); // ELIMINADO
+        // console.log('main.js: Iniciando carga de datos iniciales...'); // ELIMINADO para producción
         
         // Cargar config.json
         const configResponse = await fetch('config.json');
@@ -51,7 +60,7 @@ async function loadInitialData() {
         }
         appState.products = await productsResponse.json();
 
-        // console.log('main.js: Datos iniciales cargados con éxito.', appState); // ELIMINADO
+        // console.log('main.js: Datos iniciales cargados con éxito.', appState); // ELIMINADO para producción
 
     } catch (error) {
         console.error('main.js: Error al cargar los datos iniciales:', error);
@@ -168,7 +177,7 @@ function setupBottomNavActiveState() {
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         // Paso 1: Inicializar la verificación de edad (debe ser lo primero)
-        // console.log('main.js: Llamando a initAgeVerification...'); // ELIMINADO
+        // console.log('main.js: Llamando a initAgeVerification...'); // ELIMINADO para producción
         initAgeVerification();
 
         // Esperar a que la verificación de edad se complete (o se decline)
@@ -201,7 +210,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         setupSupport();
 
         // Paso 9: Renderizar marcas en el carrusel continuo
-        renderBrands(appState.brands, '#brandLogosContainer');
+        renderBrands(appState.brands, '#brandLogosContainer'); // Esta función renderiza logos de marca en un contenedor GRID normal, no un carrusel continuo.
+        // Usamos initContinuousProductCarousel para el carrusel de marcas con animación infinita.
         initContinuousProductCarousel(appState.brands, 'continuousCarouselTrackBrands', 'Carrusel de Marcas');
 
         // Paso 10: Configurar el carrusel de productos por categoría en la sección de inicio
@@ -231,7 +241,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             footerWhatsappLink.href = `https://wa.me/${appState.contactInfo.phone}`;
         }
 
-        // console.log('main.js: Aplicación inicializada completamente.'); // ELIMINADO
+        // console.log('main.js: Aplicación inicializada completamente.'); // ELIMINADO para producción
 
     } catch (error) {
         console.error('main.js: No se pudieron cargar los productos o la aplicación no se renderizó completamente.', error);
