@@ -4,28 +4,27 @@
 /* Estilos para dispositivos pequeños (hasta 767px) */
 @media (max-width: 767px) {
     .header-content {
-        flex-direction: row; /* CAMBIO: Elementos en una sola fila */
-        align-items: center; /* CAMBIO: Centra verticalmente */
-        justify-content: space-between; /* CAMBIO: Distribuye el espacio entre logo, menú y botones */
-        /* gap: var(--spacing-md); */ /* Quita gap si usas space-between en el contenedor principal */
+        flex-direction: row; /* CORRECCIÓN: Elementos en una sola fila para el header */
+        align-items: center; /* CORRECCIÓN: Centra verticalmente los elementos del header */
+        justify-content: space-between; /* CORRECCIÓN: Distribuye el espacio entre logo, menú y botones */
         padding: var(--spacing-sm); /* Ajusta el padding del header si es necesario */
     }
 
-    /* Asegúrate de que tu HTML tenga un div para los íconos de acción si quieres agruparlos */
-    /* Ejemplo: <div class="header-action-buttons">...</div> */
-    .header-action-buttons { /* Si tienes un contenedor para búsqueda y carrito */
+    /* Asegúrate de que tu HTML tenga un div con class="header-action-buttons"
+       que contenga el botón de búsqueda y el carrito para que se agrupen bien. */
+    .header-action-buttons { 
         display: flex;
-        gap: var(--spacing-md); /* Espacio entre los íconos */
+        gap: var(--spacing-md); /* Espacio entre los íconos de búsqueda y carrito */
         align-items: center;
     }
 
     .main-nav {
-        width: 100%; /* CAMBIO: Ocupa todo el ancho del contenedor padre (container) */
+        width: 100%; /* El menú desplegable ocupa todo el ancho */
         display: none; /* Ocultar por defecto para el menú hamburguesa */
         flex-direction: column;
         background-color: var(--dark-bg); /* Usar el color oscuro del header */
         position: absolute;
-        top: 100%;
+        top: 100%; /* Se posiciona justo debajo del header */
         left: 0;
         box-shadow: var(--shadow-md);
         padding: var(--spacing-md);
@@ -34,7 +33,7 @@
     }
 
     .main-nav.active {
-        display: flex;
+        display: flex; /* Se muestra cuando está activo */
     }
 
     .main-nav .nav-list {
@@ -56,32 +55,27 @@
         display: block; /* Mostrar el menú hamburguesa en móvil */
     }
 
-    /* El margin-left: auto en .header-icons ya no es estrictamente necesario si .header-content usa space-between */
-    /* .header-icons {
-        margin-left: auto;
-    } */
-
     .hero-section {
-        height: 250px; /* CAMBIO: Altura más visible para el carrusel en móviles, sin ser excesiva */
+        height: 250px; /* REVERTIDO/AJUSTADO: Altura para el carrusel en móviles (era 90px, se ajustó a 250px por visibilidad) */
     }
 
     /* Ajustes para el texto y botones del carrusel, hazlos más pequeños en móvil */
     .carousel-title {
-        font-size: 1.8em; /* Un poco más pequeño */
+        font-size: 1.8em; /* REVERTIDO: Tamaño original o similar para móvil */
     }
 
     .carousel-description {
-        font-size: 0.9em; /* Más pequeño para ahorrar espacio */
+        font-size: 0.9em; /* REVERTIDO: Tamaño original o similar para móvil */
     }
 
     .carousel-button {
-        font-size: 0.8em; /* Botones más pequeños */
-        padding: var(--spacing-xs) var(--spacing-sm); /* Padding más compacto */
+        font-size: 0.8em; /* REVERTIDO: Tamaño original o similar para móvil */
+        padding: var(--spacing-xs) var(--spacing-sm); /* REVERTIDO: Padding original o similar */
     }
 
     .carousel-btn { /* Botones de navegación (flechas) del carrusel */
         padding: var(--spacing-xs);
-        font-size: 1em; /* Más pequeños */
+        font-size: 1em; /* REVERTIDO: Tamaño original o similar para móvil */
     }
 
     .carousel-dots {
@@ -89,27 +83,29 @@
     }
 
     .product-grid {
-        /* CAMBIO CRÍTICO: Buscar 2 columnas usables en móvil. minmax(140px, 1fr) es un buen punto de partida */
-        /* Si quieres 3 columnas sí o sí, tendrías que ir a minmax(90px, 1fr) aprox., pero las tarjetas serían diminutas */
+        /* REVERTIDO: Aquí te doy una opción para 2 columnas usables en móvil. */
+        /* Si quieres 3 columnas sí o sí como en tu última pregunta (pero muy pequeñas),
+           tendrías que usar minmax(90px, 1fr) o menos, pero no es recomendable para usabilidad.
+           Con 140px caben 2 columnas decentemente. */
         grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); 
         gap: var(--spacing-sm); /* Espacio reducido entre tarjetas */
     }
 
     .product-card {
-        padding: var(--spacing-xs); /* Padding más pequeño */
+        padding: var(--spacing-xs); /* REVERTIDO: Padding original o similar */
     }
 
     .product-image {
-        max-height: 120px; /* CAMBIO: Ajustar para que se vean mejor dentro de la tarjeta más pequeña */
+        max-height: 120px; /* REVERTIDO: Ajustar para que se vean mejor dentro de la tarjeta más pequeña */
         object-fit: contain; /* Asegura que la imagen se ajuste bien sin fondo */
     }
 
     .product-name {
-        font-size: 0.85em; /* Nombres de productos más pequeños */
+        font-size: 0.85em; /* REVERTIDO: Nombres de productos más pequeños */
     }
 
     .product-price {
-        font-size: 0.9em; /* Precios más pequeños */
+        font-size: 0.9em; /* REVERTIDO: Precios más pequeños */
     }
 
     .product-filters {
@@ -185,29 +181,29 @@
     }
 
     .hero-section {
-        height: 380px; /* CAMBIO: Altura ligeramente mayor para tablet */
+        height: 380px; /* REVERTIDO/AJUSTADO: Altura del carrusel en tablet (era 350px, ajustado a 380px por coherencia) */
     }
 
     .carousel-title {
-        font-size: 2em; /* Títulos un poco más grandes que en móvil */
+        font-size: 2em; /* REVERTIDO: Títulos originales o similares */
     }
 
     .carousel-description {
-        font-size: 1em; /* Descripción legible */
+        font-size: 1em; /* REVERTIDO: Descripción original o similar */
     }
 
     .product-grid {
-        /* CAMBIO CRÍTICO: Buscar 3 columnas en tablet. minmax(180px, 1fr) ya lo tienes y funciona bien. */
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* 3-4 columnas en tablet */
+        /* REVERTIDO: Mantiene 3-4 columnas. minmax(180px, 1fr) ya lo tenías y funciona bien. */
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
         gap: var(--spacing-md);
     }
 
     .product-card {
-        padding: var(--spacing-sm); /* Ajusta padding */
+        padding: var(--spacing-sm); /* REVERTIDO: Padding original o similar */
     }
 
     .product-image {
-        max-height: 150px; /* Ajusta la altura de la imagen */
+        max-height: 150px; /* REVERTIDO: Altura original o similar */
     }
 
     .product-name {
@@ -253,7 +249,8 @@
     }
 
     .product-grid {
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* 4-5 columnas en desktop */
+        /* REVERTIDO: Mantiene 4-5 columnas. minmax(220px, 1fr) ya lo tenías. */
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
         gap: var(--spacing-lg);
     }
 
@@ -270,7 +267,7 @@
     }
 
     .hero-section {
-        height: 450px; /* Altura original del carrusel en desktop */
+        height: 450px; /* REVERTIDO: Altura original del carrusel en desktop */
     }
 
     .product-filters select,
