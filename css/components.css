@@ -193,6 +193,37 @@
     min-width: 200px; /* Asegura que la tarjeta no se encoja demasiado */
     max-width: 250px; /* Ancho máximo para mantener la consistencia */
     height: auto; /* Altura automática para el contenido */
+    /* Adjust these for general product card appearance in this carousel */
+    min-height: 180px; /* Added to help with square aspect ratio */
+}
+
+.category-products-track .product-card .product-image {
+    /* Adjusted for larger image on category carousel */
+    height: 120px; /* Increased image height for category carousel */
+    object-fit: contain;
+    padding: var(--spacing-xs); /* Reduced padding for image */
+    margin-bottom: var(--spacing-xs); /* Smaller margin */
+}
+
+.category-products-track .product-card .product-name {
+    font-size: 0.9em; /* Smaller font for name */
+    margin-bottom: var(--spacing-xs); /* Smaller margin */
+}
+
+.category-products-track .product-card .product-brand,
+.category-products-track .product-card .product-old-price,
+.category-products-track .product-card .product-offer-price {
+    display: none; /* Hide these elements */
+}
+
+.category-products-track .product-card .product-price {
+    font-size: 1.1em; /* Slightly smaller font for price */
+    margin-bottom: var(--spacing-xs); /* Smaller margin */
+}
+
+.category-products-track .product-card .add-to-cart-btn {
+    font-size: 0.8em; /* Smaller button text */
+    padding: var(--spacing-xs) var(--spacing-sm); /* Smaller button padding */
 }
 
 
