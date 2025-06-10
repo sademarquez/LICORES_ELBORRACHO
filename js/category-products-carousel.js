@@ -1,103 +1,112 @@
-// js/category-products-carousel.js
+// js/continuous-carousel.js
 
 import { appState } from './main.js';
-import { renderProductCard } from './products.js'; // Reutilizamos renderProductCard para crear tarjetas
+import { showToastNotification } from './toast.js';
 
-// Este módulo ya no necesita mantener referencias globales para cada carrusel de categoría,
-// ya que la lógica de "carrusel de productos por categoría" ahora es única
-// y se maneja por el cambio de botones.
+// No es necesario importar renderProductCard aquí si solo se usan logos de marcas.
+// Si se quiere un carrusel continuo de PRODUCTOS, entonces sí se usaría.
+// Para este caso, solo logos de marcas.
 
 /**
- * Configura la sección de carrusel de productos por categoría.
- * Esto incluye los botones de categoría y el track donde se renderizan los productos.
- * @param {Array<Object>} allProducts - El array completo de productos.
- * @param {string} sectionSelector - Selector CSS del contenedor principal de la sección (ej. '#categoryProductsSection').
+ * Inicializa un carrusel de logos continuo.
+ * Crea un efecto de desplazamiento infinito duplicando los elementos.
+ * @param {Array<Object>} itemsData - Array de objetos (ej. marcas) a mostrar.
+ * @param {string} trackId - El ID del elemento del track del carrusel (ej. 'continuousCarouselTrack').
+ * @param {string} carouselName - Nombre para los logs de consola.
  */
-export function setupCategoryProductCarousel(allProducts, sectionSelector) {
-    const sectionContainer = document.querySelector(sectionSelector);
-    if (!sectionContainer) {
-        console.error(`category-products-carousel.js: Sección de carrusel de categorías no encontrada: ${sectionSelector}`);
+export function initContinuousProductCarousel(itemsData, trackId, carouselName = 'Carrusel Continuo') {
+    const track = document.getElementById(trackId);
+    if (!track) {
+        console.error(`continuous-carousel.js: Track del carrusel continuo no encontrado: #${trackId}. Inicialización abortada.`);
         return;
     }
 
-    const categoryButtonsContainer = sectionContainer.querySelector('.category-buttons-container');
-    const categoryProductTrack = sectionContainer.querySelector('#categoryProductTrack');
+    // Limpiar contenido previo para evitar duplicados si se llama varias veces
+    track.innerHTML = '';
+    track.style.animation = 'none'; // Detener animación si ya existía
+    track.style.transform = 'translateX(0)'; // Resetear posición
 
-    if (!categoryButtonsContainer || !categoryProductTrack) {
-        console.warn('category-products-carousel.js: Elementos clave (botones o track) no encontrados para la sección de categorías. Inicialización abortada.');
+    const itemsToDisplay = itemsData;
+
+    if (itemsToDisplay.length === 0) {
+        // console.warn(`continuous-carousel.js: No hay elementos para el carrusel continuo "${carouselName}".`); // ELIMINADO para producción
+        track.innerHTML = `<p style="text-align: center; color: var(--text-color-light);">No hay elementos para mostrar en este carrusel.</p>`;
         return;
     }
 
-    // Generar botones de categoría dinámicamente
-    // Obtener categorías únicas de los productos
-    const categories = ['all', ...new Set(allProducts.map(p => p.category))];
+    // Duplicar elementos para el efecto infinito
+    // Esto se hace solo si hay suficientes elementos para justificar la duplicación
+    const minItemsForInfiniteScroll = 5; // Un número arbitrario, ajusta si tus elementos son muy anchos/pocos
+    let itemsToClone = itemsToDisplay;
 
-    categoryButtonsContainer.innerHTML = ''; // Limpiar botones existentes
-
-    categories.forEach(category => {
-        const button = document.createElement('button');
-        button.classList.add('category-btn');
-        if (category === 'all') {
-            button.textContent = 'Todos';
-            button.dataset.category = 'all';
-            button.classList.add('active'); // Botón "Todos" activo por defecto
-        } else {
-            button.textContent = category;
-            button.dataset.category = category;
+    // Duplicamos los elementos varias veces para asegurar un loop suave
+    // Depende del ancho de los elementos y el ancho de la ventana
+    // Por simplicidad, duplicamos un número fijo de veces, o si no hay suficientes elementos
+    while (itemsToClone.length < minItemsForInfiniteScroll * 2 && itemsToDisplay.length > 0) {
+        itemsToClone = itemsToClone.concat(itemsToDisplay);
+    }
+    // Si todavía no hay suficientes después de la concatenación inicial, se puede duplicar más veces
+    // para asegurar que siempre haya suficiente contenido para el scroll infinito visualmente
+    if (itemsToClone.length < 20 && itemsToDisplay.length > 0) { // Duplicar hasta tener al menos 20 elementos visuales
+        const timesToRepeat = Math.ceil(20 / itemsToClone.length);
+        for (let i = 0; i < timesToRepeat; i++) {
+            itemsToClone = itemsToClone.concat(itemsToDisplay);
         }
-        categoryButtonsContainer.appendChild(button);
+    }
+
+
+    itemsToClone.forEach(item => {
+        const itemDiv = document.createElement('div');
+        itemDiv.classList.add('continuous-carousel-item');
+        // Asumiendo que `item` tiene `logoUrl` y `name`
+        itemDiv.innerHTML = `<img src="${item.logoUrl}" alt="${item.name} Logo" loading="lazy">`;
+        track.appendChild(itemDiv);
     });
 
-    /**
-     * Renderiza los productos para la categoría seleccionada en el track del carrusel.
-     * @param {Array<Object>} productsToRender - Los productos filtrados por categoría.
-     */
-    const renderCategoryProducts = (productsToRender) => {
-        categoryProductTrack.innerHTML = ''; // Limpiar el track
-        if (productsToRender.length === 0) {
-            categoryProductTrack.innerHTML = '<p class="empty-category-message">No hay productos en esta categoría.</p>';
+    // Calcular el ancho total de los elementos para determinar la duración de la animación
+    // Se usa setTimeout para asegurar que los elementos ya estén renderizados en el DOM
+    setTimeout(() => {
+        let originalContentWidth = 0;
+        const firstSetOfOriginalItems = track.querySelectorAll('.continuous-carousel-item'); // Seleccionamos solo el primer conjunto original
+
+        if (firstSetOfOriginalItems.length > 0) {
+            // Sumar el ancho de los elementos y sus márgenes
+            for (let i = 0; i < itemsData.length; i++) { // Solo iteramos sobre la cantidad original de itemsData
+                const item = firstSetOfOriginalItems[i];
+                if (item) {
+                    originalContentWidth += item.offsetWidth;
+                    // Añadir el valor de gap si existe entre elementos, o el margen derecho
+                    // Asumiendo que el gap o margin-right es consistente (ej. 20px)
+                    // Podrías obtenerlo computado si necesitas precisión:
+                    // const style = window.getComputedStyle(item);
+                    // originalContentWidth += parseFloat(style.marginRight);
+                    // Por ahora, asumimos un valor estático de 20px de margin-right + 20px de gap por CSS
+                    originalContentWidth += 2 * 20; // Aproximación: 20px de margin-left y 20px de margin-right
+                }
+            }
+        } else {
+            console.warn('continuous-carousel.js: No se encontraron elementos de marca para calcular el ancho.');
             return;
         }
-        productsToRender.forEach(product => {
-            const productCard = renderProductCard(product); // Reutiliza la función de products.js
-            categoryProductTrack.appendChild(productCard);
-        });
-    };
 
-    // Event listeners para los botones de categoría
-    const categoryBtns = categoryButtonsContainer.querySelectorAll('.category-btn');
-    categoryBtns.forEach(button => {
-        button.addEventListener('click', () => {
-            // Eliminar clase 'active' de todos los botones
-            categoryBtns.forEach(btn => btn.classList.remove('active'));
-            // Añadir clase 'active' al botón clickeado
-            button.classList.add('active');
+        // Si el totalWidth es 0, no se puede animar
+        if (originalContentWidth === 0) {
+            console.warn('continuous-carousel.js: El ancho calculado de los logos es cero, no se aplicará la animación continua.');
+            return;
+        }
+        
+        // Ajustar la velocidad basada en la cantidad de elementos y su ancho
+        // Velocidad: ej. 50px/segundo. Duración = Ancho_a_desplazar / velocidad_en_px_por_segundo
+        const scrollSpeedPxPerSecond = 80; // Ajusta este valor para cambiar la velocidad
+        const duration = originalContentWidth / scrollSpeedPxPerSecond; // Duración para un solo ciclo de desplazamiento
 
-            const selectedCategory = button.dataset.category;
-            let filteredProducts = [];
+        // Establecer la variable CSS para la duración de la animación
+        track.style.setProperty('--scroll-duration', `${duration}s`);
+        
+        // Asegurarse de que la animación se aplique
+        track.style.animation = `scroll-left var(--scroll-duration) linear infinite`;
 
-            if (selectedCategory === 'all') {
-                filteredProducts = allProducts;
-            } else {
-                filteredProducts = allProducts.filter(product => product.category === selectedCategory);
-            }
-            
-            renderCategoryProducts(filteredProducts);
-            // Asegúrate de que el carrusel se desplace al inicio al cambiar la categoría
-            categoryProductTrack.scrollTo({ left: 0, behavior: 'smooth' });
-        });
-    });
+    }, 100); // Pequeño retraso para que el navegador calcule los anchos
 
-    // Renderizar productos por defecto al inicio (ej. "Todos")
-    const defaultCategoryBtn = categoryButtonsContainer.querySelector('.category-btn.active');
-    if (defaultCategoryBtn) {
-        const defaultCategory = defaultCategoryBtn.dataset.category;
-        const initialProducts = defaultCategory === 'all' ? allProducts : allProducts.filter(p => p.category === defaultCategory);
-        renderCategoryProducts(initialProducts);
-    } else {
-        // Si no hay botón 'active' por defecto, renderiza todos los productos
-        renderCategoryProducts(allProducts);
-    }
-
-    // console.log(`category-products-carousel.js: Carrusel de categorías "${sectionSelector}" inicializado.`); // ELIMINADO para producción
+    // console.log(`continuous-carousel.js: Carrusel continuo inicializado para ${trackId} con ${itemsToDisplay.length} elementos originales.`); // ELIMINADO para producción
 }
