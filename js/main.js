@@ -9,14 +9,43 @@ const productsPerPage = 8; // 2 filas de 4 en desktop
 function renderProductCard(product) {
     const card = document.createElement('div');
     card.className = 'product-card';
-    // CORRECCIÓN: Se elimina la descripción/detalles de la tarjeta
+    
+    // Nueva estructura con el nombre sobre la imagen
     card.innerHTML = `
-        <img src="${product.imageUrl}" alt="${product.name}" class="product-image">
-        <h3 class="product-name">${product.name}</h3>
-        <p class="product-price">$${product.price.toLocaleString('es-CO')}</p>
-        <button class="add-to-cart-btn" data-id="${product.id}">Agregar</button>
+        <div class="product-image-container">
+            <img src="${product.imageUrl}" alt="${product.name}" class="product-image">
+            <div class="product-name-overlay">
+                <h3 class="product-name">${product.name}</h3>
+            </div>
+        </div>
+        <div class="product-details">
+            <p class="product-price">$${product.price.toLocaleString('es-CO')}</p>
+            <button class="add-to-cart-btn" data-id="${product.id}">Agregar</button>
+        </div>
     `;
     return card;
+}
+
+// RESTAURAMOS LA LÓGICA DEL CARRUSEL
+function renderProductsByCategory(category) {
+    // El contenedor ahora es `.category-products-carousel`
+    const container = document.getElementById('categoryProductsContainer');
+    if (!container) return;
+
+    // Le asignamos la clase correcta para los estilos del carrusel
+    container.className = 'category-products-carousel'; 
+    
+    const filteredProducts = allProducts.filter(p => p.category === category);
+    container.innerHTML = '';
+    
+    // Puedes mostrar todos los productos de la categoría en el scroll
+    filteredProducts.forEach(product => {
+        container.appendChild(renderProductCard(product));
+    });
+
+    if (filteredProducts.length === 0) {
+        container.innerHTML = `<p class="w-full text-center text-text-color-secondary">No hay productos en esta categoría.</p>`;
+    }
 }
 
 // ... (resto de funciones de renderizado)
