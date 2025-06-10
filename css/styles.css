@@ -42,11 +42,14 @@
 /* Reseteo y Estilos Base */
 * {
     box-sizing: border-box;
+    /* Aseguramos que no haya márgenes ni paddings iniciales en ningún elemento */
     margin: 0;
     padding: 0;
 }
 
 body {
+    margin: 0; /* Aseguramos que el body no tenga margen superior */
+    padding: 0; /* Aseguramos que el body no tenga padding superior */
     font-family: 'Montserrat', sans-serif;
     line-height: 1.6;
     color: var(--text-color-light);
@@ -62,7 +65,7 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 var(--spacing-md);
-    width: 100%; /* Ajuste para evitar scroll horizontal innecesario */
+    width: 100%;
 }
 
 a {
@@ -177,11 +180,12 @@ p {
     background-color: rgba(0, 0, 0, 0.2);
     padding: var(--spacing-md) 0;
     box-shadow: var(--shadow-md);
-    position: sticky;
+    /* ***** CAMBIO CLAVE AQUÍ: Header Fijo para que Hero-section empiece desde top: 0 ***** */
+    position: fixed; /* Cambiado de sticky a fixed */
     top: 0;
     left: 0;
-    width: 100%; /* Ajuste a 100% */
-    z-index: 100;
+    width: 100%;
+    z-index: 1000; /* Aumentado z-index para asegurar que esté por encima de todo */
 }
 
 .header-content {
@@ -702,7 +706,7 @@ p {
 
 .continuous-carousel-container {
     overflow: hidden;
-    width: 100%; /* Ajustado a 100% para que el overflow y la animación funcionen mejor */
+    width: 100%;
     position: relative;
 }
 
@@ -738,24 +742,24 @@ p {
 .continuous-carousel-track .product-card:hover {
     transform: translateY(-5px) scale(1.02);
     background-color: rgba(52, 58, 64, 0.15);
-    box-shadow: var(--shadow-md), var(--golden-glow-sm);
+    box-shadow: var(--shadow-md), var(--golden-glow-sm); /* Brillo dorado al pasar el mouse */
 }
 
 .continuous-carousel-track .product-card .product-image-wrapper {
-    height: 60%; /* Image wrapper takes 60% of card height */
+    height: 65%; /* IMAGEN MÁS GRANDE: Image wrapper takes 65% of card height */
     overflow: hidden;
     margin-bottom: var(--spacing-sm);
-    border-radius: 8px; /* Slightly rounded corners for the image wrapper */
+    border-radius: 8px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.05); /* Slight background for image area */
+    background-color: rgba(0, 0, 0, 0.05);
 }
 
 .continuous-carousel-track .product-card .product-image {
     max-width: 100%;
     height: 100%; /* Image takes 100% of its wrapper */
-    object-fit: contain;
+    object-fit: contain; /* Ensures entire image is visible and symmetrical */
     transition: transform var(--transition-speed) var(--transition-timing), filter var(--transition-speed) var(--transition-timing);
 }
 
@@ -764,7 +768,7 @@ p {
     filter: brightness(1.2) saturate(1.1);
 }
 
-/* Overlay for name and price in continuous carousel */
+/* Product name and price overlay on image in continuous carousel */
 .continuous-carousel-track .product-card .product-name {
     position: absolute;
     top: 0;
