@@ -16,25 +16,14 @@ export function renderProductCard(product) {
     productCard.dataset.id = product.id; // Para fácil acceso al ID
 
     let priceHtml = `<span class="product-price">$${product.price.toLocaleString('es-CO')}</span>`;
-    let offerTag = ''; // Variable para la etiqueta de oferta
-    let newTag = ''; // Variable para la etiqueta de nuevo
-
     if (product.isOnOffer && product.offerPrice !== null) {
-        const discountPercentage = ((product.price - product.offerPrice) / product.price) * 100;
         priceHtml = `
             <span class="product-old-price">$${product.price.toLocaleString('es-CO')}</span>
             <span class="product-offer-price">$${product.offerPrice.toLocaleString('es-CO')}</span>
         `;
-        offerTag = `<div class="offer-tag">-${discountPercentage.toFixed(0)}%</div>`;
-    }
-
-    if (product.isNew) {
-        newTag = `<div class="new-tag"><i class="fas fa-star"></i> Nuevo</div>`;
     }
 
     productCard.innerHTML = `
-        ${offerTag}
-        ${newTag}
         <img src="${product.imageUrl}" alt="${product.name}" class="product-image" loading="lazy">
         <div class="product-info">
             <h3 class="product-name">${product.name}</h3>
@@ -42,24 +31,20 @@ export function renderProductCard(product) {
             <div class="product-price-container">
                 ${priceHtml}
             </div>
-            <p class="product-description">${product.description}</p>
+            <div class="product-actions">
+                <button class="btn-primary add-to-cart-btn" data-product-id="${product.id}">
+                    <i class="fas fa-shopping-cart"></i> Añadir
+                </button>
+            </div>
         </div>
-        <button class="btn btn-primary add-to-cart-btn" data-id="${product.id}">
-            <i class="fas fa-cart-plus"></i> Añadir al Carrito
-        </button>
     `;
 
-    // Añadir el event listener para el botón de añadir al carrito
+    // Añadir event listener al botón "Añadir al Carrito"
     const addToCartBtn = productCard.querySelector('.add-to-cart-btn');
     if (addToCartBtn) {
-        addToCartBtn.addEventListener('click', (e) => {
-            const productId = e.currentTarget.dataset.id;
-            const productToAdd = appState.products.find(p => p.id === productId);
-            if (productToAdd) {
-                addToCart(productToAdd, 1); // Añadir 1 unidad del producto
-            } else {
-                showToastNotification('Error: Producto no encontrado.', 'error');
-            }
+        addToCartBtn.addEventListener('click', () => {
+            addToCart(product);
+            // showToastNotification(`"${product.name}" añadido al carrito.`, 'success'); // Ahora lo maneja addToCart
         });
     }
 
@@ -67,90 +52,103 @@ export function renderProductCard(product) {
 }
 
 /**
- * Renderiza una lista de productos en un contenedor específico.
- * @param {Array<Object>} productsToRender - El array de productos a mostrar.
+ * Renderiza un array de productos en un contenedor HTML específico.
+ * @param {Array<Object>} productsData - Array de objetos producto a renderizar.
  * @param {string} containerSelector - Selector CSS del contenedor donde se renderizarán los productos.
  */
-export function renderProducts(productsToRender, containerSelector) {
+export function renderProducts(productsData, containerSelector) {
     const container = document.querySelector(containerSelector);
     if (!container) {
-        console.error(`products.js: Contenedor de productos no encontrado: ${containerSelector}`);
+        console.error(`Contenedor de productos no encontrado: ${containerSelector}`);
         return;
     }
 
     container.innerHTML = ''; // Limpiar cualquier contenido existente
 
-    if (productsToRender.length === 0) {
-        container.innerHTML = `<p class="no-results-message">No hay productos disponibles con estos criterios.</p>`;
+    if (productsData.length === 0) {
+        container.innerHTML = `<p class="no-results-message">No hay productos disponibles con los criterios seleccionados.</p>`;
         return;
     }
 
-    productsToRender.forEach(product => {
+    productsData.forEach(product => {
         const productCard = renderProductCard(product);
         container.appendChild(productCard);
     });
-    // console.log(`products.js: ${productsToRender.length} productos renderizados en ${containerSelector}.`); // ELIMINADO
+    // console.log(`products.js: Productos renderizados en ${containerSelector}.`); // ELIMINADO
 }
 
 /**
- * Configura los filtros de productos y aplica el filtrado y renderizado inicial.
- * @param {Array<Object>} allProducts - El array completo de productos.
- * @param {string} sectionContainerSelector - Selector del contenedor principal de la sección.
- * @param {string} productsGridSelector - Selector del contenedor de la cuadrícula de productos.
+ * Configura los filtros de productos y la lógica de aplicación de filtros.
+ * @param {Array<Object>} products - El array completo de productos a filtrar.
+ * @param {string} containerId - El ID del contenedor donde se renderizan los productos filtrados (ej. '#allProductsGrid').
  */
-export function setupProductFilters(allProducts, sectionContainerSelector, productsGridSelector) {
-    const sectionContainer = document.querySelector(sectionContainerSelector);
-    if (!sectionContainer) {
-        console.warn(`products.js: Contenedor de sección de filtros no encontrado: ${sectionContainerSelector}. Saltando configuración de filtros.`);
+export function setupProductFilters(products, containerId) {
+    const categoryFilter = document.getElementById('categoryFilter');
+    const priceFilter = document.getElementById('priceFilter');
+    const productSearchInput = document.getElementById('productSearch');
+
+    const productGridContainer = document.querySelector(containerId); 
+    if (!productGridContainer) {
+        console.error(`products.js: El contenedor de la cuadrícula de productos con ID ${containerId} no fue encontrado.`);
         return;
     }
 
-    const categoryFilter = sectionContainer.querySelector('#categoryFilter');
-    const priceFilter = sectionContainer.querySelector('#priceFilter');
-    const productSearchInput = sectionContainer.querySelector('#productSearchInput');
-
     const applyFilters = () => {
-        let filtered = [...allProducts];
+        let filteredProducts = [...products]; // Copia de los productos originales
 
         // Filtrar por categoría
-        if (categoryFilter && categoryFilter.value !== 'all') {
-            filtered = filtered.filter(product => product.category === categoryFilter.value);
+        const selectedCategory = categoryFilter ? categoryFilter.value : 'all';
+        if (selectedCategory !== 'all') {
+            filteredProducts = filteredProducts.filter(product => product.category === selectedCategory);
         }
 
-        // Filtrar por precio máximo
-        if (priceFilter && priceFilter.value !== '') {
-            const maxPrice = parseFloat(priceFilter.value);
-            if (!isNaN(maxPrice)) {
-                filtered = filtered.filter(product => product.price <= maxPrice || (product.isOnOffer && product.offerPrice <= maxPrice));
-            }
+        // Filtrar por rango de precio
+        const selectedPriceRange = priceFilter ? priceFilter.value : 'all';
+        if (selectedPriceRange !== 'all') {
+            const [min, max] = selectedPriceRange.split('-').map(Number);
+            filteredProducts = filteredProducts.filter(product => {
+                const effectivePrice = product.isOnOffer && product.offerPrice !== null ? product.offerPrice : product.price;
+                return effectivePrice >= min && effectivePrice <= max;
+            });
         }
 
-        // Filtrar por término de búsqueda
-        if (productSearchInput && productSearchInput.value.trim() !== '') {
-            const searchTerm = productSearchInput.value.toLowerCase().trim();
-            filtered = filtered.filter(product =>
+        // Filtrar por búsqueda de texto
+        const searchTerm = productSearchInput ? productSearchInput.value.toLowerCase().trim() : '';
+        if (searchTerm) {
+            filteredProducts = filteredProducts.filter(product =>
                 product.name.toLowerCase().includes(searchTerm) ||
                 product.brand.toLowerCase().includes(searchTerm) ||
-                product.description.toLowerCase().includes(searchTerm)
+                (product.description && product.description.toLowerCase().includes(searchTerm)) ||
+                (product.category && product.category.toLowerCase().includes(searchTerm))
             );
         }
-        
-        renderProducts(filtered, productsGridSelector);
+
+        renderProducts(filteredProducts, containerId);
     };
 
+    // Llenar el filtro de categorías dinámicamente
+    if (categoryFilter) {
+        const categories = [...new Set(products.map(product => product.category))].sort(); // Ordenar alfabéticamente
+        categoryFilter.innerHTML = '<option value="all">Todas las Categorías</option>';
+        categories.forEach(category => {
+            const option = document.createElement('option');
+            option.value = category;
+            option.textContent = category;
+            categoryFilter.appendChild(option);
+        });
+    }
+
+    // Configurar event listeners para los filtros
     if (categoryFilter) categoryFilter.addEventListener('change', applyFilters);
-    if (priceFilter) priceFilter.addEventListener('input', applyFilters); // Usar 'input' para reacción instantánea
+    if (priceFilter) priceFilter.addEventListener('change', applyFilters);
     if (productSearchInput) productSearchInput.addEventListener('input', applyFilters);
 
     applyFilters();
-    // console.log(`products.js: Filtros configurados para la sección ${sectionContainerSelector}.`); // ELIMINADO
+    // console.log(`products.js: Filtros configurados para la sección ${containerId}.`); // ELIMINADO
 }
 
 /**
  * Renderiza los logos de las marcas en un contenedor específico.
- * NOTA: Esta función no es usada por initContinuousProductCarousel
- * ya que ese módulo crea sus propios elementos de marca.
- * Podría ser usada para otra sección de marcas estática.
  * @param {Array<Object>} brandsData - Array de objetos de marca.
  * @param {string} containerSelector - Selector CSS del contenedor donde se renderizarán los logos.
  */
@@ -170,7 +168,7 @@ export function renderBrands(brandsData, containerSelector) {
 
     brandsData.forEach(brand => {
         const brandDiv = document.createElement('div');
-        brandDiv.classList.add('brand-logo'); // Asegúrate que esta clase tiene estilos
+        brandDiv.classList.add('brand-logo');
         brandDiv.innerHTML = `<img src="${brand.logoUrl}" alt="${brand.name} Logo" loading="lazy">`;
         container.appendChild(brandDiv);
     });
