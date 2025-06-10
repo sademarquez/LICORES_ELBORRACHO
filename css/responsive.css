@@ -1,44 +1,61 @@
 /* css/responsive.css */
 
-/* --- RESPONSIVIDAD CRÍTICA (Móviles pequeños y grandes) --- */
+/* --- MÓVILES (Hasta 768px) --- */
 @media (max-width: 768px) {
+    /* Cuadrícula principal */
     .product-grid {
-        /* OBLIGATORIO: Mínimo 2 productos por fila */
         grid-template-columns: repeat(2, 1fr);
         gap: 1rem;
     }
 
-    .category-products-carousel .product-card {
-        flex: 0 0 80%; /* Para que se vea 1 y un poco del siguiente */
-    }
-
-    .product-filters-sticky {
-        flex-direction: column;
-        top: 60px; /* Ajustar por el header más pequeño */
-    }
-}
-
-
-/* --- TABLETS --- */
-@media (min-width: 769px) and (max-width: 1024px) {
-    .product-grid {
-        /* 3 productos por fila */
+    /* NUEVO: Cuadrícula de productos por categoría */
+    #categoryProductsContainer {
+        /* OBLIGATORIO: 3 productos por fila en móvil */
         grid-template-columns: repeat(3, 1fr);
     }
 
-    .category-products-carousel .product-card {
-        flex: 0 0 45%; /* Mostrar 2 productos */
+    /* NUEVO: Cuadrícula de resultados de búsqueda */
+    #searchResultsGrid {
+        /* OBLIGATORIO: 3 productos por fila en móvil */
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 0.75rem;
     }
 }
 
 
-/* --- DESKTOP --- */
-@media (min-width: 1025px) {
+/* --- TABLETS (769px a 1024px) --- */
+@media (min-width: 769px) and (max-width: 1024px) {
+    /* Cuadrícula principal */
     .product-grid {
-        /* 4 productos por fila como se especifica */
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    /* Cuadrícula de productos por categoría */
+    #categoryProductsContainer {
         grid-template-columns: repeat(4, 1fr);
     }
-    .category-products-carousel .product-card {
-        flex: 0 0 30%; /* Mostrar 3 productos */
+    
+    /* Cuadrícula de resultados de búsqueda */
+    #searchResultsGrid {
+         grid-template-columns: repeat(4, 1fr) !important;
+    }
+}
+
+
+/* --- DESKTOP (1025px y más) --- */
+@media (min-width: 1025px) {
+    /* Cuadrícula principal */
+    .product-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    /* Cuadrícula de productos por categoría */
+    #categoryProductsContainer {
+        grid-template-columns: repeat(5, 1fr);
+    }
+    
+    /* Cuadrícula de resultados de búsqueda */
+    #searchResultsGrid {
+         grid-template-columns: repeat(5, 1fr) !important;
     }
 }
