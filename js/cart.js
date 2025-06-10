@@ -11,7 +11,7 @@ let cartCountElement; // Contador del header
 let bottomCartCountElement; // Contador de la barra inferior
 let closeCartBtn;
 let checkoutWhatsappBtn;
-let clearCartBtn; // Botón de vaciar carrito
+let cartOverlay; // Nuevo: Referencia al overlay
 
 export function initCart() {
     cartSidebar = document.getElementById('cartSidebar');
@@ -21,10 +21,10 @@ export function initCart() {
     bottomCartCountElement = document.getElementById('bottomCartCount'); // Del bottom nav
     closeCartBtn = document.getElementById('closeCartBtn');
     checkoutWhatsappBtn = document.getElementById('checkoutWhatsappBtn');
-    clearCartBtn = document.getElementById('clearCartBtn'); // Obtener referencia al botón
+    cartOverlay = document.getElementById('cartOverlay'); // Inicializar el overlay
 
-    if (!cartSidebar || !cartItemsContainer || !cartTotalPriceElement || !cartCountElement || !bottomCartCountElement || !closeCartBtn || !checkoutWhatsappBtn || !clearCartBtn) {
-        console.warn('cart.js: Algunos elementos del carrito no se encontraron. Funcionalidad limitada.');
+    if (!cartSidebar || !cartItemsContainer || !cartTotalPriceElement || !cartCountElement || !bottomCartCountElement || !closeCartBtn || !checkoutWhatsappBtn || !cartOverlay) {
+        console.warn('cart.js: Algunos elementos del carrito o del overlay no se encontraron. Funcionalidad limitada.');
         return;
     }
 
@@ -35,103 +35,119 @@ export function initCart() {
             appState.cart = JSON.parse(storedCart);
         } catch (e) {
             console.error('Error parsing cart from localStorage:', e);
-            appState.cart = []; // Resetear carrito si hay un error de parseo
+            appState.cart = []; // Resetear si hay un error
         }
     }
 
     // Event Listeners
     closeCartBtn.addEventListener('click', () => toggleCartSidebar(false));
     checkoutWhatsappBtn.addEventListener('click', sendOrderToWhatsapp);
-    clearCartBtn.addEventListener('click', clearCart); // Añadir listener para vaciar carrito
+    cartOverlay.addEventListener('click', () => toggleCartSidebar(false)); // Cierra el carrito al hacer clic en el overlay
 
-    // Renderizar y actualizar el contador al inicio
-    updateCartDisplay();
-    updateCartCount();
-    // console.log('cart.js: Módulo de carrito inicializado.'); // ELIMINADO
+    // Actualizar el UI del carrito al inicio
+    updateCartUI();
+    updateCartCount(); // Asegura que el contador se actualice al inicio
+
+    // Asegurarse de que el carrito está cerrado al cargar la página
+    toggleCartSidebar(false); // Llamar explícitamente para asegurar que esté cerrado.
+
+    // console.log('cart.js: Módulo de carrito configurado.'); // ELIMINADO
 }
 
 /**
- * Añade un producto al carrito.
- * @param {Object} product - El objeto producto a añadir.
+ * Alterna la visibilidad del sidebar del carrito.
+ * @param {boolean} open - Si es true, abre el carrito; si es false, lo cierra. Si se omite, alterna.
+ */
+export function toggleCartSidebar(open) {
+    if (!cartSidebar || !cartOverlay) {
+        console.warn('toggleCartSidebar: Elementos del carrito o overlay no encontrados.');
+        return;
+    }
+
+    const isOpen = cartSidebar.classList.contains('open');
+
+    if (typeof open === 'boolean') {
+        if (open) {
+            cartSidebar.classList.add('open');
+            cartOverlay.classList.add('open');
+            document.body.style.overflow = 'hidden'; // Evita el scroll del body
+        } else {
+            cartSidebar.classList.remove('open');
+            cartOverlay.classList.remove('open');
+            document.body.style.overflow = ''; // Restaura el scroll del body
+        }
+    } else {
+        // Alternar el estado
+        if (isOpen) {
+            cartSidebar.classList.remove('open');
+            cartOverlay.classList.remove('open');
+            document.body.style.overflow = '';
+        } else {
+            cartSidebar.classList.add('open');
+            cartOverlay.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+    }
+}
+
+
+/**
+ * Añade un producto al carrito o actualiza su cantidad.
+ * @param {Object} product - El producto a añadir.
  * @param {number} quantity - La cantidad a añadir.
  */
 export function addToCart(product, quantity = 1) {
-    if (!product || typeof quantity !== 'number' || quantity <= 0) {
-        showToastNotification('Cantidad inválida para añadir al carrito.', 'error');
-        return;
-    }
-
     const existingItemIndex = appState.cart.findIndex(item => item.id === product.id);
 
     if (existingItemIndex > -1) {
-        // Actualizar cantidad si ya existe
         appState.cart[existingItemIndex].quantity += quantity;
+        showToastNotification(`¡${product.name} (x${quantity}) añadido de nuevo al carrito!`, 'info');
     } else {
-        // Añadir nuevo producto
         appState.cart.push({ ...product, quantity });
+        showToastNotification(`¡${product.name} añadido al carrito!`, 'success');
     }
 
-    // Guardar en localStorage
     saveCart();
-    // Actualizar la vista del carrito
-    updateCartDisplay();
+    updateCartUI();
     updateCartCount();
-
-    // Mejorar la notificación toast
-    showToastNotification(`${quantity} ${product.name} añadido al carrito.`, 'success');
-
-    // Añadir una animación al icono del carrito en la barra de navegación inferior
-    const cartIcon = document.querySelector('#bottomNavCart .fas.fa-shopping-cart');
-    if (cartIcon) {
-        cartIcon.classList.add('bouncing-cart');
-        setTimeout(() => {
-            cartIcon.classList.remove('bouncing-cart');
-        }, 800); // Duración de la animación
-    }
+    toggleCartSidebar(true); // Abrir el carrito al añadir un producto
 }
 
 /**
- * Elimina un producto completamente del carrito o reduce su cantidad.
- * @param {string} productId - El ID del producto a modificar.
- * @param {number} [quantityToRemove=null] - La cantidad a eliminar. Si es null, elimina todo el producto.
+ * Elimina un producto del carrito.
+ * @param {string} productId - El ID del producto a eliminar.
  */
-export function removeFromCart(productId, quantityToRemove = null) {
-    const itemIndex = appState.cart.findIndex(item => item.id === productId);
+export function removeFromCart(productId) {
+    const initialCartLength = appState.cart.length;
+    appState.cart = appState.cart.filter(item => item.id !== productId);
 
-    if (itemIndex > -1) {
-        if (quantityToRemove === null || appState.cart[itemIndex].quantity <= quantityToRemove) {
-            // Eliminar el producto completamente
-            const removedItemName = appState.cart[itemIndex].name;
-            appState.cart.splice(itemIndex, 1);
-            showToastNotification(`${removedItemName} eliminado del carrito.`, 'info');
-        } else {
-            // Reducir la cantidad
-            appState.cart[itemIndex].quantity -= quantityToRemove;
-            showToastNotification(`Cantidad de ${appState.cart[itemIndex].name} actualizada.`, 'info');
-        }
-        saveCart();
-        updateCartDisplay();
-        updateCartCount();
+    if (appState.cart.length < initialCartLength) {
+        showToastNotification('Producto eliminado del carrito.', 'info');
     } else {
-        showToastNotification('Producto no encontrado en el carrito.', 'warning');
+        showToastNotification('Error: Producto no encontrado en el carrito.', 'error');
     }
+
+    saveCart();
+    updateCartUI();
+    updateCartCount();
 }
 
 /**
- * Vacía completamente el carrito.
+ * Actualiza la cantidad de un producto en el carrito.
+ * @param {string} productId - El ID del producto.
+ * @param {number} newQuantity - La nueva cantidad.
  */
-function clearCart() {
-    if (appState.cart.length === 0) {
-        showToastNotification('El carrito ya está vacío.', 'info');
-        return;
-    }
-    if (confirm('¿Estás seguro de que quieres vaciar todo el carrito?')) {
-        appState.cart = [];
-        saveCart();
-        updateCartDisplay();
-        updateCartCount();
-        showToastNotification('Carrito vaciado exitosamente.', 'info');
-        toggleCartSidebar(false); // Cerrar sidebar después de vaciar
+export function updateCartItemQuantity(productId, newQuantity) {
+    const item = appState.cart.find(item => item.id === productId);
+    if (item) {
+        if (newQuantity <= 0) {
+            removeFromCart(productId); // Eliminar si la cantidad es 0 o menos
+        } else {
+            item.quantity = newQuantity;
+            saveCart();
+            updateCartUI();
+            updateCartCount();
+        }
     }
 }
 
@@ -140,105 +156,92 @@ function clearCart() {
  */
 function saveCart() {
     localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(appState.cart));
+    // console.log('Carrito guardado:', appState.cart); // ELIMINADO
 }
 
 /**
- * Actualiza la visualización del carrito en el sidebar.
+ * Renderiza los elementos del carrito y calcula el total.
  */
-function updateCartDisplay() {
+function updateCartUI() {
     if (!cartItemsContainer || !cartTotalPriceElement) {
-        console.warn('cart.js: Contenedores de display del carrito no encontrados.');
         return;
     }
 
-    cartItemsContainer.innerHTML = ''; // Limpiar lista
-    let totalPrice = 0;
+    cartItemsContainer.innerHTML = ''; // Limpiar el contenido actual
 
     if (appState.cart.length === 0) {
-        cartItemsContainer.innerHTML = '<p class="cart-empty-message">Tu carrito está vacío.</p>';
+        cartItemsContainer.innerHTML = `<p class="empty-cart-message">Tu carrito está vacío.</p>`;
         cartTotalPriceElement.textContent = '$0';
         return;
     }
 
+    let total = 0;
     appState.cart.forEach(item => {
         const itemPrice = item.isOnOffer && item.offerPrice !== null ? item.offerPrice : item.price;
         const subtotal = itemPrice * item.quantity;
-        totalPrice += subtotal;
+        total += subtotal;
 
         const cartItemElement = document.createElement('div');
         cartItemElement.classList.add('cart-item');
-        cartItemElement.dataset.id = item.id; // Para fácil referencia
-
         cartItemElement.innerHTML = `
-            <img src="${item.imageUrl}" alt="${item.name}">
-            <div class="cart-item-info">
-                <h4>${item.name}</h4>
-                <p>$${itemPrice.toLocaleString('es-CO')} c/u</p>
+            <img src="${item.imageUrl}" alt="${item.name}" class="cart-item-image">
+            <div class="cart-item-details">
+                <span class="cart-item-name">${item.name}</span>
+                <span class="cart-item-price">$${itemPrice.toLocaleString('es-CO')} c/u</span>
             </div>
-            <div class="cart-item-actions">
-                <button class="decrease-qty-btn" aria-label="Disminuir cantidad" data-id="${item.id}">-</button>
-                <span>${item.quantity}</span>
-                <button class="increase-qty-btn" aria-label="Aumentar cantidad" data-id="${item.id}">+</button>
-                <button class="remove-item-btn" aria-label="Eliminar producto" data-id="${item.id}"><i class="fas fa-trash-alt"></i></button>
+            <div class="cart-item-quantity-controls">
+                <button class="quantity-decrease" data-id="${item.id}">-</button>
+                <span class="quantity">${item.quantity}</span>
+                <button class="quantity-increase" data-id="${item.id}">+</button>
             </div>
+            <button class="remove-from-cart" data-id="${item.id}" aria-label="Eliminar ${item.name}">&times;</button>
         `;
         cartItemsContainer.appendChild(cartItemElement);
     });
 
-    cartTotalPriceElement.textContent = `$${totalPrice.toLocaleString('es-CO')}`;
+    cartTotalPriceElement.textContent = `$${total.toLocaleString('es-CO')}`;
 
-    // Añadir event listeners para los botones de cantidad y eliminar
-    cartItemsContainer.querySelectorAll('.decrease-qty-btn').forEach(button => {
+    // Añadir event listeners a los botones de cantidad y eliminar
+    cartItemsContainer.querySelectorAll('.quantity-decrease').forEach(button => {
         button.addEventListener('click', (e) => {
-            const id = e.currentTarget.dataset.id;
-            removeFromCart(id, 1); // Disminuir en 1
-        });
-    });
-
-    cartItemsContainer.querySelectorAll('.increase-qty-btn').forEach(button => {
-        button.addEventListener('click', (e) => {
-            const id = e.currentTarget.dataset.id;
-            const productToIncrease = appState.products.find(p => p.id === id);
-            if (productToIncrease) {
-                addToCart(productToIncrease, 1); // Aumentar en 1
+            const productId = e.target.dataset.id;
+            const item = appState.cart.find(i => i.id === productId);
+            if (item) {
+                updateCartItemQuantity(productId, item.quantity - 1);
             }
         });
     });
 
-    cartItemsContainer.querySelectorAll('.remove-item-btn').forEach(button => {
+    cartItemsContainer.querySelectorAll('.quantity-increase').forEach(button => {
         button.addEventListener('click', (e) => {
-            const id = e.currentTarget.dataset.id;
-            removeFromCart(id); // Eliminar completamente
+            const productId = e.target.dataset.id;
+            const item = appState.cart.find(i => i.id === productId);
+            if (item) {
+                updateCartItemQuantity(productId, item.quantity + 1);
+            }
+        });
+    });
+
+    cartItemsContainer.querySelectorAll('.remove-from-cart').forEach(button => {
+        button.addEventListener('click', (e) => {
+            const productId = e.target.dataset.id;
+            removeFromCart(productId);
         });
     });
 }
 
 /**
- * Actualiza el contador de ítems del carrito en el header y bottom nav.
+ * Actualiza los contadores de productos en el carrito (header y bottom nav).
  */
 export function updateCartCount() {
     const totalItems = appState.cart.reduce((sum, item) => sum + item.quantity, 0);
     if (cartCountElement) {
         cartCountElement.textContent = totalItems.toString();
-        cartCountElement.style.display = totalItems > 0 ? 'block' : 'none'; // Mostrar/ocultar
+        cartCountElement.style.display = totalItems > 0 ? 'inline-block' : 'none';
     }
     if (bottomCartCountElement) {
         bottomCartCountElement.textContent = totalItems.toString();
-        bottomCartCountElement.style.display = totalItems > 0 ? 'block' : 'none'; // Mostrar/ocultar
-    }
-}
-
-/**
- * Alterna la visibilidad del sidebar del carrito.
- * @param {boolean} open - true para abrir, false para cerrar.
- */
-export function toggleCartSidebar(open) {
-    if (cartSidebar) {
-        cartSidebar.classList.toggle('open', open);
-        // Cuando se abre, renderizar el carrito para que esté actualizado
-        if (open) {
-            updateCartDisplay();
-        }
+        bottomCartCountElement.style.display = totalItems > 0 ? 'inline-block' : 'none';
     }
 }
 
@@ -276,6 +279,10 @@ function sendOrderToWhatsapp() {
 
     showToastNotification('Tu pedido ha sido enviado a WhatsApp. Te contactaremos pronto.', 'success', 5000);
 
-    // Opcional: limpiar carrito después de enviar pedido
-    // clearCart(); 
+    // Opcional: Limpiar el carrito después de enviar el pedido
+    appState.cart = [];
+    saveCart();
+    updateCartUI();
+    updateCartCount();
+    toggleCartSidebar(false); // Cerrar el carrito después de enviar el pedido
 }
