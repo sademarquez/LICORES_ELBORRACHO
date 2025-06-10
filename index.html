@@ -4,36 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Licores el Borracho - Catálogo Online</title>
-    <!-- Para producción, genera tu propio archivo CSS con Tailwind CLI -->
-    <link href="https://cdn.tailwindcss.com" rel="stylesheet">
+    <!-- 1. CDN de Tailwind para que funcione sin instalación -->
+    <script src="https://cdn.tailwindcss.com"></script>
     
+    <!-- 2. Scripts externos y estilos locales -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/responsive.css">
     <link rel="icon" href="images/favicon.png" type="image/png">
+    
+    <!-- 3. Estilos inline necesarios -->
     <style>
         .content-hidden { display: none; }
+        .active-section { display: block !important; }
         #bg3d { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; }
         .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.8); justify-content: center; align-items: center; backdrop-filter: blur(5px); }
-        .modal-content { background-color: var(--secondary-color-dark); margin: auto; padding: var(--spacing-lg); border: 1px solid var(--border-color); width: 90%; max-width: 600px; border-radius: var(--border-radius-lg); box-shadow: var(--shadow-xl); position: relative; animation: fadeInScale 0.3s ease-out; color: var(--text-color-light); }
-        .modal-content h2 { color: var(--primary-color); margin-bottom: var(--spacing-lg); text-align: center; }
-        .close-modal-btn { color: var(--text-color-light); position: absolute; top: 15px; right: 25px; font-size: 30px; font-weight: bold; cursor: pointer; transition: color 0.3s; }
-        .close-modal-btn:hover { color: var(--primary-color); }
+        .modal-content { background-color: var(--secondary-color-dark); margin: auto; padding: 24px; border: 1px solid var(--border-color); width: 90%; max-width: 600px; border-radius: 12px; box-shadow: 0 14px 28px rgba(0,0,0,0.25); position: relative; animation: fadeInScale 0.3s ease-out; color: #CED4DA; }
+        .modal-content h2 { color: #FFBF00; margin-bottom: 24px; text-align: center; }
+        .close-modal-btn { color: #CED4DA; position: absolute; top: 15px; right: 25px; font-size: 30px; font-weight: bold; cursor: pointer; transition: color 0.3s; }
+        .close-modal-btn:hover { color: #FFBF00; }
         @keyframes fadeInScale { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
     </style>
 </head>
 <body class="bg-dark-bg text-text-color-dark font-sans">
     <div id="bg3d"></div>
 
-    <!-- CORRECCIÓN: Modal de Verificación de Edad RESTAURADO -->
     <div id="ageVerificationModal" class="age-verification-modal">
         <div class="age-verification-content">
             <img src="images/logo.png" alt="Licores el Borracho Logo" class="mx-auto h-24 mb-6">
             <h2>Verificación de Edad</h2>
             <p class="mb-6 text-text-color-light">Para acceder a nuestro sitio, debes ser mayor de 18 años.</p>
-            <div class="age-verification-buttons flex justify-center gap-4">
+            <div class="age-verification-buttons flex flex-col sm:flex-row justify-center gap-4">
                 <button id="confirmAgeBtn" class="btn btn-primary">Soy Mayor de 18</button>
                 <button id="declineAgeBtn" class="btn btn-secondary">Soy Menor de Edad</button>
             </div>
@@ -56,143 +58,29 @@
                 </ul>
             </nav>
             <div class="header-icons flex items-center gap-4">
-                <button id="searchOpenBtn" class="icon-button text-text-color-dark hover:text-primary-color transition-colors">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                </button>
-                <button id="cartOpenBtn" class="icon-button relative text-text-color-dark hover:text-primary-color transition-colors">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 0a2 2 0 100 4 2 2 0 000-4z"></path></svg>
-                    <span id="cartCount" class="cart-count absolute -top-2 -right-2 bg-danger-color text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">0</span>
-                </button>
-                <button id="menuToggle" class="menu-toggle md:hidden text-text-color-dark hover:text-primary-color transition-colors">
-                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-                </button>
+                <button id="searchOpenBtn" class="icon-button"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg></button>
+                <button id="cartOpenBtn" class="icon-button relative"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 0a2 2 0 100 4 2 2 0 000-4z"></path></svg><span id="cartCount" class="cart-count">0</span></button>
+                <button id="menuToggle" class="menu-toggle md:hidden"><svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg></button>
             </div>
         </div>
     </header>
 
-    <nav class="bottom-nav fixed bottom-0 left-0 w-full bg-dark-bg border-t border-border-color z-50 md:hidden">
-        <!-- Contenido de la navegación inferior con IDs verificados -->
-    </nav>
+    <nav class="bottom-nav"><ul class="flex justify-around items-center h-full"><li class="nav-item-bottom"><a href="#" class="nav-link-bottom active" data-section="inicio"><svg class="w-6 h-6" viewBox="0 0 24 24"><path d="..."></path></svg><span class="nav-text">Inicio</span></a></li><li class="nav-item-bottom"><a href="#" class="nav-link-bottom" data-section="catalogo"><svg class="w-6 h-6" viewBox="0 0 24 24"><path d="..."></path></svg><span class="nav-text">Catálogo</span></a></li><li class="nav-item-bottom"><button id="bottomSearchBtn" class="nav-link-bottom"><svg class="w-6 h-6" viewBox="0 0 24 24"><path d="..."></path></svg><span class="nav-text">Buscar</span></button></li><li class="nav-item-bottom"><button id="bottomCartBtn" class="nav-link-bottom relative"><svg class="w-6 h-6" viewBox="0 0 24 24"><path d="..."></path></svg><span id="bottomCartCount" class="cart-count">0</span><span class="nav-text">Carrito</span></button></li><li class="nav-item-bottom"><a href="#" class="nav-link-bottom" data-section="contacto"><svg class="w-6 h-6" viewBox="0 0 24 24"><path d="..."></path></svg><span class="nav-text">Contacto</span></a></li></ul></nav>
 
     <main class="container mx-auto px-4 py-8">
-        <section id="inicio" class="hero-section active-section">
-            <div class="carousel-container">
-                <div id="carouselTrack" class="carousel-track"></div>
-                <button id="carouselPrev" class="carousel-btn prev"><</button>
-                <button id="carouselNext" class="carousel-btn next">></button>
-                <div id="carouselDots" class="carousel-dots"></div>
-            </div>
-            <section id="featuredPromotionsSection" class="my-12 py-8 bg-secondary-color-dark rounded-lg shadow-xl text-center">
-                <h2 class="text-3xl font-bold text-primary-color mb-8">🔥 Promociones Destacadas 🔥</h2>
-                <div class="continuous-carousel-container">
-                    <div id="continuousProductCarouselTrack" class="continuous-carousel-track"></div>
-                </div>
-            </section>
-            <section id="brandCarouselSection" class="my-12 py-8 bg-light-bg rounded-lg shadow-xl text-center">
-                <h2 class="text-3xl font-bold text-primary-color mb-8">Nuestras Marcas</h2>
-                <div class="continuous-carousel-container brand-carousel">
-                    <div id="brandContinuousCarouselTrack" class="continuous-carousel-track brand-track"></div>
-                </div>
-            </section>
-        </section>
-
-        <section id="catalogo" class="content-hidden py-8">
-            <!-- --- NUEVA SECCIÓN DE CATEGORÍAS --- -->
-            <div class="category-explorer mb-12">
-                <h2 class="text-3xl font-bold text-center text-primary-color mb-6">Explora por Categoría</h2>
-                <div id="categoryButtons" class="flex flex-wrap justify-center gap-3 mb-8"></div>
-                <div id="categoryProductsCarousel" class="relative">
-                    <div class="category-product-carousel-track">
-                        <p class="w-full text-center text-text-color-light">Selecciona una categoría para ver los productos.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <h2 class="text-4xl font-bold text-center text-primary-color mb-8 pt-8 border-t-2 border-border-color">Catálogo Completo</h2>
-            
-            <div class="product-filters bg-secondary-color-dark p-6 rounded-lg shadow-md mb-8 flex flex-col md:flex-row justify-between items-center gap-4">
-                <div class="filter-group w-full md:w-auto">
-                    <label for="categoryFilter" class="block text-text-color-light mb-2">Categoría:</label>
-                    <select id="categoryFilter" class="form-select w-full"><option value="all">Todas</option></select>
-                </div>
-                <div class="filter-group w-full md:w-auto">
-                    <label for="priceFilter" class="block text-text-color-light mb-2">Precio Máx:</label>
-                    <input type="range" id="priceFilter" min="0" max="250000" value="250000" class="form-range w-full">
-                    <span id="priceValue" class="text-accent-color text-sm mt-1 block text-center">$250,000</span>
-                </div>
-                <div class="filter-group w-full md:w-auto">
-                    <label for="productSearch" class="block text-text-color-light mb-2">Buscar Producto:</label>
-                    <input type="text" id="productSearch" placeholder="Nombre o marca..." class="form-input w-full">
-                </div>
-            </div>
-            <div id="productGrid" class="product-grid"></div>
-        </section>
-
-        <section id="promociones" class="content-hidden py-8 text-center">
-            <!-- ... Otro contenido de promociones ... -->
-            <section id="offersCarouselSection" class="my-12 py-8 bg-light-bg rounded-lg shadow-xl text-center">
-                <h2 class="text-3xl font-bold text-primary-color mb-8">✨ Productos en Oferta ✨</h2>
-                <div class="continuous-carousel-container">
-                    <div id="offersContinuousCarouselTrack" class="continuous-carousel-track"></div>
-                </div>
-            </section>
-        </section>
-
-        <section id="soporte" class="content-hidden py-8">
-            <!-- Contenido de soporte con botones y FAQs... -->
-        </section>
-
-        <section id="contacto" class="content-hidden py-8">
-            <!-- Contenido de contacto con IDs de spans... -->
-        </section>
+        <section id="inicio" class="content-hidden"><div class="carousel-container"><div id="carouselTrack" class="carousel-track"></div><button id="carouselPrev" class="carousel-btn prev"><</button><button id="carouselNext" class="carousel-btn next">></button><div id="carouselDots" class="carousel-dots"></div></div><section id="featuredPromotionsSection" class="my-12 py-8 bg-secondary-color-dark rounded-lg shadow-xl text-center"><h2 class="text-3xl font-bold text-primary-color mb-8">🔥 Promociones Destacadas 🔥</h2><div class="continuous-carousel-container"><div id="continuousProductCarouselTrack" class="continuous-carousel-track"></div></div></section><section id="brandCarouselSection" class="my-12 py-8 bg-light-bg rounded-lg shadow-xl text-center"><h2 class="text-3xl font-bold text-primary-color mb-8">Nuestras Marcas</h2><div class="continuous-carousel-container brand-carousel"><div id="brandContinuousCarouselTrack" class="continuous-carousel-track brand-track"></div></div></section></section>
+        <section id="catalogo" class="content-hidden py-8"><div class="category-explorer mb-12"><h2 class="text-3xl font-bold text-center text-primary-color mb-6">Explora por Categoría</h2><div id="categoryButtons" class="flex flex-wrap justify-center gap-3 mb-8"></div><div id="categoryProductsCarousel" class="relative"><div class="category-product-carousel-track"><p class="w-full text-center text-text-color-light">Selecciona una categoría para ver los productos.</p></div></div></div><h2 class="text-4xl font-bold text-center text-primary-color mb-8 pt-8 border-t-2 border-border-color">Catálogo Completo</h2><div class="product-filters"><div class="filter-group"><label for="categoryFilter">Categoría:</label><select id="categoryFilter"><option value="all">Todas</option></select></div><div class="filter-group"><label for="priceFilter">Precio Máx:</label><input type="range" id="priceFilter" min="0" max="250000" value="250000"><span id="priceValue">$250,000</span></div><div class="filter-group"><label for="productSearch">Buscar Producto:</label><input type="text" id="productSearch" placeholder="Nombre o marca..."></div></div><div id="productGrid" class="product-grid"></div></section>
+        <section id="promociones" class="content-hidden py-8 text-center"><h2 class="text-4xl font-bold text-center text-primary-color mb-8">Ofertas y Promociones</h2><section id="offersCarouselSection" class="my-12 py-8 bg-light-bg rounded-lg shadow-xl text-center"><h2 class="text-3xl font-bold text-primary-color mb-8">✨ Productos en Oferta ✨</h2><div class="continuous-carousel-container"><div id="offersContinuousCarouselTrack" class="continuous-carousel-track"></div></div></section></section>
+        <section id="soporte" class="content-hidden py-8"><!-- ... --></section><section id="contacto" class="content-hidden py-8"><!-- ... --></section>
     </main>
 
-    <footer class="footer-section bg-secondary-color py-8 text-text-color-light text-center">
-        <!-- Contenido del footer con IDs de spans... -->
-    </footer>
-
-    <!-- CORRECCIÓN: Sidebar del Carrito RESTAURADO -->
-    <div id="cartSidebar" class="cart-sidebar">
-        <div class="cart-header">
-            <h2 class="text-2xl font-bold text-primary-color">Tu Carrito</h2>
-            <button id="closeCartBtn" class="close-btn">×</button>
-        </div>
-        <div id="cartItems" class="cart-items">
-            <p class="text-text-color-light text-center">Tu carrito está vacío.</p>
-        </div>
-        <div class="cart-summary">
-            <div class="cart-total">
-                <span>Total:</span>
-                <span id="cartTotalPrice" class="text-primary-color text-xl font-bold">$0</span>
-            </div>
-            <button id="checkoutWhatsappBtn" class="btn btn-primary w-full mt-4">Realizar Pedido por WhatsApp</button>
-        </div>
-    </div>
-
-    <!-- CORRECCIÓN: Modal de Búsqueda RESTAURADO -->
-    <div id="searchModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal-btn" id="closeSearchModalBtn">×</span>
-            <h2 class="text-primary-color mb-4">Buscar Productos</h2>
-            <div class="search-input-container mb-6">
-                <input type="text" id="searchInput" placeholder="Escribe el nombre del producto o marca..." class="form-input w-full">
-                <button id="searchButton" class="btn btn-primary mt-3 w-full md:w-auto">Buscar</button>
-            </div>
-            <div id="searchResultsGrid" class="product-grid min-h-[100px] max-h-[calc(100vh-350px)] overflow-y-auto custom-scrollbar">
-                <p class="no-results-message text-text-color-light text-center">Ingresa un término para buscar productos.</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modales de Soporte RESTAURADOS -->
-    <div id="faultReportModal" class="modal"><!-- ... --></div>
-    <div id="appointmentModal" class="modal"><!-- ... --></div>
-
+    <footer class="footer-section bg-secondary-color py-8 text-text-color-light text-center"><!-- ... --></footer>
+    
+    <div id="cartSidebar" class="cart-sidebar"><div class="cart-header"><h2 class="text-2xl font-bold text-primary-color">Tu Carrito</h2><button id="closeCartBtn" class="close-btn">×</button></div><div id="cartItems" class="cart-items"><p>Tu carrito está vacío.</p></div><div class="cart-summary"><div class="cart-total"><span>Total:</span><span id="cartTotalPrice">$0</span></div><button id="checkoutWhatsappBtn" class="btn btn-primary w-full mt-4">Realizar Pedido</button></div></div>
+    <div id="searchModal" class="modal"><div class="modal-content"><span id="closeSearchModalBtn" class="close-modal-btn">×</span><h2>Buscar Productos</h2><div class="search-input-container"><input type="text" id="searchInput" placeholder="Escribe para buscar..."><button id="searchButton" class="btn btn-primary">Buscar</button></div><div id="searchResultsGrid" class="product-grid"></div></div></div>
+    <div id="faultReportModal" class="modal"><!-- ... --></div><div id="appointmentModal" class="modal"><!-- ... --></div>
     <div id="toast-container" class="toast-container"></div>
-
     <script type="module" src="js/main.js"></script>
-    <script type="module">
-        // Tu script de three.js permanece igual...
-    </script>
+    <script type="module">// 3D Background script... </script>
 </body>
 </html>
