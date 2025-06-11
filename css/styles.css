@@ -7,7 +7,94 @@
     --secondary-color: #FFBF00; /* Ámbar / Dorado más vibrante para acentos */
     --accent-color: #E5C100; /* Tono intermedio de dorado */
     
-    /* Tonos de Negro y Vidrio Ahumado */
+    /* Tonos de Negro y Vidrio Ahumado *//* css/styles.css */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+:root {
+    /* ... Paleta Negro y Dorado ... */
+    --primary-color: #D4AF37; --secondary-color: #FFBF00;
+    --bg-color-start: #111111; --bg-color-end: #000000;
+
+    /* AJUSTE: Mayor transparencia para un look más ligero */
+    --glass-bg: rgba(25, 25, 25, 0.3); /* Un poco más claro y transparente */
+    --glass-border: rgba(212, 175, 55, 0.15); /* Borde más sutil */
+
+    /* ... resto de variables ... */
+}
+
+/* ... Estilos base y de tarjetas (sin cambios, heredan la nueva transparencia) ... */
+
+
+/* --- NUEVO: ESTILOS DE LA SECCIÓN DE CONTACTO --- */
+.contact-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--glass-border);
+}
+
+.contact-button {
+    display: inline-flex;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: var(--primary-color);
+    color: black;
+    font-weight: 700;
+    border-radius: 50px;
+    transition: all 0.4s ease;
+    text-decoration: none;
+}
+.contact-button:hover {
+    background-color: var(--secondary-color);
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(212, 175, 55, 0.5);
+}
+
+.social-icon {
+    color: var(--text-color-secondary);
+    transition: color 0.3s, transform 0.3s;
+}
+.social-icon:hover {
+    color: var(--primary-color);
+    transform: translateY(-3px);
+}
+.social-icon svg { width: 32px; height: 32px; }
+
+/* --- NUEVO: ESTILOS DEL MENÚ INFERIOR (BOTTOM NAV) --- */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 70px;
+    background: rgba(17, 17, 17, 0.6);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-top: 1px solid var(--glass-border);
+    display: none; /* Oculto por defecto en desktop */
+    justify-content: space-around;
+    align-items: center;
+    z-index: 50;
+}
+
+.bottom-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    color: var(--text-color-secondary);
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s, transform 0.3s;
+}
+.bottom-nav-item span {
+    font-size: 0.7rem;
+}
+.bottom-nav-item.active {
+    color: var(--primary-color);
+    transform: translateY(-3px);
+}
     --bg-color-start: #111111; /* Negro profundo */
     --bg-color-end: #000000;   /* Negro absoluto */
     --glass-bg: rgba(20, 20, 20, 0.4); /* Vidrio ahumado oscuro */
