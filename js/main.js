@@ -160,6 +160,18 @@ async function main() {
         const currentYearEl = document.getElementById('currentYear');
         if (currentYearEl) currentYearEl.textContent = new Date().getFullYear();
 
+        // --- INICIO DEL CÓDIGO AÑADIDO ---
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+                .then(registration => {
+                    console.log('Service Worker registrado con éxito:', registration);
+                })
+                .catch(error => {
+                    console.log('Error al registrar el Service Worker:', error);
+                });
+        }
+        // --- FIN DEL CÓDIGO AÑADIDO ---
+
     } catch (error) {
         console.error("Error al inicializar la aplicación:", error);
     }
