@@ -24,7 +24,8 @@ export function initBrandsCarousel(brandsData) {
     if (!wrapper || !brandsData) return;
     wrapper.innerHTML = brandsData.map(brand => `
         <div class="swiper-slide">
-            <div class="brand-logo"><img src="${brand.logoUrl}" alt="${brand.name}"></div>
+            <!-- AÑADIDO: width, height y loading="lazy" para mejorar rendimiento -->
+            <div class="brand-logo"><img src="${brand.logoUrl}" alt="${brand.name}" width="150" height="50" loading="lazy"></div>
         </div>
     `).join('');
     new Swiper('.brands-swiper', {
