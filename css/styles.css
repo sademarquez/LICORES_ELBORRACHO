@@ -3,7 +3,7 @@
 :root {
     --primary-color: #D4AF37; --secondary-color: #FFBF00; --accent-color: #E5C100;
     --bg-color-start: #111111; --bg-color-end: #000000;
-    --glass-bg: rgba(25, 25, 25, 0.3); --glass-border: rgba(212, 175, 55, 0.15);
+    --glass-bg: rgba(25, 25, 25, 0.2); --glass-border: rgba(212, 175, 55, 0.1);
     --text-color-primary: #f5f5f5; --text-color-secondary: #a3a3a3;
     --border-radius: 16px; --card-padding: 20px; --shadow-light: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
     --shadow-medium: 0 12px 40px 0 rgba(0, 0, 0, 0.5); --transition-speed: 0.4s;
@@ -12,6 +12,8 @@
 
 body { font-family: var(--font-family); background: linear-gradient(135deg, var(--bg-color-start), var(--bg-color-end)); color: var(--text-color-primary); overflow-x: hidden; min-height: 100vh; }
 #bg3d { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; }
+
+main > section { margin-top: 3rem; }
 
 .product-card { background: var(--glass-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-radius: var(--border-radius); border: 1px solid var(--glass-border); box-shadow: var(--shadow-light); transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease; transform-style: preserve-3d; display: flex; flex-direction: column; overflow: hidden; }
 .product-card:hover { transform: translateY(-10px) scale(1.03); box-shadow: var(--shadow-medium), 0 0 20px rgba(212, 175, 55, 0.3); }
@@ -25,7 +27,7 @@ body { font-family: var(--font-family); background: linear-gradient(135deg, var(
 .add-to-cart-btn { background: rgba(212, 175, 55, 0.1); border: 1px solid var(--primary-color); color: var(--primary-color); padding: 10px 15px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all var(--transition-speed) ease; margin-top: auto; width: 100%; display: flex; align-items: center; justify-content: center; text-align: center; }
 .add-to-cart-btn:hover { background: var(--primary-color); color: var(--bg-color-start); box-shadow: 0 0 20px rgba(212, 175, 55, 0.5); }
 
-.category-nav-container { padding: 20px 0; }
+.category-nav-container { position: sticky; top: 68px; z-index: 30; padding: 1rem 0; background: rgba(17, 17, 17, 0.5); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); margin: 0 -1rem; padding: 1rem; }
 .category-buttons-scroll { display: flex; overflow-x: auto; gap: 1rem; padding-bottom: 1rem; scrollbar-width: none; }
 .category-buttons-scroll::-webkit-scrollbar { display: none; }
 .category-btn { flex-shrink: 0; padding: 12px 28px; border-radius: 50px; background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--text-color-secondary); font-weight: 600; cursor: pointer; transition: all var(--transition-speed) ease; }
@@ -35,12 +37,14 @@ body { font-family: var(--font-family); background: linear-gradient(135deg, var(
 .category-products-carousel::-webkit-scrollbar { display: none; }
 .category-products-carousel .product-card { scroll-snap-align: start; flex-shrink: 0; }
 
-#productFilters { position: sticky; top: 80px; background: rgba(17, 17, 17, 0.7); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); padding: 1rem; border-radius: var(--border-radius); z-index: 20; display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; border: 1px solid var(--glass-border); }
+#productFilters { position: sticky; top: 170px; background: rgba(17, 17, 17, 0.7); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); padding: 1rem; border-radius: var(--border-radius); z-index: 20; display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; border: 1px solid var(--glass-border); }
 .product-grid { display: grid; gap: 1.5rem; }
+#loadMoreBtn { display: block; margin: 2rem auto; padding: 1rem 3rem; font-size: 1.1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: black; background: var(--primary-color); border: none; border-radius: 50px; cursor: pointer; transition: all var(--transition-speed) ease; box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3); }
+#loadMoreBtn:hover { background: var(--secondary-color); transform: translateY(-5px) scale(1.05); box-shadow: 0 10px 25px rgba(255, 191, 0, 0.5); }
 
 .hero-swiper { width: 100%; height: 400px; border-radius: var(--border-radius); overflow: hidden; }
-.hero-slide { display: flex; align-items: center; justify-content: center; text-align: center; color: white; background-size: cover; background-position: center; position: relative; }
-.hero-slide::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.2)); }
+.hero-slide { display: flex; align-items: center; justify-content: center; text-align: center; color: white; background-size: cover; background-position: center; position: relative; background-blend-mode: luminosity; opacity: 0.8;}
+.hero-slide::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); }
 .hero-slide-content { position: relative; z-index: 2; padding: 1rem; }
 .hero-slide-content h2 { font-size: 2.5rem; font-weight: 700; text-shadow: 2px 2px 5px black; }
 .hero-slide-content p { font-size: 1.2rem; max-width: 600px; margin: 1rem auto; text-shadow: 1px 1px 3px black; }
@@ -78,7 +82,7 @@ body { font-family: var(--font-family); background: linear-gradient(135deg, var(
 .btn-checkout { width: 100%; padding: 1rem; font-size: 1.1rem; font-weight: 700; background: var(--primary-color); color: black; border: none; border-radius: 12px; cursor: pointer; text-align: center; transition: all 0.3s ease; }
 .btn-checkout:hover { background: var(--secondary-color); transform: scale(1.02); box-shadow: 0 0 20px rgba(212, 175, 55, 0.5); }
 
-.contact-card { background: var(--glass-bg); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border-radius: var(--border-radius); border: 1px solid var(--glass-border); }
+.contact-card { background: rgba(25, 25, 25, 0.25); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border-radius: var(--border-radius); border: 1px solid var(--glass-border); }
 .contact-button { display: inline-flex; align-items: center; padding: 1rem 2rem; background-color: var(--primary-color); color: black; font-weight: 700; border-radius: 50px; transition: all 0.4s ease; text-decoration: none; }
 .contact-button:hover { background-color: var(--secondary-color); transform: scale(1.05); box-shadow: 0 0 25px rgba(212, 175, 55, 0.5); }
 
