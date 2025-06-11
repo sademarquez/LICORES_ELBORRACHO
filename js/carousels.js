@@ -29,7 +29,7 @@ export function initBrandsCarousel(brandsData) {
     `).join('');
     new Swiper('.brands-swiper', {
         slidesPerView: 'auto', spaceBetween: 30, loop: true, freeMode: true,
-        autoplay: { delay: 1, disableOnInteraction: false, },
-        speed: 5000, grabCursor: false, allowTouchMove: false,
+        autoplay: { delay: 0, disableOnInteraction: false, },
+        speed: 7000, grabCursor: false, allowTouchMove: false,
     });
 }
