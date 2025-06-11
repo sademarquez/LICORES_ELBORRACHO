@@ -13,23 +13,31 @@
 body { font-family: var(--font-family); background: linear-gradient(135deg, var(--bg-color-start), var(--bg-color-end)); color: var(--text-color-primary); overflow-x: hidden; min-height: 100vh; }
 #bg3d { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; }
 
-main > section { margin-top: 3rem; }
+/* Espaciado entre secciones reducido */
+main > section { margin-top: 2rem; }
+main > section:first-child { margin-top: 0; }
 
 .product-card { background: var(--glass-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-radius: var(--border-radius); border: 1px solid var(--glass-border); box-shadow: var(--shadow-light); transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease; transform-style: preserve-3d; display: flex; flex-direction: column; overflow: hidden; }
 .product-card:hover { transform: translateY(-10px) scale(1.03); box-shadow: var(--shadow-medium), 0 0 20px rgba(212, 175, 55, 0.3); }
-.product-image-container { position: relative; width: 100%; height: 220px; }
+.product-image-container { position: relative; width: 100%; height: 200px; /* Altura ligeramente reducida */ }
 .product-image { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 8px 10px rgba(0,0,0,0.4)); transition: transform var(--transition-speed) ease; }
 .product-card:hover .product-image { transform: scale(1.1); }
-.product-name-overlay { position: absolute; bottom: 0; left: 0; width: 100%; padding: 1.5rem 1rem 0.75rem; background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent); text-align: center; }
-.product-name { font-size: 1rem; font-weight: 600; color: var(--text-color-primary); line-height: 1.2; text-shadow: 1px 1px 3px rgba(0,0,0,0.7); }
-.product-details { padding: var(--card-padding); padding-top: 1rem; display: flex; flex-direction: column; flex-grow: 1; text-align: center; }
-.product-price { font-size: 1.4rem; font-weight: 700; color: var(--primary-color); margin-bottom: 1rem; letter-spacing: 1px; }
-.add-to-cart-btn { background: rgba(212, 175, 55, 0.1); border: 1px solid var(--primary-color); color: var(--primary-color); padding: 10px 15px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all var(--transition-speed) ease; margin-top: auto; width: 100%; display: flex; align-items: center; justify-content: center; text-align: center; }
+
+/* Se eliminó .product-name-overlay */
+
+.product-details { padding: 1rem; display: flex; flex-direction: column; flex-grow: 1; text-align: center; justify-content: space-between; /* Clave para empujar el botón hacia abajo */ }
+.product-name { font-size: 0.9rem; font-weight: 600; color: var(--text-color-primary); line-height: 1.3; margin-bottom: 0.5rem; }
+.product-price { font-size: 1.3rem; font-weight: 700; color: var(--primary-color); margin-bottom: 1rem; letter-spacing: 1px; }
+.add-to-cart-btn { background: rgba(212, 175, 55, 0.1); border: 1px solid var(--primary-color); color: var(--primary-color); padding: 10px 15px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all var(--transition-speed) ease; width: 100%; display: flex; align-items: center; justify-content: center; text-align: center; }
 .add-to-cart-btn:hover { background: var(--primary-color); color: var(--bg-color-start); box-shadow: 0 0 20px rgba(212, 175, 55, 0.5); }
 
 .category-nav-container { padding: 1rem 0; }
+
+/* Ocultar el contenedor de grid móvil en escritorio */
+.category-buttons-grid { display: none; }
 .category-buttons-scroll { display: flex; overflow-x: auto; gap: 1rem; padding-bottom: 1rem; scrollbar-width: none; }
 .category-buttons-scroll::-webkit-scrollbar { display: none; }
+
 .category-btn { flex-shrink: 0; padding: 12px 28px; border-radius: 50px; background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--text-color-secondary); font-weight: 600; cursor: pointer; transition: all var(--transition-speed) ease; }
 .category-btn:hover { transform: translateY(-5px) scale(1.05); color: var(--text-color-primary); border-color: var(--primary-color); }
 .category-btn.active { background: var(--primary-color); color: black; border-color: var(--primary-color); box-shadow: 0 0 25px rgba(212, 175, 55, 0.4); }
@@ -82,7 +90,8 @@ main > section { margin-top: 3rem; }
 .btn-checkout { width: 100%; padding: 1rem; font-size: 1.1rem; font-weight: 700; background: var(--primary-color); color: black; border: none; border-radius: 12px; cursor: pointer; text-align: center; transition: all 0.3s ease; }
 .btn-checkout:hover { background: var(--secondary-color); transform: scale(1.02); box-shadow: 0 0 20px rgba(212, 175, 55, 0.5); }
 
-.contact-card { background: rgba(25, 25, 25, 0.25); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border-radius: var(--border-radius); border: 1px solid var(--glass-border); }
+/* Fondo de tarjeta de contacto más transparente */
+.contact-card { background: rgba(25, 25, 25, 0.2); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border-radius: var(--border-radius); border: 1px solid var(--glass-border); }
 .contact-button { display: inline-flex; align-items: center; padding: 1rem 2rem; background-color: var(--primary-color); color: black; font-weight: 700; border-radius: 50px; transition: all 0.4s ease; text-decoration: none; }
 .contact-button:hover { background-color: var(--secondary-color); transform: scale(1.05); box-shadow: 0 0 25px rgba(212, 175, 55, 0.5); }
 .contact-button.decline { background: #444; color: var(--text-color-secondary); }
