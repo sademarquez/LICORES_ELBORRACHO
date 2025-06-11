@@ -1,17 +1,33 @@
 @media (max-width: 768px) {
-    .product-grid { grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
+    .product-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; } /* Ajustado a 2 columnas para mejor visualización */
     .product-card { --card-padding: 12px; }
     .product-image-container { height: 150px; }
-    .product-name { font-size: 0.8rem; }
+    .product-name { font-size: 0.85rem; } /* Ligeramente más grande para legibilidad */
     .product-price { font-size: 1rem; }
     .add-to-cart-btn { padding: 8px 10px; font-size: 0.8rem; }
-    .category-products-carousel .product-card { flex: 0 0 calc(33.33% - 0.75rem); }
-    #productFilters { top: 80px; } /* Ajustado para el nuevo layout sin categoría sticky */
+    .category-products-carousel .product-card { flex: 0 0 calc(50% - 0.5rem); } /* 2 tarjetas visibles */
+    #productFilters { top: 70px; } /* Ajustado para el nuevo header sticky */
+
+    /* Lógica para mostrar/ocultar contenedores de categoría */
+    .category-buttons-scroll { display: none; } /* Ocultar el de escritorio */
+    .category-buttons-grid { display: flex; flex-direction: column; gap: 0.75rem; } /* Mostrar el de móvil */
+    .category-buttons-row {
+        display: flex;
+        overflow-x: auto;
+        gap: 0.75rem;
+        padding-bottom: 0.5rem;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    .category-buttons-row::-webkit-scrollbar { display: none; }
+    .category-btn { padding: 10px 20px; } /* Botones un poco más pequeños */
+
     .hero-swiper { height: 250px; }
     .hero-slide-content h2 { font-size: 1.8rem; }
     .hero-slide-content p { font-size: 1rem; }
     .bottom-nav { display: flex; }
-    main { padding-bottom: 80px; }
+    /* Más espacio en la parte inferior para que el contenido no se oculte tras el nav */
+    main { padding-bottom: 100px; }
 }
 
 @media (min-width: 769px) and (max-width: 1024px) {
