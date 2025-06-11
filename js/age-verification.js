@@ -1,30 +1,33 @@
-// js/age-verification.js
+const AGE_VERIFIED_KEY = 'el_borracho_age_verified';
 
 export function initAgeVerification() {
-    const ageVerificationModal = document.getElementById('ageVerificationModal');
-    const confirmAgeBtn = document.getElementById('confirmAgeBtn');
-    const declineAgeBtn = document.getElementById('declineAgeBtn');
+    const modal = document.getElementById('ageVerificationModal');
+    const mainContent = document.getElementById('mainContent');
+    const confirmBtn = document.getElementById('confirmAgeBtn');
+    const declineBtn = document.getElementById('declineAgeBtn');
 
-    // CORRECCIÓN: Verificación robusta
-    if (!ageVerificationModal || !confirmAgeBtn || !declineAgeBtn) {
-        console.warn('age-verification.js: Faltan elementos del modal de verificación de edad. La verificación de edad no funcionará.');
+    if (!modal || !mainContent || !confirmBtn || !declineBtn) {
+        console.error('Elementos del modal de verificación no encontrados.');
+        if (mainContent) mainContent.style.visibility = 'visible';
         return;
     }
 
-    const ageVerified = localStorage.getItem('ageVerified');
+    const isVerified = sessionStorage.getItem(AGE_VERIFIED_KEY);
 
-    if (ageVerified === 'true') {
-        ageVerificationModal.style.display = 'none';
+    if (isVerified === 'true') {
+        mainContent.style.visibility = 'visible';
     } else {
-        ageVerificationModal.style.display = 'flex';
+        modal.classList.add('visible');
     }
 
-    confirmAgeBtn.addEventListener('click', () => {
-        ageVerificationModal.style.display = 'none';
-        localStorage.setItem('ageVerified', 'true');
+    confirmBtn.addEventListener('click', () => {
+        sessionStorage.setItem(AGE_VERIFIED_KEY, 'true');
+        modal.classList.remove('visible');
+        mainContent.style.visibility = 'visible';
     });
 
-    declineAgeBtn.addEventListener('click', () => {
+    declineBtn.addEventListener('click', () => {
+        alert('Lo sentimos, debes ser mayor de edad para acceder a este sitio.');
         window.location.href = 'https://www.google.com';
     });
 }
