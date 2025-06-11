@@ -1,5 +1,6 @@
 import { initCart, toggleCartSidebar, addToCart } from './cart.js';
 import { initHeroCarousel, initBrandsCarousel } from './carousels.js';
+import { initAgeVerification } from './age-verification.js';
 
 const API_PRODUCTS_URL = 'products.json';
 const API_CONFIG_URL = 'config.json';
@@ -59,14 +60,16 @@ function applyFiltersAndRender() {
     const selectedCategory = document.getElementById('categoryFilter').value;
     const sortOrder = document.getElementById('priceSortFilter').value;
     let filteredProducts = allProducts;
-    if (searchTerm) filteredProducts = filteredProducts.filter(p => p.name.toLowerCase().includes(searchTerm));
-    if (selectedCategory !== 'all') filteredProducts = filteredProducts.filter(p => p.category === selectedCategory);
-    if (sortOrder === 'price-asc') filteredProducts.sort((a, b) => a.price - b.price);
-    else if (sortOrder === 'price-desc') filteredProducts.sort((a, b) => b.price - a.price);
-    grid.innerHTML = '';
-    filteredProducts.forEach(product => grid.appendChild(renderProductCard(product)));
     const isFiltered = searchTerm || selectedCategory !== 'all' || sortOrder !== 'default';
-    if(isFiltered) {
+
+    if (isFiltered) {
+        if (searchTerm) filteredProducts = filteredProducts.filter(p => p.name.toLowerCase().includes(searchTerm));
+        if (selectedCategory !== 'all') filteredProducts = filteredProducts.filter(p => p.category === selectedCategory);
+        if (sortOrder === 'price-asc') filteredProducts.sort((a, b) => a.price - b.price);
+        else if (sortOrder === 'price-desc') filteredProducts.sort((a, b) => b.price - a.price);
+        
+        grid.innerHTML = '';
+        filteredProducts.forEach(product => grid.appendChild(renderProductCard(product)));
         loadMoreBtn.style.display = 'none';
     } else {
         displayInitialProducts();
@@ -76,6 +79,8 @@ function applyFiltersAndRender() {
 function populateCategoryFilter(categories) {
     const filter = document.getElementById('categoryFilter');
     if (!filter) return;
+    // Limpiar opciones viejas excepto la primera
+    filter.innerHTML = '<option value="all">Todas las Categorías</option>';
     categories.forEach(category => {
         const option = document.createElement('option');
         option.value = category;
@@ -107,13 +112,17 @@ function loadMoreProducts() {
 
 async function main() {
     try {
+        initAgeVerification(); // Se ejecuta primero
+
         const [productsResponse, configResponse] = await Promise.all([fetch('products.json'), fetch('config.json')]);
         if (!productsResponse.ok || !configResponse.ok) throw new Error('Error al cargar datos');
+        
         allProducts = await productsResponse.json();
         const appConfig = await configResponse.json();
         
         initCart(allProducts, appConfig.contactPhone);
         setupEventListeners();
+        
         initHeroCarousel(appConfig.banners);
         initBrandsCarousel(appConfig.brands);
         
@@ -123,9 +132,12 @@ async function main() {
         displayInitialProducts();
         
         if (categories.length > 0) document.querySelector('.category-btn')?.click();
-        document.getElementById('currentYear').textContent = new Date().getFullYear();
+        
+        const currentYearEl = document.getElementById('currentYear');
+        if (currentYearEl) currentYearEl.textContent = new Date().getFullYear();
+
     } catch (error) {
-        console.error("Error al inicializar:", error);
+        console.error("Error al inicializar la aplicación:", error);
     }
 }
 
