@@ -1,15 +1,17 @@
 let cart = [];
 let allProducts = [];
+let whatsappNumber = '';
 
 const cartSidebar = document.getElementById('cartSidebar');
 const cartItemsContainer = document.getElementById('cartItems');
 const cartCount = document.getElementById('cartCount');
+const bottomNavCartCount = document.getElementById('bottomNavCartCount');
 const cartTotalPrice = document.getElementById('cartTotalPrice');
-
 const CART_STORAGE_KEY = 'el_borracho_cart';
 
-export function initCart(products) {
+export function initCart(products, phone) {
     allProducts = products;
+    whatsappNumber = phone;
     const storedCart = localStorage.getItem(CART_STORAGE_KEY);
     if (storedCart) cart = JSON.parse(storedCart);
     
@@ -17,14 +19,13 @@ export function initCart(products) {
     document.getElementById('checkoutWhatsappBtn')?.addEventListener('click', sendOrderToWhatsapp);
     
     cartItemsContainer?.addEventListener('click', event => {
-        const target = event.target;
-        if (target.closest('.quantity-increase')) {
-            updateQuantity(target.closest('.cart-item').dataset.id, 1);
-        } else if (target.closest('.quantity-decrease')) {
-            updateQuantity(target.closest('.cart-item').dataset.id, -1);
-        } else if (target.closest('.remove-item-btn')) {
-            removeFromCart(target.closest('.cart-item').dataset.id);
-        }
+        const button = event.target.closest('button');
+        if (!button) return;
+        const productId = button.closest('.cart-item')?.dataset.id;
+        if (!productId) return;
+        if (button.matches('.quantity-increase')) updateQuantity(productId, 1);
+        else if (button.matches('.quantity-decrease')) updateQuantity(productId, -1);
+        else if (button.matches('.remove-item-btn')) removeFromCart(productId);
     });
     updateCartUI();
 }
@@ -35,11 +36,8 @@ export function toggleCartSidebar(open) {
 
 export function addToCart(productId) {
     const existingItem = cart.find(item => item.id === productId);
-    if (existingItem) {
-        existingItem.quantity++;
-    } else {
-        cart.push({ id: productId, quantity: 1 });
-    }
+    if (existingItem) existingItem.quantity++;
+    else cart.push({ id: productId, quantity: 1 });
     saveCart();
     updateCartUI();
     toggleCartSidebar(true);
@@ -49,9 +47,7 @@ function updateQuantity(productId, change) {
     const itemIndex = cart.findIndex(item => item.id === productId);
     if (itemIndex === -1) return;
     cart[itemIndex].quantity += change;
-    if (cart[itemIndex].quantity <= 0) {
-        cart.splice(itemIndex, 1);
-    }
+    if (cart[itemIndex].quantity <= 0) cart.splice(itemIndex, 1);
     saveCart();
     updateCartUI();
 }
@@ -91,16 +87,18 @@ function updateCartUI() {
         }).join('');
     }
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-    if (cartCount) cartCount.textContent = totalItems;
+    if(cartCount) cartCount.textContent = totalItems;
+    if(bottomNavCartCount) bottomNavCartCount.textContent = totalItems;
     const totalPrice = cart.reduce((sum, item) => {
         const product = allProducts.find(p => p.id === item.id);
         return sum + (product.price * item.quantity);
     }, 0);
-    if (cartTotalPrice) cartTotalPrice.textContent = `$${totalPrice.toLocaleString('es-CO')}`;
+    if(cartTotalPrice) cartTotalPrice.textContent = `$${totalPrice.toLocaleString('es-CO')}`;
 }
 
 function sendOrderToWhatsapp() {
     if (cart.length === 0) return alert("Tu carrito está vacío.");
+    if (!whatsappNumber) return alert("Número de contacto no configurado.");
     let message = "¡Hola! Quisiera hacer el siguiente pedido:\n\n";
     let total = 0;
     cart.forEach(item => {
@@ -109,6 +107,6 @@ function sendOrderToWhatsapp() {
         total += product.price * item.quantity;
     });
     message += `\n*Total del Pedido: $${total.toLocaleString('es-CO')}*`;
-    const whatsappUrl = `https://wa.me/573174144815?text=${encodeURIComponent(message)}`;
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
 }
