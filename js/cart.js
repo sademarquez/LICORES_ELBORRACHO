@@ -13,9 +13,7 @@ export function initCart(products, phone) {
     allProducts = products;
     whatsappNumber = phone;
     const storedCart = localStorage.getItem(CART_STORAGE_KEY);
-    if (storedCart) {
-        try { cart = JSON.parse(storedCart); } catch (e) { cart = []; }
-    }
+    if (storedCart) { try { cart = JSON.parse(storedCart); } catch (e) { cart = []; } }
     
     document.getElementById('closeCartBtn')?.addEventListener('click', () => toggleCartSidebar(false));
     document.getElementById('checkoutWhatsappBtn')?.addEventListener('click', sendOrderToWhatsapp);
@@ -105,8 +103,10 @@ function sendOrderToWhatsapp() {
     let total = 0;
     cart.forEach(item => {
         const product = allProducts.find(p => p.id === item.id);
-        message += `${item.quantity}x ${product.name} - $${(product.price * item.quantity).toLocaleString('es-CO')}\n`;
-        total += product.price * item.quantity;
+        if(product) {
+            message += `${item.quantity}x ${product.name} - $${(product.price * item.quantity).toLocaleString('es-CO')}\n`;
+            total += product.price * item.quantity;
+        }
     });
     message += `\n*Total del Pedido: $${total.toLocaleString('es-CO')}*`;
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
