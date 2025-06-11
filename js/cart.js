@@ -13,7 +13,9 @@ export function initCart(products, phone) {
     allProducts = products;
     whatsappNumber = phone;
     const storedCart = localStorage.getItem(CART_STORAGE_KEY);
-    if (storedCart) cart = JSON.parse(storedCart);
+    if (storedCart) {
+        try { cart = JSON.parse(storedCart); } catch (e) { cart = []; }
+    }
     
     document.getElementById('closeCartBtn')?.addEventListener('click', () => toggleCartSidebar(false));
     document.getElementById('checkoutWhatsappBtn')?.addEventListener('click', sendOrderToWhatsapp);
