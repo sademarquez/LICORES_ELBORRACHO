@@ -2,6 +2,66 @@ import { initCart, toggleCartSidebar, addToCart } from './cart.js';
 import { initHeroCarousel, initBrandsCarousel } from './carousels.js';
 import { initAgeVerification } from './age-verification.js';
 
+// --- INICIO DE LA SECCIÓN AÑADIDA ---
+
+/**
+ * Inicializa el fondo animado de partículas con Three.js.
+ */
+function init3DBackground() {
+    try {
+        const container = document.getElementById('bg3d');
+        if(!container || typeof THREE === 'undefined') {
+             console.log("Contenedor de fondo 3D o librería THREE.js no encontrada.");
+             return;
+        }
+        
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        container.appendChild(renderer.domElement);
+
+        const particlesGeometry = new THREE.BufferGeometry();
+        const count = 5000;
+        const positions = new Float32Array(count * 3);
+        for (let i = 0; i < count * 3; i++) {
+            positions[i] = (Math.random() - 0.5) * 15;
+        }
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+        const particlesMaterial = new THREE.PointsMaterial({
+            size: 0.025,
+            sizeAttenuation: true,
+            color: '#D4AF37',
+            transparent: true,
+            opacity: 0.7
+        });
+        const particles = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particles);
+        camera.position.z = 5;
+
+        const onWindowResize = () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        };
+        window.addEventListener('resize', onWindowResize, false);
+        
+        const clock = new THREE.Clock();
+        const animate = () => {
+            particles.rotation.y = clock.getElapsedTime() * 0.05;
+            renderer.render(scene, camera);
+            window.requestAnimationFrame(animate);
+        };
+        animate();
+
+    } catch (error) {
+        console.error("Error al inicializar el fondo 3D:", error);
+    }
+}
+// --- FIN DE LA SECCIÓN AÑADIDA ---
+
+
 const API_PRODUCTS_URL = 'products.json';
 const API_CONFIG_URL = 'config.json';
 let allProducts = [];
@@ -11,10 +71,9 @@ const PRODUCTS_PER_PAGE = 6;
 function renderProductCard(product) {
     const card = document.createElement('div');
     card.className = 'product-card';
-    // Estructura actualizada: Sin overlay, nombre y precio juntos.
     card.innerHTML = `
         <div class="product-image-container">
-            <img src="${product.imageUrl}" alt="${product.name}" class="product-image">
+            <img src="${product.imageUrl}" alt="${product.name}" class="product-image" loading="lazy">
         </div>
         <div class="product-details">
             <div>
@@ -43,15 +102,12 @@ function renderCategoryButtons(categories) {
         const button = document.createElement('button');
         button.className = 'category-btn';
         button.textContent = category;
-        button.dataset.category = category; // Usar dataset para identificar la categoría
+        button.dataset.category = category;
         return button;
     };
 
     categories.forEach(category => {
-        // Crear y añadir botón para la vista de escritorio
         desktopContainer.appendChild(createButton(category));
-
-        // Crear y añadir botón para la vista móvil correspondiente
         if (row1Categories.includes(category)) {
             mobileRow1.appendChild(createButton(category));
         } else {
@@ -132,8 +188,10 @@ function loadMoreProducts() {
 
 async function main() {
     try {
+        // Estas funciones no dependen de librerías externas, se ejecutan primero.
         initAgeVerification();
-
+        init3DBackground(); // Llamamos a la función del fondo aquí.
+        
         const [productsResponse, configResponse] = await Promise.all([fetch('products.json'), fetch('config.json')]);
         if (!productsResponse.ok || !configResponse.ok) throw new Error('Error al cargar datos');
         
@@ -143,15 +201,23 @@ async function main() {
         initCart(allProducts, appConfig.contactPhone);
         setupEventListeners();
         
-        initHeroCarousel(appConfig.banners);
-        initBrandsCarousel(appConfig.brands);
+        // Envolvemos las inicializaciones que dependen de Swiper
+        try {
+            if (typeof Swiper !== 'undefined') {
+                initHeroCarousel(appConfig.banners);
+                initBrandsCarousel(appConfig.brands);
+            } else {
+                console.error("Swiper no está definido. Los carruseles no se inicializarán.");
+            }
+        } catch(e) {
+             console.error("Error al inicializar los carruseles:", e);
+        }
         
         const categories = [...new Set(allProducts.map(p => p.category))];
         renderCategoryButtons(categories);
         populateCategoryFilter(categories);
         displayInitialProducts();
         
-        // Simula el click en el primer botón de categoría para cargar productos iniciales
         const firstCategoryButton = document.querySelector('.category-btn');
         if (firstCategoryButton) {
             firstCategoryButton.click();
@@ -160,17 +226,11 @@ async function main() {
         const currentYearEl = document.getElementById('currentYear');
         if (currentYearEl) currentYearEl.textContent = new Date().getFullYear();
 
-        // --- INICIO DEL CÓDIGO AÑADIDO ---
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/sw.js')
-                .then(registration => {
-                    console.log('Service Worker registrado con éxito:', registration);
-                })
-                .catch(error => {
-                    console.log('Error al registrar el Service Worker:', error);
-                });
+                .then(registration => console.log('Service Worker registrado con éxito:', registration))
+                .catch(error => console.log('Error al registrar el Service Worker:', error));
         }
-        // --- FIN DEL CÓDIGO AÑADIDO ---
 
     } catch (error) {
         console.error("Error al inicializar la aplicación:", error);
@@ -187,19 +247,15 @@ function setupEventListeners() {
         if (event.target.matches('.add-to-cart-btn')) addToCart(event.target.dataset.id);
     });
 
-    // Event listener para los botones de categoría usando delegación
     const categoryNav = document.getElementById('category-nav-section');
     if (categoryNav) {
         categoryNav.addEventListener('click', (event) => {
             const button = event.target.closest('.category-btn');
             if (!button) return;
-
             const category = button.dataset.category;
-            // Actualiza la clase 'active' en todos los botones correspondientes
             document.querySelectorAll('.category-btn').forEach(btn => {
                 btn.classList.toggle('active', btn.dataset.category === category);
             });
-            
             renderProductsByCategory(category);
         });
     }
