@@ -1,16 +1,26 @@
 @media (max-width: 768px) {
-    .product-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; } /* Ajustado a 2 columnas para mejor visualización */
+    /* --- INICIO DE CAMBIOS --- */
+    /* Ocultar el header principal para dar prioridad al hero carousel */
+    .main-header {
+        display: none;
+    }
+
+    /* Ajustar la posición de los filtros al no haber header */
+    #productFilters {
+        top: 0; /* Se pega al borde superior de la pantalla */
+    }
+    /* --- FIN DE CAMBIOS --- */
+    
+    .product-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
     .product-card { --card-padding: 12px; }
     .product-image-container { height: 150px; }
-    .product-name { font-size: 0.85rem; } /* Ligeramente más grande para legibilidad */
+    .product-name { font-size: 0.85rem; }
     .product-price { font-size: 1rem; }
     .add-to-cart-btn { padding: 8px 10px; font-size: 0.8rem; }
-    .category-products-carousel .product-card { flex: 0 0 calc(50% - 0.5rem); } /* 2 tarjetas visibles */
-    #productFilters { top: 70px; } /* Ajustado para el nuevo header sticky */
+    .category-products-carousel .product-card { flex: 0 0 calc(50% - 0.5rem); }
 
-    /* Lógica para mostrar/ocultar contenedores de categoría */
-    .category-buttons-scroll { display: none; } /* Ocultar el de escritorio */
-    .category-buttons-grid { display: flex; flex-direction: column; gap: 0.75rem; } /* Mostrar el de móvil */
+    .category-buttons-scroll { display: none; }
+    .category-buttons-grid { display: flex; flex-direction: column; gap: 0.75rem; }
     .category-buttons-row {
         display: flex;
         overflow-x: auto;
@@ -20,13 +30,12 @@
         scrollbar-width: none;
     }
     .category-buttons-row::-webkit-scrollbar { display: none; }
-    .category-btn { padding: 10px 20px; } /* Botones un poco más pequeños */
+    .category-btn { padding: 10px 20px; }
 
     .hero-swiper { height: 250px; }
     .hero-slide-content h2 { font-size: 1.8rem; }
     .hero-slide-content p { font-size: 1rem; }
     .bottom-nav { display: flex; }
-    /* Más espacio en la parte inferior para que el contenido no se oculte tras el nav */
     main { padding-bottom: 100px; }
 }
 
