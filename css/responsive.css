@@ -1,15 +1,10 @@
 @media (max-width: 768px) {
-    /* --- INICIO DE CAMBIOS --- */
-    /* Ocultar el header principal para dar prioridad al hero carousel */
-    .main-header {
-        display: none;
-    }
-
-    /* Ajustar la posición de los filtros al no haber header */
+    /* El header ahora es visible en móviles por defecto. */
+    
+    /* Ajustar la posición de los filtros para que queden debajo del header sticky. */
     #productFilters {
-        top: 0; /* Se pega al borde superior de la pantalla */
+        top: 80px; 
     }
-    /* --- FIN DE CAMBIOS --- */
     
     .product-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
     .product-card { --card-padding: 12px; }
