@@ -1,15 +1,12 @@
+/* css/responsive.css */
 @media (max-width: 768px) {
-    .product-grid { grid-template-columns: repeat(3, 1fr); gap: 1rem; }
-    .category-products-carousel .product-card { flex: 0 0 calc(33.33% - 1rem); }
-    #productFilters { top: 68px; }
-}
+    /* ... (tus estilos de 3 productos por fila) ... */
 
-@media (min-width: 769px) and (max-width: 1024px) {
-    .product-grid { grid-template-columns: repeat(4, 1fr); }
-    .category-products-carousel .product-card { flex: 0 0 calc(25% - 1rem); }
+    /* Altura del carrusel principal en móvil */
+    .hero-swiper {
+        height: 250px;
+    }
+    .hero-slide-content h2 { font-size: 1.8rem; }
+    .hero-slide-content p { font-size: 1rem; }
 }
-
-@media (min-width: 1025px) {
-    .product-grid { grid-template-columns: repeat(5, 1fr); }
-    .category-products-carousel .product-card { flex: 0 0 calc(20% - 1rem); }
-}
+/* ... (el resto de tus estilos responsive) ... */
