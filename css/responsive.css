@@ -1,67 +1,28 @@
-/* css/responsive.css */
-
 /* --- MÓVILES (Hasta 768px) --- */
 @media (max-width: 768px) {
-    /* CUADRÍCULA PRINCIPAL: 3 productos por fila en móvil */
-    .product-grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 0.75rem;
-    }
-
-    /* Reducir padding de las tarjetas en móvil para ganar espacio */
-    .product-card {
-        --card-padding: 12px;
-    }
-    
-    .product-image-container {
-        height: 150px;
-    }
-    .product-name {
-        font-size: 0.8rem;
-    }
-    .product-price {
-        font-size: 1rem;
-    }
-    .add-to-cart-btn {
-        padding: 8px 10px;
-        font-size: 0.8rem;
-    }
-
-    /* CARRUSEL DE CATEGORÍAS */
-    .category-products-carousel .product-card {
-        flex: 0 0 calc(33.33% - 0.75rem);
-    }
-    
-    #productFilters {
-        top: 68px; /* Ajustar por la altura del header en móvil */
-    }
-
-    /* Altura del carrusel principal en móvil */
-    .hero-swiper {
-        height: 250px;
-    }
+    .product-grid { grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
+    .product-card { --card-padding: 12px; }
+    .product-image-container { height: 150px; }
+    .product-name { font-size: 0.8rem; }
+    .product-price { font-size: 1rem; }
+    .add-to-cart-btn { padding: 8px 10px; font-size: 0.8rem; }
+    .category-products-carousel .product-card { flex: 0 0 calc(33.33% - 0.75rem); }
+    #productFilters { top: 68px; }
+    .hero-swiper { height: 250px; }
     .hero-slide-content h2 { font-size: 1.8rem; }
     .hero-slide-content p { font-size: 1rem; }
+    .bottom-nav { display: flex; }
+    main { padding-bottom: 80px; }
 }
-
 
 /* --- TABLETS (769px a 1024px) --- */
 @media (min-width: 769px) and (max-width: 1024px) {
-    .product-grid {
-        grid-template-columns: repeat(4, 1fr);
-    }
-    .category-products-carousel .product-card {
-        flex: 0 0 calc(25% - 1rem);
-    }
+    .product-grid { grid-template-columns: repeat(4, 1fr); }
+    .category-products-carousel .product-card { flex: 0 0 calc(25% - 1rem); }
 }
-
 
 /* --- DESKTOP (1025px y más) --- */
 @media (min-width: 1025px) {
-    .product-grid {
-        grid-template-columns: repeat(5, 1fr);
-    }
-    .category-products-carousel .product-card {
-        flex: 0 0 calc(20% - 1rem);
-    }
+    .product-grid { grid-template-columns: repeat(5, 1fr); }
+    .category-products-carousel .product-card { flex: 0 0 calc(20% - 1rem); }
 }
