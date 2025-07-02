@@ -132,4 +132,3 @@ function clearCart() {
 function sendOrderToWhatsapp() {
     openCheckoutModal();
 }
-}
