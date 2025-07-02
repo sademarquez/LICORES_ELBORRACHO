@@ -65,3 +65,7 @@ www/node_modules/
 
 # Ignorar archivos de configuración local de desarrollo
 capacitor.config.local.json
+
+# Archivos de Claude Code
+../.claude/
+.claude/
