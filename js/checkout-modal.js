@@ -59,14 +59,20 @@ export class CheckoutModal {
 
                         <div class="form-group">
                             <label for="customerAddress">Dirección Completa *</label>
-                            <textarea 
-                                id="customerAddress" 
-                                name="address" 
-                                required 
-                                placeholder="Ej: Calle 15 #23-45, Barrio Centro, Edificio Azul, Apto 301"
-                                class="form-input"
-                                rows="3"
-                            ></textarea>
+                            <div class="address-input-group">
+                                <textarea 
+                                    id="customerAddress" 
+                                    name="address" 
+                                    required 
+                                    placeholder="Ej: Calle 15 #23-45, Barrio Centro, Edificio Azul, Apto 301"
+                                    class="form-input"
+                                    rows="3"
+                                ></textarea>
+                                <button type="button" id="getLocationBtn" class="location-btn" title="Usar mi ubicación actual">
+                                    📍 Usar Ubicación
+                                </button>
+                            </div>
+                            <small class="form-help">Puedes escribir tu dirección o usar tu ubicación actual</small>
                         </div>
 
                         <div class="form-group">
@@ -163,6 +169,9 @@ export class CheckoutModal {
         
         // Cerrar al hacer click en backdrop
         this.modal.querySelector('.checkout-modal-backdrop').addEventListener('click', () => this.hide());
+        
+        // Botón de ubicación
+        document.getElementById('getLocationBtn').addEventListener('click', () => this.getCurrentLocation());
         
         // Validación en tiempo real
         this.setupFormValidation();
@@ -321,6 +330,122 @@ export class CheckoutModal {
 
     resetForm() {
         document.getElementById('customerForm').reset();
+    }
+
+    async getCurrentLocation() {
+        const locationBtn = document.getElementById('getLocationBtn');
+        const addressTextarea = document.getElementById('customerAddress');
+        
+        if (!navigator.geolocation) {
+            alert('Tu navegador no soporta geolocalización');
+            return;
+        }
+        
+        // Cambiar estado del botón
+        locationBtn.disabled = true;
+        locationBtn.innerHTML = '📍 Obteniendo...';
+        
+        try {
+            const position = await new Promise((resolve, reject) => {
+                navigator.geolocation.getCurrentPosition(resolve, reject, {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 60000
+                });
+            });
+            
+            const { latitude, longitude } = position.coords;
+            
+            // Usar Google Maps Geocoding API para obtener dirección legible
+            const address = await this.reverseGeocode(latitude, longitude);
+            
+            if (address) {
+                addressTextarea.value = address;
+                this.showToast('✅ Ubicación obtenida exitosamente', 'success');
+            } else {
+                addressTextarea.value = `Coordenadas: ${latitude.toFixed(6)}, ${longitude.toFixed(6)}`;
+                this.showToast('📍 Se obtuvo la ubicación, pero agrega más detalles', 'warning');
+            }
+            
+        } catch (error) {
+            console.error('Error obteniendo ubicación:', error);
+            let errorMessage = 'No se pudo obtener la ubicación';
+            
+            if (error.code === 1) {
+                errorMessage = 'Debes permitir el acceso a la ubicación';
+            } else if (error.code === 2) {
+                errorMessage = 'No se pudo determinar tu ubicación';
+            } else if (error.code === 3) {
+                errorMessage = 'Tiempo de espera agotado';
+            }
+            
+            this.showToast('❌ ' + errorMessage, 'error');
+        } finally {
+            // Restaurar botón
+            locationBtn.disabled = false;
+            locationBtn.innerHTML = '📍 Usar Ubicación';
+        }
+    }
+    
+    async reverseGeocode(lat, lng) {
+        try {
+            // Usar OpenStreetMap Nominatim (gratuito) como alternativa a Google Maps
+            const response = await fetch(
+                `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`,
+                {
+                    headers: {
+                        'User-Agent': 'ElBorracho-PWA'
+                    }
+                }
+            );
+            
+            if (!response.ok) throw new Error('Error en geocodificación');
+            
+            const data = await response.json();
+            
+            if (data && data.display_name) {
+                // Formatear dirección para Colombia
+                const address = data.address || {};
+                let formattedAddress = '';
+                
+                if (address.road) formattedAddress += address.road;
+                if (address.house_number) formattedAddress += ` #${address.house_number}`;
+                if (address.neighbourhood) formattedAddress += `, ${address.neighbourhood}`;
+                if (address.city) formattedAddress += `, ${address.city}`;
+                
+                return formattedAddress || data.display_name;
+            }
+            
+        } catch (error) {
+            console.error('Error en geocodificación:', error);
+            return null;
+        }
+    }
+    
+    showToast(message, type = 'info') {
+        // Crear toast notification
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        toast.textContent = message;
+        toast.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#f59e0b'};
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            z-index: 10000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            font-weight: 500;
+        `;
+        
+        document.body.appendChild(toast);
+        
+        // Remover después de 3 segundos
+        setTimeout(() => {
+            toast.remove();
+        }, 3000);
     }
 
     setOrderCompleteCallback(callback) {

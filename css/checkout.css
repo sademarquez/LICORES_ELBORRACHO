@@ -184,6 +184,44 @@
     border-color: #ff4d4d;
 }
 
+/* Input group para dirección */
+.address-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.location-btn {
+    padding: 8px 16px;
+    background: rgba(212, 175, 55, 0.1);
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    align-self: flex-start;
+}
+
+.location-btn:hover {
+    background: rgba(212, 175, 55, 0.2);
+    transform: translateY(-1px);
+}
+
+.location-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.form-help {
+    color: var(--text-color-secondary);
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+    display: block;
+}
+
 /* Checkboxes personalizados */
 .checkbox-label {
     display: flex;

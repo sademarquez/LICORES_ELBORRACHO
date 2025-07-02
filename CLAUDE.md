@@ -41,7 +41,10 @@ The application uses ES6 modules with clear separation of concerns:
 
 ### Running the Application
 ```bash
-# Serve static files using any web server
+# Use npm dev script (uses serve)
+npm run dev
+
+# Or serve static files using any web server
 python -m http.server 8000
 # or
 npx serve .
@@ -133,6 +136,9 @@ npm run build-apk
 
 # Run on Android device/emulator
 npm run android
+
+# Sync changes with Capacitor
+npm run sync
 
 # Open in Android Studio
 npx cap open android

@@ -57,6 +57,9 @@ el-borracho.apk
 coverage/
 .nyc_output/
 
+# Directorio www/ es generado por npm run deploy - no versionar
+www/
+
 # Dependency directories que no necesitamos en el repo
 www/node_modules/
 
