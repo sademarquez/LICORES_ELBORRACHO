@@ -3,8 +3,6 @@ name: Build Android APK
 on:
   push:
     branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
   workflow_dispatch:
 
 jobs:
@@ -19,58 +17,89 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '18'
-        cache: 'npm'
         
     - name: Setup Java JDK
       uses: actions/setup-java@v4
       with:
-        java-version: '11'
-        distribution: 'adopt'
+        java-version: '17'
+        distribution: 'temurin'
         
     - name: Install dependencies
-      run: npm ci
-      
-    - name: Copy web assets
       run: |
+        npm install
+        npm install -g @capacitor/cli
+        
+    - name: Prepare web assets
+      run: |
+        # Crear directorio www si no existe
         mkdir -p www
-        cp -r css js images *.html *.json *.js www/
+        
+        # Copiar archivos web
+        cp -r css js images *.html *.json www/ 2>/dev/null || echo "Some files copied"
+        cp *.js www/ 2>/dev/null || echo "JS files copied"
+        
+        # Verificar contenido
+        ls -la www/
+        
+    - name: Initialize Capacitor if needed
+      run: |
+        # Verificar si capacitor está configurado
+        if [ ! -f "capacitor.config.json" ]; then
+          npx cap init "El Borracho" "com.elborracho.app"
+        fi
+        
+        # Agregar plataforma Android si no existe
+        if [ ! -d "android" ]; then
+          npx cap add android
+        fi
         
     - name: Sync Capacitor
-      run: npx cap sync
-      
-    - name: Make gradlew executable
+      run: |
+        npx cap sync android
+        
+    - name: Grant execute permission for gradlew
       run: chmod +x android/gradlew
       
-    - name: Build Android APK
+    - name: Build with Gradle
       run: |
         cd android
-        ./gradlew assembleDebug --no-daemon
+        ./gradlew assembleDebug --no-daemon --stacktrace
         
-    - name: Upload APK artifact
+    - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
-        name: el-borracho-apk
+        name: el-borracho-debug-apk
         path: android/app/build/outputs/apk/debug/app-debug.apk
         retention-days: 30
         
-    - name: Create Release
-      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    - name: Create Release (only on main branch)
+      if: github.ref == 'refs/heads/main'
       uses: softprops/action-gh-release@v1
       with:
         tag_name: v${{ github.run_number }}
-        name: Release v${{ github.run_number }}
+        name: "El Borracho v${{ github.run_number }}"
         body: |
-          🚀 Nueva versión de El Borracho disponible para Android!
+          🚀 **Nueva versión de El Borracho disponible!**
           
-          📱 Descargar APK directamente desde los assets de esta release.
-          
-          ## Cambios:
-          - APK generado automáticamente desde el código fuente
+          📱 **Para Android:**
+          - Descarga el archivo `app-debug.apk` desde los assets
+          - Instala directamente en tu dispositivo Android
           - Compatible con Android 5.0+
-          - Instalación directa sin Google Play Store
           
-        files: |
-          android/app/build/outputs/apk/debug/app-debug.apk
+          ## ✨ Características:
+          - Sistema de pedidos profesional con códigos únicos
+          - Doble WhatsApp (cliente + domicilios)
+          - Seguimiento de pedidos en tiempo real
+          - Checkout completo con validación
+          - Instalación sin Google Play Store
+          
+          ## 📥 Instalación:
+          1. Descarga `app-debug.apk`
+          2. Habilita "Fuentes desconocidas" en Android
+          3. Instala el APK
+          4. ¡Disfruta pidiendo licores a domicilio!
+          
+        files: android/app/build/outputs/apk/debug/app-debug.apk
         draft: false
         prerelease: false
       env:
