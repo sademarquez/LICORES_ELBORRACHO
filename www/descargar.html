@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Descargar App - El Borracho</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+    <div id="bg3d"></div>
+    
+    <div class="max-w-md w-full bg-opacity-20 bg-gray-900 backdrop-filter backdrop-blur-lg rounded-2xl border border-gray-700 p-8 text-center">
+        <img src="/images/logo.png" alt="El Borracho Logo" class="h-20 mx-auto mb-6">
+        
+        <h1 class="text-3xl font-bold text-white mb-2">¡Descarga nuestra App!</h1>
+        <p class="text-gray-300 mb-6">Instala El Borracho directamente en tu teléfono</p>
+        
+        <div class="space-y-4">
+            <!-- Botón de descarga directa -->
+            <a href="https://github.com/tuusuario/LICORES_ELBORRACHO/releases/latest/download/app-debug.apk" 
+               class="block w-full bg-yellow-600 hover:bg-yellow-500 text-black font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105">
+                📱 Descargar APK Android
+            </a>
+            
+            <!-- Botón para agregar a inicio (PWA) -->
+            <button id="installPWA" 
+                    class="block w-full bg-gray-700 hover:bg-gray-600 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105"
+                    style="display: none;">
+                🏠 Agregar a Inicio
+            </button>
+            
+            <!-- Link a GitHub -->
+            <a href="https://github.com/tuusuario/LICORES_ELBORRACHO/releases" 
+               class="block w-full bg-gray-800 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300">
+                📂 Ver todas las versiones
+            </a>
+        </div>
+        
+        <div class="mt-8 text-sm text-gray-400">
+            <p class="mb-2">⚠️ Habilita "Fuentes desconocidas" en tu Android</p>
+            <p class="mb-2">📱 Compatible con Android 5.0+</p>
+            <p>🔒 Seguro y sin publicidad</p>
+        </div>
+        
+        <div class="mt-6 flex justify-center">
+            <a href="/index.html" class="text-yellow-400 hover:text-yellow-300 text-sm underline">
+                ← Volver al sitio web
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // PWA Install functionality
+        let deferredPrompt;
+        const installButton = document.getElementById('installPWA');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installButton.style.display = 'block';
+        });
+
+        installButton.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    console.log('PWA installed');
+                }
+                deferredPrompt = null;
+                installButton.style.display = 'none';
+            }
+        });
+
+        // 3D background (simplified version)
+        if (typeof THREE !== 'undefined') {
+            const container = document.getElementById('bg3d');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true });
+            
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            container.appendChild(renderer.domElement);
+            
+            const particlesGeometry = new THREE.BufferGeometry();
+            const count = 2000;
+            const positions = new Float32Array(count * 3);
+            for (let i = 0; i < count * 3; i++) {
+                positions[i] = (Math.random() - 0.5) * 10;
+            }
+            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            
+            const particlesMaterial = new THREE.PointsMaterial({
+                size: 0.02,
+                color: '#D4AF37',
+                transparent: true,
+                opacity: 0.6
+            });
+            
+            const particles = new THREE.Points(particlesGeometry, particlesMaterial);
+            scene.add(particles);
+            camera.position.z = 5;
+            
+            function animate() {
+                particles.rotation.y += 0.002;
+                renderer.render(scene, camera);
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+    </script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</body>
+</html>

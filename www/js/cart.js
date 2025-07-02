@@ -27,6 +27,7 @@ export function initCart(products, phone) {
         clearCart();
         toggleCartSidebar(false);
     });
+    
     const storedCart = localStorage.getItem(CART_STORAGE_KEY);
     if (storedCart) { try { cart = JSON.parse(storedCart); } catch (e) { cart = []; } }
     
@@ -131,5 +132,4 @@ function clearCart() {
 // Función legacy para mantener compatibilidad (opcional)
 function sendOrderToWhatsapp() {
     openCheckoutModal();
-}
 }
