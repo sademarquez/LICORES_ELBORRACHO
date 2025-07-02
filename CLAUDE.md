@@ -78,7 +78,7 @@ npx serve .
 - **Customer**: Receives confirmation with order code, details, and estimated delivery
 - **Delivery Team**: Gets order details, customer info, and delivery instructions
 - **Order Codes**: Format EB + YYMMDD + HHMM + Random (e.g., EB241202154523)
-- **Phones**: 573174144815 (customer), 573174144816 (delivery team)
+- **Phones**: 573174144815 (customer), 573233833450 (delivery team)
 
 ### Age Verification
 Legal requirement for alcohol sales - implemented as a modal that must be accepted before viewing products.
