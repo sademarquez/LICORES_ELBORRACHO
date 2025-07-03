@@ -19,7 +19,10 @@
         
         <div class="space-y-4">
             <!-- Botón de descarga directa -->
-            <a href="el-borracho.apk" download style="display:inline-block;margin:2rem 0;padding:1rem 2rem;background:#D4AF37;color:black;font-weight:bold;border-radius:12px;font-size:1.2rem;text-decoration:none;">Descargar APK</a>
+            <a id="apkDownloadBtn" href="/el-borracho.apk" download style="display:inline-block;margin:2rem 0;padding:1rem 2rem;background:#D4AF37;color:black;font-weight:bold;border-radius:12px;font-size:1.2rem;text-decoration:none;">Descargar APK</a>
+            <div id="apkHelpMsg" style="display:none;color:#fff;background:#b91c1c;padding:1rem;border-radius:8px;margin-top:1rem;font-size:1rem;">
+                Si tu navegador intenta abrir el archivo como video o no descarga, haz clic derecho en el botón y elige <b>"Guardar enlace como..."</b> o prueba desde otro navegador.
+            </div>
             
             <!-- Botón para agregar a inicio (PWA) -->
             <button id="installPWA" 
@@ -52,6 +55,8 @@
         // PWA Install functionality
         let deferredPrompt;
         const installButton = document.getElementById('installPWA');
+        const apkBtn = document.getElementById('apkDownloadBtn');
+        const apkHelpMsg = document.getElementById('apkHelpMsg');
 
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
@@ -69,6 +74,15 @@
                 deferredPrompt = null;
                 installButton.style.display = 'none';
             }
+        });
+
+        // Mostrar ayuda si el navegador intenta abrir el APK como video
+        apkBtn.addEventListener('click', function(e) {
+            setTimeout(() => {
+                if (!apkBtn.download) {
+                    apkHelpMsg.style.display = 'block';
+                }
+            }, 1000);
         });
 
         // 3D background (simplified version)
