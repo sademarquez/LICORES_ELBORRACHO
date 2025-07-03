@@ -44,10 +44,10 @@ android/app/src/main/assets/public/
 ios/build/
 ios/DerivedData/
 
-# APKs generados localmente (se generan en CI/CD)
-*.apk
+# APKs temporales (mantener el APK principal para descarga)
 *.aab
-el-borracho.apk
+# *.apk - comentado para permitir # el-borracho.apk - permitido para descarga
+# # el-borracho.apk - permitido para descarga - comentado para permitir descarga directa
 
 # Archivos de backup
 *.bak
@@ -75,12 +75,12 @@ capacitor.config.local.json
 
 # Ignorar carpetas y archivos de build y Android
 www/
-el-borracho.apk
+# el-borracho.apk - permitido para descarga
 android/app/build/
 android/.gradle/
 node_modules/
 .DS_Store
 *.log
 
-# NO ignorar www/ ni el-borracho.apk para Netlify
+# NO ignorar www/ ni # el-borracho.apk - permitido para descarga para Netlify
 dist/
