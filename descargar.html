@@ -20,9 +20,20 @@
         
         <div class="space-y-4">
             <!-- Botón de descarga directa -->
-            <a id="apkDownloadBtn" href="/el-borracho.apk" download="el-borracho.apk" style="display:inline-block;margin:2rem 0;padding:1rem 2rem;background:#D4AF37;color:black;font-weight:bold;border-radius:12px;font-size:1.2rem;text-decoration:none;transition:all 0.3s ease;">
-                📱 Descargar APK (12MB)
+            <!-- Descarga desde GitHub Raw -->
+            <a id="githubDownloadBtn" href="https://github.com/sademarquez/LICORES_ELBORRACHO/raw/main/el-borracho.apk" download="el-borracho.apk" style="display:inline-block;margin:1rem 0;padding:1rem 2rem;background:#D4AF37;color:black;font-weight:bold;border-radius:12px;font-size:1.1rem;text-decoration:none;transition:all 0.3s ease;">
+                📱 Descargar APK desde GitHub (12MB)
             </a>
+            
+            <!-- Descarga alternativa local -->
+            <a id="apkDownloadBtn" href="/el-borracho.apk" download="el-borracho.apk" style="display:inline-block;margin:1rem 0;padding:1rem 2rem;background:#34C759;color:white;font-weight:bold;border-radius:12px;font-size:1.1rem;text-decoration:none;transition:all 0.3s ease;">
+                📦 Descarga Directa APK (12MB)
+            </a>
+            
+            <!-- Botón manual para Android -->
+            <button id="androidInstallBtn" onclick="forceAndroidInstall()" style="display:inline-block;margin:1rem 0;padding:1rem 2rem;background:#FF6B6B;color:white;font-weight:bold;border-radius:12px;font-size:1.1rem;border:none;cursor:pointer;transition:all 0.3s ease;">
+                🤖 Forzar Instalación Android
+            </button>
             <div id="apkHelpMsg" style="display:none;color:#fff;background:#b91c1c;padding:1rem;border-radius:8px;margin-top:1rem;font-size:1rem;">
                 <strong>💡 Ayuda para descargar:</strong><br>
                 • Si no descarga: <b>Clic derecho → "Guardar enlace como..."</b><br>
@@ -77,18 +88,54 @@
             }
         });
 
-        // Mostrar ayuda si el navegador intenta abrir el APK como video
-        apkBtn.addEventListener('click', function(e) {
-            // Agregar efecto hover
-            apkBtn.style.background = '#B8860B';
-            apkBtn.style.transform = 'scale(1.05)';
+        // Función para forzar instalación en Android
+        function forceAndroidInstall() {
+            // Detectar si es Android
+            const isAndroid = /Android/i.test(navigator.userAgent);
             
-            setTimeout(() => {
-                apkBtn.style.background = '#D4AF37';
-                apkBtn.style.transform = 'scale(1)';
-                // Mostrar ayuda si hay problemas
-                apkHelpMsg.style.display = 'block';
-            }, 2000);
+            if (isAndroid) {
+                // Solicitar permisos de fuentes desconocidas
+                if ('requestPermission' in navigator && 'permissions' in navigator) {
+                    navigator.permissions.query({name: 'install'}).then(function(result) {
+                        console.log('Install permission:', result.state);
+                    });
+                }
+                
+                // Crear enlace temporal con headers específicos
+                const link = document.createElement('a');
+                link.href = 'https://github.com/sademarquez/LICORES_ELBORRACHO/raw/main/el-borracho.apk';
+                link.download = 'el-borracho.apk';
+                
+                // Intentar abrir configuración de fuentes desconocidas si es necesario
+                setTimeout(() => {
+                    try {
+                        window.open('android-app://com.android.settings/.applications.AppOpsSummaryActivity');
+                    } catch(e) {
+                        alert('Ve a Configuración > Seguridad > Fuentes desconocidas y actívalo');
+                    }
+                }, 1000);
+                
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } else {
+                alert('Esta función es específica para dispositivos Android');
+            }
+        }
+
+        // Mostrar ayuda si el navegador intenta abrir el APK como video
+        const apkBtn = document.getElementById('apkDownloadBtn');
+        const githubBtn = document.getElementById('githubDownloadBtn');
+        const apkHelpMsg = document.getElementById('apkHelpMsg');
+
+        [apkBtn, githubBtn].forEach(btn => {
+            if (btn) {
+                btn.addEventListener('click', function(e) {
+                    setTimeout(() => {
+                        apkHelpMsg.style.display = 'block';
+                    }, 2000);
+                });
+            }
         });
 
         // 3D background (simplified version)
