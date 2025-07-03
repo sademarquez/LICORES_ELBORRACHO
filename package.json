@@ -10,7 +10,7 @@
     "ios": "npx cap run ios",
     "sync": "npx cap sync",
     "build-apk": "node build-apk.js",
-    "deploy": "cp -r css js images *.html *.json *.js www/ && npm run sync"
+    "deploy": "xcopy css www\\css /E /I /Y && xcopy js www\\js /E /I /Y && xcopy images www\\images /E /I /Y && xcopy *.html www\\ /Y && xcopy *.json www\\ /Y && xcopy *.js www\\ /Y && npm run sync"
   },
   "keywords": [
     "pwa",

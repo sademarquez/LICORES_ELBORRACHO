@@ -1,6 +1,6 @@
 {
   "appId": "com.elborracho.app",
-  "appName": "El Borracho",
+  "appName": "el-borracho",
   "webDir": "www",
   "bundledWebRuntime": false,
   "server": {

@@ -277,13 +277,13 @@ export class CheckoutModal {
             const order = this.orderSystem.createOrder(this.cartItems, customerInfo, this.allProducts);
             
             // Generar URLs de WhatsApp
-            const { customerUrl, deliveryUrl } = await this.orderSystem.sendOrderMessages(order);
+            const { customerUrl, storeUrl, deliveryUrl } = await this.orderSystem.sendOrderMessages(order);
             
             // Ocultar loader
             loader.style.display = 'none';
             
             // Mostrar confirmación y redirigir
-            this.showOrderConfirmation(order, customerUrl, deliveryUrl);
+            this.showOrderConfirmation(order, customerUrl, storeUrl, deliveryUrl);
             
         } catch (error) {
             loader.style.display = 'none';
@@ -292,7 +292,7 @@ export class CheckoutModal {
         }
     }
 
-    showOrderConfirmation(order, customerUrl, deliveryUrl) {
+    showOrderConfirmation(order, customerUrl, storeUrl, deliveryUrl) {
         // Crear modal de confirmación
         const confirmationHTML = `
             <div class="order-confirmation">
@@ -303,7 +303,10 @@ export class CheckoutModal {
                 
                 <div class="confirmation-actions">
                     <button id="openCustomerChat" class="btn-primary">
-                        📱 Abrir WhatsApp
+                        📱 Abrir WhatsApp Cliente
+                    </button>
+                    <button id="openStoreChats" class="btn-secondary">
+                        🏢 Notificar Tienda
                     </button>
                 </div>
             </div>
@@ -312,19 +315,22 @@ export class CheckoutModal {
         // Reemplazar contenido del modal
         this.modal.querySelector('.checkout-modal-content').innerHTML = confirmationHTML;
         
-        // Event listener para abrir WhatsApp
+        // Event listener para abrir WhatsApp del cliente
         document.getElementById('openCustomerChat').addEventListener('click', () => {
             window.open(customerUrl, '_blank');
-            // Abrir también el chat para domicilios (interno)
-            setTimeout(() => {
-                window.open(deliveryUrl, '_blank');
-            }, 1000);
+        });
+        
+        // Event listener para notificar a la tienda y domicilios
+        document.getElementById('openStoreChats').addEventListener('click', () => {
+            // Abrir ambos chats simultáneamente
+            window.open(storeUrl, '_blank');
+            window.open(deliveryUrl, '_blank');
             
             // Cerrar modal y limpiar carrito
             setTimeout(() => {
                 this.hide();
                 this.orderCompleteCallback?.();
-            }, 2000);
+            }, 1000);
         });
     }
 

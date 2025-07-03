@@ -121,19 +121,50 @@ export class OrderSystem {
         return message;
     }
 
+    // Genera mensaje para El Borracho (notificación interna)
+    generateStoreMessage(order) {
+        const deliveryTime = new Date(order.estimatedDelivery).toLocaleTimeString('es-CO', {
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+
+        let message = `🍻 *NUEVO PEDIDO - EL BORRACHO*\n\n`;
+        message += `📋 *Código:* ${order.code}\n`;
+        message += `👤 *Cliente:* ${order.customer.name}\n`;
+        message += `📞 *Teléfono:* ${order.customer.phone}\n`;
+        message += `📍 *Dirección:* ${order.customer.address}\n`;
+        message += `\n💰 *Total: $${order.total.toLocaleString('es-CO')}*\n`;
+        message += `⏰ *Entrega Estimada:* ${deliveryTime}\n\n`;
+        
+        message += `📦 *Productos:*\n`;
+        order.items.forEach(item => {
+            message += `• ${item.quantity}x ${item.name} - $${item.subtotal.toLocaleString('es-CO')}\n`;
+        });
+        
+        message += `\n✅ *Estado:* Pedido confirmado\n`;
+        message += `📱 *Seguimiento:* ${order.code}`;
+
+        return message;
+    }
+
     // Envía mensajes a WhatsApp
     async sendOrderMessages(order) {
         const customerMessage = this.generateCustomerMessage(order);
         const deliveryMessage = this.generateDeliveryMessage(order);
+        const storeMessage = this.generateStoreMessage(order);
 
         // URL para el cliente
         const customerUrl = `https://wa.me/${order.customer.phone}?text=${encodeURIComponent(customerMessage)}`;
+        
+        // URL para El Borracho (notificación interna)
+        const storeUrl = `https://wa.me/${this.deliveryPhones.main}?text=${encodeURIComponent(storeMessage)}`;
         
         // URL para el equipo de domicilios
         const deliveryUrl = `https://wa.me/${this.deliveryPhones.delivery}?text=${encodeURIComponent(deliveryMessage)}`;
 
         return {
             customerUrl,
+            storeUrl,
             deliveryUrl,
             order
         };
