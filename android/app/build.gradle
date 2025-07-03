@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     namespace "com.elborracho.app"
     compileSdk rootProject.ext.compileSdkVersion
-    buildToolsVersion "35.0.0"
+    buildToolsVersion "34.0.0"
     defaultConfig {
         applicationId "com.elborracho.app"
         minSdkVersion rootProject.ext.minSdkVersion
