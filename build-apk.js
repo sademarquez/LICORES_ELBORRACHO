@@ -33,13 +33,27 @@ try {
   
   // Step 4: Copy APK to root directory
   const apkSource = path.join(__dirname, 'android', 'app', 'build', 'outputs', 'apk', 'debug', 'app-debug.apk');
-  const apkDestination = path.join(__dirname, 'el-borracho.apk');
-  
-  if (fs.existsSync(apkSource)) {
-    fs.copyFileSync(apkSource, apkDestination);
-    console.log('✅ APK created successfully!');
-    console.log(`📱 APK location: ${apkDestination}`);
-    console.log('🎉 Ready for distribution!');
+  const unsignedApk = apkSource;
+  const signedApk = path.join(__dirname, 'el-borracho.apk');
+  const keystore = path.join(__dirname, 'lb-release.keystore');
+  const alias = 'lbkey';
+  const storepass = 'elborracho2024';
+  const keypass = 'elborracho2024';
+
+  if (fs.existsSync(unsignedApk)) {
+    // Si no existe el keystore, crearlo automáticamente
+    if (!fs.existsSync(keystore)) {
+      console.log('🔑 Generando keystore de prueba...');
+      execSync(`keytool -genkeypair -v -keystore "${keystore}" -alias ${alias} -keyalg RSA -keysize 2048 -validity 10000 -storepass ${storepass} -keypass ${keypass} -dname "CN=El Borracho, OU=LB, O=LB, L=CO, S=CO, C=CO"`, { stdio: 'inherit' });
+    }
+    // Firmar el APK
+    console.log('🔏 Firmando APK...');
+    execSync(`jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore "${keystore}" -storepass ${storepass} -keypass ${keypass} "${unsignedApk}" ${alias}`, { stdio: 'inherit' });
+    // Copiar el APK firmado a la raíz
+    fs.copyFileSync(unsignedApk, signedApk);
+    console.log('✅ APK firmado y copiado exitosamente!');
+    console.log(`📱 APK lista para descargar e instalar: ${signedApk}`);
+    console.log('🎉 ¡Distribución lista y sin pasos manuales!');
   } else {
     console.error('❌ APK not found at expected location');
   }
