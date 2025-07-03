@@ -51,9 +51,22 @@
         </div>
         
         <div class="mt-8 text-sm text-gray-400">
+            <p class="mb-2">🛡️ <strong>Google Play Protect</strong>: Toca "Más detalles" → "Instalar de todos modos"</p>
             <p class="mb-2">⚠️ Habilita "Fuentes desconocidas" en tu Android</p>
             <p class="mb-2">📱 Compatible con Android 5.0+</p>
             <p>🔒 Seguro y sin publicidad</p>
+        </div>
+        
+        <!-- Banner de ayuda para Google Play Protect -->
+        <div style="background: linear-gradient(135deg, #e74c3c, #c0392b); color: white; padding: 15px; border-radius: 10px; margin: 20px 0; text-align: center;">
+            <h3 style="margin: 0 0 10px 0;">🛡️ ¿Google Play Protect te bloquea?</h3>
+            <p style="margin: 0; font-size: 0.9em;">
+                <strong>SOLUCIÓN RÁPIDA:</strong><br>
+                Cuando aparezca la advertencia:<br>
+                1. Toca <strong>"Más detalles"</strong><br>
+                2. Toca <strong>"Instalar de todos modos"</strong><br>
+                3. ¡Listo! La app se instala inmediatamente
+            </p>
         </div>
         
         <div class="mt-6 flex justify-center">
@@ -215,37 +228,79 @@
             document.body.removeChild(link);
         }
         
-        // Instrucciones específicas para Android
+        // Instrucciones específicas para Android con Google Play Protect
         function showAndroidInstructions() {
             const isAndroid = /Android/i.test(navigator.userAgent);
             
             if (isAndroid) {
                 const instructions = `
-📱 PASOS PARA INSTALAR:
+🛡️ BYPASS GOOGLE PLAY PROTECT:
 
+⚡ INSTALACIÓN RÁPIDA:
+1️⃣ Cuando aparezca "Google Play Protect":
+   • NO toques "Cancelar"
+   • Toca "Más detalles" o "Instalar de todos modos"
+   • Confirma "Instalar"
+
+📱 PASOS COMPLETOS:
 1️⃣ Baja la barra de notificaciones
-2️⃣ Busca "el-borracho.apk descargado"
-3️⃣ Toca la notificación
-4️⃣ Si sale "Fuentes desconocidas":
+2️⃣ Toca "el-borracho.apk descargado"
+3️⃣ Si sale "Fuentes desconocidas":
    • Toca "Configuración"
    • Activa "Permitir esta fuente"
-   • Vuelve atrás y toca "Instalar"
-5️⃣ ¡Listo! Ya tienes El Borracho
+4️⃣ Cuando aparezca Google Play Protect:
+   • Toca "Más detalles"
+   • Toca "Instalar de todos modos"
+   • Confirma "Instalar"
+5️⃣ ¡Listo! El Borracho instalado
 
-¿No aparece? Revisa tu carpeta Descargas.
+⚠️ Es normal que Google proteja apps externas.
+✅ El Borracho es 100% seguro.
                 `;
                 
                 alert(instructions);
                 
-                // Intentar abrir configuración automáticamente
-                try {
-                    setTimeout(() => {
-                        window.location.href = 'intent://settings/#Intent;scheme=android-app;package=com.android.settings;end';
-                    }, 2000);
-                } catch(e) {
-                    console.log('No se pudo abrir configuración automáticamente');
-                }
+                // Mostrar también en pantalla
+                showOnScreenInstructions();
             }
+        }
+
+        // Mostrar instrucciones en pantalla permanentemente
+        function showOnScreenInstructions() {
+            const existingInstructions = document.getElementById('permanentInstructions');
+            if (existingInstructions) {
+                existingInstructions.remove();
+            }
+
+            const instructionsDiv = document.createElement('div');
+            instructionsDiv.id = 'permanentInstructions';
+            instructionsDiv.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                background: linear-gradient(135deg, #2ecc71, #27ae60);
+                color: white;
+                padding: 15px;
+                text-align: center;
+                font-weight: bold;
+                z-index: 9999;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            `;
+            
+            instructionsDiv.innerHTML = `
+                🛡️ GOOGLE PLAY PROTECT: Toca "Más detalles" → "Instalar de todos modos"
+                <button onclick="this.parentElement.remove()" style="float:right;background:none;border:none;color:white;font-size:20px;">×</button>
+            `;
+            
+            document.body.appendChild(instructionsDiv);
+            
+            // Auto-remover después de 30 segundos
+            setTimeout(() => {
+                if (instructionsDiv.parentElement) {
+                    instructionsDiv.remove();
+                }
+            }, 30000);
         }
 
         // Mostrar ayuda si el navegador intenta abrir el APK como video
