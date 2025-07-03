@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de QR - El Borracho</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+    <div id="bg3d"></div>
+    
+    <div class="max-w-4xl w-full bg-opacity-20 bg-gray-900 backdrop-filter backdrop-blur-lg rounded-2xl border border-gray-700 p-8">
+        <div class="text-center mb-8">
+            <img src="/images/icons/logo-android-lb.svg" alt="El Borracho Logo" class="h-16 mx-auto mb-4">
+            <h1 class="text-3xl font-bold text-white mb-2">Generador de QR</h1>
+            <p class="text-gray-300">Códigos QR para pegar en carteles y promociones</p>
+        </div>
+        
+        <div class="grid md:grid-cols-2 gap-8">
+            <!-- QR para App -->
+            <div class="text-center">
+                <h3 class="text-xl font-bold text-yellow-400 mb-4">📱 Descargar App</h3>
+                <div id="qr-app" class="bg-white p-4 rounded-lg mb-4 inline-block"></div>
+                <p class="text-sm text-gray-300 mb-4">Escanea para descargar la app de El Borracho</p>
+                <button onclick="downloadQR('qr-app', 'elborracho-app-qr')" class="bg-yellow-600 text-black px-4 py-2 rounded-lg font-bold">
+                    📥 Descargar PNG
+                </button>
+            </div>
+            
+            <!-- QR para Web -->
+            <div class="text-center">
+                <h3 class="text-xl font-bold text-yellow-400 mb-4">🌐 Sitio Web</h3>
+                <div id="qr-web" class="bg-white p-4 rounded-lg mb-4 inline-block"></div>
+                <p class="text-sm text-gray-300 mb-4">Escanea para abrir la tienda web</p>
+                <button onclick="downloadQR('qr-web', 'elborracho-web-qr')" class="bg-yellow-600 text-black px-4 py-2 rounded-lg font-bold">
+                    📥 Descargar PNG
+                </button>
+            </div>
+        </div>
+        
+        <!-- QR Personalizado -->
+        <div class="mt-12 text-center">
+            <h3 class="text-xl font-bold text-yellow-400 mb-4">🎨 QR Personalizado</h3>
+            <div class="mb-4">
+                <input 
+                    type="text" 
+                    id="customUrl" 
+                    placeholder="Introduce URL personalizada..." 
+                    class="w-full max-w-md p-3 rounded-lg bg-gray-800 text-white border border-gray-600"
+                >
+            </div>
+            <button onclick="generateCustomQR()" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-bold mb-4">
+                🔄 Generar QR
+            </button>
+            <div id="qr-custom" class="bg-white p-4 rounded-lg mb-4 inline-block" style="display: none;"></div>
+            <div id="custom-download" style="display: none;">
+                <button onclick="downloadQR('qr-custom', 'elborracho-custom-qr')" class="bg-green-600 text-white px-4 py-2 rounded-lg font-bold">
+                    📥 Descargar PNG
+                </button>
+            </div>
+        </div>
+        
+        <!-- Instrucciones -->
+        <div class="mt-8 bg-gray-800 bg-opacity-50 rounded-lg p-6">
+            <h4 class="text-lg font-bold text-white mb-3">📋 Instrucciones de Uso</h4>
+            <ul class="text-gray-300 space-y-2 text-sm">
+                <li>• <strong>QR App:</strong> Los clientes escanean y descargan la app directamente</li>
+                <li>• <strong>QR Web:</strong> Los clientes escanean y abren la tienda en el navegador</li>
+                <li>• <strong>Ambos QR:</strong> Permiten hacer pedidos con envío automático</li>
+                <li>• <strong>Impresión:</strong> Descarga los PNG y pégalos en carteles, volantes, etc.</li>
+                <li>• <strong>Tamaño:</strong> Los QR son de alta resolución para impresión clara</li>
+            </ul>
+        </div>
+        
+        <!-- Ejemplo de cartel -->
+        <div class="mt-8 bg-gradient-to-r from-yellow-600 to-yellow-500 rounded-lg p-6 text-center">
+            <h4 class="text-2xl font-bold text-black mb-2">🍺 EL BORRACHO</h4>
+            <p class="text-black font-semibold mb-3">LICORES A DOMICILIO</p>
+            <div class="bg-white p-2 rounded-lg inline-block mb-3">
+                <div id="qr-poster" style="width: 100px; height: 100px;"></div>
+            </div>
+            <p class="text-black text-sm font-bold">¡ESCANEA Y PIDE YA!</p>
+            <p class="text-black text-xs">Entrega en 30-45 minutos</p>
+        </div>
+    </div>
+
+    <script>
+        // URLs de la aplicación
+        const APP_URL = window.location.origin + '/descargar.html';
+        const WEB_URL = window.location.origin + '/index.html';
+        
+        // Generar QRs automáticamente
+        window.addEventListener('load', () => {
+            generateQR('qr-app', APP_URL);
+            generateQR('qr-web', WEB_URL);
+            generateQR('qr-poster', APP_URL, 100);
+        });
+        
+        function generateQR(containerId, url, size = 200) {
+            QRCode.toCanvas(document.getElementById(containerId), url, {
+                width: size,
+                height: size,
+                colorDark: '#000000',
+                colorLight: '#ffffff',
+                margin: 2,
+                errorCorrectionLevel: 'M'
+            }, function (error) {
+                if (error) console.error(error);
+            });
+        }
+        
+        function generateCustomQR() {
+            const url = document.getElementById('customUrl').value.trim();
+            if (!url) {
+                alert('Por favor introduce una URL válida');
+                return;
+            }
+            
+            document.getElementById('qr-custom').style.display = 'inline-block';
+            document.getElementById('custom-download').style.display = 'block';
+            generateQR('qr-custom', url);
+        }
+        
+        function downloadQR(containerId, filename) {
+            const canvas = document.querySelector(`#${containerId} canvas`);
+            if (!canvas) {
+                alert('Error: No se encontró el QR generado');
+                return;
+            }
+            
+            // Crear un enlace de descarga
+            const link = document.createElement('a');
+            link.download = filename + '.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+        
+        // 3D background (simplified)
+        if (typeof THREE !== 'undefined') {
+            const container = document.getElementById('bg3d');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true });
+            
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            container.appendChild(renderer.domElement);
+            
+            const particlesGeometry = new THREE.BufferGeometry();
+            const count = 1000;
+            const positions = new Float32Array(count * 3);
+            for (let i = 0; i < count * 3; i++) {
+                positions[i] = (Math.random() - 0.5) * 10;
+            }
+            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            
+            const particlesMaterial = new THREE.PointsMaterial({
+                size: 0.02,
+                color: '#D4AF37',
+                transparent: true,
+                opacity: 0.4
+            });
+            
+            const particles = new THREE.Points(particlesGeometry, particlesMaterial);
+            scene.add(particles);
+            camera.position.z = 5;
+            
+            function animate() {
+                particles.rotation.y += 0.001;
+                renderer.render(scene, camera);
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+    </script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</body>
+</html>

@@ -19,14 +19,14 @@ try {
   console.log('🔨 Building Android APK...');
   // Detectar sistema operativo para usar el comando correcto
   const isWindows = process.platform === 'win32';
-  const gradleCmd = './gradlew';
+  const gradleCmd = isWindows ? 'gradlew.bat' : './gradlew';
 
   // Configurar JAVA_HOME y PATH para el proceso hijo
-  const javaHome = process.env.JAVA_HOME || '/usr/lib/jvm/java-17-openjdk-amd64';
+  const javaHome = process.env.JAVA_HOME || (isWindows ? 'C:\\Program Files\\Java\\jdk-17' : '/usr/lib/jvm/java-17-openjdk-amd64');
   const env = { ...process.env };
   if (javaHome) {
     env.JAVA_HOME = javaHome;
-    env.PATH = `${javaHome}/bin:${env.PATH}`;
+    env.PATH = isWindows ? `${javaHome}\\bin;${env.PATH}` : `${javaHome}/bin:${env.PATH}`;
   }
 
   execSync(`cd android && ${gradleCmd} assembleDebug`, { stdio: 'inherit', env });
