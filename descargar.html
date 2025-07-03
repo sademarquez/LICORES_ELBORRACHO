@@ -20,9 +20,15 @@
         
         <div class="space-y-4">
             <!-- Botón de descarga directa -->
-            <a id="apkDownloadBtn" href="/el-borracho.apk" download style="display:inline-block;margin:2rem 0;padding:1rem 2rem;background:#D4AF37;color:black;font-weight:bold;border-radius:12px;font-size:1.2rem;text-decoration:none;">Descargar APK</a>
+            <a id="apkDownloadBtn" href="/el-borracho.apk" download="el-borracho.apk" style="display:inline-block;margin:2rem 0;padding:1rem 2rem;background:#D4AF37;color:black;font-weight:bold;border-radius:12px;font-size:1.2rem;text-decoration:none;transition:all 0.3s ease;">
+                📱 Descargar APK (12MB)
+            </a>
             <div id="apkHelpMsg" style="display:none;color:#fff;background:#b91c1c;padding:1rem;border-radius:8px;margin-top:1rem;font-size:1rem;">
-                Si tu navegador intenta abrir el archivo como video o no descarga, haz clic derecho en el botón y elige <b>"Guardar enlace como..."</b> o prueba desde otro navegador.
+                <strong>💡 Ayuda para descargar:</strong><br>
+                • Si no descarga: <b>Clic derecho → "Guardar enlace como..."</b><br>
+                • Si se abre como video: <b>Cambiar de navegador (Chrome/Firefox)</b><br>
+                • Habilitar <b>"Fuentes desconocidas"</b> en Android<br>
+                • Archivo: <b>el-borracho.apk (12MB)</b>
             </div>
             
             <!-- Botón para agregar a inicio (PWA) -->
@@ -73,11 +79,16 @@
 
         // Mostrar ayuda si el navegador intenta abrir el APK como video
         apkBtn.addEventListener('click', function(e) {
+            // Agregar efecto hover
+            apkBtn.style.background = '#B8860B';
+            apkBtn.style.transform = 'scale(1.05)';
+            
             setTimeout(() => {
-                if (!apkBtn.download) {
-                    apkHelpMsg.style.display = 'block';
-                }
-            }, 1000);
+                apkBtn.style.background = '#D4AF37';
+                apkBtn.style.transform = 'scale(1)';
+                // Mostrar ayuda si hay problemas
+                apkHelpMsg.style.display = 'block';
+            }, 2000);
         });
 
         // 3D background (simplified version)
