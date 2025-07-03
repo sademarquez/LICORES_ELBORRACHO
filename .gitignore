@@ -72,3 +72,15 @@ capacitor.config.local.json
 # Archivos de Claude Code
 ../.claude/
 .claude/
+
+# Ignorar carpetas y archivos de build y Android
+www/
+el-borracho.apk
+android/app/build/
+android/.gradle/
+node_modules/
+.DS_Store
+*.log
+
+# NO ignorar www/ ni el-borracho.apk para Netlify
+dist/
