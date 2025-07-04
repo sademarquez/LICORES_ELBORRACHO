@@ -7,9 +7,9 @@ const path = require('path');
 console.log('🚀 Building El Borracho Android APK...\n');
 
 try {
-  // Step 1: Sync web assets
-  console.log('📦 Syncing web assets...');
-  execSync('npx cap sync', { stdio: 'inherit' });
+  // Step 1: Deploy and sync web assets
+  console.log('📦 Deploying and syncing web assets...');
+  execSync('npm run deploy', { stdio: 'inherit' });
   
   // Step 2: Fix Java versions
   console.log('🔧 Corrigiendo versiones de Java en archivos .gradle...');
