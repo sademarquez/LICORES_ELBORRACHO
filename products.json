@@ -13,7 +13,7 @@
     },
     {
         "id": "cerveza-club-colombia-dorada-sixpack", "name": "Cerveza Club Colombia (Sixpack)", "brand": "Club Colombia", "category": "Cerveza",
-        "price": 25000, "imageUrl": "images/products/clubcolombia.png"
+        "price": 25000, "imageUrl": "images/products/sicol.png"
     },
     {
         "id": "cerveza-corona-sixpack", "name": "Cerveza Corona (Sixpack)", "brand": "Corona", "category": "Cerveza",
