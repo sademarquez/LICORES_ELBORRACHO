@@ -171,7 +171,7 @@ class NativeCacheManager {
 
 // Solo inicializar en app nativa
 if (window.Capacitor) {
-    window.nativeCacheManager = new NativeCacheManager();
+    // window.nativeCacheManager = new NativeCacheManager(); // Desactivado para usar SW
 }
 
 export default NativeCacheManager;

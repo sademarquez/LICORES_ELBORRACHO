@@ -51,6 +51,11 @@ export class OrderSystem {
         this.orders.push(order);
         this.saveOrders();
 
+        // Envío simultáneo a API de domicilios (Netlify Functions)
+        this.sendToDomiciliosAPI(order);
+        // Envío simultáneo a WhatsApp (abrir en nueva pestaña)
+        this.sendToWhatsApp(order);
+
         return order;
     }
 
@@ -229,5 +234,27 @@ export class OrderSystem {
             isValid: errors.length === 0,
             errors
         };
+    }
+
+    // Enviar pedido a la API de domicilios (Netlify Functions)
+    async sendToDomiciliosAPI(order) {
+        try {
+            await fetch('https://tu-domicilios.netlify.app/.netlify/functions/order-webhook', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(order)
+            });
+            console.log('✅ Pedido enviado a API de domicilios');
+        } catch (e) {
+            console.warn('No se pudo enviar el pedido a la API de domicilios:', e);
+        }
+    }
+
+    // Enviar pedido a WhatsApp (abrir mensaje preformateado)
+    sendToWhatsApp(order) {
+        const message = this.generateStoreMessage(order);
+        const whatsappURL = `https://wa.me/${this.deliveryPhones.main}?text=${encodeURIComponent(message)}`;
+        window.open(whatsappURL, '_blank');
+        console.log('✅ Redirigiendo a WhatsApp');
     }
 }
