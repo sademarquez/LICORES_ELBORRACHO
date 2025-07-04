@@ -304,7 +304,7 @@ export class CheckoutModal {
                 <div class="auto-process-status">
                     <div class="status-item">
                         <span class="status-icon">🏪</span>
-                        <span>Enviando a tienda (3174144815)...</span>
+                        <span>Notificando tienda (3174144815)...</span>
                         <span class="status-check">⏳</span>
                     </div>
                     <div class="status-item">
@@ -314,7 +314,7 @@ export class CheckoutModal {
                     </div>
                     <div class="status-item">
                         <span class="status-icon">📱</span>
-                        <span>Enviando confirmación al cliente...</span>
+                        <span>Abriendo chat con cliente...</span>
                         <span class="status-check">⏳</span>
                     </div>
                 </div>
@@ -331,11 +331,11 @@ export class CheckoutModal {
         // Reemplazar contenido del modal
         this.modal.querySelector('.checkout-modal-content').innerHTML = confirmationHTML;
         
-        // ✨ ENVÍO AUTOMÁTICO A TODOS (CLIENTE, TIENDA Y DOMICILIOS)
+        // ✨ ENVÍO AUTOMÁTICO DUAL (TIENDA + DOMICILIO)
         setTimeout(async () => {
             // 1. Enviar automáticamente a la tienda (El Borracho)
             this.updateStatus(0, '⏳', 'Enviando...');
-            await this.sendWhatsAppMessage('573174144815', storeUrl);
+            window.open(storeUrl, '_blank');
             this.updateStatus(0, '✅', 'Enviado');
             
             // Esperar un poco
@@ -343,18 +343,18 @@ export class CheckoutModal {
             
             // 2. Enviar automáticamente a domicilios 
             this.updateStatus(1, '⏳', 'Enviando...');
-            await this.sendWhatsAppMessage('573233833450', deliveryUrl);
+            window.open(deliveryUrl, '_blank');
             this.updateStatus(1, '✅', 'Enviado');
             
             // Esperar un poco
             await new Promise(resolve => setTimeout(resolve, 800));
             
-            // 3. Enviar confirmación automáticamente al cliente
-            this.updateStatus(2, '⏳', 'Enviando confirmación...');
-            await this.sendWhatsAppMessage(order.customer.phone, customerUrl);
-            this.updateStatus(2, '✅', 'Enviado');
+            // 3. Abrir chat con el cliente para confirmación
+            this.updateStatus(2, '⏳', 'Abriendo chat...');
+            window.open(customerUrl, '_blank');
+            this.updateStatus(2, '✅', 'Listo');
             
-            // 4. Mostrar confirmación final al cliente
+            // 4. Mostrar confirmación final
             setTimeout(() => {
                 this.showFinalConfirmation(order);
             }, 1000);
