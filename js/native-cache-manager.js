@@ -1,7 +1,7 @@
 // Sistema de gestión de caché específico para app nativa
 class NativeCacheManager {
     constructor() {
-        this.cacheVersion = '1.0.3';
+        this.cacheVersion = '1.0.4';
         this.init();
     }
 
@@ -90,21 +90,55 @@ class NativeCacheManager {
             });
         }
 
-        // Forzar recarga de todas las imágenes de productos
-        const productImages = document.querySelectorAll('img[src*="/images/products/"]');
+        // Forzar recarga inmediata
+        this.reloadAllProductImages();
+        
+        // También configurar observer para imágenes que se cargan dinámicamente
+        this.setupImageObserver();
+    }
+
+    reloadAllProductImages() {
+        const productImages = document.querySelectorAll('img[src*="/images/products/"], img[src*="images/products/"]');
         
         if (productImages.length > 0) {
             console.log(`🔄 Forzando recarga de ${productImages.length} imágenes de productos`);
             
             productImages.forEach((img, index) => {
                 setTimeout(() => {
-                    if (!img.src.includes('?t=')) {
-                        const newSrc = img.src + '?t=' + Date.now();
-                        img.src = newSrc;
-                    }
-                }, index * 100); // Escalonar las recargas
+                    const timestamp = Date.now() + index;
+                    const originalSrc = img.src.split('?')[0]; // Remover timestamp anterior
+                    img.src = originalSrc + '?t=' + timestamp;
+                    console.log(`📷 Recargando: ${img.src}`);
+                }, index * 50); // Escalonar las recargas
             });
         }
+    }
+
+    setupImageObserver() {
+        // Observer para detectar imágenes que se cargan dinámicamente
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                mutation.addedNodes.forEach((node) => {
+                    if (node.nodeType === 1) { // Element node
+                        const images = node.querySelectorAll ? 
+                            node.querySelectorAll('img[src*="images/products/"]') : 
+                            (node.tagName === 'IMG' && node.src.includes('images/products/') ? [node] : []);
+                        
+                        images.forEach((img) => {
+                            const timestamp = Date.now();
+                            const originalSrc = img.src.split('?')[0];
+                            img.src = originalSrc + '?t=' + timestamp;
+                            console.log(`📷 Nueva imagen detectada y recargada: ${img.src}`);
+                        });
+                    }
+                });
+            });
+        });
+
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
     }
 
     // Método para forzar actualización manual

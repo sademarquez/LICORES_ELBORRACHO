@@ -16,7 +16,7 @@ try {
 
 class LiveUpdateManager {
     constructor() {
-        this.currentVersion = '1.0.3';
+        this.currentVersion = '1.0.4';
         this.init();
     }
 

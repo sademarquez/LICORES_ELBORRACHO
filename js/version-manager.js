@@ -1,6 +1,6 @@
 class VersionManager {
     constructor() {
-        this.currentVersion = '1.0.3';
+        this.currentVersion = '1.0.4';
         this.updateCheckInterval = 5 * 60 * 1000; // 5 minutos
         this.init();
     }
