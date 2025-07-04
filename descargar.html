@@ -69,6 +69,8 @@
         // PWA Install functionality
         let deferredPrompt;
         const installButton = document.getElementById('installPWA');
+        const apkBtn = document.getElementById('apkDownloadBtn');
+        const apkHelpMsg = document.getElementById('apkHelpMsg');
 
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
@@ -89,11 +91,11 @@
         });
 
         // Función simple para mostrar ayuda al hacer clic
-        const apkDownloadBtn = document.getElementById('apkDownloadBtn');
+        const apkBtn = document.getElementById('apkDownloadBtn');
         const apkHelpMsg = document.getElementById('apkHelpMsg');
 
-        if (apkDownloadBtn) {
-            apkDownloadBtn.addEventListener('click', function(e) {
+        if (apkBtn) {
+            apkBtn.addEventListener('click', function(e) {
                 setTimeout(() => {
                     apkHelpMsg.style.display = 'block';
                     showAndroidInstructions();
@@ -177,10 +179,7 @@
         }
 
         // JavaScript simplificado - solo funcionalidad básica
-    </script>
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script>
+
         // 3D background (simplified version)
         if (typeof THREE !== 'undefined') {
             const container = document.getElementById('bg3d');
@@ -218,5 +217,7 @@
             animate();
         }
     </script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </body>
 </html>
