@@ -1,6 +1,7 @@
 {
     "name": "EL BORRACHO - Licores a Domicilio",
     "short_name": "EL BORRACHO",
+    "version": "1.0.2",
     "description": "Tu licorera de confianza en Popayán. Pide licores, cervezas, snacks y más. Entrega rápida y segura.",
     "start_url": "/index.html",
     "display": "standalone",

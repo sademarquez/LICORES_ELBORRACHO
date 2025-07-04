@@ -1,5 +1,5 @@
-const STATIC_CACHE_NAME = 'elborracho-static-v1';
-const DYNAMIC_CACHE_NAME = 'elborracho-dynamic-v1';
+const STATIC_CACHE_NAME = 'elborracho-static-v102';
+const DYNAMIC_CACHE_NAME = 'elborracho-dynamic-v102';
 
 // Archivos que conforman el "esqueleto" de la aplicación.
 // Se cachean en la instalación.
@@ -13,10 +13,8 @@ const APP_SHELL = [
     '/js/carousels.js',
     '/js/age-verification.js',
     '/images/logo.png',
-    '/images/favicon.png',
-    'https://cdn.tailwindcss.com', // Cuidado con cachear recursos externos
-    'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js',
-    'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css'
+    '/images/favicon.png'
+    // No cachear recursos CDN externos - pueden cambiar
 ];
 
 // 1. Evento de Instalación: Se dispara cuando el SW se instala.
@@ -47,8 +45,8 @@ self.addEventListener('activate', event => {
 
 // 3. Evento Fetch: Se dispara cada vez que la app hace una petición de red.
 self.addEventListener('fetch', event => {
-    // Estrategia: Cache then Network para los archivos JSON (datos)
-    if (event.request.url.includes('products.json') || event.request.url.includes('config.json')) {
+    // Estrategia: Cache then Network para los archivos JSON (datos) e imágenes de productos
+    if (event.request.url.includes('products.json') || event.request.url.includes('config.json') || event.request.url.includes('images/products/')) {
         event.respondWith(
             caches.open(DYNAMIC_CACHE_NAME).then(cache => {
                 return fetch(event.request).then(networkResponse => {

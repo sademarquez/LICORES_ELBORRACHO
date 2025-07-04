@@ -1,6 +1,6 @@
 {
   "name": "el-borracho",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "PWA para licores a domicilio en Popayán",
   "main": "index.html",
   "scripts": {
@@ -12,7 +12,9 @@
     "build-apk": "node build-apk.js",
     "build-apk-windows": "node build-apk-windows.js",
     "install-device": "node install-device.js",
-    "deploy": "mkdir -p www && cp -r css www/ && cp -r js www/ && cp -r images www/ && cp index.html www/ && cp manifest.json www/ && cp products.json www/ && cp config.json www/ && cp sw.js www/ && npm run sync"
+    "deploy": "mkdir -p www && cp -r css www/ && cp -r js www/ && cp -r images www/ && cp index.html www/ && cp manifest.json www/ && cp products.json www/ && cp config.json www/ && cp sw.js www/ && npm run sync",
+    "update-version": "node update-version.js",
+    "release": "npm run update-version && npm run deploy && npm run build-apk"
   },
   "keywords": [
     "pwa",
@@ -26,6 +28,7 @@
     "@capacitor/android": "^7.4.0",
     "@capacitor/cli": "^7.4.0",
     "@capacitor/core": "^7.4.0",
-    "@capacitor/ios": "^7.4.0"
+    "@capacitor/ios": "^7.4.0",
+    "@capacitor/live-updates": "^0.4.0"
   }
 }
