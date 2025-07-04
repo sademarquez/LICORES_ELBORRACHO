@@ -19,11 +19,33 @@
         <p class="text-gray-300 mb-6">Instala El Borracho directamente en tu teléfono</p>
         
         <div class="space-y-4">
-            <!-- Botón de descarga directa -->
-            <!-- Botón simple de descarga GitHub -->
-            <a id="apkDownloadBtn" href="https://github.com/sademarquez/LICORES_ELBORRACHO/raw/main/el-borracho.apk" download="el-borracho.apk" style="display:inline-block;margin:2rem 0;padding:1rem 2rem;background:#D4AF37;color:black;font-weight:bold;border-radius:12px;font-size:1.2rem;text-decoration:none;">
+            <!-- Descarga principal -->
+            <a id="apkDownloadBtn" href="https://github.com/sademarquez/LICORES_ELBORRACHO/raw/main/el-borracho.apk" download="el-borracho.apk" style="display:inline-block;margin:1rem 0;padding:1rem 2rem;background:#D4AF37;color:black;font-weight:bold;border-radius:12px;font-size:1.2rem;text-decoration:none;width:100%;text-align:center;box-sizing:border-box;">
                 📱 Descargar APK (12MB)
             </a>
+            
+            <!-- Enlaces alternativos -->
+            <div class="text-center text-sm text-gray-300">
+                <p class="mb-2">Si no funciona, usa estos enlaces alternativos:</p>
+                <div class="flex flex-col gap-2">
+                    <a href="https://raw.githubusercontent.com/sademarquez/LICORES_ELBORRACHO/main/el-borracho.apk" download="el-borracho.apk" class="text-blue-400 hover:text-blue-300 underline">
+                        🔗 Enlace directo GitHub Raw
+                    </a>
+                    <button onclick="downloadWithJS()" class="text-green-400 hover:text-green-300 underline bg-none border-none cursor-pointer">
+                        ⚡ Descarga con JavaScript
+                    </button>
+                    <button onclick="window.location.href='https://github.com/sademarquez/LICORES_ELBORRACHO/releases/latest'" class="text-purple-400 hover:text-purple-300 underline bg-none border-none cursor-pointer">
+                        📦 Ver Releases en GitHub
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Status de descarga -->
+            <div id="downloadStatus" style="display:none;color:#fff;background:#059669;padding:1rem;border-radius:8px;margin-top:1rem;font-size:1rem;text-align:center;">
+                ⏳ <strong>Descargando...</strong><br>
+                Si no inicia automáticamente, revisa la carpeta Descargas
+            </div>
+            
             <div id="apkHelpMsg" style="display:none;color:#fff;background:#b91c1c;padding:1rem;border-radius:8px;margin-top:1rem;font-size:1rem;">
                 <strong>💡 Ayuda para descargar:</strong><br>
                 • Si no descarga: <b>Clic derecho → "Guardar enlace como..."</b><br>
@@ -91,16 +113,46 @@
             }
         });
 
+        // Función de descarga alternativa con JavaScript
+        function downloadWithJS() {
+            const urls = [
+                'https://github.com/sademarquez/LICORES_ELBORRACHO/raw/main/el-borracho.apk',
+                'https://raw.githubusercontent.com/sademarquez/LICORES_ELBORRACHO/main/el-borracho.apk'
+            ];
+            
+            urls.forEach((url, index) => {
+                setTimeout(() => {
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'el-borracho.apk';
+                    a.style.display = 'none';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                }, index * 1000);
+            });
+            
+            // Mostrar mensaje de ayuda
+            setTimeout(() => {
+                document.getElementById('apkHelpMsg').style.display = 'block';
+                showAndroidInstructions();
+            }, 2000);
+        }
+
         // Función simple para mostrar ayuda al hacer clic
         const apkBtn = document.getElementById('apkDownloadBtn');
         const apkHelpMsg = document.getElementById('apkHelpMsg');
 
         if (apkBtn) {
             apkBtn.addEventListener('click', function(e) {
+                // Mostrar status de descarga
+                document.getElementById('downloadStatus').style.display = 'block';
+                
                 setTimeout(() => {
+                    document.getElementById('downloadStatus').style.display = 'none';
                     apkHelpMsg.style.display = 'block';
                     showAndroidInstructions();
-                }, 2000);
+                }, 3000);
             });
         }
         
