@@ -1,5 +1,5 @@
-const STATIC_CACHE_NAME = 'elborracho-static-v102';
-const DYNAMIC_CACHE_NAME = 'elborracho-dynamic-v102';
+const STATIC_CACHE_NAME = 'elborracho-static-v103';
+const DYNAMIC_CACHE_NAME = 'elborracho-dynamic-v103';
 
 // Archivos que conforman el "esqueleto" de la aplicación.
 // Se cachean en la instalación.

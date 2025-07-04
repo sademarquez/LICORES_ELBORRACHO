@@ -16,7 +16,7 @@ try {
 
 class LiveUpdateManager {
     constructor() {
-        this.currentVersion = '1.0.2';
+        this.currentVersion = '1.0.3';
         this.init();
     }
 
@@ -41,15 +41,12 @@ class LiveUpdateManager {
 
     async checkForUpdates() {
         try {
-            // Verificar actualizaciones disponibles
-            const result = await LiveUpdate.getAvailableVersions();
+            // Verificar actualizaciones vía manifest (funciona sin servidor)
+            const response = await fetch('/manifest.json?t=' + Date.now());
+            const manifest = await response.json();
             
-            if (result.versions && result.versions.length > 0) {
-                const latestVersion = result.versions[0];
-                
-                if (this.isNewerVersion(latestVersion.version, this.currentVersion)) {
-                    await this.showUpdateNotification(latestVersion);
-                }
+            if (manifest.version && this.isNewerVersion(manifest.version, this.currentVersion)) {
+                await this.showUpdateNotification(manifest);
             }
         } catch (error) {
             console.error('Error checking for updates:', error);
@@ -78,7 +75,7 @@ class LiveUpdateManager {
         updateBanner.innerHTML = `
             <div>
                 🆕 Nueva versión disponible: ${version.version}
-                <button onclick="window.liveUpdateManager.downloadUpdate('${version.version}')" 
+                <button onclick="window.liveUpdateManager.downloadUpdate('${version.version || version}')" 
                         style="margin-left: 10px; padding: 5px 15px; background: #111; color: #D4AF37; border: none; border-radius: 5px; font-weight: bold;">
                     Actualizar Ahora
                 </button>
@@ -102,26 +99,42 @@ class LiveUpdateManager {
             const banner = document.getElementById('update-banner');
             if (banner) {
                 banner.innerHTML = `
-                    <div>📥 Descargando actualización... Por favor espera</div>
+                    <div>🔄 Actualizando contenido... Por favor espera</div>
                 `;
             }
 
-            // Descargar la actualización
-            await LiveUpdate.downloadUpdate({ version });
-            
-            // Aplicar la actualización
-            await LiveUpdate.applyUpdate({ version });
-            
-            if (banner) {
-                banner.innerHTML = `
-                    <div>✅ Actualización completada. Reiniciando app...</div>
-                `;
+            // Limpiar todo el caché para forzar actualización
+            if ('caches' in window) {
+                const cacheNames = await caches.keys();
+                await Promise.all(
+                    cacheNames.map(cacheName => caches.delete(cacheName))
+                );
             }
 
-            // Reiniciar la app después de 2 segundos
-            setTimeout(async () => {
-                await LiveUpdate.reload();
-            }, 2000);
+            // Si estamos en app nativa, usar webView reload
+            if (window.Capacitor) {
+                if (banner) {
+                    banner.innerHTML = `
+                        <div>✅ Actualización completada. Reiniciando app...</div>
+                    `;
+                }
+                
+                // Recargar webview después de limpiar caché
+                setTimeout(() => {
+                    window.location.reload(true);
+                }, 1000);
+            } else {
+                // En web, usar el método normal
+                if (banner) {
+                    banner.innerHTML = `
+                        <div>✅ Actualización completada. Recargando...</div>
+                    `;
+                }
+                
+                setTimeout(() => {
+                    window.location.reload(true);
+                }, 1000);
+            }
 
         } catch (error) {
             console.error('Error downloading update:', error);

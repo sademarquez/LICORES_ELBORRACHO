@@ -3,6 +3,7 @@ import { initHeroCarousel, initBrandsCarousel } from './carousels.js';
 import { initAgeVerification } from './age-verification.js';
 import './live-updates.js';
 import './version-manager.js';
+import './native-cache-manager.js';
 
 const API_PRODUCTS_URL = 'products.json';
 const API_CONFIG_URL = 'config.json';
