@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'v1.0.5'; // Incrementar para forzar actualización
+const CACHE_VERSION = 'v1.0.6'; // Forzar actualización a Network First
 const STATIC_CACHE_NAME = `elborracho-static-${CACHE_VERSION}`;
 const DYNAMIC_CACHE_NAME = `elborracho-dynamic-${CACHE_VERSION}`;
 
@@ -23,7 +23,6 @@ self.addEventListener('install', event => {
             console.log('[SW] Pre-caching App Shell');
             return cache.addAll(APP_SHELL);
         }).then(() => {
-            // Forzar la activación del nuevo SW
             return self.skipWaiting();
         })
     );
@@ -42,7 +41,6 @@ self.addEventListener('activate', event => {
                 })
             );
         }).then(() => {
-            // Tomar control inmediato de todas las páginas
             return self.clients.claim();
         })
     );
@@ -50,16 +48,9 @@ self.addEventListener('activate', event => {
 
 // 3. Evento Fetch
 self.addEventListener('fetch', event => {
-    const { request } = event;
-    const url = new URL(request.url);
-
-    // Estrategia: Network First para datos críticos (JSON)
-    if (url.pathname.endsWith('.json')) {
-        event.respondWith(networkFirst(request));
-    } else {
-        // Estrategia: Stale-While-Revalidate para el resto (App Shell, imágenes, etc.)
-        event.respondWith(staleWhileRevalidate(request));
-    }
+    // Aplicar la estrategia "Network First" a TODAS las peticiones.
+    // Esto asegura ver los cambios inmediatamente, a costa de la velocidad de carga inicial.
+    event.respondWith(networkFirst(event.request));
 });
 
 // Estrategia: Network First (Red primero, luego caché)
@@ -67,7 +58,7 @@ async function networkFirst(request) {
     const cache = await caches.open(DYNAMIC_CACHE_NAME);
     try {
         const networkResponse = await fetch(request);
-        // Si la petición a la red es exitosa, la cacheamos
+        // Si la petición a la red es exitosa, la cacheamos para uso offline
         if (request.method === 'GET' && networkResponse.ok) {
             cache.put(request, networkResponse.clone());
         }
@@ -80,12 +71,11 @@ async function networkFirst(request) {
     }
 }
 
-// Estrategia: Stale-While-Revalidate (Caché primero, luego actualiza en segundo plano)
+// La estrategia staleWhileRevalidate ya no se usa, pero la dejamos por si se quiere revertir.
 async function staleWhileRevalidate(request) {
     const cache = await caches.open(DYNAMIC_CACHE_NAME);
     const cachedResponse = await cache.match(request);
 
-    // Hacemos la petición a la red en segundo plano
     const fetchPromise = fetch(request).then(networkResponse => {
         if (request.method === 'GET' && networkResponse.ok) {
             cache.put(request, networkResponse.clone());
@@ -95,7 +85,6 @@ async function staleWhileRevalidate(request) {
         console.error(`[SW] Error al hacer fetch en segundo plano para ${request.url}:`, err);
     });
 
-    // Retornamos la respuesta del caché si existe, si no, esperamos a la red
     return cachedResponse || fetchPromise;
 }
 
