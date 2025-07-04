@@ -22,20 +22,23 @@ class LiveUpdateManager {
 
     async init() {
         try {
-            // Verificar si Capacitor y módulos están disponibles
-            if (!window.Capacitor || !App || !LiveUpdate) {
-                console.log('Live Updates not available - running in web mode');
+            // Solo ejecutar en app nativa Capacitor
+            if (!window.Capacitor) {
+                console.log('Live Updates solo para app nativa');
                 return;
             }
             
-            // Verificar si estamos en app nativa
-            const info = await App.getInfo();
-            if (info.platform !== 'web') {
-                await this.checkForUpdates();
-                this.setupUpdateListener();
-            }
+            // Verificar actualizaciones inmediatamente
+            await this.checkForUpdates();
+            this.setupUpdateListener();
+            
+            // Verificar periódicamente cada 2 minutos
+            setInterval(() => {
+                this.checkForUpdates();
+            }, 2 * 60 * 1000);
+            
         } catch (error) {
-            console.log('Live Updates not available:', error.message);
+            console.log('Live Updates error:', error.message);
         }
     }
 

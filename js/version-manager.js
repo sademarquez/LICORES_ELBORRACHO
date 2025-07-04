@@ -6,6 +6,12 @@ class VersionManager {
     }
 
     async init() {
+        // Solo ejecutar en web (PWA), no en app nativa
+        if (window.Capacitor) {
+            console.log('Version Manager deshabilitado en app nativa');
+            return;
+        }
+
         // Registrar service worker si no está registrado
         if ('serviceWorker' in navigator) {
             try {
