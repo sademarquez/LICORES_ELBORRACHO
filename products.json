@@ -21,7 +21,7 @@
     },
     {
         "id": "cerveza-poker-sixpack", "name": "Cerveza Poker (Sixpack)", "brand": "Poker", "category": "Cerveza",
-        "price": 22000, "imageUrl": "images/products/poker.png"
+        "price": 22000, "imageUrl": "images/products/sixpoker.png"
     },
     {
         "id": "aguardiente-nectar-rojo", "name": "Aguardiente Néctar Rojo", "brand": "Aguardiente Néctar", "category": "Licor",
@@ -69,7 +69,7 @@
     },
     {
         "id": "cigarrillos-lucky-strike", "name": "Cigarrillos Lucky Strike", "brand": "Lucky Strike", "category": "Tabaco",
-        "price": 8000, "imageUrl": "images/products/lucky.png"
+        "price": 8000, "imageUrl": "images/products/lukya.png"
     },
     {
         "id": "licor-baileys", "name": "Baileys Irish Cream", "brand": "Baileys", "category": "Licor",
@@ -121,7 +121,7 @@
     },
     {
         "id": "vermouth-cinzano-rosso", "name": "Vermouth Cinzano Rosso", "brand": "Cinzano", "category": "Licor",
-        "price": 55000, "imageUrl": "images/products/cinzano.png"
+        "price": 55000, "imageUrl": "images/products/vermur.png"
     },
     {
         "id": "cerveza-aguila-light-sixpack", "name": "Cerveza Águila Light (Sixpack)", "brand": "Águila", "category": "Cerveza",
@@ -157,7 +157,7 @@
     },
     {
         "id": "mezclador-canada-dry", "name": "Mezclador Canada Dry", "brand": "Canada Dry", "category": "Bebida no alcohólica",
-        "price": 4000, "imageUrl": "images/products/canada-dry.png"
+        "price": 4000, "imageUrl": "images/products/cdry.png"
     },
     {
         "id": "mezclador-bretana", "name": "Soda Bretaña", "brand": "Bretaña", "category": "Bebida no alcohólica",
@@ -181,11 +181,11 @@
     },
     {
         "id": "snacks-de-todito-bbq", "name": "De Todito BBQ", "brand": "De Todito", "category": "Snacks",
-        "price": 5000, "imageUrl": "images/products/de-todito.png"
+        "price": 5000, "imageUrl": "images/products/dtd.png"
     },
     {
         "id": "cigarrillos-marlboro-rojo", "name": "Cigarrillos Marlboro Rojo", "brand": "Marlboro", "category": "Tabaco",
-        "price": 9000, "imageUrl": "images/products/marlboro-rojo.png"
+        "price": 9000, "imageUrl": "images/products/malboror.png"
     },
     {
         "id": "cigarrillos-chesterfield", "name": "Cigarrillos Chesterfield", "brand": "Chesterfield", "category": "Tabaco",
