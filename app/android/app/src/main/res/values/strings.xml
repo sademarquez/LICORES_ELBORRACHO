@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Licores El Borracho</string>
+    <string name="title_activity_main">Licores El Borracho</string>
+    <string name="package_name">com.licoreselborracho.app</string>
+    <string name="custom_url_scheme">com.licoreselborracho.app</string>
+</resources>

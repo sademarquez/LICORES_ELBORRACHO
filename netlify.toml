@@ -1,0 +1,19 @@
+
+# Configuración para Netlify
+
+[build]
+  # Directorio base donde se encuentra el código fuente y el package.json
+  base = "app"
+  
+  # Comando para construir el proyecto
+  command = "npm run build"
+  
+  # Directorio que se desplegará después del build
+  publish = "app/dist"
+
+# Regla de reescritura para Single-Page Applications (SPA)
+# Esto asegura que todas las rutas sean manejadas por React Router
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

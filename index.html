@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Borracho</title>
+    
+    <!-- RESTAURADO: El script de Tailwind CSS es esencial para que los estilos funcionen -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Estos son los únicos otros elementos que deben estar en el head -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/checkout.css">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    
+    <!-- NOTA: No hay más scripts aquí. Todos se han movido al final del body. -->
+</head>
+<body>
+    <div id="bg3d"></div>
+
+    <!-- MODAL DE VERIFICACIÓN DE EDAD -->
+    <div id="ageVerificationModal" class="age-verification-modal">
+        <div class="age-verification-content">
+            <h2 class="text-2xl font-bold text-primary-color mb-4">Verificación de Edad</h2>
+            <p class="text-text-color-secondary mb-6">Debes ser mayor de edad para ingresar y consumir bebidas alcohólicas.</p>
+            <p class="mb-8">¿Confirmas que tienes la edad legal para beber?</p>
+            <div class="flex justify-center gap-4">
+                <button id="confirmAgeBtn" class="contact-button">Sí, soy mayor de edad</button>
+                <button id="declineAgeBtn" class="contact-button decline">No, soy menor</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenido principal, oculto por defecto -->
+    <div id="mainContent" style="visibility: hidden;">
+        <header class="sticky top-0 z-40 p-4 main-header">
+            <div class="container mx-auto flex justify-between items-center">
+                <!-- LOGO REEMPLAZA EL TEXTO H1 -->
+                <img src="images/logo.png" alt="El Borracho Logo" class="h-10"> <!-- AJUSTA EL TAMAÑO (h-10) Y LA RUTA SEGÚN NECESITES -->
+                <button id="cartOpenBtn" class="relative">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 0a2 2 0 100 4 2 2 0 000-4z" />
+                    </svg>
+                    <span id="cartCount" class="absolute -top-2 -right-2 bg-primary-color text-black text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                </button>
+            </div>
+        </header>
+
+        <main class="container mx-auto p-4">
+            <!-- Espacio reducido entre header y hero -->
+            <section id="hero-section" class="mb-4">
+                <div class="swiper hero-swiper">
+                    <div id="heroSwiperWrapper" class="swiper-wrapper"></div>
+                    <div class="swiper-pagination"></div>
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-button-next"></div>
+                </div>
+            </section>
+
+            <section id="category-nav-section" class="category-nav-container">
+                <!-- Contenedor para Desktop -->
+                <div id="categoryButtonsContainer" class="category-buttons-scroll"></div>
+                <!-- Contenedor para Mobile (dos filas) -->
+                <div class="category-buttons-grid">
+                    <div id="categoryRow1" class="category-buttons-row"></div>
+                    <div id="categoryRow2" class="category-buttons-row"></div>
+                </div>
+                <div id="categoryProductsContainer" class="category-products-carousel mt-4"></div>
+            </section>
+
+            <section id="main-products-section">
+                <h2 class="text-3xl font-bold text-center mb-8">Todos los Productos</h2>
+                <div id="productFilters" class="product-filters-sticky">
+                    <input type="text" id="mainSearchInput" placeholder="Buscar por nombre..." class="filter-item flex-grow p-2 rounded-lg bg-transparent border border-gray-600 focus:border-primary-color outline-none text-white">
+                    <select id="categoryFilter" class="filter-item p-2 rounded-lg bg-gray-800 border border-gray-600 focus:border-primary-color outline-none text-white"><option value="all">Todas las Categorías</option></select>
+                    <select id="priceSortFilter" class="filter-item p-2 rounded-lg bg-gray-800 border border-gray-600 focus:border-primary-color outline-none text-white"><option value="default">Ordenar por</option><option value="price-asc">Precio: Menor a Mayor</option><option value="price-desc">Precio: Mayor a Menor</option></select>
+                </div>
+                <div id="productGrid" class="product-grid"></div>
+                <button id="loadMoreBtn">Ver Más</button>
+            </section>
+
+            <section>
+                <h2 class="text-3xl font-bold text-center mb-8">Nuestras Marcas</h2>
+                <div class="swiper brands-swiper">
+                    <div id="brandsSwiperWrapper" class="swiper-wrapper"></div>
+                </div>
+            </section>
+
+            <section id="contact-section" class="p-8 contact-card">
+                <h2 class="text-3xl font-bold text-center mb-6">Domicilios y Contacto</h2>
+                <p class="text-center text-text-color-secondary mb-8 max-w-2xl mx-auto">
+                    Realizamos entregas rápidas y seguras en toda la ciudad. ¡Pide ahora y recibe tu pedido en minutos!
+                </p>
+                <div class="flex flex-col md:flex-row justify-center items-center gap-8">
+                    <a href="https://wa.me/573174144815" target="_blank" class="contact-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.04C6.5 2.04 2 6.53 2 12.06c0 3.37 1.76 6.34 4.43 8.16l-1.35 4.82a.5.5 0 00.65.65l4.82-1.35A9.95 23.6 12 22.08c5.5 0 10-4.49 10-10.02S17.5 2.04 12 2.04zm4.8 12.04c-.3-.15-1.76-.87-2.03-1a.36.36 0 00-.52.48c.18.2.36.4.49.52a.36.36 0 01-.1.63c-1.88 1-3.86.3-5.32-2.1-1.46-2.4-1.1-5 1.3-6.46a.36.36 0 01.5.06l.42.5.87 1.25a.36.36 0 01-.06.5l-.87 1c-.13.15-.05.35.1.48 1.15 1 2.3 1.48 3.55.87.12-.06.27-.03.38.07l1.1.95c.13.1.2.3.07.45l-.22.36z"/></svg>
+                        <span>Pedir por WhatsApp</span>
+                    </a>
+                    <a href="/descargar.html" class="contact-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                        </svg>
+                        <span>Descargar App</span>
+                    </a>
+                    <a href="/pedidos.html" class="contact-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                        </svg>
+                        <span>Seguir Pedido</span>
+                    </a>
+                </div>
+            </section>
+        </main>
+
+        <footer class="text-center p-6 text-text-color-secondary text-sm">
+            <p>© <span id="currentYear">2024</span> El Borracho. Todos los derechos reservados.</p>
+            <p>Diseñado con pasión por la buena bebida.</p>
+        </footer>
+
+        <div id="cartSidebar" class="cart-sidebar">
+            <div class="cart-header"><h2 class="text-2xl font-bold">Tu Carrito</h2><button id="closeCartBtn" class="text-3xl">×</button></div>
+            <div id="cartItems" class="cart-items"><p class="text-center text-text-color-secondary">Tu carrito está vacío.</p></div>
+            <div class="cart-summary"><div class="cart-total"><span>Total:</span><span id="cartTotalPrice">$0</span></div><button id="checkoutWhatsappBtn" class="btn-checkout">🛒 Proceder al Checkout</button></div>
+        </div>
+
+        <nav id="bottomNav" class="bottom-nav">
+            <button class="bottom-nav-item active" data-action="home"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2 2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg><span>Inicio</span></button>
+            <button class="bottom-nav-item" data-action="search"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg><span>Buscar</span></button>
+            <button id="bottomNavCartBtn" class="bottom-nav-item relative" data-action="cart"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 0a2 2 0 100 4 2 2 0 000-4z" /></svg><span id="bottomNavCartCount" class="absolute -top-1 right-2 bg-primary-color text-black text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center">0</span><span>Carrito</span></button>
+        </nav>
+    </div>
+
+    <!-- CORRECCIÓN FINAL: Cargar scripts en orden al final del body -->
+    <!-- 1. Cargar librerías -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    
+    <!-- 2. Cargar tu script de aplicación (que depende de las librerías) -->
+    <script type="module" src="js/main.js"></script>
+    
+    <!-- 3. Dejamos el script del fondo 3D aquí para que se ejecute después de cargar Three.js -->
+    <script type="module">
+        let scene, camera, renderer, particles;
+        function init3DBackground() {
+            const container = document.getElementById('bg3d');
+            if(!container || typeof THREE === 'undefined') return;
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            renderer = new THREE.WebGLRenderer({ alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            container.appendChild(renderer.domElement);
+            const particlesGeometry = new THREE.BufferGeometry;
+            const count = 5000;
+            const positions = new Float32Array(count * 3);
+            for (let i = 0; i < count * 3; i++) { positions[i] = (Math.random() - 0.5) * 15; }
+            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            const particlesMaterial = new THREE.PointsMaterial({ size: 0.025, sizeAttenuation: true, color: '#D4AF37', transparent: true, opacity: 0.7 });
+            particles = new THREE.Points(particlesGeometry, particlesMaterial);
+            scene.add(particles);
+            camera.position.z = 5;
+            window.addEventListener('resize', onWindowResize, false);
+            animate();
+        }
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+        const clock = new THREE.Clock();
+        function animate() {
+            if(particles) particles.rotation.y = clock.getElapsedTime() * 0.05;
+            if(renderer) renderer.render(scene, camera);
+            window.requestAnimationFrame(animate);
+        }
+        init3DBackground();
+    </script>
+</body>
+</html>
