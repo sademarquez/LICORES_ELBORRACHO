@@ -44,7 +44,8 @@ export class OrderSystem {
             total: total,
             status: 'pending',
             createdAt: now.toISOString(),
-            estimatedDelivery: this.calculateDeliveryTime(now)
+            estimatedDelivery: this.calculateDeliveryTime(now),
+            tienda: "El Borracho" // Añadido para compatibilidad con Domiz PWA
         };
 
         // Guardar pedido
