@@ -140,7 +140,7 @@ async function main() {
         console.log("Verificación de edad inicializada.");
 
         console.log("Intentando cargar productos desde la API central...");
-        const productsResponse = await fetch('https://domiciliospg.netlify.app/api/products').catch(e => { 
+        const productsResponse = await fetch('https://domiz.netlify.app/api/products').catch(e => { 
             console.error('Error al hacer fetch de productos desde la API:', e);
             return null;
         });
@@ -193,7 +193,7 @@ async function main() {
 
         // Iniciar el heartbeat
         setInterval(() => {
-            navigator.sendBeacon('https://domiciliospg.netlify.app/api/stores/ping', JSON.stringify({
+            navigator.sendBeacon('https://domiz.netlify.app/api/stores/ping', JSON.stringify({
                 storeName: 'LICORES_ELBORRACHO',
                 storeUrl: window.location.href
             }));
