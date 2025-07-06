@@ -5,7 +5,6 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Project Overview
 
 EL BORRACHO is a Progressive Web Application (PWA) for a liquor delivery service in Popayán, Colombia. The application is built with vanilla JavaScript using ES6 modules, with no build process or package management system.
-
 ## Tech Stack
 
 - **Frontend**: Vanilla JavaScript (ES6 modules), HTML5, CSS3
