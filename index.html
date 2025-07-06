@@ -134,14 +134,14 @@
 
     <!-- CORRECCIÓN FINAL: Cargar scripts en orden al final del body -->
     <!-- 1. Cargar librerías -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
     
     <!-- 2. Cargar tu script de aplicación (que depende de las librerías) -->
-    <script type="module" src="js/main.js"></script>
+    <script type="module" src="js/main.js" defer></script>
     
     <!-- 3. Dejamos el script del fondo 3D aquí para que se ejecute después de cargar Three.js -->
-    <script type="module">
+    <script type="module" defer>
         let scene, camera, renderer, particles;
         function init3DBackground() {
             const container = document.getElementById('bg3d');

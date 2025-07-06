@@ -134,37 +134,77 @@ function loadMoreProducts() {
 }
 
 async function main() {
+    console.log("DOM cargado. Iniciando la aplicación...");
     try {
         initAgeVerification();
+        console.log("Verificación de edad inicializada.");
 
-        const [productsResponse, configResponse] = await Promise.all([fetch('products.json'), fetch('config.json')]);
-        if (!productsResponse.ok || !configResponse.ok) throw new Error('Error al cargar datos');
-        
+        console.log("Intentando cargar productos desde la API central...");
+        const productsResponse = await fetch('https://domiz.netlify.app/api/products').catch(e => { 
+            console.error('Error al hacer fetch de productos desde la API:', e);
+            return null;
+        });
+
+        if (!productsResponse || !productsResponse.ok) {
+            throw new Error(`Error al cargar productos: ${productsResponse?.statusText || 'La petición a la API falló'}`);
+        }
         allProducts = await productsResponse.json();
+        console.log("Productos cargados y procesados desde la API.");
+
+        // La carga de config.json puede permanecer local si cada tienda tiene su propia configuración de banners, etc.
+        console.log("Intentando cargar config.json local...");
+        const configResponse = await fetch('config.json').catch(e => { 
+            console.error('Error al hacer fetch de config.json local:', e);
+            return null;
+        });
+
+        if (!configResponse || !configResponse.ok) {
+            throw new Error(`Error al cargar config.json: ${configResponse?.statusText || 'La petición falló'}`);
+        }
         const appConfig = await configResponse.json();
+        console.log("Configuración local procesada.");
         
         initCart(allProducts, appConfig.contactPhone);
+        console.log("Carrito inicializado.");
+
         setupEventListeners();
+        console.log("Listeners de eventos configurados.");
         
         initHeroCarousel(appConfig.banners);
         initBrandsCarousel(appConfig.brands);
+        console.log("Carruseles inicializados.");
         
         const categories = [...new Set(allProducts.map(p => p.category))];
         renderCategoryButtons(categories);
         populateCategoryFilter(categories);
+        console.log("Categorías renderizadas.");
+
         displayInitialProducts();
+        console.log("Productos iniciales mostrados.");
         
-        // Simula el click en el primer botón de categoría para cargar productos iniciales
         const firstCategoryButton = document.querySelector('.category-btn');
         if (firstCategoryButton) {
             firstCategoryButton.click();
+            console.log("Click simulado en la primera categoría.");
         }
         
         const currentYearEl = document.getElementById('currentYear');
         if (currentYearEl) currentYearEl.textContent = new Date().getFullYear();
 
+        console.log("Inicialización de la aplicación completada con éxito.");
+
     } catch (error) {
-        console.error("Error al inicializar la aplicación:", error);
+        console.error("Error CRÍTICO al inicializar la aplicación:", error);
+        const body = document.querySelector('body');
+        if (body) {
+            body.innerHTML = `
+                <div style="padding: 2rem; text-align: center; color: white; background-color: #1a1a1a; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                    <h1 style="font-size: 2rem; font-weight: bold; margin-bottom: 1rem;">Error al Cargar la Aplicación</h1>
+                    <p style="margin-bottom: 1rem;">Lo sentimos, algo salió mal. Por favor, intenta recargar la página.</p>
+                    <p style="font-family: monospace; background-color: #2a2a2a; padding: 1rem; border-radius: 8px; max-width: 80%; overflow-wrap: break-word;">${error.message}</p>
+                </div>
+            `;
+        }
     }
 }
 
