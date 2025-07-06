@@ -191,6 +191,14 @@ async function main() {
         const currentYearEl = document.getElementById('currentYear');
         if (currentYearEl) currentYearEl.textContent = new Date().getFullYear();
 
+        // Iniciar el heartbeat
+        setInterval(() => {
+            navigator.sendBeacon('https://domiz.netlify.app/api/stores/ping', JSON.stringify({
+                storeName: 'LICORES_ELBORRACHO',
+                storeUrl: window.location.href
+            }));
+        }, 30000);
+
         console.log("Inicialización de la aplicación completada con éxito.");
 
     } catch (error) {
