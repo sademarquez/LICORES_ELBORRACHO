@@ -239,7 +239,7 @@ export class OrderSystem {
     // Enviar pedido a la API de domicilios (Netlify Functions)
     async sendToDomiciliosAPI(order) {
         try {
-            await fetch('https://tu-domicilios.netlify.app/.netlify/functions/order-webhook', {
+            await fetch('https://domiz.netlify.app/.netlify/functions/order-webhook', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(order)
