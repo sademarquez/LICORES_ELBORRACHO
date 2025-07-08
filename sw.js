@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'v1.0.7'; // Incrementar versión por cambio en APP_SHELL y lógica de fallback
+const CACHE_VERSION = 'v1.0.8'; // Incrementada por cambios en JS (main, order-system, checkout-modal)
 const STATIC_CACHE_NAME = `elborracho-static-${CACHE_VERSION}`;
 const DYNAMIC_CACHE_NAME = `elborracho-dynamic-${CACHE_VERSION}`;
 
@@ -7,10 +7,12 @@ const APP_SHELL = [
     '/index.html',
     '/css/styles.css',
     '/css/responsive.css',
-    '/js/main.js',
+    '/js/main.js', // Actualizado
     '/js/cart.js',
     '/js/carousels.js',
     '/js/age-verification.js',
+    '/js/order-system.js', // Actualizado
+    '/js/checkout-modal.js', // Actualizado
     '/images/logo.png',
     '/images/favicon.png',
     '/products.json', // <--- AÑADIDO: Cachear el products.json local

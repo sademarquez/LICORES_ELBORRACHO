@@ -3,8 +3,8 @@ export class OrderSystem {
     constructor() {
         this.orders = this.loadOrders();
         this.deliveryPhones = {
-            main: '573174144815', // Número principal para pedidos
-            delivery: '573233833450' // Número para el equipo de domicilios
+            main: '573174144815' // Número principal para pedidos (Tienda El Borracho)
+            // delivery: '573233833450' // Eliminado: Número para el equipo de domicilios de la tienda, ahora gestionado por Domiz central
         };
     }
 
@@ -95,37 +95,7 @@ export class OrderSystem {
         return message;
     }
 
-    // Genera mensaje para el equipo de domicilios
-    generateDeliveryMessage(order) {
-        const deliveryTime = new Date(order.estimatedDelivery).toLocaleTimeString('es-CO', {
-            hour: '2-digit',
-            minute: '2-digit'
-        });
-
-        let message = `🚚 *DOMICILIO BORRACHO*\n\n`;
-        message += `📋 *Código:* ${order.code}\n`;
-        message += `👤 *Cliente:* ${order.customer.name}\n`;
-        message += `📞 *Teléfono:* ${order.customer.phone}\n`;
-        message += `📍 *Dirección:* ${order.customer.address}\n`;
-        if (order.customer.references) {
-            message += `🗺️ *Referencias:* ${order.customer.references}\n`;
-        }
-        message += `\n💰 *Total a Cobrar: $${order.total.toLocaleString('es-CO')}*\n`;
-        message += `⏰ *Entrega Estimada:* ${deliveryTime}\n\n`;
-        
-        message += `📦 *Productos:*\n`;
-        order.items.forEach(item => {
-            message += `• ${item.quantity}x ${item.name}\n`;
-        });
-        
-        message += `\n📝 *Instrucciones:*\n`;
-        message += `• Verificar código con cliente\n`;
-        message += `• Cobrar exacto: $${order.total.toLocaleString('es-CO')}\n`;
-        message += `• Confirmar entrega en grupo\n\n`;
-        message += `🎯 Estado: PENDIENTE`;
-
-        return message;
-    }
+    // Eliminada: generateDeliveryMessage(order) - ya que la gestión de delivery es por Domiz Central
 
     // Genera mensaje para El Borracho (notificación interna)
     generateStoreMessage(order) {
@@ -156,7 +126,7 @@ export class OrderSystem {
     // Envía mensajes a WhatsApp
     async sendOrderMessages(order) {
         const customerMessage = this.generateCustomerMessage(order);
-        const deliveryMessage = this.generateDeliveryMessage(order);
+        // const deliveryMessage = this.generateDeliveryMessage(order); // Eliminado
         const storeMessage = this.generateStoreMessage(order);
 
         // URL para el cliente
@@ -165,13 +135,13 @@ export class OrderSystem {
         // URL para El Borracho (notificación interna)
         const storeUrl = `https://wa.me/${this.deliveryPhones.main}?text=${encodeURIComponent(storeMessage)}`;
         
-        // URL para el equipo de domicilios
-        const deliveryUrl = `https://wa.me/${this.deliveryPhones.delivery}?text=${encodeURIComponent(deliveryMessage)}`;
+        // URL para el equipo de domicilios (Eliminada)
+        // const deliveryUrl = `https://wa.me/${this.deliveryPhones.delivery}?text=${encodeURIComponent(deliveryMessage)}`;
 
         return {
             customerUrl,
             storeUrl,
-            deliveryUrl,
+            // deliveryUrl, // Eliminado
             order
         };
     }

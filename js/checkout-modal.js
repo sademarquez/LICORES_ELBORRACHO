@@ -276,14 +276,14 @@ export class CheckoutModal {
             // Crear pedido
             const order = this.orderSystem.createOrder(this.cartItems, customerInfo, this.allProducts);
             
-            // Generar URLs de WhatsApp
-            const { customerUrl, storeUrl, deliveryUrl } = await this.orderSystem.sendOrderMessages(order);
+            // Generar URLs de WhatsApp (deliveryUrl ya no se devuelve)
+            const { customerUrl, storeUrl } = await this.orderSystem.sendOrderMessages(order);
             
             // Ocultar loader
             loader.style.display = 'none';
             
             // Mostrar confirmación y redirigir
-            this.showOrderConfirmation(order, customerUrl, storeUrl, deliveryUrl);
+            this.showOrderConfirmation(order, customerUrl, storeUrl); // Ya no se pasa deliveryUrl
             
         } catch (error) {
             loader.style.display = 'none';
@@ -292,7 +292,7 @@ export class CheckoutModal {
         }
     }
 
-    showOrderConfirmation(order, customerUrl, storeUrl, deliveryUrl) {
+    showOrderConfirmation(order, customerUrl, storeUrl) { // deliveryUrl eliminado de los parámetros
         // Crear modal de confirmación
         const confirmationHTML = `
             <div class="order-confirmation">
@@ -308,21 +308,18 @@ export class CheckoutModal {
                         <span class="status-check">⏳</span>
                     </div>
                     <div class="status-item">
-                        <span class="status-icon">🚚</span>
-                        <span>Notificando domicilios (3233833450)...</span>
-                        <span class="status-check">⏳</span>
-                    </div>
-                    <div class="status-item">
                         <span class="status-icon">📱</span>
                         <span>Abriendo chat con cliente...</span>
                         <span class="status-check">⏳</span>
                     </div>
+                    <!--- Eliminado el status-item para domicilios (3233833450) --->
                 </div>
                 
                 <div class="auto-whatsapp-info">
                     <p class="text-sm text-gray-300 mt-4">
                         🤖 <strong>Sistema Automático Activado</strong><br>
-                        El pedido se enviará directamente sin intervención manual
+                        El pedido se enviará directamente sin intervención manual.
+                        La gestión de domiciliarios se realiza a través del sistema Domiz.
                     </p>
                 </div>
             </div>
@@ -331,45 +328,32 @@ export class CheckoutModal {
         // Reemplazar contenido del modal
         this.modal.querySelector('.checkout-modal-content').innerHTML = confirmationHTML;
         
-        // ✨ ENVÍO AUTOMÁTICO DUAL (TIENDA + DOMICILIO)
+        // ✨ ENVÍO AUTOMÁTICO (TIENDA + CLIENTE)
         setTimeout(async () => {
             // 1. Enviar automáticamente a la tienda (El Borracho)
-            this.updateStatus(0, '⏳', 'Enviando...');
+            this.updateStatus(0, '⏳', 'Enviando a tienda...'); // Índice 0
             window.open(storeUrl, '_blank');
-            this.updateStatus(0, '✅', 'Enviado');
+            this.updateStatus(0, '✅', 'Enviado a tienda');
             
             // Esperar un poco
             await new Promise(resolve => setTimeout(resolve, 800));
             
-            // 2. Enviar automáticamente a domicilios 
-            this.updateStatus(1, '⏳', 'Enviando...');
-            window.open(deliveryUrl, '_blank');
-            this.updateStatus(1, '✅', 'Enviado');
-            
-            // Esperar un poco
-            await new Promise(resolve => setTimeout(resolve, 800));
-            
-            // 3. Abrir chat con el cliente para confirmación
-            this.updateStatus(2, '⏳', 'Abriendo chat...');
+            // 2. Abrir chat con el cliente para confirmación
+            this.updateStatus(1, '⏳', 'Abriendo chat cliente...'); // Índice 1 (antes era 2)
             window.open(customerUrl, '_blank');
-            this.updateStatus(2, '✅', 'Listo');
+            this.updateStatus(1, '✅', 'Chat cliente listo');
             
-            // 4. Mostrar confirmación final
+            // 3. Mostrar confirmación final
+            // (El paso de enviar a deliveryUrl ha sido eliminado)
             setTimeout(() => {
                 this.showFinalConfirmation(order);
             }, 1000);
         }, 1000);
         
-        // Event listener para abrir WhatsApp del cliente manualmente
-        document.getElementById('openCustomerChat').addEventListener('click', () => {
-            window.open(customerUrl, '_blank');
-        });
-        
-        // Event listener para notificar a la tienda y domicilios manualmente
-        document.getElementById('openStoreChats').addEventListener('click', () => {
-            window.open(storeUrl, '_blank');
-            window.open(deliveryUrl, '_blank');
-        });
+        // Los event listeners para openCustomerChat y openStoreChats no se pueden añadir aquí
+        // porque el contenido del modal se reemplaza. Se deberían añadir después de setear innerHTML
+        // o usar delegación de eventos si fueran necesarios.
+        // Por ahora, se asume que el flujo automático es suficiente y estos botones no están en este HTML.
         
         // Cerrar modal automáticamente después de 5 segundos
         setTimeout(() => {
@@ -584,7 +568,7 @@ export class CheckoutModal {
                         <p style="font-size: 0.9rem; color: #ccc; text-align: left;">
                             ✅ <strong>Al cliente:</strong> Confirmación del pedido<br>
                             ✅ <strong>A la tienda:</strong> Pedido completo (3174144815)<br>
-                            ✅ <strong>A domicilios:</strong> Recoger pedido (3233833450)
+                            ℹ️  La gestión de domiciliarios se realiza a través del sistema Domiz.
                         </p>
                     </div>
                     
