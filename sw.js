@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'v1.0.6'; // Forzar actualización a Network First
+const CACHE_VERSION = 'v1.0.7'; // Incrementar versión por cambio en APP_SHELL y lógica de fallback
 const STATIC_CACHE_NAME = `elborracho-static-${CACHE_VERSION}`;
 const DYNAMIC_CACHE_NAME = `elborracho-dynamic-${CACHE_VERSION}`;
 
@@ -12,7 +12,9 @@ const APP_SHELL = [
     '/js/carousels.js',
     '/js/age-verification.js',
     '/images/logo.png',
-    '/images/favicon.png'
+    '/images/favicon.png',
+    '/products.json', // <--- AÑADIDO: Cachear el products.json local
+    '/config.json'    // <--- AÑADIDO: Cachear también config.json por consistencia
 ];
 
 // 1. Evento de Instalación

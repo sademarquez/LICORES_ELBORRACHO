@@ -139,27 +139,70 @@ async function main() {
         initAgeVerification();
         console.log("Verificación de edad inicializada.");
 
-        console.log("Intentando cargar productos desde la API central...");
-        const productsResponse = await fetch('https://domiz.netlify.app/api/products').catch(e => { 
-            console.error('Error al hacer fetch de productos desde la API:', e);
-            return null;
-        });
-
-        if (!productsResponse || !productsResponse.ok) {
-            throw new Error(`Error al cargar productos: ${productsResponse?.statusText || 'La petición a la API falló'}`);
+        let productsLoaded = false;
+        // Intentar cargar desde API externa
+        try {
+            console.log("Intentando cargar productos desde la API central: https://domiz.netlify.app/api/products");
+            const apiResponse = await fetch('https://domiz.netlify.app/api/products', { cache: 'no-store' }); // Evitar caché para la API externa
+            if (apiResponse.ok) {
+                const productsData = await apiResponse.json();
+                if (productsData && productsData.length > 0) {
+                    allProducts = productsData;
+                    console.log("Productos cargados exitosamente desde la API externa.");
+                    productsLoaded = true;
+                } else {
+                    console.warn("API externa respondió OK, pero no devolvió productos o lista vacía. Se intentará fallback local.");
+                }
+            } else {
+                console.warn(`API externa respondió con error: ${apiResponse.status} ${apiResponse.statusText}. Se intentará fallback local.`);
+            }
+        } catch (apiError) {
+            console.error("Error al intentar cargar productos desde la API externa. Se intentará fallback local:", apiError);
         }
-        allProducts = await productsResponse.json();
-        console.log("Productos cargados y procesados desde la API.");
+
+        // Si no se cargaron desde la API, intentar fallback local
+        if (!productsLoaded) {
+            console.log("No se pudieron cargar productos de la API externa o la API devolvió datos vacíos. Intentando fallback a 'products.json' local...");
+            try {
+                const localResponse = await fetch('products.json'); // Carga el products.json local
+                if (localResponse.ok) {
+                    const localProductsData = await localResponse.json();
+                    if (localProductsData && localProductsData.length > 0) {
+                        allProducts = localProductsData;
+                        console.log("Productos cargados exitosamente desde 'products.json' local.");
+                        productsLoaded = true;
+                    } else {
+                         console.error("'products.json' local está vacío o no es un array válido.");
+                    }
+                } else {
+                    console.error(`Error al cargar 'products.json' local: ${localResponse.status} ${localResponse.statusText}`);
+                }
+            } catch (localError) {
+                console.error("Error fatal al intentar cargar 'products.json' local:", localError);
+            }
+        }
+
+        // Si después de ambos intentos no hay productos, es un error crítico
+        if (!productsLoaded) {
+            // Construct a more specific error message if possible
+            let errorMessage = "No se pudieron cargar los datos de los productos.";
+            if (allProducts === null || allProducts.length === 0) { // Check if allProducts is still empty or null
+                errorMessage = "No se pudieron cargar los datos de los productos ni desde la API ni localmente. La aplicación no puede continuar.";
+            }
+            throw new Error(errorMessage);
+        }
 
         // La carga de config.json puede permanecer local si cada tienda tiene su propia configuración de banners, etc.
         console.log("Intentando cargar config.json local...");
         const configResponse = await fetch('config.json').catch(e => { 
             console.error('Error al hacer fetch de config.json local:', e);
+            // Consider if a fallback for config is also needed or if it's critical
             return null;
         });
 
         if (!configResponse || !configResponse.ok) {
-            throw new Error(`Error al cargar config.json: ${configResponse?.statusText || 'La petición falló'}`);
+            // Decide how critical this is. For now, we'll throw, but a default config could be an option.
+            throw new Error(`Error al cargar config.json: ${configResponse?.statusText || 'La petición a config.json falló'}`);
         }
         const appConfig = await configResponse.json();
         console.log("Configuración local procesada.");
