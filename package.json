@@ -12,7 +12,7 @@
     "build-apk": "node build-apk.js",
     "build-apk-windows": "node build-apk-windows.js",
     "install-device": "node install-device.js",
-    "deploy": "mkdir -p www && cp -r css www/ && cp -r js www/ && cp -r images www/ && cp index.html www/ && cp manifest.json www/ && cp products.json www/ && cp config.json www/ && cp sw.js www/ && npm run sync",
+    "deploy": "mkdir -p www && cp -r css www/ && cp -r js www/ && cp -r images www/ && cp index.html manifest.json sw.js products.json config.json pedidos.html descargar.html www/ 2>/dev/null || echo 'Nota: Algunos archivos HTML podrían no existir o no haberse copiado.' && npx cap sync",
     "update-version": "node update-version.js",
     "release": "npm run update-version && npm run deploy && npm run build-apk"
   },
