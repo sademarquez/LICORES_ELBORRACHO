@@ -9,54 +9,150 @@ console.log('🚀 Building El Borracho Android APK...\n');
 try {
   // Step 1: Prepare web assets for Capacitor
   console.log('📦 Preparing web assets for Capacitor...');
-  execSync('mkdir -p www', { stdio: 'inherit' });
-  // Copy main directories
-  execSync('cp -r css www/', { stdio: 'inherit' });
-  execSync('cp -r js www/', { stdio: 'inherit' });
-  execSync('cp -r images www/', { stdio: 'inherit' });
-  // Copy root files (HTML, manifest, sw, json data files)
-  // Ensure all necessary files are listed here
-  const rootFilesToCopy = [
-    'index.html',
-    'manifest.json',
-    'sw.js',
-    'products.json',
-    'config.json',
-    'pedidos.html',
-    'descargar.html'
-    // Add any other root HTML or essential files here
-  ];
-  rootFilesToCopy.forEach(file => {
-    if (fs.existsSync(file)) {
-      execSync(`cp ${file} www/`, { stdio: 'inherit' });
+  if (!fs.existsSync('www')) {
+    fs.mkdirSync('www', { recursive: true });
+  }
+
+  const assetsToCopy = {
+    dirs: ['css', 'js', 'images'],
+    files: [
+      'index.html',
+      'manifest.json',
+      'sw.js',
+      'products.json',
+      'config.json',
+      'pedidos.html',
+      'descargar.html'
+      // Add any other root HTML or essential files here
+    ]
+  };
+
+  assetsToCopy.dirs.forEach(dir => {
+    const sourceDir = path.join(__dirname, dir);
+    const destDir = path.join(__dirname, 'www', dir);
+    if (fs.existsSync(sourceDir)) {
+      fs.cpSync(sourceDir, destDir, { recursive: true, errorOnExist: false, force: true });
+      console.log(`Copied directory ${dir} to www/${dir}`);
     } else {
-      console.warn(`Warning: File ${file} not found in root, not copied to www/`);
+      console.warn(`Warning: Directory ${dir} not found, not copied to www/`);
     }
   });
-  console.log('Listing contents of www/ directory:');
-  execSync('ls -la www/', { stdio: 'inherit' });
 
-  // Step 2: Fix Java versions
+  assetsToCopy.files.forEach(file => {
+    const sourceFile = path.join(__dirname, file);
+    const destFile = path.join(__dirname, 'www', file);
+    if (fs.existsSync(sourceFile)) {
+      fs.copyFileSync(sourceFile, destFile);
+      console.log(`Copied file ${file} to www/${file}`);
+    } else {
+      console.warn(`Warning: File ${file} not found, not copied to www/`);
+    }
+  });
+
+  console.log('Listing contents of www/ directory:');
+  try {
+    const wwwContents = fs.readdirSync('www');
+    console.log(wwwContents.join('\\n'));
+  } catch (e) {
+    console.error('Could not list www directory contents:', e);
+  }
+
+  // Step 2: Sync web assets with Capacitor
+  console.log('🔄 Syncing web assets with Capacitor...');
+  execSync('npx cap sync', { stdio: 'inherit' });
+
+  // Step 3: Fix Java versions
   console.log('🔧 Corrigiendo versiones de Java en archivos .gradle...');
   execSync('node fix-gradle-java-version.js', { stdio: 'inherit' });
   
-  // Step 3: Build Android APK
+  // Step 4: Build Android APK
   console.log('🔨 Building Android APK...');
-  // Detectar sistema operativo para usar el comando correcto
   const isWindows = process.platform === 'win32';
   const gradleCmd = isWindows ? 'gradlew.bat' : './gradlew';
-
-  // Configurar JAVA_HOME y PATH para el proceso hijo
-  const javaHome = process.env.JAVA_HOME || (isWindows ? 'C:\\Program Files\\Java\\jdk-17' : '/usr/lib/jvm/java-17-openjdk-amd64');
   const env = { ...process.env };
-  if (javaHome) {
-    env.JAVA_HOME = javaHome;
-    env.PATH = isWindows ? `${javaHome}\\bin;${env.PATH}` : `${javaHome}/bin:${env.PATH}`;
+
+  // Configurar JAVA_HOME y PATH para el proceso hijo, priorizando JDK 17
+  let javaHome = process.env.JAVA_HOME;
+  let jdk17Found = false;
+
+  if (isWindows) {
+    const potentialJdk17Paths = [
+      process.env.JDK_17_HOME, // User-defined specific path
+      'C:\\Program Files\\Java\\jdk-17',
+      // Add more common specific version paths if necessary, e.g., 'C:\\Program Files\\Java\\jdk-17.0.x'
+    ];
+    for (const p of potentialJdk17Paths) {
+      if (p && fs.existsSync(p) && fs.existsSync(path.join(p, 'bin', 'java.exe'))) {
+        try {
+          const versionOutput = execSync(`"${path.join(p, 'bin', 'java')}" -version`, { encoding: 'utf8', stdio: 'pipe' });
+          if (versionOutput.includes('17.') || versionOutput.includes('version "17"')) {
+            javaHome = p;
+            jdk17Found = true;
+            console.log(`✅ JAVA_HOME configurado para JDK 17: ${p}`);
+            break;
+          }
+        } catch (e) { console.warn(`⚠️ Advertencia al verificar Java en ${p}: ${e.message}`); }
+      }
+    }
+    if (!jdk17Found) {
+      // Broader search in common locations
+      const commonJavaLocations = ["C:\\Program Files\\Java\\", "C:\\Program Files\\Eclipse Adoptium\\"];
+      for (const loc of commonJavaLocations) {
+        if (fs.existsSync(loc)) {
+          const subDirs = fs.readdirSync(loc);
+          for (const dir of subDirs) {
+            if (dir.startsWith('jdk-17') || dir.startsWith('temurin-17')) {
+              const jdkPath = path.join(loc, dir);
+              if (fs.existsSync(path.join(jdkPath, 'bin', 'java.exe'))) {
+                try {
+                  const versionOutput = execSync(`"${path.join(jdkPath, 'bin', 'java')}" -version`, { encoding: 'utf8', stdio: 'pipe' });
+                  if (versionOutput.includes('17.') || versionOutput.includes('version "17"')) {
+                    javaHome = jdkPath;
+                    jdk17Found = true;
+                    console.log(`✅ JAVA_HOME configurado para JDK 17 (detectado): ${jdkPath}`);
+                    break;
+                  }
+                } catch (e) { console.warn(`⚠️ Advertencia al verificar Java en ${jdkPath}: ${e.message}`); }
+              }
+            }
+          }
+        }
+        if (jdk17Found) break;
+      }
+    }
+    if (!jdk17Found) {
+      console.error('❌ No se encontró JDK 17 en Windows.');
+      console.error('   Asegúrate de que JDK 17 esté instalado y considera configurar JAVA_HOME o JDK_17_HOME.');
+      console.error('   El script `fix-gradle-java-version.js` configura los archivos de Gradle para Java 17.');
+      process.exit(1);
+    }
+  } else { // For non-Windows (Linux/macOS)
+    javaHome = javaHome || '/usr/lib/jvm/java-17-openjdk-amd64'; // Default for Linux
+    if (!fs.existsSync(javaHome) || !fs.existsSync(path.join(javaHome, 'bin', 'java'))) {
+        // A simple check, can be expanded if needed for other Linux distros or macOS
+        console.warn(`⚠️ JAVA_HOME para Linux/macOS (${javaHome}) no encontrado o no es JDK 17. Verifique la instalación.`);
+        // Allow to proceed, assuming 'java' in PATH might be correct or user knows best.
+    } else {
+        jdk17Found = true; // Assume found if path exists, can add version check if strictness is needed
+    }
   }
 
-  execSync(`cd android && ${gradleCmd} assembleDebug`, { stdio: 'inherit', env });
+  if (jdk17Found && javaHome) {
+    env.JAVA_HOME = javaHome;
+    env.PATH = isWindows ? `${javaHome}\\bin;${env.PATH}` : `${javaHome}/bin:${env.PATH}`;
+    console.log(`🛠️ Usando JAVA_HOME: ${javaHome}`);
+  } else if (javaHome) { // JAVA_HOME was set by user but not verified as JDK 17
+    env.JAVA_HOME = javaHome; // Respect user's JAVA_HOME if set
+    env.PATH = isWindows ? `${javaHome}\\bin;${env.PATH}` : `${javaHome}/bin:${env.PATH}`;
+    console.warn(`⚠️ Usando JAVA_HOME=${javaHome} provisto por el entorno, pero no se pudo verificar como JDK 17.`);
+  }
+   else {
+    console.warn(`⚠️ JAVA_HOME no configurado y no se pudo detectar JDK 17. El build podría usar una version de Java incorrecta.`);
+  }
+
+  execSync(`cd android && ${gradleCmd} clean assembleDebug`, { stdio: 'inherit', env });
   
-  // Step 4: Copy APK to root directory and sign it
+  // Step 5: Copy APK to root directory and sign it
   const apkSource = path.join(__dirname, 'android', 'app', 'build', 'outputs', 'apk', 'debug', 'app-debug.apk');
   // app-debug.apk is the unsigned (or debug-signed) output from Gradle
   const finalApkPath = path.join(__dirname, 'el-borracho.apk'); // This will be the final signed APK for distribution

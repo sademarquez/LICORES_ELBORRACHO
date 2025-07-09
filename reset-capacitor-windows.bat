@@ -1,9 +1,44 @@
 @echo off
-REM === CONFIGURAR JAVA_HOME Y PATH PARA JDK 21 ===
-set "JAVA_HOME=C:\Program Files\Java\jdk-21"
+REM === CONFIGURAR JAVA_HOME Y PATH PARA JDK 17 ===
+set "JAVA_HOME_JDK17=C:\Program Files\Java\jdk-17"
+REM Attempt to locate a specific JDK 17 version if the generic one is not found
+if not exist "%JAVA_HOME_JDK17%\bin\java.exe" (
+    echo "JDK 17 no encontrado en %JAVA_HOME_JDK17%, buscando alternativas..."
+    for /d %%J in ("C:\Program Files\Java\jdk-17.*") do (
+        if exist "%%J\bin\java.exe" (
+            set "JAVA_HOME_JDK17=%%J"
+            echo "Usando JDK 17 encontrado en %%J"
+            goto found_jdk17
+        )
+    )
+    for /d %%J in ("C:\Program Files\Eclipse Adoptium\jdk-17.*") do (
+        if exist "%%J\bin\java.exe" (
+            set "JAVA_HOME_JDK17=%%J"
+            echo "Usando JDK 17 (Eclipse Adoptium) encontrado en %%J"
+            goto found_jdk17
+        )
+    )
+    echo ERROR: JDK 17 no encontrado en rutas comunes.
+    echo Por favor, instala JDK 17 y actualiza la ruta JAVA_HOME_JDK17 en este script si es necesario.
+    pause
+    exit /b
+)
+:found_jdk17
+set "JAVA_HOME=%JAVA_HOME_JDK17%"
 set "Path=%JAVA_HOME%\bin;%Path%"
 echo JAVA_HOME configurado a: %JAVA_HOME%
-java -version || (echo ERROR: JDK 21 no encontrado. Instala JDK 21 y actualiza la ruta en este script. & pause & exit /b)
+java -version || (echo ERROR: No se pudo verificar la version de Java. Asegurate que JDK 17 este correctamente instalado y configurado. & pause & exit /b)
+
+REM Validar que la version de Java sea 17
+java -version 2>&1 | findstr /r /c:"17\." > nul
+if errorlevel 1 (
+    echo ERROR: La version de Java no es 17. Actualmente es:
+    java -version
+    echo Por favor, asegura que JAVA_HOME apunte a una instalacion de JDK 17.
+    pause
+    exit /b
+)
+echo Version de Java 17 verificada.
 
 REM === LIMPIAR ENTORNO NATIVO ===
 if exist android rmdir /s /q android
