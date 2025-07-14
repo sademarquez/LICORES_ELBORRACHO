@@ -64,7 +64,7 @@ npx cap open android
 ## 📞 Soporte
 
 Si tienes problemas con la instalación:
-- WhatsApp: [573174144815](https://wa.me/573174144815)
+- WhatsApp: [573185004268](https://wa.me/573185004268)
 - Email: Crea un issue en este repositorio
 
 ## 🎯 Ventajas de la Instalación Directa

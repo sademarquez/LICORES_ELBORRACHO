@@ -116,7 +116,7 @@ npx cap open android
 - **Customer**: Receives confirmation with order code, details, and estimated delivery
 - **Delivery Team**: Gets order details, customer info, and delivery instructions
 - **Order Codes**: Format EB + YYMMDD + HHMM + Random (e.g., EB241202154523)
-- **Phones**: 573174144815 (customer), 573185004268 (delivery team)
+- **Phones**: 573185004268 (customer), 573336154666 (delivery team)
 
 ### Age Verification
 Legal requirement for alcohol sales - implemented as a modal that must be accepted before viewing products.
@@ -235,7 +235,7 @@ A centralized CI/CD workflow is configured in `.github/workflows/main-ci.yml`. T
 
 ### WhatsApp Integration
 - **Customer phone**: Messages sent to customer for order confirmation
-- **Delivery phone**: 573185004268 (internal team communication)
+- **Delivery phone**: 573336154666 (internal team communication)
 - **Order codes**: Format EB + YYMMDD + HHMM + Random (e.g., EB241202154523)
 - **Dual messaging**: Customer receives confirmation, delivery team gets order details
 
