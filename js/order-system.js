@@ -3,8 +3,8 @@ export class OrderSystem {
     constructor() {
         this.orders = this.loadOrders();
         this.deliveryPhones = {
-            main: '573174144815', // Número principal para pedidos
-            delivery: '573233833450' // Número para el equipo de domicilios
+            main: '573185004268', // Número principal para pedidos
+            delivery: '573336154666' // Número para el equipo de domicilios
         };
     }
 
@@ -240,14 +240,23 @@ export class OrderSystem {
     // Enviar pedido a la API de domicilios (Netlify Functions)
     async sendToDomiciliosAPI(order) {
         try {
-            await fetch('https://domiz.netlify.app/.netlify/functions/order-webhook', {
+            const response = await fetch('https://domiz.netlify.app/.netlify/functions/order-webhook', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(order)
             });
+
+            if (!response.ok) {
+                throw new Error(`La API de domicilios respondió con el estado: ${response.status}`);
+            }
+
             console.log('✅ Pedido enviado a API de domicilios');
+            return true;
         } catch (e) {
             console.warn('No se pudo enviar el pedido a la API de domicilios:', e);
+            // Fallback: si la API falla, asegúrate de que los mensajes de WhatsApp se envíen de todos modos
+            this.sendToWhatsApp(order);
+            return false;
         }
     }
 

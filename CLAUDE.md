@@ -56,8 +56,9 @@ npm run sync
 # Deploy web assets to www/ directory
 npm run deploy
 
-# Build Android APK
-npm run build-apk
+# Build Android APK and Deploy Web App (CI/CD)
+# This is handled by the .github/workflows/main-ci.yml workflow.
+# Pushing to main or master will trigger a new build and deployment.
 
 # Run on Android device/emulator
 npm run android
@@ -115,7 +116,7 @@ npx cap open android
 - **Customer**: Receives confirmation with order code, details, and estimated delivery
 - **Delivery Team**: Gets order details, customer info, and delivery instructions
 - **Order Codes**: Format EB + YYMMDD + HHMM + Random (e.g., EB241202154523)
-- **Phones**: 573174144815 (customer), 573233833450 (delivery team)
+- **Phones**: 573185004268 (customer), 573336154666 (delivery team)
 
 ### Age Verification
 Legal requirement for alcohol sales - implemented as a modal that must be accepted before viewing products.
@@ -169,13 +170,22 @@ Legal requirement for alcohol sales - implemented as a modal that must be accept
 - Assets sync from root to `www/` when running `npm run deploy`
 - Changes to root files require `npm run sync` for mobile apps
 
+## CI/CD Workflow
+
+A centralized CI/CD workflow is configured in `.github/workflows/main-ci.yml`. This workflow is triggered on every push to the `main` or `master` branches and performs the following actions:
+
+1.  **Deploys the web application to Netlify:** The site is deployed using the Netlify CLI. The `NETLIFY_SITE_ID` and `NETLIFY_AUTH_TOKEN` secrets must be configured in the GitHub repository settings for this to work.
+2.  **Builds the Android APK:** The workflow builds the Android APK using Gradle.
+3.  **Creates a GitHub Release:** A new GitHub Release is created with the generated APK as an artifact, making it easy to download and install the latest version of the app.
+
 ## Mobile App Distribution
 
 ### APK Build Process
-- **Manual build**: Use `npm run build-apk` command
-- **Custom script**: `build-apk.js` handles the entire build process
-- **Output**: Creates `el-borracho.apk` in root directory
-- **Requirements**: Android SDK and Gradle must be installed
+- **Automated build**: The APK is automatically built and released by the `main-ci.yml` GitHub Actions workflow.
+- **Manual build**: You can still run `npm run build-apk` locally if needed.
+- **Custom script**: `build-apk.js` handles the entire build process.
+- **Output**: Creates `el-borracho.apk` in root directory.
+- **Requirements**: Android SDK and Gradle must be installed.
 
 ### Direct Download Features
 - `/descargar.html` - Download page with install instructions
@@ -199,8 +209,9 @@ Legal requirement for alcohol sales - implemented as a modal that must be accept
 2. **Checkout** - Professional modal with customer information form
 3. **Validation** - Real-time validation of name, phone, and address
 4. **Order Creation** - Generate unique order code and save locally
-5. **WhatsApp Integration** - Send separate messages to customer and delivery team
-6. **Tracking** - Orders can be tracked via `/pedidos.html`
+5. **Centralized Processing** - The order is sent to a Netlify function for centralized processing. If this fails, the system falls back to the WhatsApp integration.
+6. **WhatsApp Integration** - Send separate messages to customer and delivery team
+7. **Tracking** - Orders can be tracked via `/pedidos.html`
 
 ### Key Pages
 - `index.html` - Main store with cart and checkout
@@ -224,7 +235,7 @@ Legal requirement for alcohol sales - implemented as a modal that must be accept
 
 ### WhatsApp Integration
 - **Customer phone**: Messages sent to customer for order confirmation
-- **Delivery phone**: 573233833450 (internal team communication)
+- **Delivery phone**: 573336154666 (internal team communication)
 - **Order codes**: Format EB + YYMMDD + HHMM + Random (e.g., EB241202154523)
 - **Dual messaging**: Customer receives confirmation, delivery team gets order details
 
