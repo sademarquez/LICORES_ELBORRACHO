@@ -11,7 +11,6 @@
 }
 
 body { font-family: var(--font-family); background: linear-gradient(135deg, var(--bg-color-start), var(--bg-color-end)); color: var(--text-color-primary); overflow-x: hidden; min-height: 100vh; }
-#bg3d { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; }
 
 /* Espaciado entre secciones reducido */
 main > section { margin-top: 2rem; }
