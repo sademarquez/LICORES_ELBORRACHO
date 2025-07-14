@@ -30,6 +30,9 @@ jobs:
         npm install -g @capacitor/cli
         npm install -g netlify-cli
         
+    - name: Build web assets
+      run: npm run deploy
+
     - name: Sync web assets with Capacitor
       run: npx cap sync android
         
