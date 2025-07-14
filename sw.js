@@ -1,6 +1,5 @@
-const CACHE_VERSION = 'v1.0.8'; // Incremented version to force update
-const STATIC_CACHE_NAME = `elborracho-static-${CACHE_VERSION}`;
-const DYNAMIC_CACHE_NAME = `elborracho-dynamic-${CACHE_VERSION}`;
+const STATIC_CACHE_NAME = `elborracho-static`;
+const DYNAMIC_CACHE_NAME = `elborracho-dynamic`;
 
 const APP_SHELL = [
     '/',
@@ -17,7 +16,7 @@ const APP_SHELL = [
 
 // 1. Evento de Instalación
 self.addEventListener('install', event => {
-    console.log(`[SW] Instalando Service Worker ${CACHE_VERSION}`);
+    console.log(`[SW] Instalando Service Worker`);
     event.waitUntil(
         caches.open(STATIC_CACHE_NAME).then(cache => {
             console.log('[SW] Pre-caching App Shell');
@@ -30,13 +29,12 @@ self.addEventListener('install', event => {
 
 // 2. Evento de Activación
 self.addEventListener('activate', event => {
-    console.log(`[SW] Activando Service Worker ${CACHE_VERSION}`);
+    console.log(`[SW] Activando Service Worker`);
     event.waitUntil(
         caches.keys().then(keys => {
             return Promise.all(keys
-                .filter(key => key !== STATIC_CACHE_NAME && key !== DYNAMIC_CACHE_NAME)
                 .map(key => {
-                    console.log(`[SW] Eliminando caché antiguo: ${key}`);
+                    console.log(`[SW] Eliminando caché: ${key}`);
                     return caches.delete(key);
                 })
             );

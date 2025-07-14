@@ -2,222 +2,139 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Descargar App - El Borracho</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" href="/images/icons/favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="/images/icons/logo-android-lb.svg">
+    <style>
+        @keyframes gradient-animation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .animated-gradient {
+            background: linear-gradient(-45deg, #111, #222, #111, #333);
+            background-size: 400% 400%;
+            animation: gradient-animation 15s ease infinite;
+        }
+        .download-button {
+            background: linear-gradient(145deg, #f0c14b, #D4AF37);
+            box-shadow: 0 10px 20px -5px rgba(212, 175, 55, 0.4), 0 4px 5px -2px rgba(0,0,0,0.2);
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .download-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 25px -8px rgba(212, 175, 55, 0.6), 0 8px 10px -4px rgba(0,0,0,0.3);
+        }
+        .progress-bar {
+            transition: width 0.5s ease-out;
+        }
+        .instruction-card {
+            transition: transform 0.3s, opacity 0.3s;
+        }
+        .instruction-card.hidden {
+            transform: scale(0.9);
+            opacity: 0;
+            display: none;
+        }
+    </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4">
-    <div id="bg3d"></div>
-    
-    <div class="max-w-md w-full bg-opacity-20 bg-gray-900 backdrop-filter backdrop-blur-lg rounded-2xl border border-gray-700 p-8 text-center">
-        <img src="/images/icons/logo-android-lb.svg" alt="El Borracho Logo" class="h-20 mx-auto mb-6">
+<body class="animated-gradient min-h-screen flex items-center justify-center p-4 text-white">
+    <div class="max-w-lg w-full bg-black bg-opacity-30 backdrop-filter backdrop-blur-xl rounded-3xl border-2 border-yellow-500/20 p-8 text-center overflow-hidden">
+        <img src="/images/icons/logo-elborracho.svg" alt="El Borracho Logo" class="h-24 mx-auto mb-6 drop-shadow-[0_5px_15px_rgba(255,255,255,0.1)]">
         
-        <h1 class="text-3xl font-bold text-white mb-2">¡Descarga nuestra App!</h1>
-        <p class="text-gray-300 mb-6">Instala El Borracho directamente en tu teléfono</p>
+        <h1 class="text-4xl font-bold text-yellow-400 mb-2 drop-shadow-[0_2px_5px_rgba(255,215,0,0.5)]">Descarga Directa</h1>
+        <p class="text-gray-300 mb-8">La mejor experiencia de licores, en tu bolsillo.</p>
         
-        <div class="space-y-4">
-            <!-- Botón simple de descarga GitHub -->
-            <a id="apkDownloadBtn" href="/el-borracho.apk" download="el-borracho.apk" style="display:inline-block;margin:2rem 0;padding:1rem 2rem;background:#D4AF37;color:black;font-weight:bold;border-radius:12px;font-size:1.2rem;text-decoration:none;">
-                📱 Descargar APK (12MB)
+        <div id="download-section">
+            <a id="apkDownloadBtn" href="/el-borracho.apk" download="el-borracho.apk" class="download-button inline-flex items-center justify-center gap-4 px-8 py-5 rounded-full text-black font-bold text-xl w-full max-w-xs mx-auto">
+                <i class="fas fa-download"></i>
+                <span>Descargar APK</span>
             </a>
-            <div id="apkHelpMsg" style="display:none;color:#fff;background:#b91c1c;padding:1rem;border-radius:8px;margin-top:1rem;font-size:1rem;">
-                <strong>💡 Ayuda para descargar:</strong><br>
-                • Si no descarga: <b>Clic derecho → "Guardar enlace como..."</b><br>
-                • Si se abre como video: <b>Cambiar de navegador (Chrome/Firefox)</b><br>
-                • Habilitar <b>"Fuentes desconocidas"</b> en Android<br>
-                • Archivo: <b>el-borracho.apk (12MB)</b>
+            <p class="text-xs text-gray-500 mt-3">Versión 1.0.8 | 12MB | Android 5.0+</p>
+        </div>
+
+        <div id="progress-section" class="hidden mt-6">
+            <p class="font-semibold mb-2">Descargando...</p>
+            <div class="w-full bg-gray-700 rounded-full h-4">
+                <div id="progress-bar" class="progress-bar bg-yellow-400 h-4 rounded-full" style="width: 0%"></div>
             </div>
-            
-            <!-- Botón para agregar a inicio (PWA) -->
-            <button id="installPWA" 
-                    class="block w-full bg-gray-700 hover:bg-gray-600 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105"
-                    style="display: none;">
-                🏠 Agregar a Inicio
-            </button>
+            <p id="progress-text" class="text-sm mt-2">0%</p>
         </div>
         
-        <div class="mt-8 text-sm text-gray-400">
-            <p class="mb-2">🛡️ <strong>Google Play Protect</strong>: Toca "Más detalles" → "Instalar de todos modos"</p>
-            <p class="mb-2">⚠️ Habilita "Fuentes desconocidas" en tu Android</p>
-            <p class="mb-2">📱 Compatible con Android 5.0+</p>
-            <p>🔒 Seguro y sin publicidad</p>
+        <div id="installation-instructions" class="hidden mt-8 text-left">
+            <h2 class="text-2xl font-bold text-yellow-400 mb-4 text-center">¡Casi listo! Sigue estos pasos:</h2>
+            <div id="step1" class="instruction-card bg-gray-900/50 p-4 rounded-lg border border-gray-700">
+                <h3 class="font-bold text-lg"><i class="fas fa-file-arrow-down mr-2"></i>Paso 1: Abre el archivo</h3>
+                <p class="text-gray-300 text-sm">Busca <strong>el-borracho.apk</strong> en tus notificaciones o en la carpeta de descargas y tócalo.</p>
+            </div>
+            <div id="step2" class="instruction-card hidden bg-gray-900/50 p-4 rounded-lg border border-gray-700 mt-4">
+                <h3 class="font-bold text-lg"><i class="fas fa-shield-halved mr-2"></i>Paso 2: Permite la instalación</h3>
+                <p class="text-gray-300 text-sm">Si se te solicita, activa <strong>"Permitir de esta fuente"</strong>. Es un paso de seguridad estándar de Android.</p>
+            </div>
+            <div id="step3" class="instruction-card hidden bg-gray-900/50 p-4 rounded-lg border border-gray-700 mt-4">
+                <h3 class="font-bold text-lg"><i class="fas fa-triangle-exclamation mr-2"></i>Paso 3: Google Play Protect</h3>
+                <p class="text-gray-300 text-sm">Google te advertirá. Toca <strong>"Más detalles"</strong> y luego <strong>"Instalar de todos modos"</strong>. ¡Nuestra app es 100% segura!</p>
+            </div>
         </div>
-        
-        <!-- Banner de ayuda para Google Play Protect -->
-        <div style="background: linear-gradient(135deg, #e74c3c, #c0392b); color: white; padding: 15px; border-radius: 10px; margin: 20px 0; text-align: center;">
-            <h3 style="margin: 0 0 10px 0;">🛡️ ¿Google Play Protect te bloquea?</h3>
-            <p style="margin: 0; font-size: 0.9em;">
-                <strong>SOLUCIÓN RÁPIDA:</strong><br>
-                Cuando aparezca la advertencia:<br>
-                1. Toca <strong>"Más detalles"</strong><br>
-                2. Toca <strong>"Instalar de todos modos"</strong><br>
-                3. ¡Listo! La app se instala inmediatamente
-            </p>
-        </div>
-        
-        <div class="mt-6 flex justify-center">
-            <a href="/index.html" class="text-yellow-400 hover:text-yellow-300 text-sm underline">
-                ← Volver al sitio web
+
+        <div class="mt-8">
+            <a href="/index.html" class="text-yellow-500 hover:text-yellow-300 text-sm transition-colors">
+                <i class="fas fa-arrow-left mr-1"></i> Volver al sitio web
             </a>
         </div>
     </div>
 
     <script>
-        // PWA Install functionality
-        let deferredPrompt;
-        const installButton = document.getElementById('installPWA');
-        const apkBtn = document.getElementById('apkDownloadBtn');
-        const apkHelpMsg = document.getElementById('apkHelpMsg');
+        const downloadBtn = document.getElementById('apkDownloadBtn');
+        const downloadSection = document.getElementById('download-section');
+        const progressSection = document.getElementById('progress-section');
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+        const instructions = document.getElementById('installation-instructions');
+        const steps = [document.getElementById('step1'), document.getElementById('step2'), document.getElementById('step3')];
 
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            installButton.style.display = 'block';
+        downloadBtn.addEventListener('click', (e) => {
+            // e.preventDefault(); // Uncomment for testing without actual download
+            
+            downloadSection.classList.add('hidden');
+            progressSection.classList.remove('hidden');
+
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 10;
+                if (progress > 100) progress = 100;
+                
+                progressBar.style.width = progress + '%';
+                progressText.textContent = Math.round(progress) + '%';
+                
+                if (progress === 100) {
+                    clearInterval(interval);
+                    setTimeout(showInstructions, 500);
+                }
+            }, 200);
         });
 
-        installButton.addEventListener('click', async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    console.log('PWA installed');
+        function showInstructions() {
+            progressSection.classList.add('hidden');
+            instructions.classList.remove('hidden');
+            
+            let currentStep = 0;
+            steps[currentStep].classList.remove('hidden');
+
+            const stepInterval = setInterval(() => {
+                steps[currentStep].style.opacity = '0.5';
+                currentStep++;
+                if (currentStep < steps.length) {
+                    steps[currentStep].classList.remove('hidden');
+                } else {
+                    clearInterval(stepInterval);
                 }
-                deferredPrompt = null;
-                installButton.style.display = 'none';
-            }
-        });
-
-        // Función simple para mostrar ayuda al hacer clic
-        const apkBtn = document.getElementById('apkDownloadBtn');
-        const apkHelpMsg = document.getElementById('apkHelpMsg');
-
-        if (apkBtn) {
-            apkBtn.addEventListener('click', function(e) {
-                setTimeout(() => {
-                    apkHelpMsg.style.display = 'block';
-                    showAndroidInstructions();
-                }, 2000);
-            });
-        }
-        
-        // Instrucciones específicas para Android con Google Play Protect
-        function showAndroidInstructions() {
-            const isAndroid = /Android/i.test(navigator.userAgent);
-            
-            if (isAndroid) {
-                const instructions = `
-🛡️ BYPASS GOOGLE PLAY PROTECT:
-
-⚡ INSTALACIÓN RÁPIDA:
-1️⃣ Cuando aparezca "Google Play Protect":
-   • NO toques "Cancelar"
-   • Toca "Más detalles" o "Instalar de todos modos"
-   • Confirma "Instalar"
-
-📱 PASOS COMPLETOS:
-1️⃣ Baja la barra de notificaciones
-2️⃣ Toca "el-borracho.apk descargado"
-3️⃣ Si sale "Fuentes desconocidas":
-   • Toca "Configuración"
-   • Activa "Permitir esta fuente"
-4️⃣ Cuando aparezca Google Play Protect:
-   • Toca "Más detalles"
-   • Toca "Instalar de todos modos"
-   • Confirma "Instalar"
-5️⃣ ¡Listo! El Borracho instalado
-
-⚠️ Es normal que Google proteja apps externas.
-✅ El Borracho es 100% seguro.
-                `;
-                
-                alert(instructions);
-                
-                // Mostrar también en pantalla
-                showOnScreenInstructions();
-            }
-        }
-
-        // Mostrar instrucciones en pantalla permanentemente
-        function showOnScreenInstructions() {
-            const existingInstructions = document.getElementById('permanentInstructions');
-            if (existingInstructions) {
-                existingInstructions.remove();
-            }
-
-            const instructionsDiv = document.createElement('div');
-            instructionsDiv.id = 'permanentInstructions';
-            instructionsDiv.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                background: linear-gradient(135deg, #2ecc71, #27ae60);
-                color: white;
-                padding: 15px;
-                text-align: center;
-                font-weight: bold;
-                z-index: 9999;
-                box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-            `;
-            
-            instructionsDiv.innerHTML = `
-                🛡️ GOOGLE PLAY PROTECT: Toca "Más detalles" → "Instalar de todos modos"
-                <button onclick="this.parentElement.remove()" style="float:right;background:none;border:none;color:white;font-size:20px;">×</button>
-            `;
-            
-            document.body.appendChild(instructionsDiv);
-            
-            // Auto-remover después de 30 segundos
-            setTimeout(() => {
-                if (instructionsDiv.parentElement) {
-                    instructionsDiv.remove();
-                }
-            }, 30000);
-        }
-
-        // JavaScript simplificado - solo funcionalidad básica
-
-        // 3D background (simplified version)
-        if (typeof THREE !== 'undefined') {
-            const container = document.getElementById('bg3d');
-            const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({ alpha: true });
-            
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            container.appendChild(renderer.domElement);
-            
-            const particlesGeometry = new THREE.BufferGeometry();
-            const count = 2000;
-            const positions = new Float32Array(count * 3);
-            for (let i = 0; i < count * 3; i++) {
-                positions[i] = (Math.random() - 0.5) * 10;
-            }
-            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-            
-            const particlesMaterial = new THREE.PointsMaterial({
-                size: 0.02,
-                color: '#D4AF37',
-                transparent: true,
-                opacity: 0.6
-            });
-            
-            const particles = new THREE.Points(particlesGeometry, particlesMaterial);
-            scene.add(particles);
-            camera.position.z = 5;
-            
-            function animate() {
-                particles.rotation.y += 0.002;
-                renderer.render(scene, camera);
-                requestAnimationFrame(animate);
-            }
-            animate();
+            }, 3000);
         }
     </script>
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </body>
 </html>
