@@ -4,7 +4,7 @@ export class OrderSystem {
         this.orders = this.loadOrders();
         this.deliveryPhones = {
             main: '573174144815', // Número principal para pedidos
-            delivery: '573233833450' // Número para el equipo de domicilios
+            delivery: '573185004268' // Número para el equipo de domicilios
         };
     }
 
