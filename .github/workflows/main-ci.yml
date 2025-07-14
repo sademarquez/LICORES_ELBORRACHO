@@ -33,7 +33,7 @@ jobs:
     - name: Sync web assets with Capacitor
       run: npx cap sync android
         
-    - name: [Debug] List contents of www directory
+    - name: '[Debug] List contents of www directory'
       run: ls -la www/
 
     - name: Grant execute permission for gradlew
@@ -49,15 +49,12 @@ jobs:
         cd android
         ./gradlew assembleDebug --no-daemon --stacktrace --info
 
-    - name: [Debug] List contents of APK output directory
+    - name: '[Debug] List contents of APK output directory'
       run: ls -la android/app/build/outputs/apk/debug/
 
     - name: Deploy to Netlify
       run: |
-        netlify deploy --prod --dir . --site $NETLIFY_SITE_ID --auth $NETLIFY_AUTH_TOKEN
-      env:
-        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        netlify deploy --prod --dir . --site ${{ secrets.NETLIFY_SITE_ID }} --auth ${{ secrets.NETLIFY_AUTH_TOKEN }}
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
