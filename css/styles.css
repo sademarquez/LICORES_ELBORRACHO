@@ -69,10 +69,9 @@ main > section:first-child { margin-top: 0; }
     position: fixed;
     top: 0;
     right: 0;
-    bottom: 0; /* AÑADIDO: Asegura que se extienda hasta abajo */
     width: 100%;
     max-width: 400px;
-    /* height: 100%; */ /* COMENTADO: top:0 y bottom:0 deberían manejar la altura */
+    height: 100vh; /* Usar vh para consistencia */
     background: rgba(10, 10, 10, 0.7);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -82,6 +81,8 @@ main > section:first-child { margin-top: 0; }
     flex-direction: column;
     transform: translateX(100%);
     transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    padding-bottom: 70px; /* Espacio para la barra de navegación inferior */
+    box-sizing: border-box; /* Asegura que el padding no aumente la altura */
 }
 .cart-sidebar.open {
     transform: translateX(0);
