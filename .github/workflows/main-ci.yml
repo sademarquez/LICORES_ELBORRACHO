@@ -30,42 +30,28 @@ jobs:
         npm install -g @capacitor/cli
         npm install -g netlify-cli
         
-    - name: Prepare web assets
-      run: |
-        # Crear directorio www si no existe
-        mkdir -p www
+    - name: Sync web assets with Capacitor
+      run: npx cap sync android
         
-        # Copiar archivos web
-        cp -r css js images *.html *.json www/ 2>/dev/null || echo "Some files copied"
-        cp *.js www/ 2>/dev/null || echo "JS files copied"
-        
-        # Verificar contenido
-        ls -la www/
-        
-    - name: Initialize Capacitor if needed
-      run: |
-        # Verificar si capacitor está configurado
-        if [ ! -f "capacitor.config.json" ]; then
-          npx cap init "El Borracho" "com.elborracho.app"
-        fi
-        
-        # Agregar plataforma Android si no existe
-        if [ ! -d "android" ]; then
-          npx cap add android
-        fi
-        
-    - name: Sync Capacitor
-      run: |
-        npx cap sync android
-        
+    - name: [Debug] List contents of www directory
+      run: ls -la www/
+
     - name: Grant execute permission for gradlew
       run: chmod +x android/gradlew
       
+    - name: Clean Gradle project
+      run: |
+        cd android
+        ./gradlew clean
+
     - name: Build with Gradle
       run: |
         cd android
-        ./gradlew assembleDebug --no-daemon --stacktrace
-        
+        ./gradlew assembleDebug --no-daemon --stacktrace --info
+
+    - name: [Debug] List contents of APK output directory
+      run: ls -la android/app/build/outputs/apk/debug/
+
     - name: Deploy to Netlify
       run: |
         netlify deploy --prod --dir . --site $NETLIFY_SITE_ID --auth $NETLIFY_AUTH_TOKEN

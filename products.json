@@ -1,210 +1,818 @@
 [
-    {
-        "id": "aguardiente-caucano-verde", "name": "Aguardiente Caucano (Verde)", "brand": "Aguardiente Caucano", "category": "Licor",
-        "price": 45000, "imageUrl": "images/products/aguardientec.png"
-    },
-    {
-        "id": "ron-viejo-caldas-8-anos", "name": "Ron Viejo de Caldas 8 Años", "brand": "Ron Viejo de Caldas", "category": "Licor",
-        "price": 75000, "imageUrl": "images/products/ron.png"
-    },
-    {
-        "id": "whisky-buchanans-12-anos", "name": "Whisky Buchanan's Deluxe 12", "brand": "Buchanan's", "category": "Licor",
-        "price": 180000, "imageUrl": "images/products/bucanas.png"
-    },
-    {
-        "id": "cerveza-club-colombia-dorada-sixpack", "name": "Cerveza Club Colombia (Sixpack)", "brand": "Club Colombia", "category": "Cerveza",
-        "price": 25000, "imageUrl": "images/products/sicol.png"
-    },
-    {
-        "id": "cerveza-corona-sixpack", "name": "Cerveza Corona (Sixpack)", "brand": "Corona", "category": "Cerveza",
-        "price": 30000, "imageUrl": "images/products/corona.png"
-    },
-    {
-        "id": "cerveza-poker-sixpack", "name": "Cerveza Poker (Sixpack)", "brand": "Poker", "category": "Cerveza",
-        "price": 22000, "imageUrl": "images/products/sixpoker.png"
-    },
-    {
-        "id": "aguardiente-nectar-rojo", "name": "Aguardiente Néctar Rojo", "brand": "Aguardiente Néctar", "category": "Licor",
-        "price": 48000, "imageUrl": "images/products/nectar.png"
-    },
-    {
-        "id": "tequila-don-julio-reposado", "name": "Tequila Don Julio Reposado", "brand": "Don Julio", "category": "Licor",
-        "price": 250000, "imageUrl": "images/products/donjulio.png"
-    },
-    {
-        "id": "vodka-smirnoff", "name": "Vodka Smirnoff Red Label", "brand": "Smirnoff", "category": "Licor",
-        "price": 60000, "imageUrl": "images/products/smirnoff.png"
-    },
-    {
-        "id": "gaseosa-coca-cola-2l", "name": "Coca-Cola 2 Litros", "brand": "Coca-Cola", "category": "Bebida no alcohólica",
-        "price": 7000, "imageUrl": "images/products/cocacola.png"
-    },
-    {
-        "id": "gaseosa-pepsi-15l", "name": "Pepsi 1.5 Litros", "brand": "Pepsi", "category": "Bebida no alcohólica",
-        "price": 5500, "imageUrl": "images/products/pepsi.png"
-    },
-    {
-        "id": "gaseosa-postobon-manzana-15l", "name": "Postobón Manzana 1.5L", "brand": "Postobón", "category": "Bebida no alcohólica",
-        "price": 5000, "imageUrl": "images/products/postobon.png"
-    },
-    {
-        "id": "bebida-energetica-red-bull", "name": "Energizante Red Bull", "brand": "Red Bull", "category": "Bebida no alcohólica",
-        "price": 8000, "imageUrl": "images/products/redbull.png"
-    },
-    {
-        "id": "snacks-papas-margarita", "name": "Papas Margarita Pollo", "brand": "Margarita", "category": "Snacks",
-        "price": 4000, "imageUrl": "images/products/margarita.png"
-    },
-    {
-        "id": "snacks-choclitos", "name": "Choclitos Limón", "brand": "Choclitos", "category": "Snacks",
-        "price": 3500, "imageUrl": "images/products/choclitos.png"
-    },
-    {
-        "id": "bebida-agua-cristal", "name": "Agua Cristal Sin Gas", "brand": "Cristal", "category": "Bebida no alcohólica",
-        "price": 2000, "imageUrl": "images/products/agua.png"
-    },
-    {
-        "id": "licor-jagermeister", "name": "Jagermeister", "brand": "Jagermeister", "category": "Licor",
-        "price": 70000, "imageUrl": "images/products/jagermeister.png"
-    },
-    {
-        "id": "cigarrillos-lucky-strike", "name": "Cigarrillos Lucky Strike", "brand": "Lucky Strike", "category": "Tabaco",
-        "price": 8000, "imageUrl": "images/products/lukya.png"
-    },
-    {
-        "id": "licor-baileys", "name": "Baileys Irish Cream", "brand": "Baileys", "category": "Licor",
-        "price": 90000, "imageUrl": "images/products/baileys.png"
-    },
-    {
-        "id": "cerveza-andina-sixpack", "name": "Cerveza Andina (Sixpack)", "brand": "Andina", "category": "Cerveza",
-        "price": 24000, "imageUrl": "images/products/andina.png"
-    },
-    {
-        "id": "snacks-mani-la-especial", "name": "Maní La Especial Sal", "brand": "La Especial", "category": "Snacks",
-        "price": 3000, "imageUrl": "images/products/mani.png"
-    },
-    {
-        "id": "aguardiente-antioqueno-rojo", "name": "Aguardiente Antioqueño (Rojo)", "brand": "Antioqueño", "category": "Licor",
-        "price": 46000, "imageUrl": "images/products/antioqueno-rojo.png"
-    },
-    {
-        "id": "ron-havana-club-anejo", "name": "Ron Havana Club Añejo", "brand": "Havana Club", "category": "Licor",
-        "price": 85000, "imageUrl": "images/products/havana-club.png"
-    },
-    {
-        "id": "whisky-johnnie-walker-red", "name": "Whisky Johnnie Walker Red", "brand": "Johnnie Walker", "category": "Licor",
-        "price": 95000, "imageUrl": "images/products/johnnie-walker-red.png"
-    },
-    {
-        "id": "whisky-johnnie-walker-black", "name": "Whisky Johnnie Walker Black", "brand": "Johnnie Walker", "category": "Licor",
-        "price": 190000, "imageUrl": "images/products/johnnie-walker-black.png"
-    },
-    {
-        "id": "whisky-jack-daniels", "name": "Whisky Jack Daniel's No. 7", "brand": "Jack Daniel's", "category": "Licor",
-        "price": 160000, "imageUrl": "images/products/jack-daniels.png"
-    },
-    {
-        "id": "tequila-jose-cuervo-especial", "name": "Tequila José Cuervo Especial", "brand": "José Cuervo", "category": "Licor",
-        "price": 98000, "imageUrl": "images/products/jose-cuervo.png"
-    },
-    {
-        "id": "vodka-absolut", "name": "Vodka Absolut", "brand": "Absolut", "category": "Licor",
-        "price": 88000, "imageUrl": "images/products/absolut-vodka.png"
-    },
-    {
-        "id": "gin-hendricks", "name": "Ginebra Hendrick's", "brand": "Hendrick's", "category": "Licor",
-        "price": 210000, "imageUrl": "images/products/hendricks-gin.png"
-    },
-    {
-        "id": "crema-amarula", "name": "Crema de Licor Amarula", "brand": "Amarula", "category": "Licor",
-        "price": 95000, "imageUrl": "images/products/amarula.png"
-    },
-    {
-        "id": "vermouth-cinzano-rosso", "name": "Vermouth Cinzano Rosso", "brand": "Cinzano", "category": "Licor",
-        "price": 55000, "imageUrl": "images/products/vermur.png"
-    },
-    {
-        "id": "cerveza-aguila-light-sixpack", "name": "Cerveza Águila Light (Sixpack)", "brand": "Águila", "category": "Cerveza",
-        "price": 23000, "imageUrl": "images/products/aguila-light.png"
-    },
-    {
-        "id": "cerveza-pilsen-sixpack", "name": "Cerveza Pilsen (Sixpack)", "brand": "Pilsen", "category": "Cerveza",
-        "price": 21000, "imageUrl": "images/products/pilsen.png"
-    },
-    {
-        "id": "cerveza-heineken-sixpack", "name": "Cerveza Heineken (Sixpack)", "brand": "Heineken", "category": "Cerveza",
-        "price": 32000, "imageUrl": "images/products/heineken.png"
-    },
-    {
-        "id": "cerveza-budweiser-sixpack", "name": "Cerveza Budweiser (Sixpack)", "brand": "Budweiser", "category": "Cerveza",
-        "price": 28000, "imageUrl": "images/products/budweiser.png"
-    },
-    {
-        "id": "cerveza-stella-artois-sixpack", "name": "Cerveza Stella Artois (Sixpack)", "brand": "Stella Artois", "category": "Cerveza",
-        "price": 35000, "imageUrl": "images/products/stella-artois.png"
-    },
-    {
-        "id": "cerveza-bbc-monserrate-roja", "name": "Cerveza BBC Monserrate Roja", "brand": "BBC", "category": "Cerveza",
-        "price": 8000, "imageUrl": "images/products/bbc-monserrate.png"
-    },
-    {
-        "id": "bebida-gatorade-mora", "name": "Gatorade Mora Azul", "brand": "Gatorade", "category": "Bebida no alcohólica",
-        "price": 4500, "imageUrl": "images/products/gatorade.png"
-    },
-    {
-        "id": "bebida-mr-tea", "name": "Mr. Tea Limón", "brand": "Mr. Tea", "category": "Bebida no alcohólica",
-        "price": 3500, "imageUrl": "images/products/mr-tea.png"
-    },
-    {
-        "id": "mezclador-canada-dry", "name": "Mezclador Canada Dry", "brand": "Canada Dry", "category": "Bebida no alcohólica",
-        "price": 4000, "imageUrl": "images/products/cdry.png"
-    },
-    {
-        "id": "mezclador-bretana", "name": "Soda Bretaña", "brand": "Bretaña", "category": "Bebida no alcohólica",
-        "price": 3000, "imageUrl": "images/products/bretana.png"
-    },
-    {
-        "id": "jugo-hit-tropical", "name": "Jugo Hit Tropical", "brand": "Hit", "category": "Bebida no alcohólica",
-        "price": 2500, "imageUrl": "images/products/jugo-hit.png"
-    },
-    {
-        "id": "snacks-doritos", "name": "Doritos Queso", "brand": "Doritos", "category": "Snacks",
-        "price": 4500, "imageUrl": "images/products/doritos.png"
-    },
-    {
-        "id": "snacks-tostacos-picantes", "name": "Tostacos Picantes", "brand": "Tostacos", "category": "Snacks",
-        "price": 3800, "imageUrl": "images/products/tostacos.png"
-    },
-    {
-        "id": "snacks-pringles-original", "name": "Pringles Original", "brand": "Pringles", "category": "Snacks",
-        "price": 12000, "imageUrl": "images/products/pringles.png"
-    },
-    {
-        "id": "snacks-de-todito-bbq", "name": "De Todito BBQ", "brand": "De Todito", "category": "Snacks",
-        "price": 5000, "imageUrl": "images/products/dtd.png"
-    },
-    {
-        "id": "cigarrillos-marlboro-rojo", "name": "Cigarrillos Marlboro Rojo", "brand": "Marlboro", "category": "Tabaco",
-        "price": 9000, "imageUrl": "images/products/malboror.png"
-    },
-    {
-        "id": "cigarrillos-chesterfield", "name": "Cigarrillos Chesterfield", "brand": "Chesterfield", "category": "Tabaco",
-        "price": 8500, "imageUrl": "images/products/chesterfield.png"
-    },
-    {
-        "id": "cigarrillos-mustang", "name": "Cigarrillos Mustang", "brand": "Mustang", "category": "Tabaco",
-        "price": 7500, "imageUrl": "images/products/mustang.png"
-    },
-    {
-        "id": "vino-gato-negro-tinto", "name": "Vino Gato Negro (Tinto)", "brand": "Gato Negro", "category": "Vino",
-        "price": 35000, "imageUrl": "images/products/gato-negro.png"
-    },
-    {
-        "id": "vino-casillero-diablo", "name": "Vino Casillero del Diablo", "brand": "Casillero del Diablo", "category": "Vino",
-        "price": 55000, "imageUrl": "images/products/casillero-diablo.png"
-    },
-    {
-        "id": "tequila-maestro-dobel", "name": "Tequila Maestro Dobel Diamante", "brand": "Maestro Dobel", "category": "Licor",
-        "price": 280000, "imageUrl": "images/products/maestro-dobel.png"
-    }
+  {
+    "id": "aguardiente-caucano-verde",
+    "name": "Aguardiente Caucano (Verde)",
+    "brand": "Aguardiente Caucano",
+    "category": "Licor",
+    "price": 45000,
+    "imageUrl": "images/products/aguardientec.png"
+  },
+  {
+    "id": "ron-viejo-caldas-8-anos",
+    "name": "Ron Viejo de Caldas 8 Años",
+    "brand": "Ron Viejo de Caldas",
+    "category": "Licor",
+    "price": 75000,
+    "imageUrl": "images/products/ron.png"
+  },
+  {
+    "id": "whisky-buchanans-12-anos",
+    "name": "Whisky Buchanan's Deluxe 12",
+    "brand": "Buchanan's",
+    "category": "Licor",
+    "price": 180000,
+    "imageUrl": "images/products/bucanas.png"
+  },
+  {
+    "id": "cerveza-club-colombia-dorada-sixpack",
+    "name": "Cerveza Club Colombia (Sixpack)",
+    "brand": "Club Colombia",
+    "category": "Cerveza",
+    "price": 25000,
+    "imageUrl": "images/products/sicol.png"
+  },
+  {
+    "id": "cerveza-corona-sixpack",
+    "name": "Cerveza Corona (Sixpack)",
+    "brand": "Corona",
+    "category": "Cerveza",
+    "price": 30000,
+    "imageUrl": "images/products/corona.png"
+  },
+  {
+    "id": "cerveza-poker-sixpack",
+    "name": "Cerveza Poker (Sixpack)",
+    "brand": "Poker",
+    "category": "Cerveza",
+    "price": 22000,
+    "imageUrl": "images/products/sixpoker.png"
+  },
+  {
+    "id": "aguardiente-nectar-rojo",
+    "name": "Aguardiente Néctar Rojo",
+    "brand": "Aguardiente Néctar",
+    "category": "Licor",
+    "price": 48000,
+    "imageUrl": "images/products/nectar.png"
+  },
+  {
+    "id": "tequila-don-julio-reposado",
+    "name": "Tequila Don Julio Reposado",
+    "brand": "Don Julio",
+    "category": "Licor",
+    "price": 250000,
+    "imageUrl": "images/products/donjulio.png"
+  },
+  {
+    "id": "vodka-smirnoff",
+    "name": "Vodka Smirnoff Red Label",
+    "brand": "Smirnoff",
+    "category": "Licor",
+    "price": 60000,
+    "imageUrl": "images/products/smirnoff.png"
+  },
+  {
+    "id": "gaseosa-coca-cola-2l",
+    "name": "Coca-Cola 2 Litros",
+    "brand": "Coca-Cola",
+    "category": "Bebida no alcohólica",
+    "price": 7000,
+    "imageUrl": "images/products/cocacola.png"
+  },
+  {
+    "id": "gaseosa-pepsi-15l",
+    "name": "Pepsi 1.5 Litros",
+    "brand": "Pepsi",
+    "category": "Bebida no alcohólica",
+    "price": 5500,
+    "imageUrl": "images/products/pepsi.png"
+  },
+  {
+    "id": "gaseosa-postobon-manzana-15l",
+    "name": "Postobón Manzana 1.5L",
+    "brand": "Postobón",
+    "category": "Bebida no alcohólica",
+    "price": 5000,
+    "imageUrl": "images/products/postobon.png"
+  },
+  {
+    "id": "bebida-energetica-red-bull",
+    "name": "Energizante Red Bull",
+    "brand": "Red Bull",
+    "category": "Bebida no alcohólica",
+    "price": 8000,
+    "imageUrl": "images/products/redbull.png"
+  },
+  {
+    "id": "snacks-papas-margarita",
+    "name": "Papas Margarita Pollo",
+    "brand": "Margarita",
+    "category": "Snacks",
+    "price": 4000,
+    "imageUrl": "images/products/margarita.png"
+  },
+  {
+    "id": "snacks-choclitos",
+    "name": "Choclitos Limón",
+    "brand": "Choclitos",
+    "category": "Snacks",
+    "price": 3500,
+    "imageUrl": "images/products/choclitos.png"
+  },
+  {
+    "id": "bebida-agua-cristal",
+    "name": "Agua Cristal Sin Gas",
+    "brand": "Cristal",
+    "category": "Bebida no alcohólica",
+    "price": 2000,
+    "imageUrl": "images/products/agua.png"
+  },
+  {
+    "id": "licor-jagermeister",
+    "name": "Jagermeister",
+    "brand": "Jagermeister",
+    "category": "Licor",
+    "price": 70000,
+    "imageUrl": "images/products/jagermeister.png"
+  },
+  {
+    "id": "cigarrillos-lucky-strike",
+    "name": "Cigarrillos Lucky Strike",
+    "brand": "Lucky Strike",
+    "category": "Tabaco",
+    "price": 8000,
+    "imageUrl": "images/products/lukya.png"
+  },
+  {
+    "id": "licor-baileys",
+    "name": "Baileys Irish Cream",
+    "brand": "Baileys",
+    "category": "Licor",
+    "price": 90000,
+    "imageUrl": "images/products/baileys.png"
+  },
+  {
+    "id": "cerveza-andina-sixpack",
+    "name": "Cerveza Andina (Sixpack)",
+    "brand": "Andina",
+    "category": "Cerveza",
+    "price": 24000,
+    "imageUrl": "images/products/andina.png"
+  },
+  {
+    "id": "snacks-mani-la-especial",
+    "name": "Maní La Especial Sal",
+    "brand": "La Especial",
+    "category": "Snacks",
+    "price": 3000,
+    "imageUrl": "images/products/mani.png"
+  },
+  {
+    "id": "aguardiente-antioqueno-rojo",
+    "name": "Aguardiente Antioqueño (Rojo)",
+    "brand": "Antioqueño",
+    "category": "Licor",
+    "price": 46000,
+    "imageUrl": "images/products/antioqueno-rojo.png"
+  },
+  {
+    "id": "ron-havana-club-anejo",
+    "name": "Ron Havana Club Añejo",
+    "brand": "Havana Club",
+    "category": "Licor",
+    "price": 85000,
+    "imageUrl": "images/products/havana-club.png"
+  },
+  {
+    "id": "whisky-johnnie-walker-red",
+    "name": "Whisky Johnnie Walker Red",
+    "brand": "Johnnie Walker",
+    "category": "Licor",
+    "price": 95000,
+    "imageUrl": "images/products/johnnie-walker-red.png"
+  },
+  {
+    "id": "whisky-johnnie-walker-black",
+    "name": "Whisky Johnnie Walker Black",
+    "brand": "Johnnie Walker",
+    "category": "Licor",
+    "price": 190000,
+    "imageUrl": "images/products/johnnie-walker-black.png"
+  },
+  {
+    "id": "whisky-jack-daniels",
+    "name": "Whisky Jack Daniel's No. 7",
+    "brand": "Jack Daniel's",
+    "category": "Licor",
+    "price": 160000,
+    "imageUrl": "images/products/jack-daniels.png"
+  },
+  {
+    "id": "tequila-jose-cuervo-especial",
+    "name": "Tequila José Cuervo Especial",
+    "brand": "José Cuervo",
+    "category": "Licor",
+    "price": 98000,
+    "imageUrl": "images/products/jose-cuervo.png"
+  },
+  {
+    "id": "vodka-absolut",
+    "name": "Vodka Absolut",
+    "brand": "Absolut",
+    "category": "Licor",
+    "price": 88000,
+    "imageUrl": "images/products/absolut-vodka.png"
+  },
+  {
+    "id": "gin-hendricks",
+    "name": "Ginebra Hendrick's",
+    "brand": "Hendrick's",
+    "category": "Licor",
+    "price": 210000,
+    "imageUrl": "images/products/hendricks-gin.png"
+  },
+  {
+    "id": "crema-amarula",
+    "name": "Crema de Licor Amarula",
+    "brand": "Amarula",
+    "category": "Licor",
+    "price": 95000,
+    "imageUrl": "images/products/amarula.png"
+  },
+  {
+    "id": "vermouth-cinzano-rosso",
+    "name": "Vermouth Cinzano Rosso",
+    "brand": "Cinzano",
+    "category": "Licor",
+    "price": 55000,
+    "imageUrl": "images/products/vermur.png"
+  },
+  {
+    "id": "cerveza-aguila-light-sixpack",
+    "name": "Cerveza Águila Light (Sixpack)",
+    "brand": "Águila",
+    "category": "Cerveza",
+    "price": 23000,
+    "imageUrl": "images/products/aguila-light.png"
+  },
+  {
+    "id": "cerveza-pilsen-sixpack",
+    "name": "Cerveza Pilsen (Sixpack)",
+    "brand": "Pilsen",
+    "category": "Cerveza",
+    "price": 21000,
+    "imageUrl": "images/products/pilsen.png"
+  },
+  {
+    "id": "cerveza-heineken-sixpack",
+    "name": "Cerveza Heineken (Sixpack)",
+    "brand": "Heineken",
+    "category": "Cerveza",
+    "price": 32000,
+    "imageUrl": "images/products/heineken.png"
+  },
+  {
+    "id": "cerveza-budweiser-sixpack",
+    "name": "Cerveza Budweiser (Sixpack)",
+    "brand": "Budweiser",
+    "category": "Cerveza",
+    "price": 28000,
+    "imageUrl": "images/products/budweiser.png"
+  },
+  {
+    "id": "cerveza-stella-artois-sixpack",
+    "name": "Cerveza Stella Artois (Sixpack)",
+    "brand": "Stella Artois",
+    "category": "Cerveza",
+    "price": 35000,
+    "imageUrl": "images/products/stella-artois.png"
+  },
+  {
+    "id": "cerveza-bbc-monserrate-roja",
+    "name": "Cerveza BBC Monserrate Roja",
+    "brand": "BBC",
+    "category": "Cerveza",
+    "price": 8000,
+    "imageUrl": "images/products/bbc-monserrate.png"
+  },
+  {
+    "id": "bebida-gatorade-mora",
+    "name": "Gatorade Mora Azul",
+    "brand": "Gatorade",
+    "category": "Bebida no alcohólica",
+    "price": 4500,
+    "imageUrl": "images/products/gatorade.png"
+  },
+  {
+    "id": "bebida-mr-tea",
+    "name": "Mr. Tea Limón",
+    "brand": "Mr. Tea",
+    "category": "Bebida no alcohólica",
+    "price": 3500,
+    "imageUrl": "images/products/mr-tea.png"
+  },
+  {
+    "id": "mezclador-canada-dry",
+    "name": "Mezclador Canada Dry",
+    "brand": "Canada Dry",
+    "category": "Bebida no alcohólica",
+    "price": 4000,
+    "imageUrl": "images/products/cdry.png"
+  },
+  {
+    "id": "mezclador-bretana",
+    "name": "Soda Bretaña",
+    "brand": "Bretaña",
+    "category": "Bebida no alcohólica",
+    "price": 3000,
+    "imageUrl": "images/products/bretana.png"
+  },
+  {
+    "id": "jugo-hit-tropical",
+    "name": "Jugo Hit Tropical",
+    "brand": "Hit",
+    "category": "Bebida no alcohólica",
+    "price": 2500,
+    "imageUrl": "images/products/jugo-hit.png"
+  },
+  {
+    "id": "snacks-doritos",
+    "name": "Doritos Queso",
+    "brand": "Doritos",
+    "category": "Snacks",
+    "price": 4500,
+    "imageUrl": "images/products/doritos.png"
+  },
+  {
+    "id": "snacks-tostacos-picantes",
+    "name": "Tostacos Picantes",
+    "brand": "Tostacos",
+    "category": "Snacks",
+    "price": 3800,
+    "imageUrl": "images/products/tostacos.png"
+  },
+  {
+    "id": "snacks-pringles-original",
+    "name": "Pringles Original",
+    "brand": "Pringles",
+    "category": "Snacks",
+    "price": 12000,
+    "imageUrl": "images/products/pringles.png"
+  },
+  {
+    "id": "snacks-de-todito-bbq",
+    "name": "De Todito BBQ",
+    "brand": "De Todito",
+    "category": "Snacks",
+    "price": 5000,
+    "imageUrl": "images/products/dtd.png"
+  },
+  {
+    "id": "cigarrillos-marlboro-rojo",
+    "name": "Cigarrillos Marlboro Rojo",
+    "brand": "Marlboro",
+    "category": "Tabaco",
+    "price": 9000,
+    "imageUrl": "images/products/malboror.png"
+  },
+  {
+    "id": "cigarrillos-chesterfield",
+    "name": "Cigarrillos Chesterfield",
+    "brand": "Chesterfield",
+    "category": "Tabaco",
+    "price": 8500,
+    "imageUrl": "images/products/chesterfield.png"
+  },
+  {
+    "id": "cigarrillos-mustang",
+    "name": "Cigarrillos Mustang",
+    "brand": "Mustang",
+    "category": "Tabaco",
+    "price": 7500,
+    "imageUrl": "images/products/mustang.png"
+  },
+  {
+    "id": "vino-gato-negro-tinto",
+    "name": "Vino Gato Negro (Tinto)",
+    "brand": "Gato Negro",
+    "category": "Vino",
+    "price": 35000,
+    "imageUrl": "images/products/gato-negro.png"
+  },
+  {
+    "id": "vino-casillero-diablo",
+    "name": "Vino Casillero del Diablo",
+    "brand": "Casillero del Diablo",
+    "category": "Vino",
+    "price": 55000,
+    "imageUrl": "images/products/casillero-diablo.png"
+  },
+  {
+    "id": "tequila-maestro-dobel",
+    "name": "Tequila Maestro Dobel Diamante",
+    "brand": "Maestro Dobel",
+    "category": "Licor",
+    "price": 280000,
+    "imageUrl": "images/products/maestro-dobel.png"
+  },
+  {
+    "id": "new-product-1",
+    "name": "Producto de Prueba 1",
+    "price": 62935,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 1."
+  },
+  {
+    "id": "new-product-2",
+    "name": "Producto de Prueba 2",
+    "price": 69151,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 2."
+  },
+  {
+    "id": "new-product-3",
+    "name": "Producto de Prueba 3",
+    "price": 38638,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 3."
+  },
+  {
+    "id": "new-product-4",
+    "name": "Producto de Prueba 4",
+    "price": 80081,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 4."
+  },
+  {
+    "id": "new-product-5",
+    "name": "Producto de Prueba 5",
+    "price": 61101,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 5."
+  },
+  {
+    "id": "new-product-6",
+    "name": "Producto de Prueba 6",
+    "price": 72308,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 6."
+  },
+  {
+    "id": "new-product-7",
+    "name": "Producto de Prueba 7",
+    "price": 59962,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 7."
+  },
+  {
+    "id": "new-product-8",
+    "name": "Producto de Prueba 8",
+    "price": 64184,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 8."
+  },
+  {
+    "id": "new-product-9",
+    "name": "Producto de Prueba 9",
+    "price": 76812,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 9."
+  },
+  {
+    "id": "new-product-10",
+    "name": "Producto de Prueba 10",
+    "price": 84916,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 10."
+  },
+  {
+    "id": "new-product-11",
+    "name": "Producto de Prueba 11",
+    "price": 73416,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 11."
+  },
+  {
+    "id": "new-product-12",
+    "name": "Producto de Prueba 12",
+    "price": 62042,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 12."
+  },
+  {
+    "id": "new-product-13",
+    "name": "Producto de Prueba 13",
+    "price": 38382,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 13."
+  },
+  {
+    "id": "new-product-14",
+    "name": "Producto de Prueba 14",
+    "price": 98136,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 14."
+  },
+  {
+    "id": "new-product-15",
+    "name": "Producto de Prueba 15",
+    "price": 95706,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 15."
+  },
+  {
+    "id": "new-product-16",
+    "name": "Producto de Prueba 16",
+    "price": 104843,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 16."
+  },
+  {
+    "id": "new-product-17",
+    "name": "Producto de Prueba 17",
+    "price": 24388,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 17."
+  },
+  {
+    "id": "new-product-18",
+    "name": "Producto de Prueba 18",
+    "price": 64673,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 18."
+  },
+  {
+    "id": "new-product-19",
+    "name": "Producto de Prueba 19",
+    "price": 79875,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 19."
+  },
+  {
+    "id": "new-product-20",
+    "name": "Producto de Prueba 20",
+    "price": 35079,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 20."
+  },
+  {
+    "id": "new-product-21",
+    "name": "Producto de Prueba 21",
+    "price": 27423,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 21."
+  },
+  {
+    "id": "new-product-22",
+    "name": "Producto de Prueba 22",
+    "price": 109378,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 22."
+  },
+  {
+    "id": "new-product-23",
+    "name": "Producto de Prueba 23",
+    "price": 87722,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 23."
+  },
+  {
+    "id": "new-product-24",
+    "name": "Producto de Prueba 24",
+    "price": 53322,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 24."
+  },
+  {
+    "id": "new-product-25",
+    "name": "Producto de Prueba 25",
+    "price": 40903,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 25."
+  },
+  {
+    "id": "new-product-26",
+    "name": "Producto de Prueba 26",
+    "price": 100951,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 26."
+  },
+  {
+    "id": "new-product-27",
+    "name": "Producto de Prueba 27",
+    "price": 58190,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 27."
+  },
+  {
+    "id": "new-product-28",
+    "name": "Producto de Prueba 28",
+    "price": 30332,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 28."
+  },
+  {
+    "id": "new-product-29",
+    "name": "Producto de Prueba 29",
+    "price": 47966,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 29."
+  },
+  {
+    "id": "new-product-30",
+    "name": "Producto de Prueba 30",
+    "price": 83987,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 30."
+  },
+  {
+    "id": "new-product-31",
+    "name": "Producto de Prueba 31",
+    "price": 95080,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 31."
+  },
+  {
+    "id": "new-product-32",
+    "name": "Producto de Prueba 32",
+    "price": 25657,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 32."
+  },
+  {
+    "id": "new-product-33",
+    "name": "Producto de Prueba 33",
+    "price": 97690,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 33."
+  },
+  {
+    "id": "new-product-34",
+    "name": "Producto de Prueba 34",
+    "price": 55108,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 34."
+  },
+  {
+    "id": "new-product-35",
+    "name": "Producto de Prueba 35",
+    "price": 80012,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 35."
+  },
+  {
+    "id": "new-product-36",
+    "name": "Producto de Prueba 36",
+    "price": 33218,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 36."
+  },
+  {
+    "id": "new-product-37",
+    "name": "Producto de Prueba 37",
+    "price": 41287,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 37."
+  },
+  {
+    "id": "new-product-38",
+    "name": "Producto de Prueba 38",
+    "price": 100477,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 38."
+  },
+  {
+    "id": "new-product-39",
+    "name": "Producto de Prueba 39",
+    "price": 39762,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 39."
+  },
+  {
+    "id": "new-product-40",
+    "name": "Producto de Prueba 40",
+    "price": 32859,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 40."
+  },
+  {
+    "id": "new-product-41",
+    "name": "Producto de Prueba 41",
+    "price": 61143,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 41."
+  },
+  {
+    "id": "new-product-42",
+    "name": "Producto de Prueba 42",
+    "price": 44428,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 42."
+  },
+  {
+    "id": "new-product-43",
+    "name": "Producto de Prueba 43",
+    "price": 96214,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 43."
+  },
+  {
+    "id": "new-product-44",
+    "name": "Producto de Prueba 44",
+    "price": 21407,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 44."
+  },
+  {
+    "id": "new-product-45",
+    "name": "Producto de Prueba 45",
+    "price": 83191,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 45."
+  },
+  {
+    "id": "new-product-46",
+    "name": "Producto de Prueba 46",
+    "price": 80381,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 46."
+  },
+  {
+    "id": "new-product-47",
+    "name": "Producto de Prueba 47",
+    "price": 40487,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 47."
+  },
+  {
+    "id": "new-product-48",
+    "name": "Producto de Prueba 48",
+    "price": 31436,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 48."
+  },
+  {
+    "id": "new-product-49",
+    "name": "Producto de Prueba 49",
+    "price": 108618,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 49."
+  },
+  {
+    "id": "new-product-50",
+    "name": "Producto de Prueba 50",
+    "price": 30908,
+    "category": "Licor",
+    "imageUrl": "images/products/ron.png",
+    "description": "Descripción del producto de prueba 50."
+  }
 ]
