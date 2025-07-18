@@ -2,8 +2,8 @@ import { initCart, toggleCartSidebar, addToCart } from './cart.js';
 import { initHeroCarousel, initBrandsCarousel } from './carousels.js';
 import { initAgeVerification } from './age-verification.js';
 import { init3DBackground } from './background3d.js';
+import { initPwaInstall } from './pwa-install.js';
 import './version-manager.js';
-import './pwa-install.js';
 
 const API_PRODUCTS_URL = 'products.json';
 const API_CONFIG_URL = 'config.json';
@@ -136,10 +136,11 @@ function loadMoreProducts() {
 async function main() {
     console.log("DOM cargado. Iniciando la aplicación...");
     try {
-        // Inicializar módulos visuales que no dependen de datos
+        // Inicializar módulos que interactúan con el DOM
         initAgeVerification();
         init3DBackground();
-        console.log("Verificación de edad y fondo 3D inicializados.");
+        initPwaInstall();
+        console.log("Módulos base inicializados.");
 
         let productsLoaded = false;
         // Intentar cargar desde API externa
