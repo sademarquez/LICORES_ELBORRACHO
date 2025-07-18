@@ -1,5 +1,3 @@
-import Swiper from 'swiper';
-
 export function initHeroCarousel(bannersData) {
     const wrapper = document.getElementById('heroSwiperWrapper');
     if (!wrapper || !bannersData) return;
