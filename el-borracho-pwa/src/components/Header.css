@@ -28,14 +28,22 @@
     position: fixed;
     top: 16px;
     left: 16px;
-    height: 50px; /* Slightly larger for FAB feel */
+    height: 50px;
     width: 50px;
     border-radius: 50%;
     box-shadow: 0 4px 12px rgba(0,0,0,0.4);
     border: 2px solid var(--primary-color);
     background-color: rgba(17, 17, 17, 0.9);
-    padding: 2px; /* Reduced padding */
+    padding: 0; /* Remove padding */
     box-sizing: border-box;
+    display: flex; /* Center the image inside */
+    align-items: center;
+    justify-content: center;
+}
+
+.logo.floating img {
+    width: 100%; /* Make image fill the circle */
+    height: 100%;
 }
 
 .cart-icon-container {

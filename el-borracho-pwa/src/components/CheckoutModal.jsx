@@ -34,8 +34,26 @@ export const CheckoutModal = () => {
       const result = await createOrder(orderDetails);
       
       const pickupCode = result.data.pickupCode;
-      alert(`¡Gracias por tu pedido, ${name}! Tu código de recogida es: ${pickupCode}`);
       
+      // --- WhatsApp Logic ---
+      const storePhoneNumber = "573185004268"; // WhatsApp number with country code
+      let message = `¡Hola! 👋 Acabo de hacer un pedido:\n\n`;
+      message += `*Código de Recogida:* ${pickupCode}\n\n`;
+      message += `*Cliente:* ${name}\n`;
+      message += `*Dirección:* ${address}\n\n`;
+      message += `*Pedido:*\n`;
+      cartItems.forEach(item => {
+        message += `- ${item.name} (x${item.quantity}) - ${(item.price * item.quantity).toLocaleString('es-CO')}\n`;
+      });
+      message += `\n*Total a Pagar:* ${cartTotal.toLocaleString('es-CO')}\n\n`;
+      message += `¡Gracias!`;
+
+      const whatsappUrl = `https://wa.me/${storePhoneNumber}?text=${encodeURIComponent(message)}`;
+      
+      // Open WhatsApp in a new tab
+      window.open(whatsappUrl, '_blank');
+      // --- End WhatsApp Logic ---
+
       clearCart();
       toggleCheckout();
     } catch (err) {

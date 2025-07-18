@@ -16,11 +16,11 @@ export const Header = ({ mainRef }) => {
 
   return (
     <header className="app-header">
-      <div className="logo-container">
+      <div className={`logo-container ${isFloating ? 'floating' : ''}`}>
         <img 
           src={logo} 
           alt="El Borracho Logo" 
-          className={`logo ${isFloating ? 'floating' : ''}`} 
+          className="logo"
         />
       </div>
       <div className="cart-icon-container" onClick={toggleCart}>
