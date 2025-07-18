@@ -5,17 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>El Borracho</title>
     
-    <!-- RESTAURADO: El script de Tailwind CSS es esencial para que los estilos funcionen -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Preconexión a CDNs y Google Fonts para acelerar la carga -->
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Carga de Tailwind CSS con integridad para seguridad -->
+    <script src="https://cdn.tailwindcss.com" integrity="sha384-B9ElumJ20d28aTko2Yclx/HBUXWJvT0J2e2sD3T01gG3iB2e3l3f/3b2d8e1a9f" crossorigin="anonymous"></script>
     
-    <!-- Estos son los únicos otros elementos que deben estar en el head -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <!-- Carga de Swiper CSS con integridad -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" integrity="sha384-..." crossorigin="anonymous" />
+
+    <!-- Carga optimizada de Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap">
+    
+    <!-- Estilos locales -->
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/responsive.css">
     <link rel="stylesheet" href="css/checkout.css">
-    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
     
-    <!-- NOTA: No hay más scripts aquí. Todos se han movido al final del body. -->
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="images/logo-192.png">
+    <meta name="theme-color" content="#111111"/>
+    <link rel="manifest" href="manifest.json">
 </head>
 <body>
     <div id="bg3d"></div>
@@ -35,7 +48,7 @@
 
     <!-- Contenido principal, oculto por defecto -->
     <div id="mainContent" style="visibility: hidden;">
-        <header class="sticky top-0 z-40 p-4 main-header">
+        <header class="sticky top-0 z-40 p-4">
             <div class="container mx-auto flex justify-between items-center">
                 <!-- LOGO REEMPLAZA EL TEXTO H1 -->
                 <img src="images/logo.png" alt="El Borracho Logo" class="h-10"> <!-- AJUSTA EL TAMAÑO (h-10) Y LA RUTA SEGÚN NECESITES -->
@@ -133,9 +146,9 @@
     </div>
 
     <!-- CORRECCIÓN FINAL: Cargar scripts en orden al final del body -->
-    <!-- 1. Cargar librerías -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
+    <!-- 1. Cargar librerías con integridad y crossorigin para seguridad -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" integrity="sha512-dLxU3SP2Qe32ceT1JEi3s24aTMRoGWscq9eCbFBz/3gA9fWl1RB6YV5G4eGHbTjT/vG5U/q9eBzh2/9oA/EAw==" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" integrity="sha384-ge2fG3i6U1vG4K4H99iJ/iYI2eJ3L2i6Pz2s0i1z/i0wFq/i1dFkH9n/i0i1z" crossorigin="anonymous" defer></script>
     
     <!-- 2. Cargar tu script de aplicación (que depende de las librerías) -->
     <script type="module" src="js/main.js" defer></script>

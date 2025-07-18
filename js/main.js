@@ -14,15 +14,15 @@ const PRODUCTS_PER_PAGE = 6;
 function renderProductCard(product) {
     const card = document.createElement('div');
     card.className = 'product-card';
-    // Estructura actualizada: Sin overlay, nombre y precio juntos.
+    // Estructura actualizada con loading="lazy" y decoding="async" para optimizar la carga de imágenes.
     card.innerHTML = `
         <div class="product-image-container">
-            <img src="${product.imageUrl}" alt="${product.name}" class="product-image">
+            <img src="${product.imageUrl}" alt="${product.name}" class="product-image" loading="lazy" decoding="async">
         </div>
         <div class="product-details">
             <div>
                 <h3 class="product-name">${product.name}</h3>
-                <p class="product-price">$${product.price.toLocaleString('es-CO')}</p>
+                <p class="product-price">${product.price.toLocaleString('es-CO')}</p>
             </div>
             <button class="add-to-cart-btn" data-id="${product.id}">Agregar</button>
         </div>`;
@@ -260,45 +260,51 @@ async function main() {
 }
 
 function setupEventListeners() {
-    document.getElementById('cartOpenBtn')?.addEventListener('click', () => toggleCartSidebar(true));
+    // Usar delegación de eventos en el body para manejar clics en toda la app
+    document.body.addEventListener('click', event => {
+        const target = event.target;
+
+        // Botón para agregar al carrito
+        if (target.matches('.add-to-cart-btn')) {
+            addToCart(target.dataset.id);
+            return;
+        }
+
+        // Botón para abrir el carrito
+        if (target.closest('#cartOpenBtn')) {
+            toggleCartSidebar(true);
+            return;
+        }
+
+        // Botones de categoría (Desktop y Mobile)
+        const categoryButton = target.closest('.category-btn');
+        if (categoryButton) {
+            const category = categoryButton.dataset.category;
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.category === category);
+            });
+            renderProductsByCategory(category);
+            return;
+        }
+
+        // Barra de navegación inferior
+        const bottomNavItem = target.closest('.bottom-nav-item');
+        if (bottomNavItem) {
+            document.querySelectorAll('.bottom-nav-item').forEach(item => item.classList.remove('active'));
+            bottomNavItem.classList.add('active');
+            const action = bottomNavItem.dataset.action;
+            if (action === 'home') window.scrollTo({ top: 0, behavior: 'smooth' });
+            if (action === 'cart') toggleCartSidebar(true);
+            if (action === 'search') document.getElementById('mainSearchInput').focus({ preventScroll: true });
+            return;
+        }
+    });
+
+    // Listeners para eventos de 'input' y 'change' en los filtros
     document.getElementById('loadMoreBtn')?.addEventListener('click', loadMoreProducts);
     document.getElementById('mainSearchInput')?.addEventListener('input', applyFiltersAndRender);
     document.getElementById('categoryFilter')?.addEventListener('change', applyFiltersAndRender);
     document.getElementById('priceSortFilter')?.addEventListener('change', applyFiltersAndRender);
-    document.body.addEventListener('click', event => {
-        if (event.target.matches('.add-to-cart-btn')) addToCart(event.target.dataset.id);
-    });
-
-    // Event listener para los botones de categoría usando delegación
-    const categoryNav = document.getElementById('category-nav-section');
-    if (categoryNav) {
-        categoryNav.addEventListener('click', (event) => {
-            const button = event.target.closest('.category-btn');
-            if (!button) return;
-
-            const category = button.dataset.category;
-            // Actualiza la clase 'active' en todos los botones correspondientes
-            document.querySelectorAll('.category-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.category === category);
-            });
-            
-            renderProductsByCategory(category);
-        });
-    }
-
-    const bottomNav = document.getElementById('bottomNav');
-    if (bottomNav) {
-        bottomNav.addEventListener('click', event => {
-            const button = event.target.closest('.bottom-nav-item');
-            if (!button) return;
-            bottomNav.querySelectorAll('.bottom-nav-item').forEach(item => item.classList.remove('active'));
-            button.classList.add('active');
-            const action = button.dataset.action;
-            if (action === 'home') window.scrollTo({ top: 0, behavior: 'smooth' });
-            else if (action === 'cart') toggleCartSidebar(true);
-            else if (action === 'search') document.getElementById('mainSearchInput').focus({ preventScroll: true });
-        });
-    }
 }
 
 document.addEventListener('DOMContentLoaded', main);

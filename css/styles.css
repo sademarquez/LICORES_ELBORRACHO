@@ -70,23 +70,21 @@ main > section:first-child { margin-top: 0; }
     right: 0;
     width: 100%;
     max-width: 400px;
-    height: 100vh; /* Usar vh para consistencia */
+    height: 100vh;
     background: rgba(10, 10, 10, 0.7);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-left: 1px solid var(--glass-border);
-    z-index: 1000; /* z-index base */
+    z-index: 1050; /* Aumentado para estar sobre cualquier otro elemento */
     display: flex;
     flex-direction: column;
     transform: translateX(100%);
     transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-    padding-bottom: 70px; /* Espacio para la barra de navegación inferior */
-    box-sizing: border-box; /* Asegura que el padding no aumente la altura */
+    box-sizing: border-box;
 }
 .cart-sidebar.open {
     transform: translateX(0);
     box-shadow: -10px 0 50px rgba(0,0,0,0.5);
-    z-index: 1001; /* z-index cuando está abierto, debe ser mayor que el de bottomNav (50) */
 }
 .cart-header { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem; border-bottom: 1px solid var(--glass-border); flex-shrink: 0; }
 .cart-header h2 { font-size: 1.5rem; font-weight: 600; color: var(--primary-color); }
