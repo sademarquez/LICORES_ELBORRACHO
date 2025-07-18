@@ -42,6 +42,7 @@ function App() {
   const [error, setError] = useState(null);
   const [isAgeVerified, setIsAgeVerified] = useState(null);
   const isMobile = useMediaQuery('(max-width: 768px)');
+  const mainRef = React.useRef(null);
 
   useEffect(() => {
     const ageVerified = localStorage.getItem('ageVerified') === 'true';
@@ -98,8 +99,8 @@ function App() {
     <div className="App">
       <CartSidebar />
       <CheckoutModal />
-      <Header />
-      <main>
+      <Header mainRef={mainRef} />
+      <main ref={mainRef}>
         <HeroCarousel banners={banners} />
         {loading && <p className="loading-text">Cargando...</p>}
         {error && <p className="error-message">{error}</p>}

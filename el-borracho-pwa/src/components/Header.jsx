@@ -1,19 +1,27 @@
 
 import React from 'react';
 import { useCart } from '../context/CartContext';
+import { useScrollPosition } from '../hooks/useScrollPosition';
 import logo from '/logo_1.svg';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Badge from '@mui/material/Badge';
 import './Header.css';
 
-export const Header = () => {
+export const Header = ({ mainRef }) => {
   const { toggleCart, cartItems } = useCart();
+  const scrollPosition = useScrollPosition(mainRef);
   const cartItemCount = cartItems.reduce((count, item) => count + item.quantity, 0);
+
+  const isFloating = scrollPosition > 50;
 
   return (
     <header className="app-header">
       <div className="logo-container">
-        <img src={logo} alt="El Borracho Logo" className="logo" />
+        <img 
+          src={logo} 
+          alt="El Borracho Logo" 
+          className={`logo ${isFloating ? 'floating' : ''}`} 
+        />
       </div>
       <div className="cart-icon-container" onClick={toggleCart}>
         <Badge badgeContent={cartItemCount} color="warning">
