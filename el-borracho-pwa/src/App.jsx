@@ -9,6 +9,7 @@ import { BottomNav } from './components/BottomNav';
 import { CategoryCarousel } from './components/CategoryCarousel';
 import { HeroCarousel } from './components/HeroCarousel';
 import { useMediaQuery } from './hooks/useMediaQuery';
+import { InstallPWAButton } from './components/InstallPWAButton';
 import './App.css';
 import './components/CartSidebar.css';
 import './components/CheckoutModal.css';
@@ -113,6 +114,7 @@ function App() {
         )}
       </main>
       {isMobile && <BottomNav />}
+      <InstallPWAButton />
     </div>
   );
 }

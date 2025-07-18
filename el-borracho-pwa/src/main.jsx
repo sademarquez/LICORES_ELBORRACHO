@@ -1,7 +1,9 @@
+
 import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
 import { CartProvider } from './context/CartContext.jsx';
+import { PWAProvider } from './context/PWAContext.jsx';
 import Background3D from './components/Background3D.jsx';
 import './index.css';
 
@@ -19,8 +21,10 @@ bgRoot.render(
 const appRoot = ReactDOM.createRoot(document.getElementById('root'));
 appRoot.render(
   <React.StrictMode>
-    <CartProvider>
-      <App />
-    </CartProvider>
+    <PWAProvider>
+      <CartProvider>
+        <App />
+      </CartProvider>
+    </PWAProvider>
   </React.StrictMode>
 );

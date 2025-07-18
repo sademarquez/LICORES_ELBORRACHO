@@ -25,8 +25,7 @@ body {
 .App {
   display: flex;
   flex-direction: column;
-  height: 100vh; /* Full viewport height */
-  overflow: hidden; /* Prevent body scrolling */
+  height: 100%; /* Occupy full height of #root */
   text-align: center;
 }
 
