@@ -1,34 +1,20 @@
 {
-  "name": "el-borracho",
-  "version": "1.0.4",
-  "description": "PWA para licores a domicilio en Popayán",
+  "name": "el-borracho-pwa",
+  "version": "2.0.0",
+  "description": "PWA de licores a domicilio en Popayán",
   "main": "index.html",
   "scripts": {
-    "dev": "npx serve .",
-    "build": "echo \"Static site - no build needed\"",
-    "android": "npx cap run android",
-    "ios": "npx cap run ios",
-    "sync": "npx cap sync",
-    "build-apk": "node build-apk.js",
-    "build-apk-windows": "node build-apk-windows.js",
-    "install-device": "node install-device.js",
-    "deploy": "mkdir -p www && cp -r css www/ && cp -r js www/ && cp -r images www/ && cp index.html manifest.json sw.js products.json config.json pedidos.html descargar.html www/ && npx cap sync",
-    "update-version": "node update-version.js",
-    "release": "npm run update-version && npm run deploy && npm run build-apk"
+    "start": "serve .",
+    "build": "echo \"PWA static site - no build needed.\""
   },
   "keywords": [
     "pwa",
     "licores",
-    "domicilio",
-    "capacitor"
+    "domicilio"
   ],
   "author": "El Borracho",
   "license": "MIT",
   "dependencies": {
-    "@capacitor/android": "^7.4.0",
-    "@capacitor/cli": "^7.4.0",
-    "@capacitor/core": "^7.4.0",
-    "@capacitor/ios": "^7.4.0",
-    "@capacitor/live-updates": "^0.4.0"
+    "serve": "^14.2.3"
   }
 }
