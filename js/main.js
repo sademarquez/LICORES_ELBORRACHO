@@ -1,9 +1,8 @@
 import { initCart, toggleCartSidebar, addToCart } from './cart.js';
 import { initHeroCarousel, initBrandsCarousel } from './carousels.js';
 import { initAgeVerification } from './age-verification.js';
-import './live-updates.js';
+import { init3DBackground } from './background3d.js';
 import './version-manager.js';
-import './native-cache-manager.js';
 import './pwa-install.js';
 
 const API_PRODUCTS_URL = 'products.json';
@@ -137,14 +136,16 @@ function loadMoreProducts() {
 async function main() {
     console.log("DOM cargado. Iniciando la aplicación...");
     try {
+        // Inicializar módulos visuales que no dependen de datos
         initAgeVerification();
-        console.log("Verificación de edad inicializada.");
+        init3DBackground();
+        console.log("Verificación de edad y fondo 3D inicializados.");
 
         let productsLoaded = false;
         // Intentar cargar desde API externa
         try {
             console.log("Intentando cargar productos desde la API central: https://domiz.netlify.app/api/products");
-            const apiResponse = await fetch('https://domiz.netlify.app/api/products', { cache: 'no-store' }); // Evitar caché para la API externa
+            const apiResponse = await fetch('https://domiz.netlify.app/api/products', { cache: 'no-store' });
             if (apiResponse.ok) {
                 const productsData = await apiResponse.json();
                 if (productsData && productsData.length > 0) {
@@ -152,71 +153,39 @@ async function main() {
                     console.log("Productos cargados exitosamente desde la API externa.");
                     productsLoaded = true;
                 } else {
-                    console.warn("API externa respondió OK, pero no devolvió productos o lista vacía. Se intentará fallback local.");
+                    console.warn("API externa respondió OK, pero no devolvió productos. Fallback a local.");
                 }
             } else {
-                console.warn(`API externa respondió con error: ${apiResponse.status} ${apiResponse.statusText}. Se intentará fallback local.`);
+                console.warn(`API externa respondió con error: ${apiResponse.status}. Fallback a local.`);
             }
         } catch (apiError) {
-            console.error("Error al intentar cargar productos desde la API externa. Se intentará fallback local:", apiError);
+            console.error("Error al cargar desde API externa. Fallback a local:", apiError);
         }
 
-        // Si no se cargaron desde la API, intentar fallback local
+        // Fallback a products.json local si la carga de la API falló
         if (!productsLoaded) {
-            console.log("No se pudieron cargar productos de la API externa o la API devolvió datos vacíos. Intentando fallback a 'products.json' local...");
-            try {
-                const localResponse = await fetch('products.json'); // Carga el products.json local
-                if (localResponse.ok) {
-                    const localProductsData = await localResponse.json();
-                    if (localProductsData && localProductsData.length > 0) {
-                        allProducts = localProductsData;
-                        console.log("Productos cargados exitosamente desde 'products.json' local.");
-                        productsLoaded = true;
-                    } else {
-                         console.error("'products.json' local está vacío o no es un array válido.");
-                    }
-                } else {
-                    console.error(`Error al cargar 'products.json' local: ${localResponse.status} ${localResponse.statusText}`);
-                }
-            } catch (localError) {
-                console.error("Error fatal al intentar cargar 'products.json' local:", localError);
+            console.log("Intentando fallback a 'products.json' local...");
+            const localResponse = await fetch('products.json');
+            if (localResponse.ok) {
+                allProducts = await localResponse.json();
+                console.log("Productos cargados exitosamente desde 'products.json' local.");
+            } else {
+                throw new Error("No se pudieron cargar los datos de los productos ni desde la API ni localmente.");
             }
         }
 
-        // Si después de ambos intentos no hay productos, es un error crítico
-        if (!productsLoaded) {
-            // Construct a more specific error message if possible
-            let errorMessage = "No se pudieron cargar los datos de los productos.";
-            if (allProducts === null || allProducts.length === 0) { // Check if allProducts is still empty or null
-                errorMessage = "No se pudieron cargar los datos de los productos ni desde la API ni localmente. La aplicación no puede continuar.";
-            }
-            throw new Error(errorMessage);
-        }
-
-        // La carga de config.json puede permanecer local si cada tienda tiene su propia configuración de banners, etc.
+        // Cargar configuración de la app
         console.log("Intentando cargar config.json local...");
-        const configResponse = await fetch('config.json').catch(e => { 
-            console.error('Error al hacer fetch de config.json local:', e);
-            // Consider if a fallback for config is also needed or if it's critical
-            return null;
-        });
-
-        if (!configResponse || !configResponse.ok) {
-            // Decide how critical this is. For now, we'll throw, but a default config could be an option.
-            throw new Error(`Error al cargar config.json: ${configResponse?.statusText || 'La petición a config.json falló'}`);
-        }
+        const configResponse = await fetch('config.json');
+        if (!configResponse.ok) throw new Error('No se pudo cargar la configuración de la aplicación.');
         const appConfig = await configResponse.json();
         console.log("Configuración local procesada.");
         
+        // Inicializar el resto de la aplicación con los datos cargados
         initCart(allProducts, appConfig.contactPhone);
-        console.log("Carrito inicializado.");
-
-        setupEventListeners();
-        console.log("Listeners de eventos configurados.");
-        
         initHeroCarousel(appConfig.banners);
         initBrandsCarousel(appConfig.brands);
-        console.log("Carruseles inicializados.");
+        console.log("Carrito y carruseles inicializados.");
         
         const categories = [...new Set(allProducts.map(p => p.category))];
         renderCategoryButtons(categories);
@@ -229,11 +198,9 @@ async function main() {
         const firstCategoryButton = document.querySelector('.category-btn');
         if (firstCategoryButton) {
             firstCategoryButton.click();
-            console.log("Click simulado en la primera categoría.");
         }
         
-        const currentYearEl = document.getElementById('currentYear');
-        if (currentYearEl) currentYearEl.textContent = new Date().getFullYear();
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
 
         // Iniciar el heartbeat
         setInterval(() => {
@@ -248,15 +215,13 @@ async function main() {
     } catch (error) {
         console.error("Error CRÍTICO al inicializar la aplicación:", error);
         const body = document.querySelector('body');
-        if (body) {
-            body.innerHTML = `
-                <div style="padding: 2rem; text-align: center; color: white; background-color: #1a1a1a; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-                    <h1 style="font-size: 2rem; font-weight: bold; margin-bottom: 1rem;">Error al Cargar la Aplicación</h1>
-                    <p style="margin-bottom: 1rem;">Lo sentimos, algo salió mal. Por favor, intenta recargar la página.</p>
-                    <p style="font-family: monospace; background-color: #2a2a2a; padding: 1rem; border-radius: 8px; max-width: 80%; overflow-wrap: break-word;">${error.message}</p>
-                </div>
-            `;
-        }
+        body.innerHTML = `
+            <div style="padding: 2rem; text-align: center; color: white; background-color: #1a1a1a; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                <h1 style="font-size: 2rem; font-weight: bold; margin-bottom: 1rem;">Error al Cargar la Aplicación</h1>
+                <p style="margin-bottom: 1rem;">Lo sentimos, algo salió mal. Por favor, intenta recargar la página.</p>
+                <p style="font-family: monospace; background-color: #2a2a2a; padding: 1rem; border-radius: 8px; max-width: 80%; overflow-wrap: break-word;">${error.message}</p>
+            </div>
+        `;
     }
 }
 

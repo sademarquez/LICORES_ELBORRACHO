@@ -152,42 +152,5 @@
     
     <!-- 2. Cargar tu script de aplicación (que depende de las librerías) -->
     <script type="module" src="js/main.js" defer></script>
-    
-    <!-- 3. Dejamos el script del fondo 3D aquí para que se ejecute después de cargar Three.js -->
-    <script type="module" defer>
-        let scene, camera, renderer, particles;
-        function init3DBackground() {
-            const container = document.getElementById('bg3d');
-            if(!container || typeof THREE === 'undefined') return;
-            scene = new THREE.Scene();
-            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            renderer = new THREE.WebGLRenderer({ alpha: true });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            container.appendChild(renderer.domElement);
-            const particlesGeometry = new THREE.BufferGeometry;
-            const count = 5000;
-            const positions = new Float32Array(count * 3);
-            for (let i = 0; i < count * 3; i++) { positions[i] = (Math.random() - 0.5) * 15; }
-            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-            const particlesMaterial = new THREE.PointsMaterial({ size: 0.025, sizeAttenuation: true, color: '#D4AF37', transparent: true, opacity: 0.7 });
-            particles = new THREE.Points(particlesGeometry, particlesMaterial);
-            scene.add(particles);
-            camera.position.z = 5;
-            window.addEventListener('resize', onWindowResize, false);
-            animate();
-        }
-        function onWindowResize() {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        }
-        const clock = new THREE.Clock();
-        function animate() {
-            if(particles) particles.rotation.y = clock.getElapsedTime() * 0.05;
-            if(renderer) renderer.render(scene, camera);
-            window.requestAnimationFrame(animate);
-        }
-        init3DBackground();
-    </script>
 </body>
 </html>
