@@ -1,12 +1,7 @@
-// Este script asume que Three.js ya ha sido cargado y ha creado el objeto global THREE.
+import * as THREE from 'three';
 
 export function init3DBackground() {
-    // Verificar que THREE esté disponible antes de ejecutar.
-    if (typeof THREE === 'undefined') {
-        console.error('Three.js no está cargado. No se puede inicializar el fondo 3D.');
-        return;
-    }
-
+    // Ya no se necesita la verificación 'typeof THREE', el import se encarga de ello.
     let scene, camera, renderer, particles;
     const container = document.getElementById('bg3d');
     if (!container) return;

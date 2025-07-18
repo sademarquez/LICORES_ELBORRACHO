@@ -273,4 +273,4 @@ function setupEventListeners() {
     document.getElementById('priceSortFilter')?.addEventListener('change', applyFiltersAndRender);
 }
 
-window.addEventListener('load', main);
+document.addEventListener('DOMContentLoaded', main);
