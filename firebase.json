@@ -1,6 +1,37 @@
-
 {
   "functions": {
     "source": "functions"
-  }
+  },
+  "hosting": [
+    {
+      "target": "elborracho",
+      "public": "el-borracho-pwa/dist",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
+    },
+    {
+      "target": "domiz",
+      "public": "domiz-pwa/dist",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
+    }
+  ]
 }

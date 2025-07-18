@@ -1,80 +1,116 @@
-
 import React, { useState, useEffect } from 'react';
 import { collection, getDocs, query, orderBy } from 'firebase/firestore';
 import { db } from './firebase';
-import { useCart } from './context/CartContext';
 import { CartSidebar } from './components/CartSidebar';
 import { CheckoutModal } from './components/CheckoutModal';
+import { AgeVerificationModal } from './components/AgeVerificationModal';
+import { Header } from './components/Header';
+import { BottomNav } from './components/BottomNav';
+import { CategoryCarousel } from './components/CategoryCarousel';
+import { HeroCarousel } from './components/HeroCarousel';
 import './App.css';
-import './components/CartSidebar.css'; // Import cart styles
-import './components/CheckoutModal.css'; // Import checkout styles
+import './components/CartSidebar.css';
+import './components/CheckoutModal.css';
+import './components/Header.css';
+import './components/BottomNav.css';
+import './components/CategoryCarousel.css';
+import './components/HeroCarousel.css';
+
+const banners = [
+  {
+    imageUrl: '/banners/banner-cervezas.jpg',
+    title: 'Cervezas del Mundo',
+    subtitle: 'Descubre nuestra selección importada y artesanal.'
+  },
+  {
+    imageUrl: '/banners/banner-licores-premium.png',
+    title: 'Licores Premium',
+    subtitle: 'Para celebrar momentos inolvidables.'
+  },
+  {
+    imageUrl: '/banners/banner-snacks.jpg',
+    title: 'Snacks y Acompañantes',
+    subtitle: 'El complemento perfecto para tu bebida.'
+  }
+];
 
 function App() {
-  const [products, setProducts] = useState([]);
+  const [productsByCategory, setProductsByCategory] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { addToCart, toggleCart, cartItems } = useCart();
-
-  const cartItemCount = cartItems.reduce((count, item) => count + item.quantity, 0);
+  const [isAgeVerified, setIsAgeVerified] = useState(null);
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setLoading(true);
-        const productsQuery = query(collection(db, 'products'), orderBy('name'));
-        const productSnapshot = await getDocs(productsQuery);
-        const productList = productSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        setProducts(productList);
-        setError(null);
-      } catch (err) {
-        console.error("Error fetching products: ", err);
-        setError("No se pudieron cargar los productos. Inténtalo de nuevo más tarde.");
-      } finally {
-        setLoading(false);
-      }
-    };
+    const ageVerified = localStorage.getItem('ageVerified') === 'true';
+    setIsAgeVerified(ageVerified);
 
-    fetchProducts();
+    if (ageVerified) {
+      fetchProducts();
+    } else {
+      setLoading(false);
+    }
   }, []);
+
+  const fetchProducts = async () => {
+    try {
+      setLoading(true);
+      const productsQuery = query(collection(db, 'products'), orderBy('name'));
+      const productSnapshot = await getDocs(productsQuery);
+      const productList = productSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      
+      const groupedProducts = productList.reduce((acc, product) => {
+        const category = product.category || 'Otros';
+        if (!acc[category]) {
+          acc[category] = [];
+        }
+        acc[category].push(product);
+        return acc;
+      }, {});
+
+      setProductsByCategory(groupedProducts);
+      setError(null);
+    } catch (err) {
+      console.error("Error fetching products: ", err);
+      setError("No se pudieron cargar los productos. Inténtalo de nuevo más tarde.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAgeConfirmation = () => {
+    localStorage.setItem('ageVerified', 'true');
+    setIsAgeVerified(true);
+    fetchProducts();
+  };
+
+  if (isAgeVerified === null) {
+    return null; 
+  }
+
+  if (!isAgeVerified) {
+    return <AgeVerificationModal open={true} onConfirm={handleAgeConfirmation} />;
+  }
 
   return (
     <div className="App">
       <CartSidebar />
       <CheckoutModal />
-      <header className="App-header">
-        <div className="logo">EL BORRACHO</div>
-        <div className="cart-icon" onClick={toggleCart}>
-          🛒
-          {cartItemCount > 0 && <span className="cart-count">{cartItemCount}</span>}
-        </div>
-      </header>
+      <Header />
       <main>
-        <h1 className="main-title">Nuestros Productos</h1>
+        <HeroCarousel banners={banners} />
         {loading && <p className="loading-text">Cargando...</p>}
         {error && <p className="error-message">{error}</p>}
         {!loading && !error && (
-          <div className="product-grid">
-            {products.length > 0 ? (
-              products.map(product => (
-                <div key={product.id} className="product-card">
-                  <div className="product-image-container">
-                    <img src={product.imageUrl} alt={product.name} className="product-image" loading="lazy" />
-                  </div>
-                  <div className="product-details">
-                    <h3 className="product-name">{product.name}</h3>
-                    <p className="product-price">${product.price.toLocaleString('es-CO')}</p>
-                    <button className="add-to-cart-btn" onClick={() => addToCart(product)}>
-                      Agregar al Carrito
-                    </button>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <p>No hay productos disponibles en este momento.</p>
-            )}
-          </div>
+          Object.keys(productsByCategory).map(category => (
+            <CategoryCarousel 
+              key={category}
+              category={category}
+              products={productsByCategory[category]}
+            />
+          ))
         )}
       </main>
+      <BottomNav />
     </div>
   );
 }

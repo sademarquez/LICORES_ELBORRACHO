@@ -1,0 +1,16 @@
+{
+  "projects": {},
+  "targets": {
+    "elborracho-e4786": {
+      "hosting": {
+        "elborracho": [
+          "elborracho-e4786"
+        ],
+        "domiz": [
+          "domiz-admin"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}
