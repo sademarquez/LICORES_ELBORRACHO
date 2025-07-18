@@ -10,8 +10,7 @@ export const HeroCarousel = ({ banners }) => {
     <div className="embla" ref={emblaRef}>
       <div className="embla__container">
         {banners.map((banner, index) => (
-          <div className="embla__slide" key={index}>
-            <img className="embla__slide__img" src={banner.imageUrl} alt={banner.title} />
+          <div className="embla__slide" key={index} style={{ backgroundImage: `url(${banner.imageUrl})` }}>
             <div className="embla__slide__content">
               <h2>{banner.title}</h2>
               <p>{banner.subtitle}</p>

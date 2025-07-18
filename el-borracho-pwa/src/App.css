@@ -25,16 +25,24 @@ body {
 .App {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  overflow: hidden; /* Prevents the whole app from scrolling */
+  height: 100vh; /* Full viewport height */
+  overflow: hidden; /* Prevent body scrolling */
   text-align: center;
 }
 
 main {
-  flex-grow: 1; /* Allows main to fill available space */
-  overflow-y: auto; /* Makes only the main content scrollable */
-  padding: 2rem 1rem;
+  flex: 1; /* Allow main to grow and fill available space */
+  overflow-y: auto; /* Make ONLY the main content scrollable */
+  padding: 1rem;
 }
+
+/* Add padding to the bottom of the main content on mobile to prevent the bottom nav from overlapping */
+@media (max-width: 768px) {
+  main {
+    padding-bottom: 80px;
+  }
+}
+
 
 .main-title {
     font-size: 2.5rem;

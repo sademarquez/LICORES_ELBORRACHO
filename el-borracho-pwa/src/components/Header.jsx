@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useCart } from '../context/CartContext';
-import logo from '../assets/logo_1.svg';
+import logo from '/logo_1.svg';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Badge from '@mui/material/Badge';
 import './Header.css';
