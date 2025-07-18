@@ -8,6 +8,7 @@ import { Header } from './components/Header';
 import { BottomNav } from './components/BottomNav';
 import { CategoryCarousel } from './components/CategoryCarousel';
 import { HeroCarousel } from './components/HeroCarousel';
+import { useMediaQuery } from './hooks/useMediaQuery';
 import './App.css';
 import './components/CartSidebar.css';
 import './components/CheckoutModal.css';
@@ -39,6 +40,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isAgeVerified, setIsAgeVerified] = useState(null);
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   useEffect(() => {
     const ageVerified = localStorage.getItem('ageVerified') === 'true';
@@ -110,7 +112,7 @@ function App() {
           ))
         )}
       </main>
-      <BottomNav />
+      {isMobile && <BottomNav />}
     </div>
   );
 }
