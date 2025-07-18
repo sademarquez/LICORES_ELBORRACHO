@@ -13,9 +13,10 @@ export const Header = ({ mainRef }) => {
   const cartItemCount = cartItems.reduce((count, item) => count + item.quantity, 0);
 
   const isFloating = scrollPosition > 50;
+  const isScrolled = scrollPosition > 10;
 
   return (
-    <header className="app-header">
+    <header className={`app-header ${isScrolled ? 'scrolled' : ''}`}>
       <div className={`logo-container ${isFloating ? 'floating' : ''}`}>
         <img 
           src={logo} 

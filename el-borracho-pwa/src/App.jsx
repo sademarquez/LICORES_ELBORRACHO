@@ -10,6 +10,7 @@ import { CategoryCarousel } from './components/CategoryCarousel';
 import { HeroCarousel } from './components/HeroCarousel';
 import { useMediaQuery } from './hooks/useMediaQuery';
 import { InstallPWAButton } from './components/InstallPWAButton';
+import { SearchModal } from './components/SearchModal';
 import './App.css';
 import './components/CartSidebar.css';
 import './components/CheckoutModal.css';
@@ -17,6 +18,7 @@ import './components/Header.css';
 import './components/BottomNav.css';
 import './components/CategoryCarousel.css';
 import './components/HeroCarousel.css';
+import './components/SearchModal.css';
 
 const banners = [
   {
@@ -38,9 +40,11 @@ const banners = [
 
 function App() {
   const [productsByCategory, setProductsByCategory] = useState({});
+  const [allProducts, setAllProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isAgeVerified, setIsAgeVerified] = useState(null);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const isMobile = useMediaQuery('(max-width: 768px)');
   const mainRef = React.useRef(null);
 
@@ -61,6 +65,7 @@ function App() {
       const productsQuery = query(collection(db, 'products'), orderBy('name'));
       const productSnapshot = await getDocs(productsQuery);
       const productList = productSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setAllProducts(productList);
       
       const groupedProducts = productList.reduce((acc, product) => {
         const category = product.category || 'Otros';
@@ -99,6 +104,7 @@ function App() {
     <div className="App">
       <CartSidebar />
       <CheckoutModal />
+      <SearchModal allProducts={allProducts} open={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
       <Header mainRef={mainRef} />
       <main ref={mainRef}>
         <HeroCarousel banners={banners} />
@@ -114,7 +120,7 @@ function App() {
           ))
         )}
       </main>
-      {isMobile && <BottomNav />}
+      {isMobile && <BottomNav onSearchClick={() => setIsSearchOpen(true)} />}
       <InstallPWAButton />
     </div>
   );

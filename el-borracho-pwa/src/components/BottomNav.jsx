@@ -7,7 +7,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Badge from '@mui/material/Badge';
 import './BottomNav.css';
 
-export const BottomNav = () => {
+export const BottomNav = ({ onSearchClick }) => {
   const { toggleCart, cartItems } = useCart();
   const cartItemCount = cartItems.reduce((count, item) => count + item.quantity, 0);
 
@@ -17,7 +17,7 @@ export const BottomNav = () => {
         <HomeIcon />
         <span>Inicio</span>
       </button>
-      <button className="nav-button">
+      <button className="nav-button" onClick={onSearchClick}>
         <SearchIcon />
         <span>Buscar</span>
       </button>
