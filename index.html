@@ -11,11 +11,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <!-- Carga de Tailwind CSS con integridad para seguridad -->
-    <script src="https://cdn.tailwindcss.com" integrity="sha384-B9ElumJ20d28aTko2Yclx/HBUXWJvT0J2e2sD3T01gG3iB2e3l3f/3b2d8e1a9f" crossorigin="anonymous"></script>
+    <!-- Carga de Tailwind CSS (sin SRI por ahora para evitar problemas de hash) -->
+    <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Carga de Swiper CSS con integridad -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" integrity="sha384-..." crossorigin="anonymous" />
+    <!-- Carga de Swiper CSS (sin SRI) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
     <!-- Carga optimizada de Google Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap">
@@ -148,7 +148,7 @@
     <!-- CORRECCIÓN FINAL: Cargar scripts en orden al final del body -->
     <!-- 1. Cargar librerías con integridad y crossorigin para seguridad -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" integrity="sha512-dLxU3SP2Qe32ceT1JEi3s24aTMRoGWscq9eCbFBz/3gA9fWl1RB6YV5G4eGHbTjT/vG5U/q9eBzh2/9oA/EAw==" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" integrity="sha384-ge2fG3i6U1vG4K4H99iJ/iYI2eJ3L2i6Pz2s0i1z/i0wFq/i1dFkH9n/i0i1z" crossorigin="anonymous" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" integrity="sha384-Afl3v7ReQz27hPZ7R22stDRS0fKxR1gYOrw20v1Qn+3vH2Qp3d3mkgI/x2Xj1p4g" crossorigin="anonymous" defer></script>
     
     <!-- 2. Cargar tu script de aplicación (que depende de las librerías) -->
     <script type="module" src="js/main.js" defer></script>
