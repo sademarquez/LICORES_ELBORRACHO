@@ -1,18 +1,2 @@
-# Dependencias
-node_modules
-
-# Logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-logs
-*.log
-
-# Archivos de sistema
-.DS_Store
-Thumbs.db
-
-# IDEs y editores
-.vscode/
-.idea/
-.history/
+# Entorno virtual de Python
+.venv/

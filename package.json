@@ -15,5 +15,8 @@
   "license": "MIT",
   "dependencies": {
     "serve": "^14.2.3"
+  },
+  "devDependencies": {
+    "purgecss": "^7.0.2"
   }
 }

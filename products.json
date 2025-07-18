@@ -5,7 +5,7 @@
     "brand": "Aguardiente Caucano",
     "category": "Licor",
     "price": 45000,
-    "imageUrl": "images/products/aguardientec.png"
+    "imageUrl": "images/products/aguardientec.webp"
   },
   {
     "id": "ron-viejo-caldas-8-anos",
@@ -13,7 +13,7 @@
     "brand": "Ron Viejo de Caldas",
     "category": "Licor",
     "price": 75000,
-    "imageUrl": "images/products/ron.png"
+    "imageUrl": "images/products/ron.webp"
   },
   {
     "id": "whisky-buchanans-12-anos",
@@ -21,7 +21,7 @@
     "brand": "Buchanan's",
     "category": "Licor",
     "price": 180000,
-    "imageUrl": "images/products/bucanas.png"
+    "imageUrl": "images/products/bucanas.webp"
   },
   {
     "id": "cerveza-club-colombia-dorada-sixpack",
@@ -29,7 +29,7 @@
     "brand": "Club Colombia",
     "category": "Cerveza",
     "price": 25000,
-    "imageUrl": "images/products/sicol.png"
+    "imageUrl": "images/products/sicol.webp"
   },
   {
     "id": "cerveza-corona-sixpack",
@@ -37,7 +37,7 @@
     "brand": "Corona",
     "category": "Cerveza",
     "price": 30000,
-    "imageUrl": "images/products/corona.png"
+    "imageUrl": "images/products/corona.webp"
   },
   {
     "id": "cerveza-poker-sixpack",
@@ -45,7 +45,7 @@
     "brand": "Poker",
     "category": "Cerveza",
     "price": 22000,
-    "imageUrl": "images/products/sixpoker.png"
+    "imageUrl": "images/products/sixpoker.webp"
   },
   {
     "id": "aguardiente-nectar-rojo",
@@ -53,7 +53,7 @@
     "brand": "Aguardiente Néctar",
     "category": "Licor",
     "price": 48000,
-    "imageUrl": "images/products/nectar.png"
+    "imageUrl": "images/products/nectar.webp"
   },
   {
     "id": "tequila-don-julio-reposado",
@@ -61,7 +61,7 @@
     "brand": "Don Julio",
     "category": "Licor",
     "price": 250000,
-    "imageUrl": "images/products/donjulio.png"
+    "imageUrl": "images/products/donjulio.webp"
   },
   {
     "id": "vodka-smirnoff",
@@ -69,7 +69,7 @@
     "brand": "Smirnoff",
     "category": "Licor",
     "price": 60000,
-    "imageUrl": "images/products/smirnoff.png"
+    "imageUrl": "images/products/smirnoff.webp"
   },
   {
     "id": "gaseosa-coca-cola-2l",
@@ -77,7 +77,7 @@
     "brand": "Coca-Cola",
     "category": "Bebida no alcohólica",
     "price": 7000,
-    "imageUrl": "images/products/cocacola.png"
+    "imageUrl": "images/products/cocacola.webp"
   },
   {
     "id": "gaseosa-pepsi-15l",
@@ -85,7 +85,7 @@
     "brand": "Pepsi",
     "category": "Bebida no alcohólica",
     "price": 5500,
-    "imageUrl": "images/products/pepsi.png"
+    "imageUrl": "images/products/pepsi.webp"
   },
   {
     "id": "gaseosa-postobon-manzana-15l",
@@ -93,7 +93,7 @@
     "brand": "Postobón",
     "category": "Bebida no alcohólica",
     "price": 5000,
-    "imageUrl": "images/products/postobon.png"
+    "imageUrl": "images/products/postobon.webp"
   },
   {
     "id": "bebida-energetica-red-bull",
@@ -101,7 +101,7 @@
     "brand": "Red Bull",
     "category": "Bebida no alcohólica",
     "price": 8000,
-    "imageUrl": "images/products/redbull.png"
+    "imageUrl": "images/products/redbull.webp"
   },
   {
     "id": "snacks-papas-margarita",
@@ -109,7 +109,7 @@
     "brand": "Margarita",
     "category": "Snacks",
     "price": 4000,
-    "imageUrl": "images/products/margarita.png"
+    "imageUrl": "images/products/margarita.webp"
   },
   {
     "id": "snacks-choclitos",
@@ -117,7 +117,7 @@
     "brand": "Choclitos",
     "category": "Snacks",
     "price": 3500,
-    "imageUrl": "images/products/choclitos.png"
+    "imageUrl": "images/products/choclitos.webp"
   },
   {
     "id": "bebida-agua-cristal",
@@ -125,7 +125,7 @@
     "brand": "Cristal",
     "category": "Bebida no alcohólica",
     "price": 2000,
-    "imageUrl": "images/products/agua.png"
+    "imageUrl": "images/products/agua.webp"
   },
   {
     "id": "licor-jagermeister",
@@ -133,7 +133,7 @@
     "brand": "Jagermeister",
     "category": "Licor",
     "price": 70000,
-    "imageUrl": "images/products/jagermeister.png"
+    "imageUrl": "images/products/jagermeister.webp"
   },
   {
     "id": "cigarrillos-lucky-strike",
@@ -141,7 +141,7 @@
     "brand": "Lucky Strike",
     "category": "Tabaco",
     "price": 8000,
-    "imageUrl": "images/products/lukya.png"
+    "imageUrl": "images/products/lukya.webp"
   },
   {
     "id": "licor-baileys",
@@ -149,7 +149,7 @@
     "brand": "Baileys",
     "category": "Licor",
     "price": 90000,
-    "imageUrl": "images/products/baileys.png"
+    "imageUrl": "images/products/baileys.webp"
   },
   {
     "id": "cerveza-andina-sixpack",
@@ -157,7 +157,7 @@
     "brand": "Andina",
     "category": "Cerveza",
     "price": 24000,
-    "imageUrl": "images/products/andina.png"
+    "imageUrl": "images/products/andina.webp"
   },
   {
     "id": "snacks-mani-la-especial",
@@ -165,7 +165,7 @@
     "brand": "La Especial",
     "category": "Snacks",
     "price": 3000,
-    "imageUrl": "images/products/mani.png"
+    "imageUrl": "images/products/mani.webp"
   },
   {
     "id": "aguardiente-antioqueno-rojo",
@@ -173,7 +173,7 @@
     "brand": "Antioqueño",
     "category": "Licor",
     "price": 46000,
-    "imageUrl": "images/products/antioqueno-rojo.png"
+    "imageUrl": "images/products/antioqueno-rojo.webp"
   },
   {
     "id": "ron-havana-club-anejo",
@@ -181,7 +181,7 @@
     "brand": "Havana Club",
     "category": "Licor",
     "price": 85000,
-    "imageUrl": "images/products/havana-club.png"
+    "imageUrl": "images/products/havana-club.webp"
   },
   {
     "id": "whisky-johnnie-walker-red",
@@ -189,7 +189,7 @@
     "brand": "Johnnie Walker",
     "category": "Licor",
     "price": 95000,
-    "imageUrl": "images/products/johnnie-walker-red.png"
+    "imageUrl": "images/products/johnnie-walker-red.webp"
   },
   {
     "id": "whisky-johnnie-walker-black",
@@ -197,7 +197,7 @@
     "brand": "Johnnie Walker",
     "category": "Licor",
     "price": 190000,
-    "imageUrl": "images/products/johnnie-walker-black.png"
+    "imageUrl": "images/products/johnnie-walker-black.webp"
   },
   {
     "id": "whisky-jack-daniels",
@@ -205,7 +205,7 @@
     "brand": "Jack Daniel's",
     "category": "Licor",
     "price": 160000,
-    "imageUrl": "images/products/jack-daniels.png"
+    "imageUrl": "images/products/jack-daniels.webp"
   },
   {
     "id": "tequila-jose-cuervo-especial",
@@ -213,7 +213,7 @@
     "brand": "José Cuervo",
     "category": "Licor",
     "price": 98000,
-    "imageUrl": "images/products/jose-cuervo.png"
+    "imageUrl": "images/products/jose-cuervo.webp"
   },
   {
     "id": "vodka-absolut",
@@ -221,7 +221,7 @@
     "brand": "Absolut",
     "category": "Licor",
     "price": 88000,
-    "imageUrl": "images/products/absolut-vodka.png"
+    "imageUrl": "images/products/absolut-vodka.webp"
   },
   {
     "id": "gin-hendricks",
@@ -229,7 +229,7 @@
     "brand": "Hendrick's",
     "category": "Licor",
     "price": 210000,
-    "imageUrl": "images/products/hendricks-gin.png"
+    "imageUrl": "images/products/hendricks-gin.webp"
   },
   {
     "id": "crema-amarula",
@@ -237,7 +237,7 @@
     "brand": "Amarula",
     "category": "Licor",
     "price": 95000,
-    "imageUrl": "images/products/amarula.png"
+    "imageUrl": "images/products/amarula.webp"
   },
   {
     "id": "vermouth-cinzano-rosso",
@@ -245,7 +245,7 @@
     "brand": "Cinzano",
     "category": "Licor",
     "price": 55000,
-    "imageUrl": "images/products/vermur.png"
+    "imageUrl": "images/products/vermur.webp"
   },
   {
     "id": "cerveza-aguila-light-sixpack",
@@ -253,7 +253,7 @@
     "brand": "Águila",
     "category": "Cerveza",
     "price": 23000,
-    "imageUrl": "images/products/aguila-light.png"
+    "imageUrl": "images/products/aguila-light.webp"
   },
   {
     "id": "cerveza-pilsen-sixpack",
@@ -261,7 +261,7 @@
     "brand": "Pilsen",
     "category": "Cerveza",
     "price": 21000,
-    "imageUrl": "images/products/pilsen.png"
+    "imageUrl": "images/products/pilsen.webp"
   },
   {
     "id": "cerveza-heineken-sixpack",
@@ -269,7 +269,7 @@
     "brand": "Heineken",
     "category": "Cerveza",
     "price": 32000,
-    "imageUrl": "images/products/heineken.png"
+    "imageUrl": "images/products/heineken.webp"
   },
   {
     "id": "cerveza-budweiser-sixpack",
@@ -277,7 +277,7 @@
     "brand": "Budweiser",
     "category": "Cerveza",
     "price": 28000,
-    "imageUrl": "images/products/budweiser.png"
+    "imageUrl": "images/products/budweiser.webp"
   },
   {
     "id": "cerveza-stella-artois-sixpack",
@@ -285,7 +285,7 @@
     "brand": "Stella Artois",
     "category": "Cerveza",
     "price": 35000,
-    "imageUrl": "images/products/stella-artois.png"
+    "imageUrl": "images/products/stella-artois.webp"
   },
   {
     "id": "cerveza-bbc-monserrate-roja",
@@ -293,7 +293,7 @@
     "brand": "BBC",
     "category": "Cerveza",
     "price": 8000,
-    "imageUrl": "images/products/bbc-monserrate.png"
+    "imageUrl": "images/products/bbc-monserrate.webp"
   },
   {
     "id": "bebida-gatorade-mora",
@@ -301,7 +301,7 @@
     "brand": "Gatorade",
     "category": "Bebida no alcohólica",
     "price": 4500,
-    "imageUrl": "images/products/gatorade.png"
+    "imageUrl": "images/products/gatorade.webp"
   },
   {
     "id": "bebida-mr-tea",
@@ -309,7 +309,7 @@
     "brand": "Mr. Tea",
     "category": "Bebida no alcohólica",
     "price": 3500,
-    "imageUrl": "images/products/mr-tea.png"
+    "imageUrl": "images/products/mr-tea.webp"
   },
   {
     "id": "mezclador-canada-dry",
@@ -317,7 +317,7 @@
     "brand": "Canada Dry",
     "category": "Bebida no alcohólica",
     "price": 4000,
-    "imageUrl": "images/products/cdry.png"
+    "imageUrl": "images/products/cdry.webp"
   },
   {
     "id": "mezclador-bretana",
@@ -325,7 +325,7 @@
     "brand": "Bretaña",
     "category": "Bebida no alcohólica",
     "price": 3000,
-    "imageUrl": "images/products/bretana.png"
+    "imageUrl": "images/products/bretana.webp"
   },
   {
     "id": "jugo-hit-tropical",
@@ -333,7 +333,7 @@
     "brand": "Hit",
     "category": "Bebida no alcohólica",
     "price": 2500,
-    "imageUrl": "images/products/jugo-hit.png"
+    "imageUrl": "images/products/jugo-hit.webp"
   },
   {
     "id": "snacks-doritos",
@@ -341,7 +341,7 @@
     "brand": "Doritos",
     "category": "Snacks",
     "price": 4500,
-    "imageUrl": "images/products/doritos.png"
+    "imageUrl": "images/products/doritos.webp"
   },
   {
     "id": "snacks-tostacos-picantes",
@@ -349,7 +349,7 @@
     "brand": "Tostacos",
     "category": "Snacks",
     "price": 3800,
-    "imageUrl": "images/products/tostacos.png"
+    "imageUrl": "images/products/tostacos.webp"
   },
   {
     "id": "snacks-pringles-original",
@@ -357,7 +357,7 @@
     "brand": "Pringles",
     "category": "Snacks",
     "price": 12000,
-    "imageUrl": "images/products/pringles.png"
+    "imageUrl": "images/products/pringles.webp"
   },
   {
     "id": "snacks-de-todito-bbq",
@@ -365,7 +365,7 @@
     "brand": "De Todito",
     "category": "Snacks",
     "price": 5000,
-    "imageUrl": "images/products/dtd.png"
+    "imageUrl": "images/products/dtd.webp"
   },
   {
     "id": "cigarrillos-marlboro-rojo",
@@ -373,7 +373,7 @@
     "brand": "Marlboro",
     "category": "Tabaco",
     "price": 9000,
-    "imageUrl": "images/products/malboror.png"
+    "imageUrl": "images/products/malboror.webp"
   },
   {
     "id": "cigarrillos-chesterfield",
@@ -381,7 +381,7 @@
     "brand": "Chesterfield",
     "category": "Tabaco",
     "price": 8500,
-    "imageUrl": "images/products/chesterfield.png"
+    "imageUrl": "images/products/chesterfield.webp"
   },
   {
     "id": "cigarrillos-mustang",
@@ -389,7 +389,7 @@
     "brand": "Mustang",
     "category": "Tabaco",
     "price": 7500,
-    "imageUrl": "images/products/mustang.png"
+    "imageUrl": "images/products/mustang.webp"
   },
   {
     "id": "vino-gato-negro-tinto",
@@ -397,7 +397,7 @@
     "brand": "Gato Negro",
     "category": "Vino",
     "price": 35000,
-    "imageUrl": "images/products/gato-negro.png"
+    "imageUrl": "images/products/gato-negro.webp"
   },
   {
     "id": "vino-casillero-diablo",
@@ -405,7 +405,7 @@
     "brand": "Casillero del Diablo",
     "category": "Vino",
     "price": 55000,
-    "imageUrl": "images/products/casillero-diablo.png"
+    "imageUrl": "images/products/casillero-diablo.webp"
   },
   {
     "id": "tequila-maestro-dobel",
@@ -413,14 +413,14 @@
     "brand": "Maestro Dobel",
     "category": "Licor",
     "price": 280000,
-    "imageUrl": "images/products/maestro-dobel.png"
+    "imageUrl": "images/products/maestro-dobel.webp"
   },
   {
     "id": "new-product-1",
     "name": "Producto de Prueba 1",
     "price": 62935,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 1."
   },
   {
@@ -428,7 +428,7 @@
     "name": "Producto de Prueba 2",
     "price": 69151,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 2."
   },
   {
@@ -436,7 +436,7 @@
     "name": "Producto de Prueba 3",
     "price": 38638,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 3."
   },
   {
@@ -444,7 +444,7 @@
     "name": "Producto de Prueba 4",
     "price": 80081,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 4."
   },
   {
@@ -452,7 +452,7 @@
     "name": "Producto de Prueba 5",
     "price": 61101,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 5."
   },
   {
@@ -460,7 +460,7 @@
     "name": "Producto de Prueba 6",
     "price": 72308,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 6."
   },
   {
@@ -468,7 +468,7 @@
     "name": "Producto de Prueba 7",
     "price": 59962,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 7."
   },
   {
@@ -476,7 +476,7 @@
     "name": "Producto de Prueba 8",
     "price": 64184,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 8."
   },
   {
@@ -484,7 +484,7 @@
     "name": "Producto de Prueba 9",
     "price": 76812,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 9."
   },
   {
@@ -492,7 +492,7 @@
     "name": "Producto de Prueba 10",
     "price": 84916,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 10."
   },
   {
@@ -500,7 +500,7 @@
     "name": "Producto de Prueba 11",
     "price": 73416,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 11."
   },
   {
@@ -508,7 +508,7 @@
     "name": "Producto de Prueba 12",
     "price": 62042,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 12."
   },
   {
@@ -516,7 +516,7 @@
     "name": "Producto de Prueba 13",
     "price": 38382,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 13."
   },
   {
@@ -524,7 +524,7 @@
     "name": "Producto de Prueba 14",
     "price": 98136,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 14."
   },
   {
@@ -532,7 +532,7 @@
     "name": "Producto de Prueba 15",
     "price": 95706,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 15."
   },
   {
@@ -540,7 +540,7 @@
     "name": "Producto de Prueba 16",
     "price": 104843,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 16."
   },
   {
@@ -548,7 +548,7 @@
     "name": "Producto de Prueba 17",
     "price": 24388,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 17."
   },
   {
@@ -556,7 +556,7 @@
     "name": "Producto de Prueba 18",
     "price": 64673,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 18."
   },
   {
@@ -564,7 +564,7 @@
     "name": "Producto de Prueba 19",
     "price": 79875,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 19."
   },
   {
@@ -572,7 +572,7 @@
     "name": "Producto de Prueba 20",
     "price": 35079,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 20."
   },
   {
@@ -580,7 +580,7 @@
     "name": "Producto de Prueba 21",
     "price": 27423,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 21."
   },
   {
@@ -588,7 +588,7 @@
     "name": "Producto de Prueba 22",
     "price": 109378,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 22."
   },
   {
@@ -596,7 +596,7 @@
     "name": "Producto de Prueba 23",
     "price": 87722,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 23."
   },
   {
@@ -604,7 +604,7 @@
     "name": "Producto de Prueba 24",
     "price": 53322,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 24."
   },
   {
@@ -612,7 +612,7 @@
     "name": "Producto de Prueba 25",
     "price": 40903,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 25."
   },
   {
@@ -620,7 +620,7 @@
     "name": "Producto de Prueba 26",
     "price": 100951,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 26."
   },
   {
@@ -628,7 +628,7 @@
     "name": "Producto de Prueba 27",
     "price": 58190,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 27."
   },
   {
@@ -636,7 +636,7 @@
     "name": "Producto de Prueba 28",
     "price": 30332,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 28."
   },
   {
@@ -644,7 +644,7 @@
     "name": "Producto de Prueba 29",
     "price": 47966,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 29."
   },
   {
@@ -652,7 +652,7 @@
     "name": "Producto de Prueba 30",
     "price": 83987,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 30."
   },
   {
@@ -660,7 +660,7 @@
     "name": "Producto de Prueba 31",
     "price": 95080,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 31."
   },
   {
@@ -668,7 +668,7 @@
     "name": "Producto de Prueba 32",
     "price": 25657,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 32."
   },
   {
@@ -676,7 +676,7 @@
     "name": "Producto de Prueba 33",
     "price": 97690,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 33."
   },
   {
@@ -684,7 +684,7 @@
     "name": "Producto de Prueba 34",
     "price": 55108,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 34."
   },
   {
@@ -692,7 +692,7 @@
     "name": "Producto de Prueba 35",
     "price": 80012,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 35."
   },
   {
@@ -700,7 +700,7 @@
     "name": "Producto de Prueba 36",
     "price": 33218,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 36."
   },
   {
@@ -708,7 +708,7 @@
     "name": "Producto de Prueba 37",
     "price": 41287,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 37."
   },
   {
@@ -716,7 +716,7 @@
     "name": "Producto de Prueba 38",
     "price": 100477,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 38."
   },
   {
@@ -724,7 +724,7 @@
     "name": "Producto de Prueba 39",
     "price": 39762,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 39."
   },
   {
@@ -732,7 +732,7 @@
     "name": "Producto de Prueba 40",
     "price": 32859,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 40."
   },
   {
@@ -740,7 +740,7 @@
     "name": "Producto de Prueba 41",
     "price": 61143,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 41."
   },
   {
@@ -748,7 +748,7 @@
     "name": "Producto de Prueba 42",
     "price": 44428,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 42."
   },
   {
@@ -756,7 +756,7 @@
     "name": "Producto de Prueba 43",
     "price": 96214,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 43."
   },
   {
@@ -764,7 +764,7 @@
     "name": "Producto de Prueba 44",
     "price": 21407,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 44."
   },
   {
@@ -772,7 +772,7 @@
     "name": "Producto de Prueba 45",
     "price": 83191,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 45."
   },
   {
@@ -780,7 +780,7 @@
     "name": "Producto de Prueba 46",
     "price": 80381,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 46."
   },
   {
@@ -788,7 +788,7 @@
     "name": "Producto de Prueba 47",
     "price": 40487,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 47."
   },
   {
@@ -796,7 +796,7 @@
     "name": "Producto de Prueba 48",
     "price": 31436,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 48."
   },
   {
@@ -804,7 +804,7 @@
     "name": "Producto de Prueba 49",
     "price": 108618,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 49."
   },
   {
@@ -812,7 +812,7 @@
     "name": "Producto de Prueba 50",
     "price": 30908,
     "category": "Licor",
-    "imageUrl": "images/products/ron.png",
+    "imageUrl": "images/products/ron.webp",
     "description": "Descripción del producto de prueba 50."
   }
 ]
