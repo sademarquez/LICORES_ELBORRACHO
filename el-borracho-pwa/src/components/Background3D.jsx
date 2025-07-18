@@ -40,9 +40,12 @@ const Background3D = () => {
 
     const animate = () => {
       requestAnimationFrame(animate);
-      if (particles) {
-        particles.rotation.x += 0.0001;
-        particles.rotation.y += 0.0002;
+      // Stop animation on small screens for performance and aesthetics
+      if (window.innerWidth > 768) {
+        if (particles) {
+          particles.rotation.x += 0.0001;
+          particles.rotation.y += 0.0002;
+        }
       }
       renderer.render(scene, camera);
     };

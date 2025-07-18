@@ -17,6 +17,7 @@
   padding: 1rem 0 1.5rem 1rem;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none;  /* IE 10+ */
+  scroll-snap-type: x mandatory; /* Added for better snapping */
 }
 
 .carousel-container::-webkit-scrollbar {
@@ -30,6 +31,7 @@
 }
 
 .product-card-carousel {
+  scroll-snap-align: start; /* Added for better snapping */
   width: 180px; /* Fixed width for carousel items */
   flex-shrink: 0; /* Prevents items from shrinking */
   background: var(--glass-bg);
