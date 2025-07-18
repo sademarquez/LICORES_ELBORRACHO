@@ -41,6 +41,11 @@
 }
 
 @media (max-width: 768px) {
+  .embla {
+    margin-left: -1rem; /* Counteract parent padding */
+    margin-right: -1rem; /* Counteract parent padding */
+    border-radius: 0; /* Full width, no rounded corners */
+  }
   .embla__slide {
     height: 200px;
   }
