@@ -25,12 +25,9 @@ self.addEventListener('install', event => {
     event.waitUntil(
         caches.open(STATIC_CACHE_NAME).then(cache => {
             console.log('[SW] Pre-cargando App Shell en caché estática.');
-            // addAll es atómico, si un archivo falla, toda la operación falla.
             return cache.addAll(APP_SHELL);
-        }).then(() => {
-            // Forzar al nuevo Service Worker a activarse inmediatamente.
-            return self.skipWaiting();
         })
+        // IMPORTANTE: Ya no llamamos a self.skipWaiting() aquí.
     );
 });
 
@@ -40,7 +37,6 @@ self.addEventListener('activate', event => {
     event.waitUntil(
         caches.keys().then(keys => {
             return Promise.all(keys
-                // Filtramos las cachés que no sean las actuales (estática y dinámica).
                 .filter(key => key !== STATIC_CACHE_NAME && key !== DYNAMIC_CACHE_NAME)
                 .map(key => {
                     console.log(`[SW] Eliminando caché antigua: ${key}`);
@@ -48,7 +44,7 @@ self.addEventListener('activate', event => {
                 })
             );
         }).then(() => {
-            // Tomar control de todos los clientes (pestañas) abiertos.
+            console.log('[SW] Reclamando clientes...');
             return self.clients.claim();
         })
     );
