@@ -1,82 +1,57 @@
-
-.hero-carousel-container {
-  width: 100%;
-  height: 300px;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.embla {
   overflow: hidden;
   border-radius: var(--border-radius);
   margin-bottom: 2rem;
 }
 
-.hero-image {
-  position: absolute;
+.embla__container {
+  display: flex;
+}
+
+.embla__slide {
+  position: relative;
+  flex: 0 0 100%;
+  height: 300px;
+  background-color: #000; /* Black background for image containment */
+}
+
+.embla__slide__img {
   width: 100%;
   height: 100%;
-  object-fit: contain; /* Change from 'cover' to 'contain' */
-  background-color: rgba(0,0,0,0.2); /* Add a subtle background */
+  object-fit: contain; /* Ensures the whole image is visible */
 }
 
-.hero-content {
-    position: relative;
-    z-index: 3;
-    color: white;
-    text-align: center;
-    background: rgba(0,0,0,0.5);
-    padding: 1rem 2rem;
-    border-radius: 12px;
-    backdrop-filter: blur(5px);
-}
-
-.hero-content h2 {
-    font-size: 2rem;
-    margin: 0;
-    text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
-}
-
-.hero-content p {
-    margin: 0.5rem 0 0;
-}
-
-.next,
-.prev {
-  top: calc(50% - 20px);
+.embla__slide__content {
   position: absolute;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 30px;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 24px;
-  z-index: 2;
-  user-select: none;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  z-index: 1;
+  color: white;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 1rem;
+  border-radius: 12px;
+  text-align: left;
 }
 
-.next {
-  right: 10px;
+.embla__slide__content h2 {
+  font-size: 1.8rem;
+  margin: 0 0 0.5rem;
 }
 
-.prev {
-  left: 10px;
-  transform: scale(-1);
+.embla__slide__content p {
+  margin: 0;
+  font-size: 1rem;
 }
 
 @media (max-width: 768px) {
-    .hero-carousel-container {
-        height: 200px;
-        border-radius: 0;
-        margin: -1rem -1rem 2rem -1rem; /* Stretch to edges on mobile */
-    }
-    .hero-content h2 {
-        font-size: 1.5rem;
-    }
-    .hero-content p {
-        font-size: 0.9rem;
-    }
+  .embla__slide {
+    height: 200px;
+  }
+  .embla__slide__content h2 {
+    font-size: 1.2rem;
+  }
+  .embla__slide__content p {
+    font-size: 0.8rem;
+  }
 }

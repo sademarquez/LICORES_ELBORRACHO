@@ -1,3 +1,4 @@
+
 :root {
     --primary-color: #D4AF37;
     --bg-color-start: #111111;
@@ -22,55 +23,17 @@ body {
 }
 
 .App {
-    text-align: center;
-}
-
-.App-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: rgba(17, 17, 17, 0.7);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    padding: 1rem;
-    border-bottom: 1px solid var(--glass-border);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-}
-
-.cart-icon {
-    position: relative;
-    cursor: pointer;
-    font-size: 2rem;
-}
-
-.cart-count {
-    position: absolute;
-    top: -5px;
-    right: -10px;
-    background: var(--primary-color);
-    color: black;
-    border-radius: 50%;
-    width: 22px;
-    height: 22px;
-    font-size: 0.8rem;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid black;
-}
-
-
-.logo {
-    font-size: 1.8rem;
-    font-weight: bold;
-    color: var(--primary-color);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden; /* Prevents the whole app from scrolling */
+  text-align: center;
 }
 
 main {
-    padding: 2rem 1rem;
+  flex-grow: 1; /* Allows main to fill available space */
+  overflow-y: auto; /* Makes only the main content scrollable */
+  padding: 2rem 1rem;
 }
 
 .main-title {
