@@ -1,11 +1,10 @@
 {
   "name": "el-borracho-pwa",
-  "version": "2.0.0",
-  "description": "PWA de licores a domicilio en Popayán",
+  "version": "3.0.0",
+  "description": "PWA de licores a domicilio en Popayán. Autónoma y estable.",
   "main": "index.html",
   "scripts": {
-    "start": "serve .",
-    "build": "echo \"PWA static site - no build needed.\""
+    "start": "serve ."
   },
   "keywords": [
     "pwa",

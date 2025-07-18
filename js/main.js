@@ -172,28 +172,25 @@ async function main() {
 
         let productsLoaded = false;
         try {
-            const apiResponse = await fetch('https://domiz.netlify.app/api/products', { cache: 'no-store' });
-            if (apiResponse.ok) {
-                const productsData = await apiResponse.json();
-                if (productsData && productsData.length > 0) {
-                    allProducts = productsData;
-                    productsLoaded = true;
-                }
-            }
-        } catch (e) { /* Fallback a local */ }
-
-        if (!productsLoaded) {
             const localResponse = await fetch('products.json');
             if (localResponse.ok) {
                 allProducts = await localResponse.json();
+                productsLoaded = true;
+                console.log("Productos cargados exitosamente desde 'products.json' local.");
             } else {
-                throw new Error("No se pudieron cargar los datos de los productos.");
+                throw new Error("No se pudo cargar 'products.json' localmente.");
             }
+        } catch (error) {
+            console.error("Error fatal al cargar productos:", error);
+            throw new Error("No se pudieron cargar los datos de los productos.");
         }
 
+        // Cargar configuración de la app
+        console.log("Intentando cargar config.json local...");
         const configResponse = await fetch('config.json');
-        if (!configResponse.ok) throw new Error('No se pudo cargar la configuración.');
+        if (!configResponse.ok) throw new Error('No se pudo cargar la configuración de la aplicación.');
         const appConfig = await configResponse.json();
+        console.log("Configuración local procesada.");
         
         initCart(allProducts, appConfig.contactPhone);
         initHeroCarousel(appConfig.banners);

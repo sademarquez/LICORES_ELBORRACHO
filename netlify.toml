@@ -1,73 +1,32 @@
 # --- Configuración de Build ---
+# Para un sitio estático puro, no se necesita un comando de build.
+# Netlify simplemente desplegará los archivos del directorio raíz.
 [build]
-  publish = "." # Directorio a publicar
-  command = "echo 'Sitio estático listo para desplegar'"
+  publish = "."
+  command = "echo 'PWA Estática. No se necesita build.'"
 
 [build.environment]
   NODE_VERSION = "18"
-
-# --- Redirecciones ---
-[[redirects]]
-  from = "/app"
-  to = "/descargar.html"
-  status = 301
-
-[[redirects]]
-  from = "/download"
-  to = "/descargar.html"
-  status = 301
-
-[[redirects]]
-  from = "/apk"
-  to = "/el-borracho.apk"
-  status = 301
 
 # --- Cabeceras de Seguridad y Rendimiento ---
 [[headers]]
   for = "/*" # Aplica a todas las rutas
   [headers.values]
     # Política de Seguridad de Contenido (CSP)
-    # - default-src 'self': Por defecto, solo permite contenido del mismo origen.
-    # - script-src 'self' ...: Permite scripts del propio dominio, de CDNs de confianza (Tailwind, Swiper, Three.js) y 'unsafe-inline' para los scripts inline.
-    # - style-src 'self' ...: Permite estilos del propio dominio, de CDNs de confianza (Google Fonts, Swiper) y 'unsafe-inline' para estilos inline.
-    # - img-src 'self' data: ...: Permite imágenes del propio dominio, data URIs, y de orígenes específicos (ej. si las imágenes vinieran de un CDN).
-    # - font-src 'self' ...: Permite fuentes del propio dominio y de Google Fonts.
-    # - connect-src 'self' ...: Permite conexiones al propio dominio y a la API de domiz.
-    Content-Security-Policy = "default-src 'self'; script-src 'self' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net/npm 'unsafe-inline'; style-src 'self' https://cdn.jsdelivr.net/npm https://fonts.googleapis.com 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://domiz.netlify.app; frame-ancestors 'none';"
+    # Permite contenido de 'self' y de los CDNs específicos que usamos.
+    Content-Security-Policy = "default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:;"
     
-    # Impide que la página se cargue en un <iframe>, <frame>, <embed> u <object>. Previene clickjacking.
+    # Previene clickjacking.
     X-Frame-Options = "DENY"
     
-    # Activa el filtro XSS en navegadores (principalmente IE y Safari).
+    # Activa el filtro XSS en navegadores.
     X-XSS-Protection = "1; mode=block"
     
-    # Evita que el navegador intente adivinar el tipo MIME de un recurso.
+    # Evita que el navegador adivine el tipo MIME.
     X-Content-Type-Options = "nosniff"
     
-    # Controla qué información de referer se envía al navegar a otros sitios.
+    # Controla la información de referer.
     Referrer-Policy = "strict-origin-when-cross-origin"
     
-    # Política de permisos para controlar el acceso a APIs del navegador.
-    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
-    
-    # Strict-Transport-Security: Fuerza el uso de HTTPS.
+    # Fuerza el uso de HTTPS.
     Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
-
-# --- Cabeceras para el APK (sin caché) ---
-[[headers]]
-  for = "/el-borracho.apk"
-  [headers.values]
-    Content-Type = "application/vnd.android.package-archive"
-    Content-Disposition = "attachment; filename=el-borracho.apk"
-    Cache-Control = "no-cache, no-store, must-revalidate"
-    Pragma = "no-cache"
-    Expires = "0"
-
-[[headers]]
-  for = "/*.apk"
-  [headers.values]
-    Content-Type = "application/vnd.android.package-archive"
-    Content-Disposition = "attachment"
-    Cache-Control = "no-cache, no-store, must-revalidate"
-    Pragma = "no-cache"
-    Expires = "0"

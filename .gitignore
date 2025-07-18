@@ -1,86 +1,18 @@
 # Dependencias
-node_modules/
+node_modules
+
+# Logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-# Archivos de desarrollo local
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# Logs
 logs
 *.log
 
-# Archivos temporales
-.tmp/
-temp/
-.cache/
-
-# Archivos del sistema
+# Archivos de sistema
 .DS_Store
 Thumbs.db
-*.swp
-*.swo
-*~
 
 # IDEs y editores
 .vscode/
 .idea/
-*.sublime-project
-*.sublime-workspace
-
-# Capacitor - mantener configuración pero excluir builds nativos temporales
-android/app/build/
-android/app/.cxx/
-android/.gradle/
-android/build/
-android/local.properties
-android/.idea/
-android/app/src/main/assets/public/
-ios/build/
-ios/DerivedData/
-
-# APKs temporales (mantener el APK principal para descarga)
-*.aab
-# *.apk - comentado para permitir # el-borracho.apk - permitido para descarga
-# # el-borracho.apk - permitido para descarga - comentado para permitir descarga directa
-
-# Archivos de backup
-*.bak
-*.backup
-
-# Coverage reports
-coverage/
-.nyc_output/
-
-# Directorio www/ es generado por npm run deploy - no versionar
-www/
-
-# Dependency directories que no necesitamos en el repo
-www/node_modules/
-
-# Archivos específicos de Netlify (se configuran en la plataforma)
-.netlify/
-
-# Ignorar archivos de configuración local de desarrollo
-capacitor.config.local.json
-
-# Archivos de Claude Code
-../.claude/
-.claude/
-
-# Ignorar carpetas y archivos de build y Android
-www/
-# el-borracho.apk - permitido para descarga
-android/app/build/
-android/.gradle/
-node_modules/
-.DS_Store
-*.log
-
-# NO ignorar www/ ni # el-borracho.apk - permitido para descarga para Netlify
-dist/
+.history/
